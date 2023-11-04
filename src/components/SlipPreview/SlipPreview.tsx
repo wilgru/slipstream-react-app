@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Slip } from "../../types/Slip.type";
 
 type SlipPreviewProps = {
-  slip: Slip | null;
+  slip: Slip;
 };
 
 const SlipPreview = ({ slip }: SlipPreviewProps) => {
@@ -12,9 +12,14 @@ const SlipPreview = ({ slip }: SlipPreviewProps) => {
     <>
       <div
         className={
-          "flex-grow w-full bg-white border border-gray-200 rounded-md shadow"
+          "flex-grow w-full p-2 bg-white border border-gray-200 rounded-md shadow"
         }
-      ></div>
+      >
+        <h1 className="mb-2 text-xl font-bold tracking-tight text-gray-900 select-none">
+          {slip.title}
+        </h1>
+        <p className="text-gray-600">{slip.content}</p>
+      </div>
     </>
   );
 };
