@@ -3,22 +3,33 @@ import { Slip } from "../../types/Slip.type";
 
 type SlipPreviewProps = {
   slip: Slip;
-  active: boolean;
-  onPreviewSlip: (slipId: string) => void;
+  isFocused: boolean;
+  onClick: (slipId: string) => void;
+  onDblClick: (slipId: string) => void;
 };
 
-const SlipCard = ({ slip, active, onPreviewSlip }: SlipPreviewProps) => {
+const SlipCard = ({
+  slip,
+  isFocused,
+  onClick,
+  onDblClick,
+}: SlipPreviewProps) => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const cb = () => {
-      onPreviewSlip(slip.id);
+    const clickCb = () => {
+      onClick(slip.id);
+    };
+    const dblclickCb = () => {
+      onDblClick(slip.id);
     };
 
-    ref?.addEventListener("dblclick", cb);
+    ref?.addEventListener("click", clickCb);
+    ref?.addEventListener("dblclick", dblclickCb);
 
     return () => {
-      ref?.removeEventListener("dblclick", cb);
+      ref?.removeEventListener("click", clickCb);
+      ref?.removeEventListener("dblclick", dblclickCb);
     };
   }, [ref]);
 
@@ -28,8 +39,8 @@ const SlipCard = ({ slip, active, onPreviewSlip }: SlipPreviewProps) => {
     <div
       ref={(elem) => setRef(elem)}
       // style={{ clipPath: "border-box" }}
-      className={`relative flex-grow flex-shrink-0 w-52 h-40 bg-white border border-gray-200 rounded-md shadow ${
-        active ? " border-cyan-500" : ""
+      className={`relative flex-shrink-0 w-52 h-40 bg-white rounded-md shadow cursor-pointer ${
+        isFocused ? " border border-orange-500" : "border border-gray-200"
       }`}
     >
       {showOverlay && (
@@ -37,10 +48,10 @@ const SlipCard = ({ slip, active, onPreviewSlip }: SlipPreviewProps) => {
       )}
 
       <div className="p-2 h-full flex flex-col">
-        <h1 className="mb-2 text-xl font-bold tracking-tight text-gray-900">
+        <h1 className="mb-2 text-xl font-bold tracking-tight text-gray-900 select-none">
           {slip.title}
         </h1>
-        <p className="overflow-y-hidden font-normal text-xs text-gray-600 dark:text-gray-400">
+        <p className="overflow-y-hidden font-normal text-xs text-gray-600 dark:text-gray-400 select-none">
           {slip.content}
         </p>
       </div>
