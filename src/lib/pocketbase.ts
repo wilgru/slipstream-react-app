@@ -1,6 +1,6 @@
 import PocketBase from "pocketbase";
 
-const url = "http://0.0.0.0:8080";
+const url = import.meta.env.POCKETBASE_URL;
 export const pb = new PocketBase(url);
 
 export const pbDevConsoleLog = (text: string) => {
