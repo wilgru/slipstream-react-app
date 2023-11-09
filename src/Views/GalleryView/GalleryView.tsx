@@ -3,6 +3,7 @@ import SlipCard from "../../components/SlipCard/SlipCard";
 import { Slip } from "../../types/Slip.type";
 import SlipPreview from "../../components/SlipPreview/SlipPreview";
 import { pb } from "../../lib/pocketbase";
+import { debounce } from "debounce";
 
 type GalleryViewProps = {
   slips: Slip[];
@@ -33,7 +34,6 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
           setFocusedSlipId(null);
           return null;
         } else {
-          console.log(sortedSlips[1]);
           return sortedSlips.find((slip) => slip.id === selectedSlipId) ?? null;
         }
       });
@@ -49,25 +49,24 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
     setEditMode(false);
   };
 
-  const onChangeSlipTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (openSlip) {
-      const data = {
-        ...openSlip,
-        title: e.target.value,
-      };
+  const onChangeSlipTitle = debounce(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      if (openSlip) {
+        const data = {
+          ...openSlip,
+          title: e.target.value,
+        };
 
-      setOpenSlip(data);
-      pb.collection("slips").update(openSlip.id, data);
-    }
-  };
+        // setOpenSlip(data);
+        pb.collection("slips").update(openSlip.id, data);
+      }
+    },
+    500
+  );
 
   useEffect(() => {
     setSortedSlips(slips.sort());
   }, [slips]);
-
-  useEffect(() => {
-    console.log(sortedSlips[1]);
-  }, [sortedSlips]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
