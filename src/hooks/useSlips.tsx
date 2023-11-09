@@ -34,21 +34,26 @@ export const useSlips = (subscribe: boolean = true) => {
   };
 
   const subscribeToSlips = async (): Promise<void> => {
-    const unsub = await pb
-      .collection("slips")
-      .subscribe("*", ({ action, record }) => {
-        switch (action) {
-          case "create":
-            setSlips((prev) => [...prev, mapSlip(record)]);
-            pbDevConsoleLog("created action listened");
-            break;
+    // const unsub = await pb
+    pb.collection("slips").subscribe("*", ({ action, record }) => {
+      switch (action) {
+        case "create":
+          setSlips((prev) => [...prev, mapSlip(record)]);
+          pbDevConsoleLog("created action triggered");
+          break;
 
-          default:
-            break;
-        }
-      });
+        case "update":
+          setSlips((prev) =>
+            prev.map((slip) => (slip.id === record.id ? mapSlip(record) : slip))
+          );
+          break;
 
-    setUnsubscribeFn(unsub);
+        default:
+          break;
+      }
+    });
+
+    // setUnsubscribeFn(unsub);
     pbDevConsoleLog(
       "subscribed to 'slips' collection successfully. Listening for CRUD actions..."
     );
