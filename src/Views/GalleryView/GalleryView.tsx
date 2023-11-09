@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import SlipCard from "../../components/SlipCard/SlipCard";
 import { Slip } from "../../types/Slip.type";
 import SlipPreview from "../../components/SlipPreview/SlipPreview";
+import { pb } from "../../lib/pocketbase";
+import { debounce } from "debounce";
 
 type GalleryViewProps = {
   slips: Slip[];
@@ -10,8 +12,8 @@ type GalleryViewProps = {
 const GalleryView = ({ slips }: GalleryViewProps) => {
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null);
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
-
-  const sortedSlips = slips.sort();
+  const [editMode, setEditMode] = useState(false);
+  const [sortedSlips, setSortedSlips] = useState<Slip[]>(slips.sort());
 
   const onClickSlip = (selectedSlipId: string) => {
     setFocusedSlipId(selectedSlipId);
@@ -24,20 +26,52 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
     });
   };
 
-  const onDblClickSlip = (selectedSlipId: string) => {
-    setOpenSlip((prev) => {
-      if (prev?.id === selectedSlipId) {
-        setFocusedSlipId(null);
-        return null;
-      } else {
-        return sortedSlips.find((slip) => slip.id === selectedSlipId) ?? null;
-      }
-    });
+  // fixed issue by including in useeffect deps in slips comp, still needs to be a usecallback?
+  const onDblClickSlip = useCallback(
+    (selectedSlipId: string) => {
+      setOpenSlip((prev) => {
+        if (prev?.id === selectedSlipId) {
+          setFocusedSlipId(null);
+          return null;
+        } else {
+          return sortedSlips.find((slip) => slip.id === selectedSlipId) ?? null;
+        }
+      });
+    },
+    [sortedSlips]
+  );
+
+  const onClickSlipTitle = () => {
+    setEditMode(true);
   };
+
+  const onBlurSlipTitle = () => {
+    setEditMode(false);
+  };
+
+  const onChangeSlipTitle = debounce(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      if (openSlip) {
+        const data = {
+          ...openSlip,
+          title: e.target.value,
+        };
+
+        // setOpenSlip(data);
+        pb.collection("slips").update(openSlip.id, data);
+      }
+    },
+    500
+  );
+
+  useEffect(() => {
+    setSortedSlips(slips.sort());
+  }, [slips]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      console.log(e.key);
+      if (editMode) return;
+
       switch (e.key) {
         case "ArrowLeft":
           setFocusedSlipId((prev) => {
@@ -77,6 +111,11 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
           });
           break;
 
+        case "Escape":
+          setOpenSlip(null);
+          setFocusedSlipId(null);
+          break;
+
         case " ":
           setOpenSlip((prev) => {
             return !prev
@@ -97,7 +136,7 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown, true);
     };
-  }, [focusedSlipId]);
+  }, [focusedSlipId, editMode]);
 
   return (
     <div className="flex flex-col h-full p-3 gap-3">
@@ -115,7 +154,15 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
           />
         ))}
       </div>
-      {!!openSlip && <SlipPreview slip={openSlip} />}
+      {!!openSlip && (
+        <SlipPreview
+          slip={openSlip}
+          editMode={editMode}
+          onClickTitle={onClickSlipTitle}
+          onBlurTitle={onBlurSlipTitle}
+          onChangeTitle={onChangeSlipTitle}
+        />
+      )}
     </div>
   );
 };
