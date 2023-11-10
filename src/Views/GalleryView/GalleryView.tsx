@@ -1,9 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { debounce } from "debounce";
+import { pb } from "../../lib/pocketbase";
 import SlipCard from "../../components/SlipCard/SlipCard";
 import { Slip } from "../../types/Slip.type";
 import SlipPreview from "../../components/SlipPreview/SlipPreview";
-import { pb } from "../../lib/pocketbase";
-import { debounce } from "debounce";
+import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
+import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
+import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 
 type GalleryViewProps = {
   slips: Slip[];
@@ -13,33 +16,37 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null);
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
   const [editMode, setEditMode] = useState(false);
-  const [sortedSlips, setSortedSlips] = useState<Slip[]>(slips.sort());
+  const [sortedSlips, setSortedSlips] = useState<Slip[]>([]);
 
-  const onClickSlip = (selectedSlipId: string) => {
-    setFocusedSlipId(selectedSlipId);
-    setOpenSlip((prev) => {
-      if (!!prev) {
-        return sortedSlips.find((slip) => slip.id === selectedSlipId) ?? null;
+  const onClickSlip = (clickedSlipId: string) => {
+    setFocusedSlipId(clickedSlipId);
+
+    setOpenSlip((currentOpenSlip) => {
+      if (!!currentOpenSlip) {
+        return (
+          sortedSlips.find((sortedSlip) => sortedSlip.id === clickedSlipId) ??
+          null
+        );
       } else {
-        return prev;
+        return currentOpenSlip;
       }
     });
   };
 
-  // fixed issue by including in useeffect deps in slips comp, still needs to be a usecallback?
-  const onDblClickSlip = useCallback(
-    (selectedSlipId: string) => {
-      setOpenSlip((prev) => {
-        if (prev?.id === selectedSlipId) {
-          setFocusedSlipId(null);
-          return null;
-        } else {
-          return sortedSlips.find((slip) => slip.id === selectedSlipId) ?? null;
-        }
-      });
-    },
-    [sortedSlips]
-  );
+  const onDblClickSlip = (dblClickedSlipId: string) => {
+    setOpenSlip((currentOpenSlip) => {
+      if (currentOpenSlip?.id === dblClickedSlipId) {
+        setFocusedSlipId(null);
+        return null;
+      } else {
+        return (
+          sortedSlips.find(
+            (sortedSlip) => sortedSlip.id === dblClickedSlipId
+          ) ?? null
+        );
+      }
+    });
+  };
 
   const onClickSlipTitle = () => {
     setEditMode(true);
@@ -57,7 +64,6 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
           title: e.target.value,
         };
 
-        // setOpenSlip(data);
         pb.collection("slips").update(openSlip.id, data);
       }
     },
@@ -74,59 +80,20 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
 
       switch (e.key) {
         case "ArrowLeft":
-          setFocusedSlipId((prev) => {
-            const focusedSlipIndex = sortedSlips.findIndex(
-              (sortedSlip) => sortedSlip.id === prev
-            );
-
-            const newIndex =
-              focusedSlipIndex - 1 < 0 ? 0 : focusedSlipIndex - 1;
-            const newSlip = sortedSlips[newIndex];
-
-            setOpenSlip((prev) => {
-              return !!prev ? newSlip : prev;
-            });
-
-            return newSlip.id;
-          });
+          handleArrowLeftKeyDown(setFocusedSlipId, setOpenSlip, sortedSlips);
           break;
 
         case "ArrowRight":
-          setFocusedSlipId((prev) => {
-            const focusedSlipIndex = sortedSlips.findIndex(
-              (sortedSlip) => sortedSlip.id === prev
-            );
+          handleArrowRightKeyDown(setFocusedSlipId, setOpenSlip, sortedSlips);
+          break;
 
-            const newIndex =
-              focusedSlipIndex + 1 > sortedSlips.length - 1
-                ? sortedSlips.length - 1
-                : focusedSlipIndex + 1;
-            const newSlip = sortedSlips[newIndex];
-
-            setOpenSlip((prev) => {
-              return !!prev ? newSlip : prev;
-            });
-
-            return newSlip.id;
-          });
+        case " ": // Spacebar key
+          handleSpaceBarKeyDown(setOpenSlip, sortedSlips, focusedSlipId);
           break;
 
         case "Escape":
           setOpenSlip(null);
           setFocusedSlipId(null);
-          break;
-
-        case " ":
-          setOpenSlip((prev) => {
-            return !prev
-              ? sortedSlips.find(
-                  (sortedSlip) => sortedSlip.id === focusedSlipId
-                ) ?? null
-              : null;
-          });
-          break;
-
-        default:
           break;
       }
     };
@@ -136,7 +103,7 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown, true);
     };
-  }, [focusedSlipId, editMode]);
+  }, [focusedSlipId, sortedSlips, editMode]);
 
   return (
     <div className="flex flex-col h-full p-3 gap-3">

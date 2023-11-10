@@ -7,7 +7,6 @@ type SlipPreviewProps = {
   onClickTitle?: () => void;
   onBlurTitle?: () => void;
   onChangeTitle?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onEscapeKeyDown?: () => void;
 };
 
 const SlipPreview = ({
@@ -16,11 +15,10 @@ const SlipPreview = ({
   onClickTitle,
   onBlurTitle,
   onChangeTitle,
-  onEscapeKeyDown,
 }: SlipPreviewProps) => {
-  const [title, setTitle] = useState<string | undefined>(undefined); // the textarea doesnt seem to update when the slip title changes otherwise
+  const [title, setTitle] = useState<string | undefined>(undefined);
 
-  const onChangeTitleLocal = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const onChangeTitleInternal = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(e.target.value);
     onChangeTitle && onChangeTitle(e);
   };
@@ -31,9 +29,10 @@ const SlipPreview = ({
 
   useEffect(() => {
     const handleEscapeKeyDown = (e: KeyboardEvent) => {
+      // .blur() only exists on HTMLElement, document.activeElement could potentially be an Element
+      // https://github.com/Microsoft/TypeScript/issues/5901
       if (e.key === "Escape" && document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur(); // .blur() only exists on HTMLElement, document.activeElement could potentially be an Element https://github.com/Microsoft/TypeScript/issues/5901
-        onEscapeKeyDown && onEscapeKeyDown();
+        document.activeElement.blur();
       }
     };
 
@@ -42,7 +41,7 @@ const SlipPreview = ({
     return () => {
       document.removeEventListener("keydown", handleEscapeKeyDown, true);
     };
-  }, [onEscapeKeyDown]);
+  }, []);
 
   return (
     <>
@@ -54,13 +53,17 @@ const SlipPreview = ({
         <textarea
           value={title}
           placeholder="No Title"
-          onChange={onChangeTitleLocal}
+          onChange={onChangeTitleInternal}
           onClick={onClickTitle}
           onBlur={onBlurTitle}
           className="h-7 mb-2 text-xl font-bold tracking-tight text-gray-900 select-none resize-none outline-none"
         />
         <p className="text-gray-600">{slip.content}</p>
-        {editMode && <p className=" text-red-500">EDIT MODE</p>}
+        {
+          editMode && (
+            <p className="text-red-500">EDIT MODE</p>
+          ) /* TODO: remove this element*/
+        }
       </div>
     </>
   );

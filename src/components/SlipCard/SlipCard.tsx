@@ -31,7 +31,7 @@ const SlipCard = ({
       ref?.removeEventListener("click", clickCb);
       ref?.removeEventListener("dblclick", dblclickCb);
     };
-  }, [ref, onDblClick]); // including our callback here fixed its deps not updating https://www.reddit.com/r/reactjs/comments/x638og/dependency_array_of_usecallback_is_not_working/
+  }, [ref, onClick, onDblClick]); // including our callbacks here fixed the 'sortedSlips' state its using internally not being up to date https://www.reddit.com/r/reactjs/comments/x638og/dependency_array_of_usecallback_is_not_working/
 
   const showOverlay = slip.isPinned;
 
