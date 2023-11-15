@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Slip } from "../../types/Slip.type";
+import Quill, { RangeStatic, Sources } from "quill";
 
 type SlipPreviewProps = {
   slip: Slip;
@@ -17,6 +18,7 @@ const SlipPreview = ({
   onChangeTitle,
 }: SlipPreviewProps) => {
   const [title, setTitle] = useState<string | undefined>(undefined);
+  const [content, setContent] = useState<Quill | undefined>(undefined);
 
   const onChangeTitleInternal = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(e.target.value);
@@ -24,8 +26,8 @@ const SlipPreview = ({
   };
 
   useEffect(() => {
-    setTitle(slip.title ?? undefined);
-  }, [slip]);
+    setContent(new Quill("#editor", { debug: "info" }));
+  }, []);
 
   useEffect(() => {
     const handleEscapeKeyDown = (e: KeyboardEvent) => {
@@ -43,6 +45,30 @@ const SlipPreview = ({
     };
   }, []);
 
+  useEffect(() => {
+    const handleSelectionChange = (
+      range: RangeStatic,
+      oldRange: RangeStatic,
+      source: Sources
+    ) => {
+      if (range === null && oldRange !== null) {
+        console.log("blur");
+        onBlurTitle && onBlurTitle();
+      } else if (range !== null && oldRange === null) {
+        console.log("focus");
+        onClickTitle && onClickTitle();
+      }
+    };
+
+    setTitle(slip.title ?? undefined);
+    content?.setText(slip.content ?? "");
+    content?.on("selection-change", handleSelectionChange); // https://github.com/quilljs/quill/issues/1680
+
+    return () => {
+      content?.off("selection-change", handleSelectionChange);
+    };
+  }, [slip, content]);
+
   return (
     <>
       <div
@@ -58,7 +84,7 @@ const SlipPreview = ({
           onBlur={onBlurTitle}
           className="h-7 mb-2 text-xl font-bold tracking-tight text-gray-900 select-none resize-none outline-none"
         />
-        <p className="text-gray-600">{slip.content}</p>
+        <div id="editor"></div>
         {
           editMode && (
             <p className="text-red-500">EDIT MODE</p>
