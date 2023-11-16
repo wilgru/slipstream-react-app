@@ -1,32 +1,52 @@
 import { useEffect, useState } from "react";
 import { Slip } from "../../types/Slip.type";
-import Quill, { RangeStatic, Sources } from "quill";
+import Quill, { RangeStatic } from "quill";
+import Delta from "quill-delta";
 
 type SlipPreviewProps = {
   slip: Slip;
   editMode: boolean;
   onClickTitle?: () => void;
+  onClickContent?: () => void;
   onBlurTitle?: () => void;
-  onChangeTitle?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChangeSlipData?: (slip: Slip) => void;
 };
+
+type ChangedSlipProperty = {
+  [K in keyof Slip]: { key: K; value: Slip[K] };
+}[keyof Slip][];
 
 const SlipPreview = ({
   slip,
   editMode,
   onClickTitle,
+  onClickContent,
   onBlurTitle,
-  onChangeTitle,
+  onChangeSlipData,
 }: SlipPreviewProps) => {
-  const [title, setTitle] = useState<string | undefined>(undefined);
-  const [content, setContent] = useState<Quill | undefined>(undefined);
+  const [editableSlip, setEditableSlip] = useState<Slip>(slip);
+  const [contentEditor, setContentEditor] = useState<Quill | undefined>(
+    undefined
+  );
 
-  const onChangeTitleInternal = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTitle(e.target.value);
-    onChangeTitle && onChangeTitle(e);
+  const onChangeSlipField = (
+    value: string | Delta,
+    changedField: keyof Slip
+  ) => {
+    setEditableSlip((current) => {
+      const newSlipDelta = { ...current, [changedField]: value };
+
+      console.log(newSlipDelta);
+      onChangeSlipData && onChangeSlipData(newSlipDelta);
+
+      return newSlipDelta;
+    });
   };
 
   useEffect(() => {
-    setContent(new Quill("#editor", { debug: "info" }));
+    setContentEditor(
+      new Quill("#editor", { debug: import.meta.env.DEV ? "info" : undefined })
+    );
   }, []);
 
   useEffect(() => {
@@ -48,8 +68,7 @@ const SlipPreview = ({
   useEffect(() => {
     const handleSelectionChange = (
       range: RangeStatic,
-      oldRange: RangeStatic,
-      source: Sources
+      oldRange: RangeStatic
     ) => {
       if (range === null && oldRange !== null) {
         console.log("blur");
@@ -57,17 +76,25 @@ const SlipPreview = ({
       } else if (range !== null && oldRange === null) {
         console.log("focus");
         onClickTitle && onClickTitle();
+        onClickContent && onClickContent();
       }
     };
 
-    setTitle(slip.title ?? undefined);
-    content?.setText(slip.content ?? "");
-    content?.on("selection-change", handleSelectionChange); // https://github.com/quilljs/quill/issues/1680
+    const handleTextChange = () => {
+      const contentDelta = contentEditor?.getContents() ?? "";
+      onChangeSlipField(contentDelta, "content");
+    };
+
+    slip.content && contentEditor?.setContents(slip.content);
+
+    contentEditor?.on("selection-change", handleSelectionChange); // https://github.com/quilljs/quill/issues/1680
+    contentEditor?.on("text-change", handleTextChange);
 
     return () => {
-      content?.off("selection-change", handleSelectionChange);
+      contentEditor?.off("selection-change", handleSelectionChange);
+      contentEditor?.off("text-change", handleTextChange);
     };
-  }, [slip, content]);
+  }, [slip, contentEditor]);
 
   return (
     <>
@@ -77,14 +104,15 @@ const SlipPreview = ({
         }
       >
         <textarea
-          value={title}
+          value={editableSlip.title ?? undefined}
           placeholder="No Title"
-          onChange={onChangeTitleInternal}
+          onChange={(e) => onChangeSlipField(e.target.value, "title")}
           onClick={onClickTitle}
           onBlur={onBlurTitle}
           className="h-7 mb-2 text-xl font-bold tracking-tight text-gray-900 select-none resize-none outline-none"
         />
-        <div id="editor"></div>
+        {/* TODO: there is a particular way to make the quill editor scrollable https://quilljs.com/playground/#autogrow-height */}
+        <div id="editor" className="h-fit"></div>
         {
           editMode && (
             <p className="text-red-500">EDIT MODE</p>
