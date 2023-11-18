@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Slip } from "../../types/Slip.type";
+import Delta from "quill-delta";
 
 type SlipPreviewProps = {
   slip: Slip;
@@ -15,6 +16,15 @@ const SlipCard = ({
   onDblClick,
 }: SlipPreviewProps) => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
+  const [contentString, setContentString] = useState<string | null>();
+
+  useEffect(() => {
+    const contentDelta = slip.content && new Delta(slip.content);
+
+    setContentString(
+      contentDelta ? contentDelta?.reduce((acc, op) => acc + op.insert, "") : ""
+    );
+  }, [slip]);
 
   useEffect(() => {
     const clickCb = () => {
@@ -55,7 +65,7 @@ const SlipCard = ({
           style={{ overflowWrap: "break-word" }}
           className="overflow-y-hidden font-normal text-xs text-gray-600 dark:text-gray-400 select-none"
         >
-          {slip.content}
+          {contentString}
         </p>
       </div>
     </div>

@@ -1,47 +1,61 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { RangeStatic } from "quill";
+import Delta from "quill-delta";
 import { Slip } from "../../types/Slip.type";
+import QuillEditor from "../QuillEditor/QuillEditor";
+import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 
 type SlipPreviewProps = {
   slip: Slip;
   editMode: boolean;
-  onClickTitle?: () => void;
-  onBlurTitle?: () => void;
-  onChangeTitle?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onClickTitleOrContent?: () => void;
+  onBlurTitleOrContent?: () => void;
+  onChangeSlip?: (slip: Slip) => void;
 };
+
+type RelativeSlipField = {
+  [K in keyof Slip]: { [P in K]: Slip[K] };
+}[keyof Slip];
 
 const SlipPreview = ({
   slip,
   editMode,
-  onClickTitle,
-  onBlurTitle,
-  onChangeTitle,
+  onClickTitleOrContent,
+  onBlurTitleOrContent,
+  onChangeSlip,
 }: SlipPreviewProps) => {
-  const [title, setTitle] = useState<string | undefined>(undefined);
+  const [editedSlip, setEditedSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that state updates
+  const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to preview changes
 
-  const onChangeTitleInternal = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTitle(e.target.value);
-    onChangeTitle && onChangeTitle(e);
+  const onChangeSlipInternal = (changedField: RelativeSlipField) => {
+    setEditedSlip((current) => {
+      const newSlipDelta = { ...current, ...changedField };
+
+      onChangeSlip && onChangeSlip(newSlipDelta);
+
+      return newSlipDelta;
+    });
+  };
+
+  const onSelectionChange = (range: RangeStatic, oldRange: RangeStatic) => {
+    if (range === null && oldRange !== null) {
+      onBlurTitleOrContent && onBlurTitleOrContent();
+    } else if (range !== null && oldRange === null) {
+      onClickTitleOrContent && onClickTitleOrContent();
+    }
   };
 
   useEffect(() => {
-    setTitle(slip.title ?? undefined);
-  }, [slip]);
-
-  useEffect(() => {
-    const handleEscapeKeyDown = (e: KeyboardEvent) => {
-      // .blur() only exists on HTMLElement, document.activeElement could potentially be an Element
-      // https://github.com/Microsoft/TypeScript/issues/5901
-      if (e.key === "Escape" && document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-      }
-    };
-
     document.addEventListener("keydown", handleEscapeKeyDown, true);
 
     return () => {
       document.removeEventListener("keydown", handleEscapeKeyDown, true);
     };
   }, []);
+
+  useEffect(() => {
+    setEditedSlip(slip);
+  }, [slip]);
 
   return (
     <>
@@ -51,14 +65,18 @@ const SlipPreview = ({
         }
       >
         <textarea
-          value={title}
+          value={editedSlip.title ?? undefined}
           placeholder="No Title"
-          onChange={onChangeTitleInternal}
-          onClick={onClickTitle}
-          onBlur={onBlurTitle}
+          onChange={(e) => onChangeSlipInternal({ title: e.target.value })}
+          onClick={onClickTitleOrContent}
+          onBlur={onBlurTitleOrContent}
           className="h-7 mb-2 text-xl font-bold tracking-tight text-gray-900 select-none resize-none outline-none"
         />
-        <p className="text-gray-600">{slip.content}</p>
+        <QuillEditor
+          initialValue={initialSlip.content ?? new Delta()}
+          onSelectionChange={onSelectionChange}
+          onTextChange={(delta) => onChangeSlipInternal({ content: delta })}
+        />
         {
           editMode && (
             <p className="text-red-500">EDIT MODE</p>

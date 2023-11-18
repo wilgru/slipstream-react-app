@@ -48,27 +48,20 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
     });
   };
 
-  const onClickSlipTitle = () => {
+  const onClickSlipTitleOrContent = () => {
     setEditMode(true);
   };
 
-  const onBlurSlipTitle = () => {
+  const onBlurSlipTitleOrContent = () => {
     setEditMode(false);
   };
 
-  const onChangeSlipTitle = debounce(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      if (openSlip) {
-        const data = {
-          ...openSlip,
-          title: e.target.value,
-        };
-
-        pb.collection("slips").update(openSlip.id, data);
-      }
-    },
-    500
-  );
+  const onChangeSlip = debounce((newSlipData: Slip) => {
+    //TODO: simplify?
+    if (openSlip) {
+      pb.collection("slips").update(openSlip.id, newSlipData);
+    }
+  }, 500);
 
   useEffect(() => {
     setSortedSlips(slips.sort());
@@ -125,9 +118,9 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
         <SlipPreview
           slip={openSlip}
           editMode={editMode}
-          onClickTitle={onClickSlipTitle}
-          onBlurTitle={onBlurSlipTitle}
-          onChangeTitle={onChangeSlipTitle}
+          onClickTitleOrContent={onClickSlipTitleOrContent}
+          onBlurTitleOrContent={onBlurSlipTitleOrContent}
+          onChangeSlip={onChangeSlip}
         />
       )}
     </div>
