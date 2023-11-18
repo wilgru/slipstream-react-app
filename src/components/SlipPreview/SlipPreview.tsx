@@ -8,10 +8,9 @@ import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 type SlipPreviewProps = {
   slip: Slip;
   editMode: boolean;
-  onClickTitle?: () => void;
-  onClickContent?: () => void;
-  onBlurTitle?: () => void;
-  onChangeSlipData?: (slip: Slip) => void;
+  onClickTitleOrContent?: () => void;
+  onBlurTitleOrContent?: () => void;
+  onChangeSlip?: (slip: Slip) => void;
 };
 
 type RelativeSlipField = {
@@ -21,19 +20,18 @@ type RelativeSlipField = {
 const SlipPreview = ({
   slip,
   editMode,
-  onClickTitle,
-  onClickContent,
-  onBlurTitle,
-  onChangeSlipData,
+  onClickTitleOrContent,
+  onBlurTitleOrContent,
+  onChangeSlip,
 }: SlipPreviewProps) => {
   const [editableSlip, setEditableSlip] = useState<Slip>(slip);
 
-  const onChangeSlipField = (changedField: RelativeSlipField) => {
+  const onChangeSlipInternal = (changedField: RelativeSlipField) => {
     setEditableSlip((current) => {
       const newSlipDelta = { ...current, ...changedField };
 
       console.log(newSlipDelta);
-      onChangeSlipData && onChangeSlipData(newSlipDelta);
+      onChangeSlip && onChangeSlip(newSlipDelta);
 
       return newSlipDelta;
     });
@@ -41,15 +39,10 @@ const SlipPreview = ({
 
   const onSelectionChange = (range: RangeStatic, oldRange: RangeStatic) => {
     if (range === null && oldRange !== null) {
-      onBlurTitle && onBlurTitle();
+      onBlurTitleOrContent && onBlurTitleOrContent();
     } else if (range !== null && oldRange === null) {
-      onClickTitle && onClickTitle();
-      onClickContent && onClickContent();
+      onClickTitleOrContent && onClickTitleOrContent();
     }
-  };
-
-  const onTextChange = (delta: Delta) => {
-    onChangeSlipField({ content: delta });
   };
 
   useEffect(() => {
@@ -74,15 +67,15 @@ const SlipPreview = ({
         <textarea
           value={editableSlip.title ?? undefined}
           placeholder="No Title"
-          onChange={(e) => onChangeSlipField({ title: e.target.value })}
-          onClick={onClickTitle}
-          onBlur={onBlurTitle}
+          onChange={(e) => onChangeSlipInternal({ title: e.target.value })}
+          onClick={onClickTitleOrContent}
+          onBlur={onBlurTitleOrContent}
           className="h-7 mb-2 text-xl font-bold tracking-tight text-gray-900 select-none resize-none outline-none"
         />
         <QuillEditor
           initialValue={editableSlip.content ?? new Delta()}
           onSelectionChange={onSelectionChange}
-          onTextChange={onTextChange}
+          onTextChange={(delta) => onChangeSlipInternal({ content: delta })}
         />
         {
           editMode && (

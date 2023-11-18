@@ -48,15 +48,15 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
     });
   };
 
-  const onClickSlipTitle = () => {
+  const onClickSlipTitleOrContent = () => {
     setEditMode(true);
   };
 
-  const onBlurSlipTitle = () => {
+  const onBlurSlipTitleOrContent = () => {
     setEditMode(false);
   };
 
-  const onChangeSlipData = debounce((newSlipData: Slip) => {
+  const onChangeSlip = debounce((newSlipData: Slip) => {
     //TODO: simplify?
     if (openSlip) {
       pb.collection("slips").update(openSlip.id, newSlipData);
@@ -118,9 +118,9 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
         <SlipPreview
           slip={openSlip}
           editMode={editMode}
-          onClickTitle={onClickSlipTitle}
-          onBlurTitle={onBlurSlipTitle}
-          onChangeSlipData={onChangeSlipData}
+          onClickTitleOrContent={onClickSlipTitleOrContent}
+          onBlurTitleOrContent={onBlurSlipTitleOrContent}
+          onChangeSlip={onChangeSlip}
         />
       )}
     </div>
