@@ -24,10 +24,8 @@ const SlipPreview = ({
   onBlurTitleOrContent,
   onChangeSlip,
 }: SlipPreviewProps) => {
-  const [editedSlip, setEditedSlip] = useState<Slip>(slip);
-  const [initialSlip, setInitialSlip] = useState<Slip>(slip);
-
-  // const initialSlip = useMemo(() => slip, [slip.id]);
+  const [editedSlip, setEditedSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that state updates
+  const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to preview changes
 
   const onChangeSlipInternal = (changedField: RelativeSlipField) => {
     setEditedSlip((current) => {
@@ -55,15 +53,9 @@ const SlipPreview = ({
     };
   }, []);
 
-  // want edited slip to sync with the actual slip
   useEffect(() => {
     setEditedSlip(slip);
   }, [slip]);
-
-  // only when the user selects a new slip to preview set the initial slip
-  useEffect(() => {
-    setInitialSlip(slip);
-  }, [slip.id]);
 
   return (
     <>

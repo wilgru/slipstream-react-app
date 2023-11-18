@@ -22,10 +22,9 @@ const QuillEditor = ({
   };
 
   useEffect(() => {
-    // const debug = import.meta.env.DEV ? "info" : undefined;
-    const debug = undefined;
     const quillContainer = new Quill("#quill-editor", {
-      debug,
+      debug: import.meta.env.DEV ? "info" : undefined,
+      placeholder: "No content",
     });
 
     setQuillEditor(quillContainer);
