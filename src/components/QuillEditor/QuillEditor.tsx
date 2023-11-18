@@ -22,7 +22,8 @@ const QuillEditor = ({
   };
 
   useEffect(() => {
-    const debug = import.meta.env.DEV ? "info" : undefined;
+    // const debug = import.meta.env.DEV ? "info" : undefined;
+    const debug = undefined;
     const quillContainer = new Quill("#quill-editor", {
       debug,
     });
@@ -42,7 +43,7 @@ const QuillEditor = ({
       quillEditor?.off("selection-change", onSelectionChange);
       quillEditor?.off("text-change", onTextChangeInternal);
     };
-  }, [quillEditor]);
+  }, [quillEditor, onTextChangeInternal]);
 
   // TODO: there is a particular way to make the quill editor scrollable https://quilljs.com/playground/#autogrow-height
   return <div id="quill-editor" className="h-fit"></div>;

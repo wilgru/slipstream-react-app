@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { RangeStatic } from "quill";
 import Delta from "quill-delta";
 import { Slip } from "../../types/Slip.type";
@@ -24,13 +24,15 @@ const SlipPreview = ({
   onBlurTitleOrContent,
   onChangeSlip,
 }: SlipPreviewProps) => {
-  const [editableSlip, setEditableSlip] = useState<Slip>(slip);
+  const [editedSlip, setEditedSlip] = useState<Slip>(slip);
+  const [initialSlip, setInitialSlip] = useState<Slip>(slip);
+
+  // const initialSlip = useMemo(() => slip, [slip.id]);
 
   const onChangeSlipInternal = (changedField: RelativeSlipField) => {
-    setEditableSlip((current) => {
+    setEditedSlip((current) => {
       const newSlipDelta = { ...current, ...changedField };
 
-      console.log(newSlipDelta);
       onChangeSlip && onChangeSlip(newSlipDelta);
 
       return newSlipDelta;
@@ -53,9 +55,15 @@ const SlipPreview = ({
     };
   }, []);
 
+  // want edited slip to sync with the actual slip
   useEffect(() => {
-    setEditableSlip(slip);
+    setEditedSlip(slip);
   }, [slip]);
+
+  // only when the user selects a new slip to preview set the initial slip
+  useEffect(() => {
+    setInitialSlip(slip);
+  }, [slip.id]);
 
   return (
     <>
@@ -65,7 +73,7 @@ const SlipPreview = ({
         }
       >
         <textarea
-          value={editableSlip.title ?? undefined}
+          value={editedSlip.title ?? undefined}
           placeholder="No Title"
           onChange={(e) => onChangeSlipInternal({ title: e.target.value })}
           onClick={onClickTitleOrContent}
@@ -73,7 +81,7 @@ const SlipPreview = ({
           className="h-7 mb-2 text-xl font-bold tracking-tight text-gray-900 select-none resize-none outline-none"
         />
         <QuillEditor
-          initialValue={editableSlip.content ?? new Delta()}
+          initialValue={initialSlip.content ?? new Delta()}
           onSelectionChange={onSelectionChange}
           onTextChange={(delta) => onChangeSlipInternal({ content: delta })}
         />
