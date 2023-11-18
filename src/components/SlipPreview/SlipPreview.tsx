@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { RangeStatic } from "quill";
-import { Slip } from "../../types/Slip.type";
 import Delta from "quill-delta";
+import { Slip } from "../../types/Slip.type";
 import QuillEditor from "../QuillEditor/QuillEditor";
+import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 
 type SlipPreviewProps = {
   slip: Slip;
@@ -52,14 +53,6 @@ const SlipPreview = ({
   };
 
   useEffect(() => {
-    const handleEscapeKeyDown = (e: KeyboardEvent) => {
-      // .blur() only exists on HTMLElement, document.activeElement could potentially be an Element
-      // https://github.com/Microsoft/TypeScript/issues/5901
-      if (e.key === "Escape" && document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-      }
-    };
-
     document.addEventListener("keydown", handleEscapeKeyDown, true);
 
     return () => {
