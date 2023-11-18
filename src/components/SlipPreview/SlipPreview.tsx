@@ -12,9 +12,9 @@ type SlipPreviewProps = {
   onChangeSlipData?: (slip: Slip) => void;
 };
 
-type ChangedSlipProperty = {
-  [K in keyof Slip]: { key: K; value: Slip[K] };
-}[keyof Slip][];
+type RelativeSlipField = {
+  [K in keyof Slip]: { [P in K]: Slip[K] };
+}[keyof Slip];
 
 const SlipPreview = ({
   slip,
@@ -29,12 +29,9 @@ const SlipPreview = ({
     undefined
   );
 
-  const onChangeSlipField = (
-    value: string | Delta,
-    changedField: keyof Slip
-  ) => {
+  const onChangeSlipField = (changedField: RelativeSlipField) => {
     setEditableSlip((current) => {
-      const newSlipDelta = { ...current, [changedField]: value };
+      const newSlipDelta = { ...current, ...changedField };
 
       console.log(newSlipDelta);
       onChangeSlipData && onChangeSlipData(newSlipDelta);
@@ -81,8 +78,8 @@ const SlipPreview = ({
     };
 
     const handleTextChange = () => {
-      const contentDelta = contentEditor?.getContents() ?? "";
-      onChangeSlipField(contentDelta, "content");
+      const contentDelta = contentEditor?.getContents() ?? null;
+      onChangeSlipField({ content: contentDelta });
     };
 
     slip.content && contentEditor?.setContents(slip.content);
@@ -106,7 +103,7 @@ const SlipPreview = ({
         <textarea
           value={editableSlip.title ?? undefined}
           placeholder="No Title"
-          onChange={(e) => onChangeSlipField(e.target.value, "title")}
+          onChange={(e) => onChangeSlipField({ title: e.target.value })}
           onClick={onClickTitle}
           onBlur={onBlurTitle}
           className="h-7 mb-2 text-xl font-bold tracking-tight text-gray-900 select-none resize-none outline-none"
