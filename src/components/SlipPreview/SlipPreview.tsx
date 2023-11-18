@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { RangeStatic } from "quill";
 import { Slip } from "../../types/Slip.type";
-import Quill, { RangeStatic } from "quill";
 import Delta from "quill-delta";
+import QuillEditor from "../QuillEditor/QuillEditor";
 
 type SlipPreviewProps = {
   slip: Slip;
@@ -25,9 +26,6 @@ const SlipPreview = ({
   onChangeSlipData,
 }: SlipPreviewProps) => {
   const [editableSlip, setEditableSlip] = useState<Slip>(slip);
-  const [contentEditor, setContentEditor] = useState<Quill | undefined>(
-    undefined
-  );
 
   const onChangeSlipField = (changedField: RelativeSlipField) => {
     setEditableSlip((current) => {
@@ -40,11 +38,18 @@ const SlipPreview = ({
     });
   };
 
-  useEffect(() => {
-    setContentEditor(
-      new Quill("#editor", { debug: import.meta.env.DEV ? "info" : undefined })
-    );
-  }, []);
+  const onSelectionChange = (range: RangeStatic, oldRange: RangeStatic) => {
+    if (range === null && oldRange !== null) {
+      onBlurTitle && onBlurTitle();
+    } else if (range !== null && oldRange === null) {
+      onClickTitle && onClickTitle();
+      onClickContent && onClickContent();
+    }
+  };
+
+  const onTextChange = (delta: Delta) => {
+    onChangeSlipField({ content: delta });
+  };
 
   useEffect(() => {
     const handleEscapeKeyDown = (e: KeyboardEvent) => {
@@ -63,35 +68,8 @@ const SlipPreview = ({
   }, []);
 
   useEffect(() => {
-    const handleSelectionChange = (
-      range: RangeStatic,
-      oldRange: RangeStatic
-    ) => {
-      if (range === null && oldRange !== null) {
-        console.log("blur");
-        onBlurTitle && onBlurTitle();
-      } else if (range !== null && oldRange === null) {
-        console.log("focus");
-        onClickTitle && onClickTitle();
-        onClickContent && onClickContent();
-      }
-    };
-
-    const handleTextChange = () => {
-      const contentDelta = contentEditor?.getContents() ?? null;
-      onChangeSlipField({ content: contentDelta });
-    };
-
-    slip.content && contentEditor?.setContents(slip.content);
-
-    contentEditor?.on("selection-change", handleSelectionChange); // https://github.com/quilljs/quill/issues/1680
-    contentEditor?.on("text-change", handleTextChange);
-
-    return () => {
-      contentEditor?.off("selection-change", handleSelectionChange);
-      contentEditor?.off("text-change", handleTextChange);
-    };
-  }, [slip, contentEditor]);
+    setEditableSlip(slip);
+  }, [slip]);
 
   return (
     <>
@@ -108,8 +86,11 @@ const SlipPreview = ({
           onBlur={onBlurTitle}
           className="h-7 mb-2 text-xl font-bold tracking-tight text-gray-900 select-none resize-none outline-none"
         />
-        {/* TODO: there is a particular way to make the quill editor scrollable https://quilljs.com/playground/#autogrow-height */}
-        <div id="editor" className="h-fit"></div>
+        <QuillEditor
+          initialValue={editableSlip.content ?? new Delta()}
+          onSelectionChange={onSelectionChange}
+          onTextChange={onTextChange}
+        />
         {
           editMode && (
             <p className="text-red-500">EDIT MODE</p>
