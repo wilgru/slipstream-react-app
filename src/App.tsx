@@ -10,7 +10,7 @@ function App() {
   const [slipDraft, setSlipDraft] = useState<Slip | null>(null);
 
   // TODO: maybe add the draft slip to the actual state? then we dont have to remove this one, and then add the new one and do weird handling to set to the open slip
-  // TODO: have draft property (for FE SLip type only) and generate an id for the draft slip FE as well
+  // TODO: have draft property (for FE SLip type only) and generate an id for the draft slip FE as well?
   const onClickNewSlipButton = () => {
     setSlipDraft({
       id: "DRAFT",
