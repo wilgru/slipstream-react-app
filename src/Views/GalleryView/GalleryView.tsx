@@ -7,12 +7,19 @@ import SlipPreview from "../../components/SlipPreview/SlipPreview";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
+import { mapSlip } from "../../hooks/useSlips";
 
 type GalleryViewProps = {
   slips: Slip[];
+  onCreateSlipFromDraft: () => void;
+  initialOpenSlip: Slip | null;
 };
 
-const GalleryView = ({ slips }: GalleryViewProps) => {
+const GalleryView = ({
+  slips,
+  onCreateSlipFromDraft,
+  initialOpenSlip,
+}: GalleryViewProps) => {
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null);
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
   const [editMode, setEditMode] = useState(false);
@@ -56,12 +63,30 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
     setEditMode(false);
   };
 
-  const onChangeSlip = debounce((newSlipData: Slip) => {
+  const onChangeSlip = debounce(async (newSlipData: Slip) => {
     //TODO: simplify?
-    if (openSlip) {
+    if (openSlip && openSlip.id === "DRAFT") {
+      const createdSlip = await pb
+        .collection("slips")
+        .create({ ...newSlipData, id: undefined });
+
+      const mappedSlip = mapSlip(createdSlip);
+
+      // the Quill editor is still active as the preview doesnt dismount and remount during this process, we just pass it a new slip (ie this created slip)
+      setOpenSlip(mappedSlip);
+      setFocusedSlipId(mappedSlip.id);
+      onCreateSlipFromDraft();
+    } else if (openSlip) {
       pb.collection("slips").update(openSlip.id, newSlipData);
     }
   }, 500);
+
+  useEffect(() => {
+    if (initialOpenSlip) {
+      setOpenSlip(initialOpenSlip);
+      setFocusedSlipId(initialOpenSlip.id);
+    }
+  }, [initialOpenSlip]);
 
   useEffect(() => {
     setSortedSlips(slips.sort());

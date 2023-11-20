@@ -3,11 +3,12 @@ import { pb, pbDevConsoleLog } from "../lib/pocketbase";
 import { Slip } from "../types/Slip.type";
 import { useEffect, useState } from "react";
 
-const mapSlip = (slip: RecordModel): Slip => {
+//TODO: move to some more generic location
+export const mapSlip = (slip: RecordModel): Slip => {
   return {
     id: slip.id,
     title: slip.title,
-    content: slip.content,
+    content: slip.content, // TODO: convert to Delta here if null
     isPinned: slip.isPinned,
   };
 };
@@ -38,7 +39,14 @@ export const useSlips = (subscribe: boolean = true) => {
     pb.collection("slips").subscribe("*", ({ action, record }) => {
       switch (action) {
         case "create":
-          setSlips((prev) => [...prev, mapSlip(record)]);
+          // TODO: the reason this is so complicated is because this action gets triggered twice, and 'record' would otherwise be inserted twice. need to stop all the actions from double triggering
+          setSlips((prev) => {
+            if (!prev.some((pre) => pre.id === record.id)) {
+              return [...prev, mapSlip(record)];
+            }
+
+            return prev;
+          });
           pbDevConsoleLog("created action triggered");
           break;
 
