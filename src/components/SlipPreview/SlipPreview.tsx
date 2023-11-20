@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { RangeStatic } from "quill";
-import Delta from "quill-delta";
 import { Slip } from "../../types/Slip.type";
 import QuillEditor from "../QuillEditor/QuillEditor";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
@@ -73,7 +72,7 @@ const SlipPreview = ({
           className="h-7 mb-2 text-xl font-bold tracking-tight text-gray-900 select-none resize-none outline-none"
         />
         <QuillEditor
-          initialValue={initialSlip.content ?? new Delta()}
+          initialValue={initialSlip.content}
           onSelectionChange={onSelectionChange}
           onTextChange={(delta) => onChangeSlipInternal({ content: delta })}
         />
@@ -82,6 +81,7 @@ const SlipPreview = ({
             <p className="text-red-500">EDIT MODE</p>
           ) /* TODO: remove this element*/
         }
+        {slip.id}
       </div>
     </>
   );
