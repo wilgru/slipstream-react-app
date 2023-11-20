@@ -4,7 +4,7 @@ import Quill, { RangeStatic } from "quill";
 import Delta from "quill-delta";
 
 type QuillEditorProps = {
-  initialValue: Delta;
+  initialValue: Delta | null;
   onTextChange: (Delta: Delta) => void;
   onSelectionChange: (range: RangeStatic, oldRange: RangeStatic) => void;
 };
@@ -31,7 +31,7 @@ const QuillEditor = ({
   }, []);
 
   useEffect(() => {
-    quillEditor?.setContents(initialValue);
+    quillEditor?.setContents(initialValue ?? new Delta());
   }, [quillEditor, initialValue]);
 
   useEffect(() => {
@@ -44,7 +44,6 @@ const QuillEditor = ({
     };
   }, [quillEditor, onTextChangeInternal]);
 
-  // TODO: there is a particular way to make the quill editor scrollable https://quilljs.com/playground/#autogrow-height
   return <div id="quill-editor" className="h-fit"></div>;
 };
 
