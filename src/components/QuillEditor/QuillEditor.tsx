@@ -9,6 +9,7 @@ type QuillEditorProps = {
   onSelectionChange: (range: RangeStatic, oldRange: RangeStatic) => void;
 };
 
+// TODO: override quills internal value updating? make this comp more like textarea, pass value and onChange and use onChange to update a state to pass to the value
 const QuillEditor = ({
   initialValue,
   onTextChange,
