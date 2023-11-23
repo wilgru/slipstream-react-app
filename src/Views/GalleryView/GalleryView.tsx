@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { debounce } from "debounce";
-import { pb } from "../../lib/pocketbase";
 import SlipCard from "../../components/SlipCard/SlipCard";
 import { Slip } from "../../types/Slip.type";
 import SlipPreview from "../../components/SlipPreview/SlipPreview";
@@ -10,9 +9,15 @@ import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 
 type GalleryViewProps = {
   slips: Slip[];
+  initialOpenSlipId: string | null;
+  updateSlip: (slipId: string, updateSlipData: Slip) => void;
 };
 
-const GalleryView = ({ slips }: GalleryViewProps) => {
+const GalleryView = ({
+  slips,
+  initialOpenSlipId,
+  updateSlip,
+}: GalleryViewProps) => {
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null);
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
   const [editMode, setEditMode] = useState(false);
@@ -56,13 +61,22 @@ const GalleryView = ({ slips }: GalleryViewProps) => {
     setEditMode(false);
   };
 
-  const onChangeSlip = debounce((newSlipData: Slip) => {
-    //TODO: simplify?
-    if (openSlip) {
-      pb.collection("slips").update(openSlip.id, newSlipData);
-    }
+  const onChangeSlip = debounce(async (newSlipData: Slip) => {
+    openSlip && updateSlip(openSlip.id, newSlipData);
   }, 500);
 
+  useEffect(() => {
+    const foundInitialOpenSlip = slips.find(
+      (slip) => slip.id === initialOpenSlipId
+    );
+
+    if (initialOpenSlipId && foundInitialOpenSlip) {
+      setOpenSlip(foundInitialOpenSlip);
+      setFocusedSlipId(initialOpenSlipId);
+    }
+  }, [initialOpenSlipId]);
+
+  // TODO: handle sort in useSlips, exposes a sort(sortBy, direction) callback
   useEffect(() => {
     setSortedSlips(slips.sort());
   }, [slips]);
