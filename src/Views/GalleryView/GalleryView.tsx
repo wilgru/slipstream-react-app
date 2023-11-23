@@ -1,24 +1,22 @@
 import { useEffect, useState } from "react";
 import { debounce } from "debounce";
-import { pb } from "../../lib/pocketbase";
 import SlipCard from "../../components/SlipCard/SlipCard";
 import { Slip } from "../../types/Slip.type";
 import SlipPreview from "../../components/SlipPreview/SlipPreview";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
-import { mapSlip } from "../../hooks/useSlips";
 
 type GalleryViewProps = {
   slips: Slip[];
-  // onCreateSlipFromDraft: () => void;
-  initialOpenSlip: Slip | null;
+  initialOpenSlipId: string | null;
+  updateSlip: (slipId: string, updateSlipData: Slip) => void;
 };
 
 const GalleryView = ({
   slips,
-  // onCreateSlipFromDraft,
-  initialOpenSlip,
+  initialOpenSlipId,
+  updateSlip,
 }: GalleryViewProps) => {
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null);
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
@@ -64,30 +62,21 @@ const GalleryView = ({
   };
 
   const onChangeSlip = debounce(async (newSlipData: Slip) => {
-    //TODO: simplify?
-    if (openSlip && openSlip.id === "DRAFT") {
-      const createdSlip = await pb
-        .collection("slips")
-        .create({ ...newSlipData, id: undefined });
-
-      const mappedSlip = mapSlip(createdSlip);
-
-      // the Quill editor is still active as the preview doesnt dismount and remount during this process, we just pass it a new slip (ie this created slip)
-      setOpenSlip(mappedSlip);
-      setFocusedSlipId(mappedSlip.id);
-      // onCreateSlipFromDraft();
-    } else if (openSlip) {
-      pb.collection("slips").update(openSlip.id, newSlipData);
-    }
+    openSlip && updateSlip(openSlip.id, newSlipData);
   }, 500);
 
   useEffect(() => {
-    if (initialOpenSlip) {
-      setOpenSlip(initialOpenSlip);
-      setFocusedSlipId(initialOpenSlip.id);
-    }
-  }, [initialOpenSlip]);
+    const foundInitialOpenSlip = slips.find(
+      (slip) => slip.id === initialOpenSlipId
+    );
 
+    if (initialOpenSlipId && foundInitialOpenSlip) {
+      setOpenSlip(foundInitialOpenSlip);
+      setFocusedSlipId(initialOpenSlipId);
+    }
+  }, [initialOpenSlipId]);
+
+  // TODO: handle sort in useSlips, exposes a sort(sortBy, direction) callback
   useEffect(() => {
     setSortedSlips(slips.sort());
   }, [slips]);
