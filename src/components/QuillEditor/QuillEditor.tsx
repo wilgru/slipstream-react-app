@@ -4,7 +4,7 @@ import Quill, { RangeStatic } from "quill";
 import Delta from "quill-delta";
 
 type QuillEditorProps = {
-  initialValue: Delta | null;
+  initialValue: Delta;
   onTextChange: (Delta: Delta) => void;
   onSelectionChange: (range: RangeStatic, oldRange: RangeStatic) => void;
 };
@@ -31,7 +31,7 @@ const QuillEditor = ({
   }, []);
 
   useEffect(() => {
-    quillEditor?.setContents(initialValue ?? new Delta());
+    quillEditor?.setContents(initialValue);
   }, [quillEditor, initialValue]);
 
   useEffect(() => {
