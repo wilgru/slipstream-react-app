@@ -2,13 +2,14 @@ import { RecordModel, UnsubscribeFunc } from "pocketbase";
 import { pb, pbDevConsoleLog } from "../lib/pocketbase";
 import { Slip } from "../types/Slip.type";
 import { useEffect, useState } from "react";
+import Delta from "quill-delta";
 
 //TODO: move to some more generic location
 export const mapSlip = (slip: RecordModel): Slip => {
   return {
     id: slip.id,
     title: slip.title,
-    content: slip.content, // TODO: convert to Delta here if null
+    content: slip.content ?? new Delta(),
     isPinned: slip.isPinned,
   };
 };
@@ -38,14 +39,12 @@ export const useSlips = (subscribe: boolean = true) => {
     // const unsub = await pb
     pb.collection("slips").subscribe("*", ({ action, record }) => {
       switch (action) {
+        // TODO: this action gets triggered twice, need to stop all the actions from double triggering
         case "create":
-          // TODO: the reason this is so complicated is because this action gets triggered twice, and 'record' would otherwise be inserted twice. need to stop all the actions from double triggering
-          setSlips((prev) => {
-            if (!prev.some((pre) => pre.id === record.id)) {
-              return [...prev, mapSlip(record)];
-            }
-
-            return prev;
+          setSlips((currentSlips) => {
+            return currentSlips.map((currentSlip) => {
+              return currentSlip.id === "DRAFT" ? mapSlip(record) : currentSlip;
+            });
           });
           pbDevConsoleLog("created action triggered");
           break;
@@ -74,5 +73,5 @@ export const useSlips = (subscribe: boolean = true) => {
     subscribe && subscribeToSlips();
   }, []);
 
-  return { slips, loading, unsubscribeFn };
+  return { slips, setSlips, loading, unsubscribeFn };
 };

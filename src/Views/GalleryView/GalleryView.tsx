@@ -11,13 +11,13 @@ import { mapSlip } from "../../hooks/useSlips";
 
 type GalleryViewProps = {
   slips: Slip[];
-  onCreateSlipFromDraft: () => void;
+  // onCreateSlipFromDraft: () => void;
   initialOpenSlip: Slip | null;
 };
 
 const GalleryView = ({
   slips,
-  onCreateSlipFromDraft,
+  // onCreateSlipFromDraft,
   initialOpenSlip,
 }: GalleryViewProps) => {
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null);
@@ -75,7 +75,7 @@ const GalleryView = ({
       // the Quill editor is still active as the preview doesnt dismount and remount during this process, we just pass it a new slip (ie this created slip)
       setOpenSlip(mappedSlip);
       setFocusedSlipId(mappedSlip.id);
-      onCreateSlipFromDraft();
+      // onCreateSlipFromDraft();
     } else if (openSlip) {
       pb.collection("slips").update(openSlip.id, newSlipData);
     }
