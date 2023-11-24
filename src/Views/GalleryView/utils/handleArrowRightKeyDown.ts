@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction } from "react";
-import { Slip } from "../../../types/Slip.type";
+import type { Slip } from "../../../types/Slip.type";
+import type { Dispatch, SetStateAction } from "react";
 
 export const handleArrowRightKeyDown = (
   setFocusedSlipId: Dispatch<SetStateAction<string | null>>,
@@ -21,7 +21,7 @@ export const handleArrowRightKeyDown = (
     const nextSlip = sortedSlips[nextSlipsIndex];
 
     setOpenSlip((currentOpenSlip) => {
-      return !!currentOpenSlip ? nextSlip : currentOpenSlip;
+      return currentOpenSlip ? nextSlip : currentOpenSlip;
     });
 
     return nextSlip.id;

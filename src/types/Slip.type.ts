@@ -1,4 +1,4 @@
-import Delta from "quill-delta";
+import type Delta from "quill-delta";
 
 export type Slip = {
   id: string;

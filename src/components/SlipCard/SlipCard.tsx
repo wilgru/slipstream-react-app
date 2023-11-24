@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { Slip } from "../../types/Slip.type";
 import Delta from "quill-delta";
+import { useEffect, useState } from "react";
+import type { Slip } from "../../types/Slip.type";
 
 type SlipPreviewProps = {
   slip: Slip;

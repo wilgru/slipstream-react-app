@@ -1,7 +1,8 @@
 import "./style.css";
-import { useEffect, useState } from "react";
-import Quill, { RangeStatic } from "quill";
+import Quill from "quill";
 import Delta from "quill-delta";
+import { useEffect, useState } from "react";
+import type { RangeStatic } from "quill";
 
 type QuillEditorProps = {
   initialValue: Delta;

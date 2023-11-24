@@ -1,9 +1,9 @@
-import { RecordModel, UnsubscribeFunc } from "pocketbase";
-import { pb, pbDevConsoleLog } from "../lib/pocketbase";
-import { generateId } from "../lib/generateId";
-import { Slip } from "../types/Slip.type";
-import { useEffect, useState } from "react";
 import Delta from "quill-delta";
+import { useEffect, useState } from "react";
+import { generateId } from "../lib/generateId";
+import { pb, pbDevConsoleLog } from "../lib/pocketbase";
+import type { Slip } from "../types/Slip.type";
+import type { RecordModel, UnsubscribeFunc } from "pocketbase";
 
 const mapSlip = (slip: RecordModel): Slip => {
   return {
@@ -18,9 +18,7 @@ const mapSlip = (slip: RecordModel): Slip => {
 export const useSlips = (subscribe: boolean = true) => {
   const [slips, setSlips] = useState<Slip[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [unsubscribeFn, setUnsubscribeFn] = useState<
-    UnsubscribeFunc | undefined
-  >(undefined);
+  const [unsubscribeFn] = useState<UnsubscribeFunc | undefined>(undefined);
 
   const getSlips = async (): Promise<void> => {
     const slipsRes = await pb.collection("slips").getFullList();

@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
 import { debounce } from "debounce";
+import { useEffect, useState } from "react";
 import SlipCard from "../../components/SlipCard/SlipCard";
-import { Slip } from "../../types/Slip.type";
 import SlipPreview from "../../components/SlipPreview/SlipPreview";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
+import type { Slip } from "../../types/Slip.type";
 
 type GalleryViewProps = {
   slips: Slip[];
@@ -27,7 +27,7 @@ const GalleryView = ({
     setFocusedSlipId(clickedSlipId);
 
     setOpenSlip((currentOpenSlip) => {
-      if (!!currentOpenSlip) {
+      if (currentOpenSlip) {
         return (
           sortedSlips.find((sortedSlip) => sortedSlip.id === clickedSlipId) ??
           null
@@ -116,7 +116,7 @@ const GalleryView = ({
     <div className="flex flex-col h-full p-3 gap-3">
       <div
         className={`flex ${
-          !!openSlip ? "overflow-x-auto overflow-y-hidden" : "flex-wrap"
+          openSlip ? "overflow-x-auto overflow-y-hidden" : "flex-wrap"
         } gap-3`}
       >
         {sortedSlips.map((slip) => (

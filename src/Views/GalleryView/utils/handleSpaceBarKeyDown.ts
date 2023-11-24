@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction } from "react";
-import { Slip } from "../../../types/Slip.type";
+import type { Slip } from "../../../types/Slip.type";
+import type { Dispatch, SetStateAction } from "react";
 
 export const handleSpaceBarKeyDown = (
   setOpenSlip: Dispatch<SetStateAction<Slip | null>>,

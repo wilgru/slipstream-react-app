@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { RangeStatic } from "quill";
-import { Slip } from "../../types/Slip.type";
 import QuillEditor from "../QuillEditor/QuillEditor";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
+import type { Slip } from "../../types/Slip.type";
+import type { RangeStatic } from "quill";
 
 type SlipPreviewProps = {
   slip: Slip;
