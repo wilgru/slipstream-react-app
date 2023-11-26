@@ -1,9 +1,9 @@
 import Delta from "quill-delta";
 import { useEffect, useState } from "react";
-import { generateId } from "../lib/generateId";
-import { pb, pbDevConsoleLog } from "../lib/pocketbase";
-import type { Slip } from "../types/Slip.type";
+import { generateId } from "src/lib/pocketbase/utils/generateId";
+import { pb, pbDevConsoleLog } from "src/lib/pocketbase/utils/pocketbaseConfig";
 import type { RecordModel, UnsubscribeFunc } from "pocketbase";
+import type { Slip } from "src/lib/slips/types/Slip.type";
 
 const mapSlip = (slip: RecordModel): Slip => {
   return {

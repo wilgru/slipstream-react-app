@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import QuillEditor from "../QuillEditor/QuillEditor";
+import QuillEditor from "src/lib/shared/components/QuillEditor/QuillEditor";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
-import type { Slip } from "../../types/Slip.type";
 import type { RangeStatic } from "quill";
+import type { Slip } from "src/lib/slips/types/Slip.type";
 
 type SlipPreviewProps = {
   slip: Slip;
@@ -53,6 +53,7 @@ const SlipPreview = ({
   }, []);
 
   useEffect(() => {
+    console.log(slip.title); //TODO: fix title not removing on clicking new slip if a slip was already open
     setEditedSlip(slip);
   }, [slip]);
 

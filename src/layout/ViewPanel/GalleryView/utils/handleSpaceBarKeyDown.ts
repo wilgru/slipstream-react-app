@@ -1,4 +1,4 @@
-import type { Slip } from "../../../types/Slip.type";
+import type { Slip } from "../../../../lib/slips/types/Slip.type";
 import type { Dispatch, SetStateAction } from "react";
 
 export const handleSpaceBarKeyDown = (
