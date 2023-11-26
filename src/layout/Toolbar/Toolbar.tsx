@@ -1,5 +1,5 @@
-import { Button } from "../Button/Button";
-import { Search } from "../Search/Search";
+import { Button } from "src/lib/shared/components/Button/Button";
+import { Search } from "src/lib/shared/components/Search/Search";
 
 type ToolbarProps = {
   onClickNewSlipButton: () => void;

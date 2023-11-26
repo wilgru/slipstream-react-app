@@ -1,8 +1,8 @@
 // import "./App.css";
 import { useState } from "react";
-import GalleryView from "./Views/GalleryView/GalleryView";
-import { Toolbar } from "./components/Toolbar/Toolbar";
-import { useSlips } from "./hooks/useSlips";
+import { Toolbar } from "./layout/Toolbar/Toolbar";
+import GalleryView from "./layout/ViewPanel/GalleryView/GalleryView";
+import { useSlips } from "./lib/slips/hooks/useSlips";
 
 function App() {
   const { slips, createSlip, updateSlip } = useSlips();
