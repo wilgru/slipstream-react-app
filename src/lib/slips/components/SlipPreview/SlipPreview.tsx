@@ -23,11 +23,11 @@ const SlipPreview = ({
   onBlurTitleOrContent,
   onChangeSlip,
 }: SlipPreviewProps) => {
-  const [editedSlip, setEditedSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that state updates
+  const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
   const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to preview changes
 
   const onChangeSlipInternal = (changedField: RelativeSlipField) => {
-    setEditedSlip((current) => {
+    setEditableSlip((current) => {
       const newSlipDelta = { ...current, ...changedField };
 
       onChangeSlip && onChangeSlip(newSlipDelta);
@@ -54,7 +54,7 @@ const SlipPreview = ({
 
   useEffect(() => {
     console.log(slip.title); //TODO: fix title not removing on clicking new slip if a slip was already open
-    setEditedSlip(slip);
+    setEditableSlip(slip);
   }, [slip]);
 
   return (
@@ -65,7 +65,7 @@ const SlipPreview = ({
         }
       >
         <textarea
-          value={editedSlip.title ?? undefined}
+          value={editableSlip.title ?? undefined}
           placeholder="No Title"
           onChange={(e) => onChangeSlipInternal({ title: e.target.value })}
           onClick={onClickTitleOrContent}

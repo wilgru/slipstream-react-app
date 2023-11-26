@@ -1,6 +1,6 @@
 import Delta from "quill-delta";
 import { useEffect, useState } from "react";
-import type { Slip } from "../../types/Slip.type";
+import type { Slip } from "src/lib/slips/types/Slip.type";
 
 type SlipPreviewProps = {
   slip: Slip;

@@ -10,7 +10,7 @@ const mapSlip = (slip: RecordModel): Slip => {
     id: slip.id,
     draft: false,
     title: slip.title,
-    content: slip.content ?? new Delta(),
+    content: slip.content ? new Delta(slip.content) : new Delta(), // TODO: make not nullable in pocketbase
     isPinned: slip.isPinned,
   };
 };
@@ -22,15 +22,7 @@ export const useSlips = (subscribe: boolean = true) => {
 
   const getSlips = async (): Promise<void> => {
     const slipsRes = await pb.collection("slips").getFullList();
-
-    // TODO: use mapper
-    const mappedSlips = slipsRes.map((slip) => ({
-      id: slip.id,
-      draft: false,
-      title: slip.title,
-      content: slip.content,
-      isPinned: slip.isPinned,
-    }));
+    const mappedSlips = slipsRes.map(mapSlip);
 
     setSlips(mappedSlips);
     setLoading(false);
@@ -86,8 +78,10 @@ export const useSlips = (subscribe: boolean = true) => {
           break;
 
         case "update":
-          setSlips((prev) =>
-            prev.map((slip) => (slip.id === record.id ? mapSlip(record) : slip))
+          setSlips((currentSlips) =>
+            currentSlips.map((slip) =>
+              slip.id === record.id ? mapSlip(record) : slip
+            )
           );
           break;
 
