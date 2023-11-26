@@ -1,11 +1,11 @@
 import { debounce } from "debounce";
 import { useEffect, useState } from "react";
-import SlipCard from "../../../lib/slips/components/SlipCard/SlipCard";
-import SlipPreview from "../../../lib/slips/components/SlipPreview/SlipPreview";
+import SlipCard from "src/lib/slips/components/SlipCard/SlipCard";
+import SlipPreview from "src/lib/slips/components/SlipPreview/SlipPreview";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
-import type { Slip } from "../../../lib/slips/types/Slip.type";
+import type { Slip } from "src/lib/slips/types/Slip.type";
 
 type GalleryViewProps = {
   slips: Slip[];
