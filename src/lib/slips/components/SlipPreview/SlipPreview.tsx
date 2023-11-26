@@ -12,7 +12,7 @@ type SlipPreviewProps = {
   onChangeSlip?: (slip: Slip) => void;
 };
 
-type RelativeSlipField = {
+type AnyKeyValueOfSlip = {
   [K in keyof Slip]: { [P in K]: Slip[K] };
 }[keyof Slip];
 
@@ -26,7 +26,7 @@ const SlipPreview = ({
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
   const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to preview changes
 
-  const onChangeSlipInternal = (changedField: RelativeSlipField) => {
+  const onChangeSlipInternal = (changedField: AnyKeyValueOfSlip) => {
     setEditableSlip((current) => {
       const newSlipDelta = { ...current, ...changedField };
 
