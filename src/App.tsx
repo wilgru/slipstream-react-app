@@ -16,7 +16,7 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-stone-100">
       <Toolbar onClickNewSlipButton={onClickNewSlipButton} />
       <GalleryView
         slips={slips}

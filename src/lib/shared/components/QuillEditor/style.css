@@ -5,4 +5,5 @@
 #quill-editor .ql-editor.ql-blank::before {
   left: unset;
   right: unset;
+  color: #78716c; /* stone 500 */
 }

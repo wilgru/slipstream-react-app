@@ -10,7 +10,7 @@ export const Toolbar = ({ onClickNewSlipButton }: ToolbarProps) => {
     <div className="flex flex-row justify-between w-full p-3">
       <div className="rhs flex flex-row gap-3"></div>
       <div className="rhs flex flex-row gap-3">
-        <Button text="+ New Slip" onClick={onClickNewSlipButton} />
+        <Button text="New Slip" onClick={onClickNewSlipButton} />
         <Search />
       </div>
     </div>
