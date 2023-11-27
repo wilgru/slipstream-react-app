@@ -22,7 +22,7 @@ export const Search = () => {
         <input
           type="search"
           id="default-search"
-          className="block w-72 p-1 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
+          className="block w-72 p-1 pl-10 text-sm text-gray-900 border border-gray-300 bg-gray-50"
           placeholder="Search slips, topics..."
           required
         />

@@ -48,8 +48,7 @@ const SlipCard = ({
   return (
     <div
       ref={(elem) => setRef(elem)}
-      style={{ clipPath: "border-box" }}
-      className={`relative flex-shrink-0 w-52 h-40 bg-white rounded-md shadow cursor-pointer ${
+      className={`relative flex-shrink-0 w-52 h-40 bg-white shadow cursor-pointer ${
         isFocused ? " border border-orange-500" : "border border-gray-200"
       }`}
     >
