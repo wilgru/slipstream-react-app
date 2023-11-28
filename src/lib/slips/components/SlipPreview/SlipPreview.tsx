@@ -58,6 +58,7 @@ const SlipPreview = ({
   }, [slip]);
 
   return (
+    // TODO: unnecessary fragment here?
     <>
       <div
         className={
