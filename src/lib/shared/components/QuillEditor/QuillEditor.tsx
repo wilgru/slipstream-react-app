@@ -46,7 +46,12 @@ const QuillEditor = ({
     };
   }, [quillEditor, onTextChangeInternal]);
 
-  return <div id="quill-editor" className="h-fit"></div>;
+  return (
+    <div
+      id="quill-editor"
+      className="h-fit text-stone-700 placeholder-stone-700"
+    ></div>
+  );
 };
 
 export default QuillEditor;

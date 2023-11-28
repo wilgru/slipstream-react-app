@@ -113,7 +113,7 @@ const GalleryView = ({
   }, [focusedSlipId, sortedSlips, editMode]);
 
   return (
-    <div className="flex flex-col h-full p-3 gap-3">
+    <div className="flex flex-col h-full p-3 pb-2 gap-2">
       <div
         className={`flex ${
           openSlip ? "overflow-x-auto overflow-y-hidden" : "flex-wrap"
