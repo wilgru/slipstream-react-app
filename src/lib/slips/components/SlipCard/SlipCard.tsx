@@ -48,7 +48,7 @@ const SlipCard = ({
   return (
     <div
       ref={(elem) => setRef(elem)}
-      className={`relative flex-shrink-0 w-52 h-40 bg-stone-100 shadow-light cursor-pointer ${
+      className={`relative flex-shrink-0 w-52 h-40 mb-1 bg-stone-100 shadow-light cursor-pointer ${
         isFocused ? " border border-orange-500" : "border border-stone-700"
       }`}
     >

@@ -61,7 +61,7 @@ const SlipPreview = ({
     <>
       <div
         className={
-          "flex-grow w-full p-2 bg-stone-100 border border-stone-700 shadow-light"
+          "flex-grow w-full p-2 mb-1 bg-stone-100 border border-stone-700 shadow-light"
         }
       >
         <textarea
