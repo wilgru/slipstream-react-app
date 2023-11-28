@@ -61,7 +61,7 @@ const SlipPreview = ({
     <>
       <div
         className={
-          "flex-grow w-full p-2 bg-stone-100 border border-stone-700 shadow"
+          "flex-grow w-full p-2 bg-stone-100 border border-stone-700 shadow-light"
         }
       >
         <textarea
@@ -70,7 +70,7 @@ const SlipPreview = ({
           onChange={(e) => onChangeSlipInternal({ title: e.target.value })}
           onClick={onClickTitleOrContent}
           onBlur={onBlurTitleOrContent}
-          className="h-7 mb-2 text-xl font-normal font-title tracking-tight bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
+          className="h-10 mb-2 text-4xl font-normal font-title tracking-tight bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
         />
         <QuillEditor
           initialValue={initialSlip.content}
@@ -82,7 +82,6 @@ const SlipPreview = ({
             <p className="text-orange-500">EDIT MODE</p>
           ) /* TODO: remove this element*/
         }
-        {slip.id}
       </div>
     </>
   );
