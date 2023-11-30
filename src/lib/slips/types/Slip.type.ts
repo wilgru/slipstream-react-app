@@ -1,3 +1,4 @@
+import type { Dayjs } from "dayjs";
 import type Delta from "quill-delta";
 
 export type Slip = {
@@ -6,4 +7,5 @@ export type Slip = {
   title: string | null;
   content: Delta;
   isPinned: boolean;
+  created: Dayjs;
 };
