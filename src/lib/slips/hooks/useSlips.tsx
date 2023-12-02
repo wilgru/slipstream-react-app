@@ -1,3 +1,4 @@
+import * as dayjs from "dayjs";
 import Delta from "quill-delta";
 import { useEffect, useState } from "react";
 import { generateId } from "src/lib/pocketbase/utils/generateId";
@@ -12,6 +13,7 @@ const mapSlip = (slip: RecordModel): Slip => {
     title: slip.title,
     content: slip.content ? new Delta(slip.content) : new Delta(), // TODO: make not nullable in pocketbase
     isPinned: slip.isPinned,
+    created: dayjs(slip.created),
   };
 };
 
@@ -29,12 +31,13 @@ export const useSlips = (subscribe: boolean = true) => {
   };
 
   const createSlip = (): string => {
-    const slipDraft = {
+    const slipDraft: Slip = {
       id: generateId(),
       draft: true,
       title: null,
       content: new Delta(),
       isPinned: false,
+      created: dayjs(),
     };
 
     setSlips((current) => [...current, slipDraft]);

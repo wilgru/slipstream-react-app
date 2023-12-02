@@ -56,10 +56,15 @@ const SlipCard = ({
         <div className="absolute w-full h-full bg-gradient-to-t from-stone-300 to-75%"></div>
       )} */}
 
-      <div className="px-2 pt-2 h-full flex flex-col">
-        <h1 className="mb-1 text-xl font-normal font-title tracking-tight text-stone-700 select-none">
+      <div className="flex flex-col px-2 pt-2 h-full">
+        <h1 className="text-xl font-normal font-title tracking-tight text-stone-700 select-none">
           {slip.title}
         </h1>
+
+        <p className="text-stone-500 text-xs mb-1">
+          {slip.created.format("D MMMM YYYY")}
+        </p>
+
         <p
           style={{ overflowWrap: "break-word" }}
           className="overflow-y-hidden font-normal text-xs text-stone-700 select-none"

@@ -1,3 +1,4 @@
+/// <reference types="vite-plugin-svgr/client" />
 // import "./App.css";
 import { useState } from "react";
 import { Toolbar } from "./layout/Toolbar/Toolbar";
