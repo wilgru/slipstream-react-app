@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
+import { Button } from "src/lib/shared/components/Button/Button";
 import QuillEditor from "src/lib/shared/components/QuillEditor/QuillEditor";
+import BinIcon from "src/lib/shared/icons/bin.svg?react";
+import FlagIcon from "src/lib/shared/icons/flag.svg?react";
+import PinIcon from "src/lib/shared/icons/pin.svg?react";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 import type { RangeStatic } from "quill";
 import type { Slip } from "src/lib/slips/types/Slip.type";
@@ -65,18 +69,32 @@ const SlipPreview = ({
           "flex-grow flex flex-col gap-2 w-full p-2 mb-1 bg-stone-100 border border-stone-700 shadow-light"
         }
       >
-        <div className="flex flex-col">
-          <textarea
-            value={editableSlip.title ?? undefined}
-            placeholder="No Title"
-            onChange={(e) => onChangeSlipInternal({ title: e.target.value })}
-            onClick={onClickTitleOrContent}
-            onBlur={onBlurTitleOrContent}
-            className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
-          />
-          <p className="text-stone-500 text-xs">
-            {editableSlip.created.format("ddd D MMMM YYYY, hh:mm a")}
-          </p>
+        <div className="flex flex-row items-start">
+          <div className="flex-grow flex flex-col">
+            <textarea
+              value={editableSlip.title ?? undefined}
+              placeholder="No Title"
+              onChange={(e) => onChangeSlipInternal({ title: e.target.value })}
+              onClick={onClickTitleOrContent}
+              onBlur={onBlurTitleOrContent}
+              className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
+            />
+            <p className="text-stone-500 text-xs">
+              {editableSlip.created.format("ddd D MMMM YYYY, hh:mm a")}
+            </p>
+          </div>
+
+          <div className=" flex flex-row gap-2">
+            <Button type="minimal" onClick={() => {}}>
+              <PinIcon className="h-8 fill-stone-500 hover:fill-red-500" />
+            </Button>
+            <Button type="minimal" onClick={() => {}}>
+              <FlagIcon className="h-8 fill-stone-500 hover:fill-orange-500" />
+            </Button>
+            <Button type="minimal" onClick={() => {}}>
+              <BinIcon className="h-8 fill-stone-500 hover:fill-stone-800" />
+            </Button>
+          </div>
         </div>
 
         <QuillEditor
