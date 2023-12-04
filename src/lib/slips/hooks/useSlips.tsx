@@ -13,6 +13,7 @@ const mapSlip = (slip: RecordModel): Slip => {
     title: slip.title,
     content: slip.content ? new Delta(slip.content) : new Delta(), // TODO: make not nullable in pocketbase
     isPinned: slip.isPinned,
+    isFlagged: slip.isFlagged,
     created: dayjs(slip.created),
   };
 };
@@ -37,6 +38,7 @@ export const useSlips = (subscribe: boolean = true) => {
       title: null,
       content: new Delta(),
       isPinned: false,
+      isFlagged: false,
       created: dayjs(),
     };
 

@@ -1,5 +1,7 @@
 import Delta from "quill-delta";
 import { useEffect, useState } from "react";
+import FlagIcon from "src/lib/shared/icons/flag.svg?react";
+import PinIcon from "src/lib/shared/icons/pin.svg?react";
 import type { Slip } from "src/lib/slips/types/Slip.type";
 
 type SlipPreviewProps = {
@@ -43,8 +45,6 @@ const SlipCard = ({
     };
   }, [ref, onClick, onDblClick]); // including our callbacks here fixed the 'sortedSlips' state its using internally not being up to date https://www.reddit.com/r/reactjs/comments/x638og/dependency_array_of_usecallback_is_not_working/
 
-  // const showOverlay = slip.isPinned;
-
   return (
     <div
       ref={(elem) => setRef(elem)}
@@ -52,9 +52,14 @@ const SlipCard = ({
         isFocused ? " border border-orange-500" : "border border-stone-700"
       }`}
     >
-      {/* {showOverlay && (
-        <div className="absolute w-full h-full bg-gradient-to-t from-stone-300 to-75%"></div>
-      )} */}
+      <div className="absolute flex flex-row justify-end items-end w-full h-full">
+        {slip.isPinned && (
+          <PinIcon className="h-8 fill-red-500 stroke-stone-100" />
+        )}
+        {slip.isFlagged && (
+          <FlagIcon className="h-8 fill-orange-500 stroke-stone-100" />
+        )}
+      </div>
 
       <div className="flex flex-col px-2 pt-2 h-full">
         <h1 className="text-xl font-normal font-title tracking-tight text-stone-700 select-none">

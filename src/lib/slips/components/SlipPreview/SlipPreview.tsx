@@ -85,11 +85,37 @@ const SlipPreview = ({
           </div>
 
           <div className=" flex flex-row gap-2">
-            <Button type="minimal" onClick={() => {}}>
-              <PinIcon className="h-8 fill-stone-500 hover:fill-red-500" />
+            <Button
+              type="minimal"
+              onClick={() =>
+                onChangeSlipInternal({ isPinned: !editableSlip.isPinned })
+              }
+            >
+              <PinIcon
+                className={`h-8 ${
+                  editableSlip.isPinned ? "fill-red-500" : "fill-stone-500"
+                } ${
+                  editableSlip.isPinned
+                    ? "hover:fill-stone-500"
+                    : "hover:fill-red-500"
+                }`}
+              />
             </Button>
-            <Button type="minimal" onClick={() => {}}>
-              <FlagIcon className="h-8 fill-stone-500 hover:fill-orange-500" />
+            <Button
+              type="minimal"
+              onClick={() =>
+                onChangeSlipInternal({ isFlagged: !editableSlip.isFlagged })
+              }
+            >
+              <FlagIcon
+                className={`h-8 ${
+                  editableSlip.isFlagged ? "fill-orange-500" : "fill-stone-500"
+                } ${
+                  editableSlip.isFlagged
+                    ? "hover:fill-stone-500"
+                    : "hover:fill-orange-500"
+                }`}
+              />
             </Button>
             <Button type="minimal" onClick={() => {}}>
               <BinIcon className="h-8 fill-stone-500 hover:fill-stone-800" />
