@@ -8,6 +8,7 @@ export type Slip = {
   content: Delta;
   isPinned: boolean;
   isFlagged: boolean;
-  created: Dayjs;
   deleted: Dayjs | null;
+  created: Dayjs;
+  updated: Dayjs;
 };

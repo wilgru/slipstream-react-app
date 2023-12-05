@@ -14,8 +14,9 @@ const mapSlip = (slip: RecordModel): Slip => {
     content: slip.content ? new Delta(slip.content) : new Delta(), // TODO: make not nullable in pocketbase
     isPinned: slip.isPinned,
     isFlagged: slip.isFlagged,
-    created: dayjs(slip.created),
     deleted: null,
+    created: dayjs(slip.created),
+    updated: dayjs(slip.updated),
   };
 };
 
@@ -42,8 +43,9 @@ export const useSlips = (subscribe: boolean = true) => {
       content: new Delta(),
       isPinned: false,
       isFlagged: false,
-      created: dayjs(),
       deleted: null,
+      created: dayjs(),
+      updated: dayjs(),
     };
 
     setSlips((current) => [...current, slipDraft]);
