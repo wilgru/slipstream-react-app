@@ -34,6 +34,7 @@ const SlipPreview = ({
 }: SlipPreviewProps) => {
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
   const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to preview changes
+  const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
 
   const onChangeSlipInternal = (
     changedField: AnyKeyValueOfSlip,
@@ -79,7 +80,11 @@ const SlipPreview = ({
           "flex-grow flex flex-col gap-2 w-full p-2 mb-1 bg-stone-100 border border-stone-700 shadow-light"
         }
       >
-        <div className="flex flex-row items-start">
+        <div
+          onMouseEnter={() => setUpdatedDateVisible(true)}
+          onMouseLeave={() => setUpdatedDateVisible(false)}
+          className="flex flex-row items-start"
+        >
           <div className="flex-grow flex flex-col">
             <textarea
               value={editableSlip.title ?? undefined}
@@ -89,9 +94,20 @@ const SlipPreview = ({
               onBlur={onBlurTitleOrContent}
               className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
             />
-            <p className="text-stone-500 text-xs">
-              {editableSlip.created.format("ddd D MMMM YYYY, hh:mm a")}
-            </p>
+            <div className="flex flex-row gap-2">
+              <p className="text-stone-500 text-xs">
+                {editableSlip.created.format("ddd D MMMM YYYY, hh:mm a")}
+              </p>
+              <p
+                className={`${
+                  updatedDateVisible ? "visible" : "hidden"
+                } text-stone-500 text-xs italic`}
+              >
+                {"(Last edited " +
+                  editableSlip.updated.format("ddd D MMMM YYYY, hh:mm a") +
+                  ")"}
+              </p>
+            </div>
           </div>
 
           <div className=" flex flex-row gap-2">
