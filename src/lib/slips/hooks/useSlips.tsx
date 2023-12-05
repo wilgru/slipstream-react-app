@@ -15,6 +15,7 @@ const mapSlip = (slip: RecordModel): Slip => {
     isPinned: slip.isPinned,
     isFlagged: slip.isFlagged,
     created: dayjs(slip.created),
+    deleted: null,
   };
 };
 
@@ -24,8 +25,10 @@ export const useSlips = (subscribe: boolean = true) => {
   const [unsubscribeFn] = useState<UnsubscribeFunc | undefined>(undefined);
 
   const getSlips = async (): Promise<void> => {
-    const slipsRes = await pb.collection("slips").getFullList();
-    const mappedSlips = slipsRes.map(mapSlip);
+    const slipsRes = await pb
+      .collection("slips")
+      .getList(undefined, undefined, { filter: "deleted = null" });
+    const mappedSlips = slipsRes.items.map(mapSlip);
 
     setSlips(mappedSlips);
     setLoading(false);
@@ -40,6 +43,7 @@ export const useSlips = (subscribe: boolean = true) => {
       isPinned: false,
       isFlagged: false,
       created: dayjs(),
+      deleted: null,
     };
 
     setSlips((current) => [...current, slipDraft]);
@@ -72,6 +76,8 @@ export const useSlips = (subscribe: boolean = true) => {
       switch (action) {
         // TODO: this action gets triggered twice, need to stop all the actions from double triggering
         case "create":
+          pbDevConsoleLog("created action triggered");
+
           setSlips((currentSlips) => {
             return currentSlips.map((currentSlip) => {
               return currentSlip.id === record.id
@@ -79,15 +85,20 @@ export const useSlips = (subscribe: boolean = true) => {
                 : currentSlip;
             });
           });
-          pbDevConsoleLog("created action triggered");
           break;
 
         case "update":
-          setSlips((currentSlips) =>
-            currentSlips.map((slip) =>
-              slip.id === record.id ? mapSlip(record) : slip
-            )
-          );
+          if (record.deleted) {
+            setSlips((currentSlips) =>
+              currentSlips.filter((slip) => slip.id !== record.id)
+            );
+          } else {
+            setSlips((currentSlips) =>
+              currentSlips.map((slip) =>
+                slip.id === record.id ? mapSlip(record) : slip
+              )
+            );
+          }
           break;
 
         default:
