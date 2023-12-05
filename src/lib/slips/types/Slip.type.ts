@@ -9,4 +9,5 @@ export type Slip = {
   isPinned: boolean;
   isFlagged: boolean;
   created: Dayjs;
+  deleted: Dayjs | null;
 };

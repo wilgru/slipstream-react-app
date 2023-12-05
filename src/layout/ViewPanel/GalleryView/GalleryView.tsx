@@ -63,6 +63,10 @@ const GalleryView = ({
 
   const onChangeSlip = debounce(async (newSlipData: Slip) => {
     openSlip && updateSlip(openSlip.id, newSlipData);
+
+    if (newSlipData.deleted && openSlip?.id === newSlipData.id) {
+      setOpenSlip(null);
+    }
   }, 500);
 
   useEffect(() => {

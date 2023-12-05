@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/lib/shared/components/Button/Button";
 import QuillEditor from "src/lib/shared/components/QuillEditor/QuillEditor";
@@ -13,7 +14,11 @@ type SlipPreviewProps = {
   editMode: boolean;
   onClickTitleOrContent?: () => void;
   onBlurTitleOrContent?: () => void;
-  onChangeSlip?: (slip: Slip) => void;
+  onChangeSlip?: ((slip: Slip) => void) & {
+    clear(): void;
+  } & {
+    flush(): void;
+  };
 };
 
 type AnyKeyValueOfSlip = {
@@ -30,11 +35,16 @@ const SlipPreview = ({
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
   const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to preview changes
 
-  const onChangeSlipInternal = (changedField: AnyKeyValueOfSlip) => {
+  const onChangeSlipInternal = (
+    changedField: AnyKeyValueOfSlip,
+    flush: boolean = false
+  ) => {
     setEditableSlip((current) => {
       const newSlipDelta = { ...current, ...changedField };
 
       onChangeSlip && onChangeSlip(newSlipDelta);
+
+      flush && onChangeSlip?.flush(); // as in trigger debounced function immediately
 
       return newSlipDelta;
     });
@@ -88,7 +98,7 @@ const SlipPreview = ({
             <Button
               type="minimal"
               onClick={() =>
-                onChangeSlipInternal({ isPinned: !editableSlip.isPinned })
+                onChangeSlipInternal({ isPinned: !editableSlip.isPinned }, true)
               }
             >
               <PinIcon
@@ -104,7 +114,10 @@ const SlipPreview = ({
             <Button
               type="minimal"
               onClick={() =>
-                onChangeSlipInternal({ isFlagged: !editableSlip.isFlagged })
+                onChangeSlipInternal(
+                  { isFlagged: !editableSlip.isFlagged },
+                  true
+                )
               }
             >
               <FlagIcon
@@ -117,7 +130,10 @@ const SlipPreview = ({
                 }`}
               />
             </Button>
-            <Button type="minimal" onClick={() => {}}>
+            <Button
+              type="minimal"
+              onClick={() => onChangeSlipInternal({ deleted: dayjs() }, true)}
+            >
               <BinIcon className="h-8 fill-stone-500 hover:fill-stone-800" />
             </Button>
           </div>
