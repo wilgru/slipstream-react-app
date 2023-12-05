@@ -1,7 +1,9 @@
+import dayjs from "dayjs";
 import { debounce } from "debounce";
 import { useEffect, useState } from "react";
 import SlipCard from "src/lib/slips/components/SlipCard/SlipCard";
 import SlipPreview from "src/lib/slips/components/SlipPreview/SlipPreview";
+import { isSlipContentEmpty } from "src/lib/slips/utils/isSlipContentEmpty";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
@@ -79,6 +81,16 @@ const GalleryView = ({
       setFocusedSlipId(initialOpenSlipId);
     }
   }, [initialOpenSlipId]);
+
+  useEffect(() => {
+    if (!openSlip) {
+      slips.forEach((slip) => {
+        if (!slip.title && isSlipContentEmpty(slip.content)) {
+          updateSlip(slip.id, { ...slip, deleted: dayjs() });
+        }
+      });
+    }
+  }, [openSlip, slips]);
 
   // TODO: handle sort in useSlips, exposes a sort(sortBy, direction) callback
   useEffect(() => {
