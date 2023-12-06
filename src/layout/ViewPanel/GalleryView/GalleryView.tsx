@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { debounce } from "debounce";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import SlipCard from "src/lib/slips/components/SlipCard/SlipCard";
 import SlipPreview from "src/lib/slips/components/SlipPreview/SlipPreview";
 import { isSlipContentEmpty } from "src/lib/slips/utils/isSlipContentEmpty";
@@ -24,6 +24,15 @@ const GalleryView = ({
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [sortedSlips, setSortedSlips] = useState<Slip[]>([]);
+
+  // TODO: move ftn to useSlips or utils maybe?
+  const clearEmptySlips = useCallback(() => {
+    slips.forEach((slip) => {
+      if (!slip.title && isSlipContentEmpty(slip.content)) {
+        updateSlip(slip.id, { ...slip, deleted: dayjs() });
+      }
+    });
+  }, [openSlip, slips]);
 
   const onClickSlip = (clickedSlipId: string) => {
     setFocusedSlipId(clickedSlipId);
@@ -82,16 +91,6 @@ const GalleryView = ({
     }
   }, [initialOpenSlipId]);
 
-  useEffect(() => {
-    if (!openSlip) {
-      slips.forEach((slip) => {
-        if (!slip.title && isSlipContentEmpty(slip.content)) {
-          updateSlip(slip.id, { ...slip, deleted: dayjs() });
-        }
-      });
-    }
-  }, [openSlip, slips]);
-
   // TODO: handle sort in useSlips, exposes a sort(sortBy, direction) callback
   useEffect(() => {
     setSortedSlips(slips.sort());
@@ -117,6 +116,7 @@ const GalleryView = ({
         case "Escape":
           setOpenSlip(null);
           setFocusedSlipId(null);
+          clearEmptySlips();
           break;
       }
     };

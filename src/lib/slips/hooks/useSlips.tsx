@@ -36,20 +36,32 @@ export const useSlips = (subscribe: boolean = true) => {
   };
 
   const createSlip = (): string => {
-    const slipDraft: Slip = {
-      id: generateId(),
-      draft: true,
-      title: null,
-      content: new Delta(),
-      isPinned: false,
-      isFlagged: false,
-      deleted: null,
-      created: dayjs(),
-      updated: dayjs(),
-    };
+    let slipId = generateId();
 
-    setSlips((current) => [...current, slipDraft]);
-    return slipDraft.id;
+    setSlips((currentSlips) => {
+      const existingDraftSlip = currentSlips.find((slip) => slip.draft);
+
+      if (existingDraftSlip) {
+        slipId = existingDraftSlip.id;
+        return currentSlips;
+      }
+
+      const slipDraft: Slip = {
+        id: slipId,
+        draft: true,
+        title: null,
+        content: new Delta(),
+        isPinned: false,
+        isFlagged: false,
+        deleted: null,
+        created: dayjs(),
+        updated: dayjs(),
+      };
+
+      return [...currentSlips, slipDraft];
+    });
+
+    return slipId;
   };
 
   const updateSlip = async (
@@ -61,8 +73,16 @@ export const useSlips = (subscribe: boolean = true) => {
     if (slipToUpdate) {
       // if slip is a draft then its not actually in the db, so persist it
       if (slipToUpdate.draft) {
-        await pb.collection("slips").create(updateSlipData);
+        // TODO move all delete related stuff to a softDeleteSlip method, that actually just does this update BTS
+        if (updateSlipData.deleted) {
+          // instead of delete from db, again because its not in the db just remove it from the slips array state
+          setSlips((currentSlips) =>
+            currentSlips.filter((slip) => !slip.draft)
+          );
+          return;
+        }
 
+        await pb.collection("slips").create(updateSlipData);
         return;
       }
 
