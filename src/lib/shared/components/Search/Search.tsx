@@ -1,7 +1,7 @@
 export const Search = () => {
   return (
     <form>
-      <div className="relative">
+      <div className="relative z-0">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <svg
             className="w-4 h-4 text-stone-700"
