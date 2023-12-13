@@ -28,8 +28,7 @@ export const Button = ({
       className={
         buttonWidth +
         " " +
-        buttonSize +
-        " " +
+        (styleType === "block" && buttonSize + " ") +
         buttonStyle +
         " text-stone-100 font-medium text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
       }
