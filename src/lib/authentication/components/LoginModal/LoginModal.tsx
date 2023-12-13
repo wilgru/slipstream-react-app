@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useAuthentication } from "src/lib/authentication/hooks/useAuthentication";
+import { Button } from "src/lib/shared/components/Button/Button";
 
 type FormData = {
   email: string;
@@ -13,8 +14,7 @@ const LoginModal = (): JSX.Element => {
     password: "",
   });
 
-  //TODO: { name: string; value: string } }
-  const onChange = (e: FormEvent) => {
+  const onChange = (e: { target: { name: string; value: string } }) => {
     const name = e.target.name;
     const value = e.target.value;
 
@@ -30,7 +30,7 @@ const LoginModal = (): JSX.Element => {
   return (
     <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen bg-stone-100">
       {!!logInError && (
-        <div className="p-6 border border-red-500 text-red-500 max-w-sm w-full">
+        <div className="p-6 border bg-red-100 border-red-500 text-red-500 max-w-sm w-full">
           Incorrect email or password.
         </div>
       )}
@@ -81,13 +81,14 @@ const LoginModal = (): JSX.Element => {
           </div>
 
           <div>
-            <button // TODO: use button component
+            <Button
               disabled={logInLoading}
               type="submit"
-              className="flex w-full justify-center bg-stone-700 p-2 text-sm font-semibold leading-6 text-stone-100 hover:bg-stone-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+              width="full"
+              size="large"
             >
               {logInLoading ? "Loading..." : "Log in"}
-            </button>
+            </Button>
           </div>
         </form>
 
