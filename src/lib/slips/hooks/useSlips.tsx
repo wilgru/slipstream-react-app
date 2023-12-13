@@ -1,6 +1,7 @@
 import * as dayjs from "dayjs";
 import Delta from "quill-delta";
 import { useEffect, useState } from "react";
+import { useAuthentication } from "src/lib/authentication/hooks/useAuthentication";
 import { generateId } from "src/lib/pocketbase/utils/generateId";
 import { pb, pbDevConsoleLog } from "src/lib/pocketbase/utils/pocketbaseConfig";
 import type { RecordModel, UnsubscribeFunc } from "pocketbase";
@@ -21,6 +22,7 @@ const mapSlip = (slip: RecordModel): Slip => {
 };
 
 export const useSlips = (subscribe: boolean = true) => {
+  const { currentUser } = useAuthentication();
   const [slips, setSlips] = useState<Slip[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [unsubscribeFn] = useState<UnsubscribeFunc | undefined>(undefined);
@@ -137,9 +139,9 @@ export const useSlips = (subscribe: boolean = true) => {
   useEffect(() => {
     // may need to define our callbacks within the useEffect?
     //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
-    getSlips();
+    currentUser && getSlips();
     subscribe && subscribeToSlips();
-  }, []);
+  }, [currentUser]);
 
   return { slips, createSlip, updateSlip, loading, unsubscribeFn };
 };

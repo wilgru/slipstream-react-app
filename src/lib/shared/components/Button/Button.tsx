@@ -1,20 +1,38 @@
 type ButtonProps = {
   children: string | JSX.Element;
-  type?: "block" | "minimal";
-  onClick: () => void;
+  type?: "button" | "submit";
+  styleType?: "block" | "minimal";
+  size?: "medium" | "large";
+  width?: "fit" | "full";
+  disabled?: boolean;
+  onClick?: () => void;
 };
 
-export const Button = ({ children, type = "block", onClick }: ButtonProps) => {
+export const Button = ({
+  children,
+  type = "button",
+  styleType = "block",
+  size = "medium",
+  width = "fit",
+  disabled = false,
+  onClick,
+}: ButtonProps) => {
   const buttonStyle =
-    type === "block" ? "bg-stone-700 hover:bg-stone-800 px-4 py-1" : "";
+    styleType === "block" ? "bg-stone-700 hover:bg-stone-800 px-4 py-1" : "";
+  const buttonWidth = width === "full" ? "w-full text-center" : "";
+  const buttonSize = size === "medium" ? "px-4 py-1" : "px-6 py-2";
 
   return (
     <button
-      type="button"
+      type={type}
       className={
+        buttonWidth +
+        " " +
+        (styleType === "block" && buttonSize + " ") +
         buttonStyle +
-        " text-stone-100 focus:ring-4 focus:ring-orange-500 font-medium text-sm"
+        " text-stone-100 font-medium text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
       }
+      disabled={disabled}
       onClick={onClick}
     >
       {children}
