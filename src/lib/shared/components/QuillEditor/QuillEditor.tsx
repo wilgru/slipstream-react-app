@@ -49,7 +49,7 @@ const QuillEditor = ({
   return (
     <div
       id="quill-editor"
-      className="h-fit text-stone-700 placeholder-stone-700"
+      className="h-fit text-stone-700 placeholder-stone-500"
     ></div>
   );
 };

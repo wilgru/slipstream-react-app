@@ -51,7 +51,7 @@ const LoginModal = (): JSX.Element => {
                 autoComplete="email"
                 onChange={onChange}
                 required
-                className="block w-full p-2 bg-stone-100 text-stone-700 border border-stone-700 placeholder:text-stone-300 focus:border-orange-500 sm:text-sm sm:leading-6"
+                className="block w-full p-2 bg-stone-100 text-stone-700 border border-stone-700 placeholder:text-stone-500 focus:border-orange-500 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -75,7 +75,7 @@ const LoginModal = (): JSX.Element => {
                 autoComplete="current-password"
                 onChange={onChange}
                 required
-                className="block w-full p-2 bg-stone-100 text-stone-700 border border-stone-700 placeholder:text-stone-300 focus:border-orange-500 sm:text-sm sm:leading-6"
+                className="block w-full p-2 bg-stone-100 text-stone-700 border border-stone-700 placeholder:text-stone-500 focus:border-orange-500 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
