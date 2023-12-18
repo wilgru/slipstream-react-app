@@ -1,7 +1,7 @@
 import Delta from "quill-delta";
 import { useEffect, useState } from "react";
-import FlagIcon from "src/lib/shared/icons/flag.svg?react";
-import PinIcon from "src/lib/shared/icons/pin.svg?react";
+import FlagIcon from "src/common/icons/flag.svg?react";
+import PinIcon from "src/common/icons/pin.svg?react";
 import type { Slip } from "src/slips/types/Slip.type";
 
 type SlipPreviewProps = {
