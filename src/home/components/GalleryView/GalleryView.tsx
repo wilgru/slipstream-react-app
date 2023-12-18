@@ -1,13 +1,13 @@
 import dayjs from "dayjs";
 import { debounce } from "debounce";
 import { useCallback, useEffect, useState } from "react";
-import SlipCard from "src/lib/slips/components/SlipCard/SlipCard";
-import SlipPreview from "src/lib/slips/components/SlipPreview/SlipPreview";
-import { isSlipContentEmpty } from "src/lib/slips/utils/isSlipContentEmpty";
+import SlipCard from "src/slips/components/SlipCard/SlipCard";
+import SlipPreview from "src/slips/components/SlipPreview/SlipPreview";
+import { isSlipContentEmpty } from "src/slips/utils/isSlipContentEmpty";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
-import type { Slip } from "src/lib/slips/types/Slip.type";
+import type { Slip } from "src/slips/types/Slip.type";
 
 type GalleryViewProps = {
   slips: Slip[];

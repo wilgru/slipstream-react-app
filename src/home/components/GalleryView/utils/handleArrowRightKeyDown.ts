@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
-import type { Slip } from "src/lib/slips/types/Slip.type";
+import type { Slip } from "src/slips/types/Slip.type";
 
 export const handleArrowRightKeyDown = (
   setFocusedSlipId: Dispatch<SetStateAction<string | null>>,

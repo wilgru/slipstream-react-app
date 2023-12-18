@@ -2,8 +2,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LoginPage from "./lib/authentication/components/LoginPage/LoginPage.tsx";
-import HomePage from "./lib/home/pages/homePage.tsx";
+import LoginPage from "./authentication/components/LoginPage/LoginPage.tsx";
+import HomePage from "./home/pages/homePage.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([

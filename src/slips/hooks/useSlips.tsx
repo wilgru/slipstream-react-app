@@ -1,11 +1,11 @@
 import * as dayjs from "dayjs";
 import Delta from "quill-delta";
 import { useEffect, useState } from "react";
-import { useAuthentication } from "src/lib/authentication/hooks/useAuthentication";
-import { generateId } from "src/lib/pocketbase/utils/generateId";
-import { pb, pbDevConsoleLog } from "src/lib/pocketbase/utils/pocketbaseConfig";
+import { useAuthentication } from "src/authentication/hooks/useAuthentication";
+import { generateId } from "src/pocketbase/utils/generateId";
+import { pb, pbDevConsoleLog } from "src/pocketbase/utils/pocketbaseConfig";
 import type { RecordModel, UnsubscribeFunc } from "pocketbase";
-import type { Slip } from "src/lib/slips/types/Slip.type";
+import type { Slip } from "src/slips/types/Slip.type";
 
 const mapSlip = (slip: RecordModel): Slip => {
   return {

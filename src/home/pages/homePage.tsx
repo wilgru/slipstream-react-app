@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthentication } from "src/lib/authentication/hooks/useAuthentication";
-import GalleryView from "src/lib/home/components/GalleryView/GalleryView";
-import { Toolbar } from "src/lib/home/components/Toolbar/Toolbar";
-import { useSlips } from "src/lib/slips/hooks/useSlips";
+import { useAuthentication } from "src/authentication/hooks/useAuthentication";
+import GalleryView from "src/home/components/GalleryView/GalleryView";
+import { Toolbar } from "src/home/components/Toolbar/Toolbar";
+import { useSlips } from "src/slips/hooks/useSlips";
 
 function HomePage() {
   const { currentUser } = useAuthentication();

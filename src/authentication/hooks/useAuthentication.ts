@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { pb } from "src/lib/pocketbase/utils/pocketbaseConfig";
+import { pb } from "src/pocketbase/utils/pocketbaseConfig";
 import type { AuthModel } from "pocketbase";
-import type { User } from "src/lib/authentication/types/User.type";
+import type { User } from "src/authentication/types/User.type";
 
 const mapUser = (authStoreModel: NonNullable<AuthModel>): User => {
   return {

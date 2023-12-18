@@ -1,7 +1,7 @@
 import { useState, type FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthentication } from "src/lib/authentication/hooks/useAuthentication";
-import { Button } from "src/lib/shared/components/Button/Button";
+import { useAuthentication } from "src/authentication/hooks/useAuthentication";
+import { Button } from "src/shared/components/Button/Button";
 
 type FormData = {
   email: string;
