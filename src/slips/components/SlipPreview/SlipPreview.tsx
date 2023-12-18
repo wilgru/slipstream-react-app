@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import QuillEditor from "src/common/components/QuillEditor/QuillEditor";
-import BinIcon from "src/common/icons/bin.svg?react";
 import FlagIcon from "src/common/icons/flag.svg?react";
 import PinIcon from "src/common/icons/pin.svg?react";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
@@ -148,10 +147,9 @@ const SlipPreview = ({
             </Button>
             <Button
               styleType="icon"
+              icon="bin"
               onClick={() => onChangeSlipInternal({ deleted: dayjs() }, true)}
-            >
-              <BinIcon className="h-8 fill-stone-500 hover:fill-stone-800" />
-            </Button>
+            ></Button>
           </div>
         </div>
 
