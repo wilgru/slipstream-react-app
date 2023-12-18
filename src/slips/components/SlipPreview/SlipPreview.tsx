@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
-import { Button } from "src/shared/components/Button/Button";
-import QuillEditor from "src/shared/components/QuillEditor/QuillEditor";
+import { Button } from "src/common/components/Button/Button";
+import QuillEditor from "src/common/components/QuillEditor/QuillEditor";
 import BinIcon from "src/lib/shared/icons/bin.svg?react";
 import FlagIcon from "src/lib/shared/icons/flag.svg?react";
 import PinIcon from "src/lib/shared/icons/pin.svg?react";

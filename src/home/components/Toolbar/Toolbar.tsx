@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
-import { Button } from "src/shared/components/Button/Button";
-import { Search } from "src/shared/components/Search/Search";
+import { Button } from "src/common/components/Button/Button";
+import { Search } from "src/common/components/Search/Search";
 
 type ToolbarProps = {
   onClickNewSlipButton: () => void;
