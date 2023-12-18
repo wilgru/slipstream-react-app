@@ -26,9 +26,11 @@ const LoginPage = (): JSX.Element => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     console.log(formData);
-    await login(formData.email, formData.password);
 
-    navigate("/");
+    // redirect on successful login
+    login(formData.email, formData.password).then(() => {
+      navigate("/");
+    });
   };
 
   useEffect(() => {
@@ -69,11 +71,7 @@ const LoginPage = (): JSX.Element => {
               <label className="text-sm font-medium leading-6 text-stone-700">
                 Password
               </label>
-              <div className="text-sm">
-                <a href="#" className="text-orange-500 hover:text-orange-700">
-                  Forgot password?
-                </a>
-              </div>
+              <Button styleType="link">Forgot password?</Button>
             </div>
             <div>
               <input
@@ -101,13 +99,8 @@ const LoginPage = (): JSX.Element => {
         </form>
 
         <p className="text-center text-sm text-stone-700">
-          New to SlipBox?
-          <a
-            href="#"
-            className="ml-1 leading-6 text-orange-500 hover:text-orange-700"
-          >
-            Create an account
-          </a>
+          New to SlipBox?&nbsp;
+          <Button styleType="link">Create an account</Button>
         </p>
       </div>
     </div>

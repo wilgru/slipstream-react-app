@@ -112,7 +112,7 @@ const SlipPreview = ({
 
           <div className=" flex flex-row gap-2">
             <Button
-              styleType="minimal"
+              styleType="icon"
               onClick={() =>
                 onChangeSlipInternal({ isPinned: !editableSlip.isPinned }, true)
               }
@@ -128,7 +128,7 @@ const SlipPreview = ({
               />
             </Button>
             <Button
-              styleType="minimal"
+              styleType="icon"
               onClick={() =>
                 onChangeSlipInternal(
                   { isFlagged: !editableSlip.isFlagged },
@@ -147,7 +147,7 @@ const SlipPreview = ({
               />
             </Button>
             <Button
-              styleType="minimal"
+              styleType="icon"
               onClick={() => onChangeSlipInternal({ deleted: dayjs() }, true)}
             >
               <BinIcon className="h-8 fill-stone-500 hover:fill-stone-800" />

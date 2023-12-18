@@ -1,37 +1,57 @@
 type ButtonProps = {
   children: string | JSX.Element;
   type?: "button" | "submit";
-  styleType?: "block" | "minimal";
+  styleType?: "block" | "block-outline" | "link" | "icon";
   size?: "medium" | "large";
   width?: "fit" | "full";
   disabled?: boolean;
   onClick?: () => void;
 };
 
+enum ButtonStyleType {
+  "block" = "bg-stone-700 text-stone-100 font-medium hover:bg-stone-800 px-4 py-1",
+  "block-outline" = "bg-stone-100 text-stone-700 font-medium border border-stone-700 hover:bg-stone-800 hover:text-stone-100 px-4 py-1",
+  "link" = "text-orange-500 hover:text-orange-700",
+  "icon" = "",
+}
+
+enum ButtonSize {
+  "medium" = "px-4 py-1",
+  "large" = "px-6 py-2",
+}
+
+enum ButtonWidth {
+  "full" = "w-full text-center",
+  "fit" = "",
+}
+
 export const Button = ({
   children,
   type = "button",
   styleType = "block",
-  size = "medium",
   width = "fit",
+  size = "medium",
   disabled = false,
   onClick,
 }: ButtonProps) => {
-  const buttonStyle =
-    styleType === "block" ? "bg-stone-700 hover:bg-stone-800 px-4 py-1" : "";
-  const buttonWidth = width === "full" ? "w-full text-center" : "";
-  const buttonSize = size === "medium" ? "px-4 py-1" : "px-6 py-2";
+  const buttonBaseStyle =
+    "text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
+  const buttonStyleType = ButtonStyleType[styleType];
+  const buttonWidth = ButtonWidth[width];
+  const buttonSize =
+    styleType === "icon" || styleType === "link" ? "" : ButtonSize[size];
+
+  const buttonStyles = [
+    buttonBaseStyle,
+    buttonStyleType,
+    buttonWidth,
+    buttonSize,
+  ].join(" ");
 
   return (
     <button
       type={type}
-      className={
-        buttonWidth +
-        " " +
-        (styleType === "block" && buttonSize + " ") +
-        buttonStyle +
-        " text-stone-100 font-medium text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
-      }
+      className={buttonStyles}
       disabled={disabled}
       onClick={onClick}
     >
