@@ -1,12 +1,11 @@
-/// <reference types="vite-plugin-svgr/client" />
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthentication } from "./lib/authentication/hooks/useAuthentication";
-import GalleryView from "./lib/home/components/GalleryView/GalleryView";
-import { Toolbar } from "./lib/home/components/Toolbar/Toolbar";
-import { useSlips } from "./lib/slips/hooks/useSlips";
+import { useAuthentication } from "src/lib/authentication/hooks/useAuthentication";
+import GalleryView from "src/lib/home/components/GalleryView/GalleryView";
+import { Toolbar } from "src/lib/home/components/Toolbar/Toolbar";
+import { useSlips } from "src/lib/slips/hooks/useSlips";
 
-function App() {
+function HomePage() {
   const { currentUser } = useAuthentication();
   const navigate = useNavigate();
   const { slips, createSlip, updateSlip } = useSlips();
@@ -35,4 +34,4 @@ function App() {
   );
 }
 
-export default App;
+export default HomePage;
