@@ -1,13 +1,14 @@
 /// <reference types="vite-plugin-svgr/client" />
-import { useState } from "react";
-import { Toolbar } from "./layout/Toolbar/Toolbar";
-import GalleryView from "./layout/ViewPanel/GalleryView/GalleryView";
-import { LoginModal } from "./lib/authentication/components/LoginModal/LoginModal";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuthentication } from "./lib/authentication/hooks/useAuthentication";
+import GalleryView from "./lib/home/components/GalleryView/GalleryView";
+import { Toolbar } from "./lib/home/components/Toolbar/Toolbar";
 import { useSlips } from "./lib/slips/hooks/useSlips";
 
 function App() {
   const { currentUser } = useAuthentication();
+  const navigate = useNavigate();
   const { slips, createSlip, updateSlip } = useSlips();
   const [initialOpenSlipId, setInitialOpenSlipId] = useState<string | null>(
     null
@@ -18,21 +19,19 @@ function App() {
     setInitialOpenSlipId(createdSlipId);
   };
 
+  useEffect(() => {
+    !currentUser && navigate("/login");
+  }, []);
+
   return (
-    <>
-      {currentUser ? (
-        <div className="flex flex-col h-screen bg-stone-100">
-          <Toolbar onClickNewSlipButton={onClickNewSlipButton} />
-          <GalleryView
-            slips={slips}
-            initialOpenSlipId={initialOpenSlipId}
-            updateSlip={updateSlip}
-          ></GalleryView>
-        </div>
-      ) : (
-        <LoginModal />
-      )}
-    </>
+    <div className="flex flex-col h-screen bg-stone-100">
+      <Toolbar onClickNewSlipButton={onClickNewSlipButton} />
+      <GalleryView
+        slips={slips}
+        initialOpenSlipId={initialOpenSlipId}
+        updateSlip={updateSlip}
+      ></GalleryView>
+    </div>
   );
 }
 
