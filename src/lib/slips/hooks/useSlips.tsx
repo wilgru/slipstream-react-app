@@ -84,7 +84,9 @@ export const useSlips = (subscribe: boolean = true) => {
           return;
         }
 
-        await pb.collection("slips").create(updateSlipData);
+        await pb
+          .collection("slips")
+          .create({ ...updateSlipData, user: currentUser?.id });
         return;
       }
 
