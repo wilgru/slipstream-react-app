@@ -6,7 +6,7 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import LoginPage from "./authentication/components/LoginPage/LoginPage.tsx";
+import LoginPage from "./authentication/pages/LoginPage/LoginPage.tsx";
 import HomePage from "./home/pages/homePage.tsx";
 import "./index.css";
 
