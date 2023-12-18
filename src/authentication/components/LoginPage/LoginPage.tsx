@@ -1,14 +1,16 @@
-import { useState, type FormEvent } from "react";
-import { useAuthentication } from "src/lib/authentication/hooks/useAuthentication";
-import { Button } from "src/lib/shared/components/Button/Button";
+import { useState, type FormEvent, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthentication } from "src/authentication/hooks/useAuthentication";
+import { Button } from "src/common/components/Button/Button";
 
 type FormData = {
   email: string;
   password: string;
 };
 
-const LoginModal = (): JSX.Element => {
-  const { login, logInLoading, logInError } = useAuthentication();
+const LoginPage = (): JSX.Element => {
+  const { currentUser, login, logInLoading, logInError } = useAuthentication();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
@@ -25,7 +27,13 @@ const LoginModal = (): JSX.Element => {
     e.preventDefault();
     console.log(formData);
     await login(formData.email, formData.password);
+
+    navigate("/");
   };
+
+  useEffect(() => {
+    currentUser && navigate("/");
+  }, []);
 
   return (
     <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen bg-stone-100">
@@ -106,4 +114,4 @@ const LoginModal = (): JSX.Element => {
   );
 };
 
-export { LoginModal };
+export default LoginPage;

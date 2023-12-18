@@ -1,13 +1,13 @@
 import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
-import { Button } from "src/lib/shared/components/Button/Button";
-import QuillEditor from "src/lib/shared/components/QuillEditor/QuillEditor";
-import BinIcon from "src/lib/shared/icons/bin.svg?react";
-import FlagIcon from "src/lib/shared/icons/flag.svg?react";
-import PinIcon from "src/lib/shared/icons/pin.svg?react";
+import { Button } from "src/common/components/Button/Button";
+import QuillEditor from "src/common/components/QuillEditor/QuillEditor";
+import BinIcon from "src/common/icons/bin.svg?react";
+import FlagIcon from "src/common/icons/flag.svg?react";
+import PinIcon from "src/common/icons/pin.svg?react";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 import type { RangeStatic } from "quill";
-import type { Slip } from "src/lib/slips/types/Slip.type";
+import type { Slip } from "src/slips/types/Slip.type";
 
 type SlipPreviewProps = {
   slip: Slip;
