@@ -1,5 +1,9 @@
+import { getIcon } from "src/common/utils/getIcon";
+
 type ButtonProps = {
-  children: string | JSX.Element;
+  children?: string | JSX.Element;
+  icon?: string;
+  iconHoverColour?: string;
   type?: "button" | "submit";
   styleType?: "block" | "block-outline" | "link" | "icon";
   size?: "medium" | "large";
@@ -25,8 +29,25 @@ enum ButtonWidth {
   "fit" = "",
 }
 
+enum ButtonIconColour {
+  "block" = "stone-100",
+  "block-outline" = "stone-700",
+  "link" = "orange-500",
+  "icon" = "stone-500",
+}
+
+enum ButtonIconHoverColour {
+  "block" = "stone-100",
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
+  "block-outline" = "stone-100",
+  "link" = "orange-700",
+  "icon" = "",
+}
+
 export const Button = ({
   children,
+  icon,
+  iconHoverColour = "stone-800",
   type = "button",
   styleType = "block",
   width = "fit",
@@ -48,6 +69,14 @@ export const Button = ({
     buttonSize,
   ].join(" ");
 
+  const buttonIcon = icon
+    ? getIcon(
+        icon,
+        ButtonIconColour[styleType],
+        ButtonIconHoverColour[styleType] || iconHoverColour
+      )
+    : undefined;
+
   return (
     <button
       type={type}
@@ -55,6 +84,7 @@ export const Button = ({
       disabled={disabled}
       onClick={onClick}
     >
+      {buttonIcon}
       {children}
     </button>
   );
