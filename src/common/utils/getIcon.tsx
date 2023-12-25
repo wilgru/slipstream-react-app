@@ -7,6 +7,7 @@ export const getIcon = (
   colour: string = "stone-500",
   hoverColour?: string
 ): JSX.Element | undefined => {
+  // TODO: Tailwind wont recognize these classes since they're calculated at runtime, so have to include the possible styles explicitly in the safelist in tailwind.config.js otherwise the styles will get purged in the build process
   const iconStyle = `h-8 fill-${colour} ${
     hoverColour ? `hover:fill-${hoverColour}` : ""
   }`;

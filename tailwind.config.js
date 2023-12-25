@@ -13,4 +13,13 @@ export default {
     extend: {},
   },
   plugins: [],
+  safelist: [
+    "fill-stone-500",
+    "fill-orange-500",
+    "fill-red-500",
+    "hover:fill-stone-500",
+    "hover:fill-stone-800",
+    "hover:fill-orange-500",
+    "hover:fill-red-500",
+  ],
 };
