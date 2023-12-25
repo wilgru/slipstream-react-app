@@ -2,8 +2,7 @@ import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import QuillEditor from "src/common/components/QuillEditor/QuillEditor";
-import FlagIcon from "src/common/icons/flag.svg?react";
-import PinIcon from "src/common/icons/pin.svg?react";
+import { Toggle } from "src/common/components/Toggle/Toggle";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 import type { RangeStatic } from "quill";
 import type { Slip } from "src/slips/types/Slip.type";
@@ -110,41 +109,27 @@ const SlipPreview = ({
           </div>
 
           <div className=" flex flex-row gap-2">
-            <Button
+            <Toggle
               styleType="icon"
+              icon="pin"
+              iconToggledOnColour="red-500"
+              isToggled={editableSlip.isPinned}
               onClick={() =>
                 onChangeSlipInternal({ isPinned: !editableSlip.isPinned }, true)
               }
-            >
-              <PinIcon
-                className={`h-8 ${
-                  editableSlip.isPinned ? "fill-red-500" : "fill-stone-500"
-                } ${
-                  editableSlip.isPinned
-                    ? "hover:fill-stone-500"
-                    : "hover:fill-red-500"
-                }`}
-              />
-            </Button>
-            <Button
+            />
+            <Toggle
               styleType="icon"
+              icon="flag"
+              iconToggledOnColour="orange-500"
+              isToggled={editableSlip.isFlagged}
               onClick={() =>
                 onChangeSlipInternal(
                   { isFlagged: !editableSlip.isFlagged },
                   true
                 )
               }
-            >
-              <FlagIcon
-                className={`h-8 ${
-                  editableSlip.isFlagged ? "fill-orange-500" : "fill-stone-500"
-                } ${
-                  editableSlip.isFlagged
-                    ? "hover:fill-stone-500"
-                    : "hover:fill-orange-500"
-                }`}
-              />
-            </Button>
+            />
             <Button
               styleType="icon"
               icon="bin"
