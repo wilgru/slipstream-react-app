@@ -13,8 +13,8 @@ type ButtonProps = {
 };
 
 enum ButtonStyleType {
-  "block" = "bg-stone-700 text-stone-100 font-medium hover:bg-stone-800 px-4 py-1",
-  "block-outline" = "bg-stone-100 text-stone-700 font-medium border border-stone-700 hover:bg-stone-800 hover:text-stone-100 px-4 py-1",
+  "block" = "bg-stone-700 text-stone-100 font-medium hover:bg-stone-800",
+  "block-outline" = "bg-stone-100 text-stone-700 font-medium border border-stone-700 hover:bg-stone-800 hover:text-stone-100",
   "link" = "text-orange-500 hover:text-orange-700",
   "icon" = "",
 }
@@ -47,7 +47,7 @@ enum ButtonIconHoverColour {
 export const Button = ({
   children,
   icon,
-  iconHoverColour = "stone-800",
+  iconHoverColour = "stone-800", // TODO make required only if is icon style type
   type = "button",
   styleType = "block",
   width = "fit",
