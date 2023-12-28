@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import QuillEditor from "src/common/components/QuillEditor/QuillEditor";
 import { Toggle } from "src/common/components/Toggle/Toggle";
+import { TopicPill } from "src/topics/components/TopicPill/TopicPill";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 import type { RangeStatic } from "quill";
 import type { Slip } from "src/slips/types/Slip.type";
@@ -38,8 +39,8 @@ const SlipPreview = ({
     changedField: AnyKeyValueOfSlip,
     flush: boolean = false
   ) => {
-    setEditableSlip((current) => {
-      const newSlipDelta = { ...current, ...changedField };
+    setEditableSlip((currentEditableSlip) => {
+      const newSlipDelta = { ...currentEditableSlip, ...changedField };
 
       onChangeSlip && onChangeSlip(newSlipDelta);
 
@@ -136,6 +137,12 @@ const SlipPreview = ({
               onClick={() => onChangeSlipInternal({ deleted: dayjs() }, true)}
             ></Button>
           </div>
+        </div>
+
+        <div className="flex flex-row gap-2">
+          {editableSlip.topics.map((topic) => {
+            return <TopicPill name={topic.name} />;
+          })}
         </div>
 
         <QuillEditor
