@@ -124,7 +124,6 @@ export const useSlips = (subscribe: boolean = true) => {
             break;
 
           case "update":
-            console.log(record);
             if (record.deleted) {
               setSlips((currentSlips) =>
                 currentSlips.filter((slip) => slip.id !== record.id)
