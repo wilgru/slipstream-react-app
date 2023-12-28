@@ -15,6 +15,7 @@ const mapSlip = (slip: RecordModel): Slip => {
     content: slip.content ? new Delta(slip.content) : new Delta(), // TODO: make not nullable in pocketbase
     isPinned: slip.isPinned,
     isFlagged: slip.isFlagged,
+    topics: slip?.expand?.topics ?? [],
     deleted: null,
     created: dayjs(slip.created),
     updated: dayjs(slip.updated),
@@ -30,7 +31,10 @@ export const useSlips = (subscribe: boolean = true) => {
   const getSlips = async (): Promise<void> => {
     const slipsRes = await pb
       .collection("slips")
-      .getList(undefined, undefined, { filter: "deleted = null" });
+      .getList(undefined, undefined, {
+        filter: "deleted = null",
+        expand: "topics",
+      });
     const mappedSlips = slipsRes.items.map(mapSlip);
 
     setSlips(mappedSlips);
@@ -55,6 +59,7 @@ export const useSlips = (subscribe: boolean = true) => {
         content: new Delta(),
         isPinned: false,
         isFlagged: false,
+        topics: [],
         deleted: null,
         created: dayjs(),
         updated: dayjs(),
@@ -90,7 +95,10 @@ export const useSlips = (subscribe: boolean = true) => {
         return;
       }
 
-      await pb.collection("slips").update(slipId, updateSlipData);
+      const mappedTopics = updateSlipData.topics.map((topic) => topic.id);
+      await pb
+        .collection("slips")
+        .update(slipId, { ...updateSlipData, topics: mappedTopics });
     }
 
     return;
@@ -98,39 +106,46 @@ export const useSlips = (subscribe: boolean = true) => {
 
   const subscribeToSlips = async (): Promise<void> => {
     // const unsub = await pb
-    pb.collection("slips").subscribe("*", ({ action, record }) => {
-      switch (action) {
-        // TODO: this action gets triggered twice, need to stop all the actions from double triggering
-        case "create":
-          pbDevConsoleLog("created action triggered");
+    pb.collection("slips").subscribe(
+      "*",
+      ({ action, record }) => {
+        switch (action) {
+          // TODO: this action gets triggered twice, need to stop all the actions from double triggering
+          case "create":
+            pbDevConsoleLog("created action triggered");
 
-          setSlips((currentSlips) => {
-            return currentSlips.map((currentSlip) => {
-              return currentSlip.id === record.id
-                ? mapSlip(record)
-                : currentSlip;
+            setSlips((currentSlips) => {
+              return currentSlips.map((currentSlip) => {
+                return currentSlip.id === record.id
+                  ? mapSlip(record)
+                  : currentSlip;
+              });
             });
-          });
-          break;
+            break;
 
-        case "update":
-          if (record.deleted) {
-            setSlips((currentSlips) =>
-              currentSlips.filter((slip) => slip.id !== record.id)
-            );
-          } else {
-            setSlips((currentSlips) =>
-              currentSlips.map((slip) =>
-                slip.id === record.id ? mapSlip(record) : slip
-              )
-            );
-          }
-          break;
+          case "update":
+            console.log(record);
+            if (record.deleted) {
+              setSlips((currentSlips) =>
+                currentSlips.filter((slip) => slip.id !== record.id)
+              );
+            } else {
+              setSlips((currentSlips) => {
+                const a = currentSlips.map((slip) =>
+                  slip.id === record.id ? mapSlip(record) : slip
+                );
 
-        default:
-          break;
-      }
-    });
+                return a;
+              });
+            }
+            break;
+
+          default:
+            break;
+        }
+      },
+      { expand: "topics" }
+    );
 
     // setUnsubscribeFn(unsub);
     pbDevConsoleLog(
