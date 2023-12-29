@@ -25,7 +25,6 @@ const LoginPage = (): JSX.Element => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(formData);
 
     // redirect on successful login
     login(formData.email, formData.password).then(() => {
