@@ -32,7 +32,8 @@ function HomePage() {
   const { currentUser } = useAuthentication();
   const navigate = useNavigate();
   const { slips, createSlip, updateSlip } = useSlips();
-  const { topics } = useTopics();
+  const { topics, createTopic } = useTopics();
+
   const [showSidebar, setShowSidebar] = useState(false);
   const [initialOpenSlipId, setInitialOpenSlipId] = useState<string | null>(
     null
@@ -68,6 +69,8 @@ function HomePage() {
           slips={slips}
           initialOpenSlipId={initialOpenSlipId}
           updateSlip={updateSlip}
+          topics={topics}
+          createTopic={createTopic}
         ></GalleryView>
       </div>
     </div>

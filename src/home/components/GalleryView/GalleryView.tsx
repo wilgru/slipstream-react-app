@@ -8,17 +8,22 @@ import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 import type { Slip } from "src/slips/types/Slip.type";
+import type { Topic } from "src/topics/types/Topic.type";
 
 type GalleryViewProps = {
   slips: Slip[];
   initialOpenSlipId: string | null;
   updateSlip: (slipId: string, updateSlipData: Slip) => void;
+  topics: Topic[];
+  createTopic: (topic: string) => Promise<Topic>;
 };
 
 const GalleryView = ({
   slips,
   initialOpenSlipId,
   updateSlip,
+  topics,
+  createTopic,
 }: GalleryViewProps) => {
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null);
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
@@ -153,6 +158,8 @@ const GalleryView = ({
           onClickEditableField={onClickEditableField}
           onBlurEditableField={onBlurSlipEditableField}
           onChangeSlip={onChangeSlip}
+          topics={topics}
+          createTopic={createTopic}
         />
       )}
     </div>
