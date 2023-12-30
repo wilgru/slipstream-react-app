@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import debounce from "debounce";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
@@ -36,12 +35,13 @@ const SlipPreview = ({
   onBlurEditableField,
   onChangeSlip,
 }: SlipPreviewProps) => {
-  const { topics } = useTopics();
+  const { topics, createTopic } = useTopics();
 
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
-  const [addTopic, setAddTopic] = useState<string | undefined>(undefined);
-  const [showAddTopicPopover, setShowAddTopicPopover] = useState<Topic[]>([]);
+  const [topicToAdd, setTopicToAdd] = useState<string | undefined>(undefined);
+  const [addTopicAutocompleteOptions, setAddTopicAutocompleteOptions] =
+    useState<Topic[]>([]);
 
   const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to preview changes
 
@@ -68,30 +68,30 @@ const SlipPreview = ({
     }
   };
 
-  const onChangeAddTopic = debounce(async (addTopic: string) => {
-    setAddTopic(addTopic);
+  const onChangeAddTopic = async (topicToAdd: string) => {
+    setTopicToAdd(topicToAdd);
 
     let newThing = [];
 
     const a = topics.filter((topic) =>
-      cleanStringCompare(topic.name, addTopic, "like")
+      cleanStringCompare(topic.name, topicToAdd, "like")
     );
 
     newThing = a;
 
     const exactTopicFound = topics.find((topic) =>
-      cleanStringCompare(topic.name, addTopic)
+      cleanStringCompare(topic.name, topicToAdd)
     );
 
     if (!exactTopicFound) {
-      newThing.push({ name: `Create '${addTopic}'`, id: "GRR" });
+      newThing.push({ name: `Create '${topicToAdd}'`, id: "GRR" });
     }
 
-    setShowAddTopicPopover(newThing);
-  }, 0);
+    setAddTopicAutocompleteOptions(newThing);
+  };
 
   const onSubmitAddTopic = (selectedTopic: { name: string; id: string }) => {
-    setAddTopic("");
+    setTopicToAdd("");
 
     if (editableSlip.topics.some((topic) => topic.id === selectedTopic.id)) {
       return;
@@ -111,7 +111,8 @@ const SlipPreview = ({
             e.preventDefault();
 
             const existingTopic = topics.find(
-              (topic) => addTopic && cleanStringCompare(topic.name, addTopic)
+              (topic) =>
+                topicToAdd && cleanStringCompare(topic.name, topicToAdd)
             );
 
             existingTopic && onSubmitAddTopic(existingTopic);
@@ -120,7 +121,7 @@ const SlipPreview = ({
 
         case "Escape":
           handleEscapeKeyDown();
-          setAddTopic("");
+          setTopicToAdd("");
           break;
       }
     };
@@ -130,7 +131,7 @@ const SlipPreview = ({
     return () => {
       document.removeEventListener("keydown", handleKeyDown, true);
     };
-  }, [addTopic, topics]);
+  }, [topicToAdd, topics]);
 
   useEffect(() => {
     console.log(slip.title); //TODO: fix title not removing on clicking new slip if a slip was already open
@@ -207,15 +208,15 @@ const SlipPreview = ({
         })}
 
         <DropdownMenu
-          options={showAddTopicPopover}
-          visible={!!addTopic && !!showAddTopicPopover.length}
+          options={addTopicAutocompleteOptions}
+          visible={!!topicToAdd && !!addTopicAutocompleteOptions.length}
           onClick={(selectedTopic) => {
             onSubmitAddTopic(selectedTopic);
           }}
         >
           <div className="flex justify-center h-full">
             <textarea
-              value={addTopic ?? ""}
+              value={topicToAdd ?? ""}
               placeholder="Add topic..."
               onClick={onClickEditableField}
               onBlur={onBlurEditableField}
@@ -226,25 +227,6 @@ const SlipPreview = ({
             </textarea>
           </div>
         </DropdownMenu>
-
-        {/* <div className="relative flex justify-center">
-          <textarea
-            value={addTopic ?? undefined}
-            placeholder="Add topic..."
-            onChange={(e) => onChangeAddTopic(e.target.value)}
-            onBlur={() => setShowAddTopicPopover([])}
-            className="text-xs h-4 my-auto overflow-y-hidden bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
-          >
-            add topic...
-          </textarea>
-          {showAddTopicPopover.length && (
-            <div className="absolute z-10 left-0 top-6 text-xs p-2 bg-stone-100 border border-stone-700">
-              {showAddTopicPopover.map((topic) => (
-                <Button>{topic.name}</Button>
-              ))}
-            </div>
-          )}
-        </div> */}
       </div>
 
       <QuillEditor
