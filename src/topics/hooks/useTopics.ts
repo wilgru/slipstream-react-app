@@ -38,9 +38,11 @@ export const useTopics = () => {
 
     const mappedNewTopic = mapTopic(newTopic);
 
-    setTopics((currentTopics) => {
-      return [...currentTopics, mappedNewTopic];
-    });
+    // setTopics((currentTopics) => {
+    //   return [...currentTopics, mappedNewTopic];
+    // });
+
+    getTopics();
 
     return mappedNewTopic;
   };
@@ -51,5 +53,5 @@ export const useTopics = () => {
     currentUser && getTopics();
   }, [currentUser]);
 
-  return { topics, createTopic, loading, unsubscribeFn };
+  return { topics, getTopics, createTopic, loading, unsubscribeFn };
 };
