@@ -1,4 +1,4 @@
-export const cleanStringCompare = (
+export const CompareCleanStrings = (
   string1: string,
   string2: string,
   type: "exact" | "like" = "exact"
