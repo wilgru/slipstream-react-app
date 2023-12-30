@@ -68,7 +68,7 @@ const SlipPreview = ({
     }
   };
 
-  const onChangeAddTopic = async (topicToAdd: string) => {
+  const onChangeTopicToAdd = async (topicToAdd: string) => {
     setTopicToAdd(topicToAdd);
 
     let newThing = [];
@@ -84,21 +84,32 @@ const SlipPreview = ({
     );
 
     if (!exactTopicFound) {
-      newThing.push({ name: `Create '${topicToAdd}'`, id: "GRR" });
+      newThing.push({ name: `Create '${topicToAdd}'`, id: "CREATE_NEW" });
     }
 
     setAddTopicAutocompleteOptions(newThing);
   };
 
-  const onSubmitAddTopic = (selectedTopic: { name: string; id: string }) => {
-    setTopicToAdd("");
-
+  const onSubmitAddTopic = async (selectedTopic: {
+    name: string;
+    id: string;
+  }) => {
     if (editableSlip.topics.some((topic) => topic.id === selectedTopic.id)) {
+      setTopicToAdd(undefined);
       return;
     }
 
     if (topics.find((topic) => topic.id === selectedTopic.id)) {
       onChangeSlipInternal({ topics: [...editableSlip.topics, selectedTopic] });
+      setTopicToAdd(undefined);
+      return;
+    }
+
+    if (topicToAdd) {
+      const newTopic = await createTopic(topicToAdd);
+      onChangeSlipInternal({ topics: [...editableSlip.topics, newTopic] });
+      setTopicToAdd(undefined);
+      return;
     }
   };
 
@@ -121,7 +132,7 @@ const SlipPreview = ({
 
         case "Escape":
           handleEscapeKeyDown();
-          setTopicToAdd("");
+          setTopicToAdd(undefined);
           break;
       }
     };
@@ -220,7 +231,7 @@ const SlipPreview = ({
               placeholder="Add topic..."
               onClick={onClickEditableField}
               onBlur={onBlurEditableField}
-              onChange={(e) => onChangeAddTopic(e.target.value)}
+              onChange={(e) => onChangeTopicToAdd(e.target.value)}
               className="text-xs h-4 my-auto overflow-y-hidden bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
             >
               add topic...
