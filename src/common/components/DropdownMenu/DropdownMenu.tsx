@@ -1,10 +1,10 @@
-type DropdownMenuItem = { name: string; id: string };
+export type DropdownMenuOption = { name: string; value: string; id: string };
 
 type DropdownMenuProps = {
   children: JSX.Element;
-  options: DropdownMenuItem[];
+  options: DropdownMenuOption[];
   visible: boolean;
-  onClick: (selectedOption: DropdownMenuItem) => void;
+  onClick: (selectedOption: DropdownMenuOption) => void;
 };
 
 export const DropdownMenu = ({
