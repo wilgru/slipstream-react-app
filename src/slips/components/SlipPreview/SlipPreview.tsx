@@ -153,7 +153,6 @@ const SlipPreview = ({
       </div>
 
       <SlipPreviewTopicsBar
-        editMode={!editMode}
         editableSlip={editableSlip}
         topics={topics}
         createTopic={createTopic}

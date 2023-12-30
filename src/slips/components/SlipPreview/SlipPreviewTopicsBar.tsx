@@ -11,7 +11,6 @@ import type { Slip } from "src/slips/types/Slip.type";
 import type { Topic } from "src/topics/types/Topic.type";
 
 type SlipPreviewTopicsBarProps = {
-  editMode: boolean;
   editableSlip: Slip;
   topics: Topic[];
   onClickAddTopic: () => void;
@@ -26,7 +25,6 @@ type SlipPreviewTopicsBarProps = {
 export const CREATE_TOPIC_ID = "CREATE_TOPIC";
 
 export const SlipPreviewTopicsBar = ({
-  editMode,
   editableSlip,
   topics,
   onClickAddTopic,
@@ -34,24 +32,19 @@ export const SlipPreviewTopicsBar = ({
   onChangeSlipInternal,
   createTopic,
 }: SlipPreviewTopicsBarProps) => {
-  const [topicToAdd, setTopicToAdd] = useState<string | undefined>(undefined);
+  const [addTopicInput, setAddTopicInput] = useState<string | undefined>(
+    undefined
+  );
   const [addTopicAutocompleteOptions, setAddTopicAutocompleteOptions] =
     useState<DropdownMenuOption[]>([]);
 
-  useEffect(() => {
-    if (!editMode) {
-      setTopicToAdd(undefined);
-      setAddTopicAutocompleteOptions([]);
-    }
-  }, [editMode]);
-
-  const onChangeTopicToAdd = async (topicToAdd: string) => {
-    setTopicToAdd(topicToAdd);
+  const onChangeAddTopic = async (input: string) => {
+    setAddTopicInput(input);
 
     let autocompleteOptions = [];
 
     const similarTopicsFound = topics.filter((topic) =>
-      CompareCleanStrings(topic.name, topicToAdd, "like")
+      CompareCleanStrings(topic.name, input, "like")
     );
 
     autocompleteOptions = similarTopicsFound.map((topic) => ({
@@ -60,13 +53,13 @@ export const SlipPreviewTopicsBar = ({
     }));
 
     const exactTopicFound = topics.find((topic) =>
-      CompareCleanStrings(topic.name, topicToAdd)
+      CompareCleanStrings(topic.name, input)
     );
 
     if (!exactTopicFound) {
       autocompleteOptions.push({
-        name: `Create '${topicToAdd}'`,
-        value: topicToAdd,
+        name: `Create '${input}'`,
+        value: input,
         id: CREATE_TOPIC_ID,
       });
     }
@@ -74,30 +67,25 @@ export const SlipPreviewTopicsBar = ({
     setAddTopicAutocompleteOptions(autocompleteOptions);
   };
 
-  const onSubmitTopicToAdd = async (submittedTopicToAdd: Topic) => {
+  const onSubmitAddTopic = async (topicToAdd: Topic) => {
     // if topic already added to the slip
-    if (
-      editableSlip.topics.some((topic) => topic.id === submittedTopicToAdd.id)
-    ) {
-      setTopicToAdd(undefined);
+    if (editableSlip.topics.some((topic) => topic.id === topicToAdd.id)) {
+      setAddTopicInput(undefined);
       return;
     }
 
-    if (topics.find((topic) => topic.id === submittedTopicToAdd.id)) {
+    if (topics.find((topic) => topic.id === topicToAdd.id)) {
       onChangeSlipInternal({
-        topics: [...editableSlip.topics, submittedTopicToAdd],
+        topics: [...editableSlip.topics, topicToAdd],
       });
-      setTopicToAdd(undefined);
+      setAddTopicInput(undefined);
       return;
     }
 
-    if (
-      submittedTopicToAdd.id === CREATE_TOPIC_ID &&
-      submittedTopicToAdd.name
-    ) {
-      const newTopic = await createTopic(submittedTopicToAdd.name);
+    if (topicToAdd.id === CREATE_TOPIC_ID && topicToAdd.name) {
+      const newTopic = await createTopic(topicToAdd.name);
       onChangeSlipInternal({ topics: [...editableSlip.topics, newTopic] });
-      setTopicToAdd(undefined);
+      setAddTopicInput(undefined);
       return;
     }
   };
@@ -107,10 +95,10 @@ export const SlipPreviewTopicsBar = ({
       switch (e.key) {
         case "Enter":
           e.preventDefault();
-          handleEnterKeyDown(topics, topicToAdd, onSubmitTopicToAdd);
+          handleEnterKeyDown(topics, addTopicInput, onSubmitAddTopic);
           break;
         case "Escape":
-          setTopicToAdd(undefined);
+          setAddTopicInput(undefined);
           break;
       }
     };
@@ -120,7 +108,7 @@ export const SlipPreviewTopicsBar = ({
     return () => {
       document.removeEventListener("keydown", handleKeyDown, true);
     };
-  }, [topicToAdd, topics]);
+  }, [addTopicInput, topics]);
 
   return (
     <div className="flex flex-row gap-2">
@@ -130,9 +118,9 @@ export const SlipPreviewTopicsBar = ({
 
       <DropdownMenu
         options={addTopicAutocompleteOptions}
-        visible={!!topicToAdd && !!addTopicAutocompleteOptions.length}
-        onClick={(selectedTopic) => {
-          onSubmitTopicToAdd({
+        visible={!!addTopicInput && !!addTopicAutocompleteOptions.length}
+        onSelectOption={(selectedTopic) => {
+          onSubmitAddTopic({
             name: selectedTopic.value,
             id: selectedTopic.id,
           });
@@ -140,11 +128,11 @@ export const SlipPreviewTopicsBar = ({
       >
         <div className="flex justify-center h-full">
           <textarea
-            value={topicToAdd ?? ""}
+            value={addTopicInput ?? ""}
             placeholder="Add topic..."
             onClick={onClickAddTopic}
             onBlur={onBlurAddTopic}
-            onChange={(e) => onChangeTopicToAdd(e.target.value)}
+            onChange={(e) => onChangeAddTopic(e.target.value)}
             className="text-xs h-4 my-auto overflow-y-hidden bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
           >
             add topic...

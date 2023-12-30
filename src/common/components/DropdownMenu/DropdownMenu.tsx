@@ -4,14 +4,14 @@ type DropdownMenuProps = {
   children: JSX.Element;
   options: DropdownMenuOption[];
   visible: boolean;
-  onClick: (selectedOption: DropdownMenuOption) => void;
+  onSelectOption: (selectedOption: DropdownMenuOption) => void;
 };
 
 export const DropdownMenu = ({
   children,
   options,
   visible,
-  onClick,
+  onSelectOption,
 }: DropdownMenuProps) => {
   return (
     <div className="relative">
@@ -23,7 +23,7 @@ export const DropdownMenu = ({
               key={option.id}
               className="p-1 text-left text-stone-700 hover:bg-stone-700 hover:text-stone-100"
               onClick={() => {
-                onClick(option);
+                onSelectOption(option);
               }}
             >
               {option.name}

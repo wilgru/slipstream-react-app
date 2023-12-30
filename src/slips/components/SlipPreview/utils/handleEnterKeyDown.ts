@@ -5,19 +5,19 @@ import type { Topic } from "src/topics/types/Topic.type";
 export const handleEnterKeyDown = (
   topics: Topic[],
   topicToAdd: string | undefined,
-  onSubmitTopicToAdd: (topicToAdd: Topic) => void
+  onSubmitAddTopic: (topicToAdd: Topic) => void
 ) => {
   const existingTopic = topics.find(
     (topic) => topicToAdd && CompareCleanStrings(topic.name, topicToAdd)
   );
 
   if (existingTopic) {
-    onSubmitTopicToAdd(existingTopic);
+    onSubmitAddTopic(existingTopic);
     return;
   }
 
   topicToAdd &&
-    onSubmitTopicToAdd({
+    onSubmitAddTopic({
       name: topicToAdd,
       id: CREATE_TOPIC_ID,
     });
