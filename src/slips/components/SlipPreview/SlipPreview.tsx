@@ -1,23 +1,20 @@
 import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
-import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
 import QuillEditor from "src/common/components/QuillEditor/QuillEditor";
 import { Toggle } from "src/common/components/Toggle/Toggle";
-import { CompareCleanStrings } from "src/common/utils/CompareCleanStrings";
-import { TopicPill } from "src/topics/components/TopicPill/TopicPill";
+import { SlipPreviewTopicsBar } from "./SlipPreviewTopicsBar";
 // import { useTopics } from "src/topics/hooks/useTopics";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 import type { RangeStatic } from "quill";
-import type { DropdownMenuOption } from "src/common/components/DropdownMenu/DropdownMenu";
 import type { Slip } from "src/slips/types/Slip.type";
 import type { Topic } from "src/topics/types/Topic.type";
 
 type SlipPreviewProps = {
   slip: Slip;
   editMode: boolean;
-  onClickEditableField?: () => void;
-  onBlurEditableField?: () => void;
+  onClickEditableField: () => void;
+  onBlurEditableField: () => void;
   onChangeSlip?: ((slip: Slip) => void) & {
     clear(): void;
   } & {
@@ -27,11 +24,9 @@ type SlipPreviewProps = {
   createTopic: (topic: string) => Promise<Topic>;
 };
 
-type AnyKeyValueOfSlip = {
+export type AnyKeyValueOfSlip = {
   [K in keyof Slip]: { [P in K]: Slip[K] };
 }[keyof Slip];
-
-const CREATE_TOPIC_ID = "CREATE_TOPIC";
 
 const SlipPreview = ({
   slip,
@@ -46,9 +41,6 @@ const SlipPreview = ({
 
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
-  const [topicToAdd, setTopicToAdd] = useState<string | undefined>(undefined);
-  const [addTopicAutocompleteOptions, setAddTopicAutocompleteOptions] =
-    useState<DropdownMenuOption[]>([]);
 
   const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to preview changes
 
@@ -57,13 +49,13 @@ const SlipPreview = ({
     flush: boolean = false
   ) => {
     setEditableSlip((currentEditableSlip) => {
-      const newSlipDelta = { ...currentEditableSlip, ...changedField };
+      const newSlipData = { ...currentEditableSlip, ...changedField };
 
-      onChangeSlip && onChangeSlip(newSlipDelta);
+      onChangeSlip && onChangeSlip(newSlipData);
 
       flush && onChangeSlip?.flush(); // as in trigger debounced function immediately
 
-      return newSlipDelta;
+      return newSlipData;
     });
   };
 
@@ -75,92 +67,11 @@ const SlipPreview = ({
     }
   };
 
-  const onChangeTopicToAdd = async (topicToAdd: string) => {
-    setTopicToAdd(topicToAdd);
-
-    let autocompleteOptions = [];
-
-    const similarTopicsFound = topics.filter((topic) =>
-      CompareCleanStrings(topic.name, topicToAdd, "like")
-    );
-
-    autocompleteOptions = similarTopicsFound.map((topic) => ({
-      ...topic,
-      value: topic.name,
-    }));
-
-    const exactTopicFound = topics.find((topic) =>
-      CompareCleanStrings(topic.name, topicToAdd)
-    );
-
-    if (!exactTopicFound) {
-      autocompleteOptions.push({
-        name: `Create '${topicToAdd}'`,
-        value: topicToAdd,
-        id: CREATE_TOPIC_ID,
-      });
-    }
-
-    setAddTopicAutocompleteOptions(autocompleteOptions);
-  };
-
-  const onSubmitTopicToAdd = async (submittedTopicToAdd: Topic) => {
-    // if topic already added to the slip
-    if (
-      editableSlip.topics.some((topic) => topic.id === submittedTopicToAdd.id)
-    ) {
-      setTopicToAdd(undefined);
-      return;
-    }
-
-    if (topics.find((topic) => topic.id === submittedTopicToAdd.id)) {
-      onChangeSlipInternal({
-        topics: [...editableSlip.topics, submittedTopicToAdd],
-      });
-      setTopicToAdd(undefined);
-      return;
-    }
-
-    if (
-      submittedTopicToAdd.id === CREATE_TOPIC_ID &&
-      submittedTopicToAdd.name
-    ) {
-      const newTopic = await createTopic(submittedTopicToAdd.name);
-      onChangeSlipInternal({ topics: [...editableSlip.topics, newTopic] });
-      setTopicToAdd(undefined);
-      return;
-    }
-  };
-
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
-        case "Enter":
-          {
-            // TODO move to own handler like the other ones?
-            e.preventDefault();
-
-            const existingTopic = topics.find(
-              (topic) =>
-                topicToAdd && CompareCleanStrings(topic.name, topicToAdd)
-            );
-
-            if (existingTopic) {
-              onSubmitTopicToAdd(existingTopic);
-              break;
-            }
-
-            topicToAdd &&
-              onSubmitTopicToAdd({
-                name: topicToAdd,
-                id: CREATE_TOPIC_ID,
-              });
-          }
-          break;
-
         case "Escape":
           handleEscapeKeyDown();
-          setTopicToAdd(undefined);
           break;
       }
     };
@@ -170,7 +81,7 @@ const SlipPreview = ({
     return () => {
       document.removeEventListener("keydown", handleKeyDown, true);
     };
-  }, [topicToAdd, topics]);
+  }, []);
 
   useEffect(() => {
     console.log(slip.title); //TODO: fix title not removing on clicking new slip if a slip was already open
@@ -241,35 +152,15 @@ const SlipPreview = ({
         </div>
       </div>
 
-      <div className="flex flex-row gap-2">
-        {editableSlip.topics.map((topic) => {
-          return <TopicPill name={topic.name} />;
-        })}
-
-        <DropdownMenu
-          options={addTopicAutocompleteOptions}
-          visible={!!topicToAdd && !!addTopicAutocompleteOptions.length}
-          onClick={(selectedTopic) => {
-            onSubmitTopicToAdd({
-              name: selectedTopic.value,
-              id: selectedTopic.id,
-            });
-          }}
-        >
-          <div className="flex justify-center h-full">
-            <textarea
-              value={topicToAdd ?? ""}
-              placeholder="Add topic..."
-              onClick={onClickEditableField}
-              onBlur={onBlurEditableField}
-              onChange={(e) => onChangeTopicToAdd(e.target.value)}
-              className="text-xs h-4 my-auto overflow-y-hidden bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
-            >
-              add topic...
-            </textarea>
-          </div>
-        </DropdownMenu>
-      </div>
+      <SlipPreviewTopicsBar
+        editMode={!editMode}
+        editableSlip={editableSlip}
+        topics={topics}
+        createTopic={createTopic}
+        onClickAddTopic={onClickEditableField}
+        onBlurAddTopic={onBlurEditableField}
+        onChangeSlipInternal={onChangeSlipInternal}
+      />
 
       <QuillEditor
         initialValue={initialSlip.content}
