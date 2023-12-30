@@ -11,7 +11,8 @@ export const TopicPill = ({
   size = "medium",
   name,
 }: TopicPillProps): JSX.Element => {
-  const topicPillBaseStyle = "border border-stone-700 text-stone-700 text-xs";
+  const topicPillBaseStyle =
+    "border border-stone-700 bg-stone-300 text-stone-700 text-xs";
   const topicPillSize = TopicPillSize[size];
 
   const topicPillStyles = [topicPillBaseStyle, topicPillSize].join(" ");
