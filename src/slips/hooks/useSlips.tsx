@@ -68,7 +68,7 @@ export const useSlips = (subscribe: boolean = true) => {
       return [...currentSlips, slipDraft];
     });
 
-    return slipId;
+    return slipId; // TODO: return whole slip instead?
   };
 
   const updateSlip = async (
