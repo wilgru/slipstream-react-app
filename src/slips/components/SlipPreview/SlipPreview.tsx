@@ -4,11 +4,12 @@ import { Button } from "src/common/components/Button/Button";
 import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
 import QuillEditor from "src/common/components/QuillEditor/QuillEditor";
 import { Toggle } from "src/common/components/Toggle/Toggle";
-import { cleanStringCompare } from "src/common/utils/cleanStringCompare";
+import { CompareCleanStrings } from "src/common/utils/CompareCleanStrings";
 import { TopicPill } from "src/topics/components/TopicPill/TopicPill";
-import { useTopics } from "src/topics/hooks/useTopics";
+// import { useTopics } from "src/topics/hooks/useTopics";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 import type { RangeStatic } from "quill";
+import type { DropdownMenuOption } from "src/common/components/DropdownMenu/DropdownMenu";
 import type { Slip } from "src/slips/types/Slip.type";
 import type { Topic } from "src/topics/types/Topic.type";
 
@@ -22,11 +23,15 @@ type SlipPreviewProps = {
   } & {
     flush(): void;
   };
+  topics: Topic[];
+  createTopic: (topic: string) => Promise<Topic>;
 };
 
 type AnyKeyValueOfSlip = {
   [K in keyof Slip]: { [P in K]: Slip[K] };
 }[keyof Slip];
+
+const CREATE_TOPIC_ID = "CREATE_TOPIC";
 
 const SlipPreview = ({
   slip,
@@ -34,14 +39,16 @@ const SlipPreview = ({
   onClickEditableField,
   onBlurEditableField,
   onChangeSlip,
+  topics,
+  createTopic,
 }: SlipPreviewProps) => {
-  const { topics, createTopic } = useTopics();
+  // const { topics, createTopic } = useTopics();
 
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
   const [topicToAdd, setTopicToAdd] = useState<string | undefined>(undefined);
   const [addTopicAutocompleteOptions, setAddTopicAutocompleteOptions] =
-    useState<Topic[]>([]);
+    useState<DropdownMenuOption[]>([]);
 
   const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to preview changes
 
@@ -71,42 +78,54 @@ const SlipPreview = ({
   const onChangeTopicToAdd = async (topicToAdd: string) => {
     setTopicToAdd(topicToAdd);
 
-    let newThing = [];
+    let autocompleteOptions = [];
 
-    const a = topics.filter((topic) =>
-      cleanStringCompare(topic.name, topicToAdd, "like")
+    const similarTopicsFound = topics.filter((topic) =>
+      CompareCleanStrings(topic.name, topicToAdd, "like")
     );
 
-    newThing = a;
+    autocompleteOptions = similarTopicsFound.map((topic) => ({
+      ...topic,
+      value: topic.name,
+    }));
 
     const exactTopicFound = topics.find((topic) =>
-      cleanStringCompare(topic.name, topicToAdd)
+      CompareCleanStrings(topic.name, topicToAdd)
     );
 
     if (!exactTopicFound) {
-      newThing.push({ name: `Create '${topicToAdd}'`, id: "CREATE_NEW" });
+      autocompleteOptions.push({
+        name: `Create '${topicToAdd}'`,
+        value: topicToAdd,
+        id: CREATE_TOPIC_ID,
+      });
     }
 
-    setAddTopicAutocompleteOptions(newThing);
+    setAddTopicAutocompleteOptions(autocompleteOptions);
   };
 
-  const onSubmitAddTopic = async (selectedTopic: {
-    name: string;
-    id: string;
-  }) => {
-    if (editableSlip.topics.some((topic) => topic.id === selectedTopic.id)) {
+  const onSubmitTopicToAdd = async (submittedTopicToAdd: Topic) => {
+    // if topic already added to the slip
+    if (
+      editableSlip.topics.some((topic) => topic.id === submittedTopicToAdd.id)
+    ) {
       setTopicToAdd(undefined);
       return;
     }
 
-    if (topics.find((topic) => topic.id === selectedTopic.id)) {
-      onChangeSlipInternal({ topics: [...editableSlip.topics, selectedTopic] });
+    if (topics.find((topic) => topic.id === submittedTopicToAdd.id)) {
+      onChangeSlipInternal({
+        topics: [...editableSlip.topics, submittedTopicToAdd],
+      });
       setTopicToAdd(undefined);
       return;
     }
 
-    if (topicToAdd) {
-      const newTopic = await createTopic(topicToAdd);
+    if (
+      submittedTopicToAdd.id === CREATE_TOPIC_ID &&
+      submittedTopicToAdd.name
+    ) {
+      const newTopic = await createTopic(submittedTopicToAdd.name);
       onChangeSlipInternal({ topics: [...editableSlip.topics, newTopic] });
       setTopicToAdd(undefined);
       return;
@@ -123,10 +142,19 @@ const SlipPreview = ({
 
             const existingTopic = topics.find(
               (topic) =>
-                topicToAdd && cleanStringCompare(topic.name, topicToAdd)
+                topicToAdd && CompareCleanStrings(topic.name, topicToAdd)
             );
 
-            existingTopic && onSubmitAddTopic(existingTopic);
+            if (existingTopic) {
+              onSubmitTopicToAdd(existingTopic);
+              break;
+            }
+
+            topicToAdd &&
+              onSubmitTopicToAdd({
+                name: topicToAdd,
+                id: CREATE_TOPIC_ID,
+              });
           }
           break;
 
@@ -222,7 +250,10 @@ const SlipPreview = ({
           options={addTopicAutocompleteOptions}
           visible={!!topicToAdd && !!addTopicAutocompleteOptions.length}
           onClick={(selectedTopic) => {
-            onSubmitAddTopic(selectedTopic);
+            onSubmitTopicToAdd({
+              name: selectedTopic.value,
+              id: selectedTopic.id,
+            });
           }}
         >
           <div className="flex justify-center h-full">
