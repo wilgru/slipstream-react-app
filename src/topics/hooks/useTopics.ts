@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
-import { pb, pbDevConsoleLog } from "src/pocketbase/utils/pocketbaseConfig";
+import { generateId } from "src/pocketbase/utils/generateId";
+import { pb } from "src/pocketbase/utils/pocketbaseConfig";
 import type { RecordModel, UnsubscribeFunc } from "pocketbase";
 import type { Topic } from "src/topics/types/Topic.type";
 
@@ -12,7 +13,7 @@ const mapTopic = (topic: RecordModel): Topic => {
   };
 };
 
-export const useTopics = (subscribe: boolean = true) => {
+export const useTopics = () => {
   const { currentUser } = useAuthentication();
   const [topics, setTopics] = useState<Topic[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -28,60 +29,29 @@ export const useTopics = (subscribe: boolean = true) => {
     setLoading(false);
   };
 
-  const subscribeToTopics = async (): Promise<void> => {
-    // const unsub = await pb
-    pb.collection("topics").subscribe(
-      "*",
-      ({ action, record }) => {
-        switch (action) {
-          // TODO: this action gets triggered twice, need to stop all the actions from double triggering
-          case "create":
-            pbDevConsoleLog("created action triggered");
+  const createTopic = async (topicName: string): Promise<Topic> => {
+    const topicId = generateId();
 
-            setTopics((currentTopics) => {
-              return currentTopics.map((currentTopic) => {
-                return currentTopic.id === record.id
-                  ? mapTopic(record)
-                  : currentTopic;
-              });
-            });
-            break;
+    const newTopic = await pb
+      .collection("topics")
+      .create({ id: topicId, name: topicName, user: currentUser?.id });
 
-          case "update":
-            if (record.deleted) {
-              setTopics((currentTopics) =>
-                currentTopics.filter((topic) => topic.id !== record.id)
-              );
-            } else {
-              setTopics((currentTopics) => {
-                const a = currentTopics.map((topic) =>
-                  topic.id === record.id ? mapTopic(record) : topic
-                );
+    const mappedNewTopic = mapTopic(newTopic);
 
-                return a;
-              });
-            }
-            break;
+    // setTopics((currentTopics) => {
+    //   return [...currentTopics, mappedNewTopic];
+    // });
 
-          default:
-            break;
-        }
-      },
-      { expand: "topics" }
-    );
+    getTopics();
 
-    // setUnsubscribeFn(unsub);
-    pbDevConsoleLog(
-      "subscribed to 'topics' collection successfully. Listening for CRUD actions..."
-    );
+    return mappedNewTopic;
   };
 
   useEffect(() => {
     // may need to define our callbacks within the useEffect?
     //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
     currentUser && getTopics();
-    subscribe && subscribeToTopics();
   }, [currentUser]);
 
-  return { topics, loading, unsubscribeFn };
+  return { topics, getTopics, createTopic, loading, unsubscribeFn };
 };

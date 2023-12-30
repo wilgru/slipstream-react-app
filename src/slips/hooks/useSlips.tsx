@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
 import { generateId } from "src/pocketbase/utils/generateId";
 import { pb, pbDevConsoleLog } from "src/pocketbase/utils/pocketbaseConfig";
+import { useTopics } from "src/topics/hooks/useTopics";
 import type { RecordModel, UnsubscribeFunc } from "pocketbase";
 import type { Slip } from "src/slips/types/Slip.type";
 
@@ -24,6 +25,8 @@ const mapSlip = (slip: RecordModel): Slip => {
 
 export const useSlips = (subscribe: boolean = true) => {
   const { currentUser } = useAuthentication();
+  const { getTopics } = useTopics();
+
   const [slips, setSlips] = useState<Slip[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [unsubscribeFn] = useState<UnsubscribeFunc | undefined>(undefined);
@@ -68,7 +71,7 @@ export const useSlips = (subscribe: boolean = true) => {
       return [...currentSlips, slipDraft];
     });
 
-    return slipId;
+    return slipId; // TODO: return whole slip instead?
   };
 
   const updateSlip = async (
@@ -99,6 +102,11 @@ export const useSlips = (subscribe: boolean = true) => {
       await pb
         .collection("slips")
         .update(slipId, { ...updateSlipData, topics: mappedTopics });
+    }
+
+    // TODO check this works after adding state context manager
+    if (updateSlipData.topics.length !== slipToUpdate?.topics.length) {
+      getTopics();
     }
 
     return;

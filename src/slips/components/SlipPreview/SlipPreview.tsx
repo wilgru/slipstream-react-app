@@ -3,66 +3,83 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import QuillEditor from "src/common/components/QuillEditor/QuillEditor";
 import { Toggle } from "src/common/components/Toggle/Toggle";
-import { TopicPill } from "src/topics/components/TopicPill/TopicPill";
+import { SlipPreviewTopicsBar } from "./SlipPreviewTopicsBar";
+// import { useTopics } from "src/topics/hooks/useTopics";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 import type { RangeStatic } from "quill";
 import type { Slip } from "src/slips/types/Slip.type";
+import type { Topic } from "src/topics/types/Topic.type";
 
 type SlipPreviewProps = {
   slip: Slip;
   editMode: boolean;
-  onClickTitleOrContent?: () => void;
-  onBlurTitleOrContent?: () => void;
+  onClickEditableField: () => void;
+  onBlurEditableField: () => void;
   onChangeSlip?: ((slip: Slip) => void) & {
     clear(): void;
   } & {
     flush(): void;
   };
+  topics: Topic[];
+  createTopic: (topic: string) => Promise<Topic>;
 };
 
-type AnyKeyValueOfSlip = {
+export type AnyKeyValueOfSlip = {
   [K in keyof Slip]: { [P in K]: Slip[K] };
 }[keyof Slip];
 
 const SlipPreview = ({
   slip,
   editMode,
-  onClickTitleOrContent,
-  onBlurTitleOrContent,
+  onClickEditableField,
+  onBlurEditableField,
   onChangeSlip,
+  topics,
+  createTopic,
 }: SlipPreviewProps) => {
+  // const { topics, createTopic } = useTopics();
+
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
-  const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to preview changes
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
+
+  const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to preview changes
 
   const onChangeSlipInternal = (
     changedField: AnyKeyValueOfSlip,
     flush: boolean = false
   ) => {
     setEditableSlip((currentEditableSlip) => {
-      const newSlipDelta = { ...currentEditableSlip, ...changedField };
+      const newSlipData = { ...currentEditableSlip, ...changedField };
 
-      onChangeSlip && onChangeSlip(newSlipDelta);
+      onChangeSlip && onChangeSlip(newSlipData);
 
       flush && onChangeSlip?.flush(); // as in trigger debounced function immediately
 
-      return newSlipDelta;
+      return newSlipData;
     });
   };
 
   const onSelectionChange = (range: RangeStatic, oldRange: RangeStatic) => {
     if (range === null && oldRange !== null) {
-      onBlurTitleOrContent && onBlurTitleOrContent();
+      onBlurEditableField && onBlurEditableField();
     } else if (range !== null && oldRange === null) {
-      onClickTitleOrContent && onClickTitleOrContent();
+      onClickEditableField && onClickEditableField();
     }
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", handleEscapeKeyDown, true);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "Escape":
+          handleEscapeKeyDown();
+          break;
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown, true);
 
     return () => {
-      document.removeEventListener("keydown", handleEscapeKeyDown, true);
+      document.removeEventListener("keydown", handleKeyDown, true);
     };
   }, []);
 
@@ -81,11 +98,11 @@ const SlipPreview = ({
       <div className="flex flex-row items-start">
         <div className="flex-grow flex flex-col">
           <textarea
-            value={editableSlip.title ?? undefined}
+            value={editableSlip.title ?? undefined} // TODO maybe set this to "" instead of undefined
             placeholder="No Title"
             onChange={(e) => onChangeSlipInternal({ title: e.target.value })}
-            onClick={onClickTitleOrContent}
-            onBlur={onBlurTitleOrContent}
+            onClick={onClickEditableField}
+            onBlur={onBlurEditableField}
             className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
           />
           <div className="flex flex-row gap-2">
@@ -135,11 +152,14 @@ const SlipPreview = ({
         </div>
       </div>
 
-      <div className="flex flex-row gap-2">
-        {editableSlip.topics.map((topic) => {
-          return <TopicPill name={topic.name} />;
-        })}
-      </div>
+      <SlipPreviewTopicsBar
+        editableSlip={editableSlip}
+        topics={topics}
+        createTopic={createTopic}
+        onClickAddTopic={onClickEditableField}
+        onBlurAddTopic={onBlurEditableField}
+        onChangeSlipInternal={onChangeSlipInternal}
+      />
 
       <QuillEditor
         initialValue={initialSlip.content}

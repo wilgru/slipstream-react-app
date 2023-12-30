@@ -8,17 +8,22 @@ import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 import type { Slip } from "src/slips/types/Slip.type";
+import type { Topic } from "src/topics/types/Topic.type";
 
 type GalleryViewProps = {
   slips: Slip[];
   initialOpenSlipId: string | null;
   updateSlip: (slipId: string, updateSlipData: Slip) => void;
+  topics: Topic[];
+  createTopic: (topic: string) => Promise<Topic>;
 };
 
 const GalleryView = ({
   slips,
   initialOpenSlipId,
   updateSlip,
+  topics,
+  createTopic,
 }: GalleryViewProps) => {
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null);
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
@@ -64,11 +69,11 @@ const GalleryView = ({
     });
   };
 
-  const onClickSlipTitleOrContent = () => {
+  const onClickEditableField = () => {
     setEditMode(true);
   };
 
-  const onBlurSlipTitleOrContent = () => {
+  const onBlurSlipEditableField = () => {
     setEditMode(false);
   };
 
@@ -133,7 +138,7 @@ const GalleryView = ({
       <div
         className={`flex ${
           openSlip
-            ? "overflow-x-auto overflow-y-hidden"
+            ? "overflow-x-auto overflow-y-hidden px-3 -mx-3"
             : "flex-wrap justify-center"
         } gap-3`}
       >
@@ -150,9 +155,11 @@ const GalleryView = ({
         <SlipPreview
           slip={openSlip}
           editMode={editMode}
-          onClickTitleOrContent={onClickSlipTitleOrContent}
-          onBlurTitleOrContent={onBlurSlipTitleOrContent}
+          onClickEditableField={onClickEditableField}
+          onBlurEditableField={onBlurSlipEditableField}
           onChangeSlip={onChangeSlip}
+          topics={topics}
+          createTopic={createTopic}
         />
       )}
     </div>
