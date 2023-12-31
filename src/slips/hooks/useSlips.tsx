@@ -151,54 +151,6 @@ export const useSlips = () => {
     return;
   };
 
-  // const subscribeToSlips = async (): Promise<void> => {
-  //   // const unsub = await pb
-  //   pb.collection("slips").subscribe(
-  //     "*",
-  //     ({ action, record }) => {
-  //       switch (action) {
-  //         // TODO: this action gets triggered twice, need to stop all the actions from double triggering
-  //         case "create":
-  //           pbDevConsoleLog("created action triggered");
-
-  //           setSlips((currentSlips) => {
-  //             return currentSlips.map((currentSlip) => {
-  //               return currentSlip.id === record.id
-  //                 ? mapSlip(record)
-  //                 : currentSlip;
-  //             });
-  //           });
-  //           break;
-
-  //         case "update":
-  //           if (record.deleted) {
-  //             setSlips((currentSlips) =>
-  //               currentSlips.filter((slip) => slip.id !== record.id)
-  //             );
-  //           } else {
-  //             setSlips((currentSlips) => {
-  //               const a = currentSlips.map((slip) =>
-  //                 slip.id === record.id ? mapSlip(record) : slip
-  //               );
-
-  //               return a;
-  //             });
-  //           }
-  //           break;
-
-  //         default:
-  //           break;
-  //       }
-  //     },
-  //     { expand: "topics" }
-  //   );
-
-  //   // setUnsubscribeFn(unsub);
-  //   pbDevConsoleLog(
-  //     "subscribed to 'slips' collection successfully. Listening for CRUD actions..."
-  //   );
-  // };
-
   useEffect(() => {
     // may need to define our callbacks within the useEffect?
     //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
