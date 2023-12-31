@@ -121,11 +121,14 @@ export const useSlips = () => {
 
     // if slip is a draft then its not actually in the db, so persist it
     if (slipToUpdate.draft) {
-      const createdSlip = await pb.collection("slips").create({
-        ...updateSlipData,
-        topics: mappedTopics,
-        user: currentUser?.id,
-      });
+      const createdSlip = await pb.collection("slips").create(
+        {
+          ...updateSlipData,
+          topics: mappedTopics,
+          user: currentUser?.id,
+        },
+        { expand: "topics" }
+      );
 
       setSlips((currentSlips) => {
         return currentSlips.map((slip) =>
@@ -135,7 +138,11 @@ export const useSlips = () => {
     } else {
       const updatedSlip = await pb
         .collection("slips")
-        .update(slipId, { ...updateSlipData, topics: mappedTopics });
+        .update(
+          slipId,
+          { ...updateSlipData, topics: mappedTopics },
+          { expand: "topics" }
+        );
 
       setSlips((currentSlips) => {
         return currentSlips.map((slip) =>
