@@ -3,7 +3,7 @@ import Delta from "quill-delta";
 import { useEffect, useState } from "react";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
 import { generateId } from "src/pocketbase/utils/generateId";
-import { pb, pbDevConsoleLog } from "src/pocketbase/utils/pocketbaseConfig";
+import { pb } from "src/pocketbase/utils/pocketbaseConfig";
 import { useTopics } from "src/topics/hooks/useTopics";
 import type { RecordModel, UnsubscribeFunc } from "pocketbase";
 import type { Slip } from "src/slips/types/Slip.type";
@@ -23,7 +23,7 @@ const mapSlip = (slip: RecordModel): Slip => {
   };
 };
 
-export const useSlips = (subscribe: boolean = true) => {
+export const useSlips = () => {
   const { currentUser } = useAuthentication();
   const { getTopics } = useTopics();
 
@@ -74,34 +74,73 @@ export const useSlips = (subscribe: boolean = true) => {
     return slipId; // TODO: return whole slip instead?
   };
 
+  const deleteSlip = async (slipId: string, hardDelete: boolean = false) => {
+    const slipToDelete = slips.find((slip) => slip.id === slipId);
+
+    if (!slipToDelete) {
+      return;
+    }
+
+    // instead of delete from db, again because its not in the db just remove it from the slips array state
+    if (slipToDelete.draft) {
+      setSlips((currentSlips) => currentSlips.filter((slip) => !slip.draft));
+      return;
+    }
+
+    if (hardDelete) {
+      const deletedSlip = await pb.collection("slips").delete(slipId);
+
+      deletedSlip &&
+        setSlips((currentSlips) =>
+          currentSlips.filter((slip) => slip.id !== slipToDelete.id)
+        );
+    } else {
+      const deletedSlip = await pb
+        .collection("slips")
+        .update(slipId, { ...slipToDelete, deleted: dayjs() });
+
+      setSlips((currentSlips) =>
+        currentSlips.filter((slip) => slip.id !== deletedSlip.id)
+      );
+      return;
+    }
+  };
+
   const updateSlip = async (
     slipId: string,
     updateSlipData: Slip
   ): Promise<void> => {
     const slipToUpdate = slips.find((slip) => slip.id === slipId);
 
-    if (slipToUpdate) {
-      // if slip is a draft then its not actually in the db, so persist it
-      if (slipToUpdate.draft) {
-        // TODO move all delete related stuff to a softDeleteSlip method, that actually just does this update BTS
-        if (updateSlipData.deleted) {
-          // instead of delete from db, again because its not in the db just remove it from the slips array state
-          setSlips((currentSlips) =>
-            currentSlips.filter((slip) => !slip.draft)
-          );
-          return;
-        }
+    if (!slipToUpdate) {
+      return;
+    }
 
-        await pb
-          .collection("slips")
-          .create({ ...updateSlipData, user: currentUser?.id });
-        return;
-      }
+    const mappedTopics = updateSlipData.topics.map((topic) => topic.id);
 
-      const mappedTopics = updateSlipData.topics.map((topic) => topic.id);
-      await pb
+    // if slip is a draft then its not actually in the db, so persist it
+    if (slipToUpdate.draft) {
+      const createdSlip = await pb.collection("slips").create({
+        ...updateSlipData,
+        topics: mappedTopics,
+        user: currentUser?.id,
+      });
+
+      setSlips((currentSlips) => {
+        return currentSlips.map((slip) =>
+          slip.id === createdSlip.id ? mapSlip(createdSlip) : slip
+        );
+      });
+    } else {
+      const updatedSlip = await pb
         .collection("slips")
         .update(slipId, { ...updateSlipData, topics: mappedTopics });
+
+      setSlips((currentSlips) => {
+        return currentSlips.map((slip) =>
+          slip.id === updatedSlip.id ? mapSlip(updatedSlip) : slip
+        );
+      });
     }
 
     // TODO check this works after adding state context manager
@@ -112,60 +151,59 @@ export const useSlips = (subscribe: boolean = true) => {
     return;
   };
 
-  const subscribeToSlips = async (): Promise<void> => {
-    // const unsub = await pb
-    pb.collection("slips").subscribe(
-      "*",
-      ({ action, record }) => {
-        switch (action) {
-          // TODO: this action gets triggered twice, need to stop all the actions from double triggering
-          case "create":
-            pbDevConsoleLog("created action triggered");
+  // const subscribeToSlips = async (): Promise<void> => {
+  //   // const unsub = await pb
+  //   pb.collection("slips").subscribe(
+  //     "*",
+  //     ({ action, record }) => {
+  //       switch (action) {
+  //         // TODO: this action gets triggered twice, need to stop all the actions from double triggering
+  //         case "create":
+  //           pbDevConsoleLog("created action triggered");
 
-            setSlips((currentSlips) => {
-              return currentSlips.map((currentSlip) => {
-                return currentSlip.id === record.id
-                  ? mapSlip(record)
-                  : currentSlip;
-              });
-            });
-            break;
+  //           setSlips((currentSlips) => {
+  //             return currentSlips.map((currentSlip) => {
+  //               return currentSlip.id === record.id
+  //                 ? mapSlip(record)
+  //                 : currentSlip;
+  //             });
+  //           });
+  //           break;
 
-          case "update":
-            if (record.deleted) {
-              setSlips((currentSlips) =>
-                currentSlips.filter((slip) => slip.id !== record.id)
-              );
-            } else {
-              setSlips((currentSlips) => {
-                const a = currentSlips.map((slip) =>
-                  slip.id === record.id ? mapSlip(record) : slip
-                );
+  //         case "update":
+  //           if (record.deleted) {
+  //             setSlips((currentSlips) =>
+  //               currentSlips.filter((slip) => slip.id !== record.id)
+  //             );
+  //           } else {
+  //             setSlips((currentSlips) => {
+  //               const a = currentSlips.map((slip) =>
+  //                 slip.id === record.id ? mapSlip(record) : slip
+  //               );
 
-                return a;
-              });
-            }
-            break;
+  //               return a;
+  //             });
+  //           }
+  //           break;
 
-          default:
-            break;
-        }
-      },
-      { expand: "topics" }
-    );
+  //         default:
+  //           break;
+  //       }
+  //     },
+  //     { expand: "topics" }
+  //   );
 
-    // setUnsubscribeFn(unsub);
-    pbDevConsoleLog(
-      "subscribed to 'slips' collection successfully. Listening for CRUD actions..."
-    );
-  };
+  //   // setUnsubscribeFn(unsub);
+  //   pbDevConsoleLog(
+  //     "subscribed to 'slips' collection successfully. Listening for CRUD actions..."
+  //   );
+  // };
 
   useEffect(() => {
     // may need to define our callbacks within the useEffect?
     //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
     currentUser && getSlips();
-    subscribe && subscribeToSlips();
   }, [currentUser]);
 
-  return { slips, createSlip, updateSlip, loading, unsubscribeFn };
+  return { slips, createSlip, updateSlip, deleteSlip, loading, unsubscribeFn };
 };
