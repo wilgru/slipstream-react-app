@@ -107,10 +107,12 @@ const GalleryView = ({
 
       switch (e.key) {
         case "ArrowLeft":
+          e.preventDefault();
           handleArrowLeftKeyDown(setFocusedSlipId, setOpenSlip, sortedSlips);
           break;
 
         case "ArrowRight":
+          e.preventDefault();
           handleArrowRightKeyDown(setFocusedSlipId, setOpenSlip, sortedSlips);
           break;
 
