@@ -1,8 +1,7 @@
 import { debounce } from "debounce";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SlipCard from "src/slips/components/SlipCard/SlipCard";
 import SlipPreview from "src/slips/components/SlipPreview/SlipPreview";
-import { isSlipContentEmpty } from "src/slips/utils/isSlipContentEmpty";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
@@ -14,6 +13,7 @@ type GalleryViewProps = {
   initialOpenSlipId: string | null;
   updateSlip: (slipId: string, updateSlipData: Slip) => void;
   deleteSlip: (slipId: string, hardDelete: boolean) => void;
+  deleteEmptySlips: () => void;
   topics: Topic[];
   createTopic: (topic: string) => Promise<Topic>;
 };
@@ -23,6 +23,7 @@ const GalleryView = ({
   initialOpenSlipId,
   updateSlip,
   deleteSlip,
+  deleteEmptySlips,
   topics,
   createTopic,
 }: GalleryViewProps) => {
@@ -30,15 +31,6 @@ const GalleryView = ({
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [sortedSlips, setSortedSlips] = useState<Slip[]>([]);
-
-  // TODO: move ftn to useSlips or utils maybe?
-  const clearEmptySlips = useCallback(() => {
-    slips.forEach((slip) => {
-      if (!slip.title && isSlipContentEmpty(slip.content)) {
-        deleteSlip(slip.id, false);
-      }
-    });
-  }, [openSlip, slips]);
 
   const onClickSlip = (clickedSlipId: string) => {
     setFocusedSlipId(clickedSlipId);
@@ -131,7 +123,7 @@ const GalleryView = ({
         case "Escape":
           setOpenSlip(null);
           setFocusedSlipId(null);
-          clearEmptySlips();
+          deleteEmptySlips();
           break;
       }
     };

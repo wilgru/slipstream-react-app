@@ -5,6 +5,7 @@ import { useAuthentication } from "src/authentication/hooks/useAuthentication";
 import { generateId } from "src/pocketbase/utils/generateId";
 import { pb } from "src/pocketbase/utils/pocketbaseConfig";
 import { useTopics } from "src/topics/hooks/useTopics";
+import { isSlipContentEmpty } from "../utils/isSlipContentEmpty";
 import type { RecordModel, UnsubscribeFunc } from "pocketbase";
 import type { Slip } from "src/slips/types/Slip.type";
 
@@ -151,11 +152,27 @@ export const useSlips = () => {
     return;
   };
 
+  const deleteEmptySlips = () => {
+    slips.forEach((slip) => {
+      if (!slip.title && isSlipContentEmpty(slip.content)) {
+        deleteSlip(slip.id, false);
+      }
+    });
+  };
+
   useEffect(() => {
     // may need to define our callbacks within the useEffect?
     //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
     currentUser && getSlips();
   }, [currentUser]);
 
-  return { slips, createSlip, updateSlip, deleteSlip, loading, unsubscribeFn };
+  return {
+    slips,
+    createSlip,
+    updateSlip,
+    deleteSlip,
+    deleteEmptySlips,
+    loading,
+    unsubscribeFn,
+  };
 };
