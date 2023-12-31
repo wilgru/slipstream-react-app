@@ -84,12 +84,10 @@ const SlipPreview = ({
   }, []);
 
   useEffect(() => {
-    console.log(slip.title); //TODO: fix title not removing on clicking new slip if a slip was already open
     setEditableSlip(slip);
   }, [slip]);
 
   return (
-    // TODO: if any issues, I removed a fragment that was here
     <div
       className={
         "flex-grow flex flex-col gap-2 w-full p-2 mb-1 bg-stone-100 border border-stone-700 shadow-light"
@@ -98,7 +96,7 @@ const SlipPreview = ({
       <div className="flex flex-row items-start">
         <div className="flex-grow flex flex-col">
           <textarea
-            value={editableSlip.title ?? undefined} // TODO maybe set this to "" instead of undefined
+            value={editableSlip.title ?? ""}
             placeholder="No Title"
             onChange={(e) => onChangeSlipInternal({ title: e.target.value })}
             onClick={onClickEditableField}
