@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import QuillEditor from "src/common/components/QuillEditor/QuillEditor";
@@ -20,6 +19,7 @@ type SlipPreviewProps = {
   } & {
     flush(): void;
   };
+  onDeleteSlip: (slipId: string) => void;
   topics: Topic[];
   createTopic: (topic: string) => Promise<Topic>;
 };
@@ -34,6 +34,7 @@ const SlipPreview = ({
   onClickEditableField,
   onBlurEditableField,
   onChangeSlip,
+  onDeleteSlip,
   topics,
   createTopic,
 }: SlipPreviewProps) => {
@@ -145,7 +146,7 @@ const SlipPreview = ({
           <Button
             styleType="icon"
             icon="bin"
-            onClick={() => onChangeSlipInternal({ deleted: dayjs() }, true)}
+            onClick={() => onDeleteSlip(editableSlip.id)}
           ></Button>
         </div>
       </div>

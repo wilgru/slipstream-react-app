@@ -31,7 +31,7 @@ const TopicsList = ({ topics }: TopicsListProps): JSX.Element => {
 function HomePage() {
   const { currentUser } = useAuthentication();
   const navigate = useNavigate();
-  const { slips, createSlip, updateSlip } = useSlips();
+  const { slips, createSlip, deleteSlip, updateSlip } = useSlips();
   const { topics, createTopic } = useTopics();
 
   const [showSidebar, setShowSidebar] = useState(false);
@@ -69,6 +69,7 @@ function HomePage() {
           slips={slips}
           initialOpenSlipId={initialOpenSlipId}
           updateSlip={updateSlip}
+          deleteSlip={deleteSlip}
           topics={topics}
           createTopic={createTopic}
         ></GalleryView>

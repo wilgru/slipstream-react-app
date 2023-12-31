@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { debounce } from "debounce";
 import { useCallback, useEffect, useState } from "react";
 import SlipCard from "src/slips/components/SlipCard/SlipCard";
@@ -14,6 +13,7 @@ type GalleryViewProps = {
   slips: Slip[];
   initialOpenSlipId: string | null;
   updateSlip: (slipId: string, updateSlipData: Slip) => void;
+  deleteSlip: (slipId: string, hardDelete: boolean) => void;
   topics: Topic[];
   createTopic: (topic: string) => Promise<Topic>;
 };
@@ -22,6 +22,7 @@ const GalleryView = ({
   slips,
   initialOpenSlipId,
   updateSlip,
+  deleteSlip,
   topics,
   createTopic,
 }: GalleryViewProps) => {
@@ -34,7 +35,7 @@ const GalleryView = ({
   const clearEmptySlips = useCallback(() => {
     slips.forEach((slip) => {
       if (!slip.title && isSlipContentEmpty(slip.content)) {
-        updateSlip(slip.id, { ...slip, deleted: dayjs() });
+        deleteSlip(slip.id, false);
       }
     });
   }, [openSlip, slips]);
@@ -84,6 +85,13 @@ const GalleryView = ({
       setOpenSlip(null);
     }
   }, 500);
+
+  const onDeleteSlip = async (slipId: string) => {
+    deleteSlip(slipId, false);
+
+    setOpenSlip(null);
+    setFocusedSlipId(null);
+  };
 
   useEffect(() => {
     const foundInitialOpenSlip = slips.find(
@@ -160,6 +168,7 @@ const GalleryView = ({
           onClickEditableField={onClickEditableField}
           onBlurEditableField={onBlurSlipEditableField}
           onChangeSlip={onChangeSlip}
+          onDeleteSlip={onDeleteSlip}
           topics={topics}
           createTopic={createTopic}
         />
