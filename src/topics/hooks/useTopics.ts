@@ -38,10 +38,6 @@ export const useTopics = () => {
 
     const mappedNewTopic = mapTopic(newTopic);
 
-    // setTopics((currentTopics) => {
-    //   return [...currentTopics, mappedNewTopic];
-    // });
-
     getTopics();
 
     return mappedNewTopic;
