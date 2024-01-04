@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
+import { context } from "src/common/context/context";
 import { generateId } from "src/pocketbase/utils/generateId";
 import { pb } from "src/pocketbase/utils/pocketbaseConfig";
-import type { RecordModel, UnsubscribeFunc } from "pocketbase";
+import type { RecordModel } from "pocketbase";
 import type { Topic } from "src/topics/types/Topic.type";
 
 const mapTopic = (topic: RecordModel): Topic => {
@@ -15,9 +16,9 @@ const mapTopic = (topic: RecordModel): Topic => {
 
 export const useTopics = () => {
   const { currentUser } = useAuthentication();
-  const [topics, setTopics] = useState<Topic[]>([]);
+  const { topics, setTopics } = useContext(context);
+
   const [loading, setLoading] = useState<boolean>(true);
-  const [unsubscribeFn] = useState<UnsubscribeFunc | undefined>(undefined);
 
   const getTopics = async (): Promise<void> => {
     const topicsRes = await pb
@@ -49,5 +50,5 @@ export const useTopics = () => {
     currentUser && getTopics();
   }, [currentUser]);
 
-  return { topics, getTopics, createTopic, loading, unsubscribeFn };
+  return { topics, getTopics, createTopic, loading };
 };

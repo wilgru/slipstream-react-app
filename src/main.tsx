@@ -6,9 +6,10 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import LoginPage from "./authentication/pages/LoginPage/LoginPage.tsx";
-import HomePage from "./home/pages/homePage.tsx";
-import "./index.css";
+import LoginPage from "src/authentication/pages/LoginPage/LoginPage.tsx";
+import { ContextProvider } from "src/common/context/ContextProvider";
+import HomePage from "src/home/pages/homePage.tsx";
+import "src/index.css";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <HomePage />,
+    element: (
+      <ContextProvider>
+        <HomePage />
+      </ContextProvider>
+    ),
   },
   {
     path: "*",

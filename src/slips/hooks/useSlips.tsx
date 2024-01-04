@@ -1,12 +1,13 @@
 import * as dayjs from "dayjs";
 import Delta from "quill-delta";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
+import { context } from "src/common/context/context";
 import { generateId } from "src/pocketbase/utils/generateId";
 import { pb } from "src/pocketbase/utils/pocketbaseConfig";
+import { isSlipContentEmpty } from "src/slips/utils/isSlipContentEmpty";
 import { useTopics } from "src/topics/hooks/useTopics";
-import { isSlipContentEmpty } from "../utils/isSlipContentEmpty";
-import type { RecordModel, UnsubscribeFunc } from "pocketbase";
+import type { RecordModel } from "pocketbase";
 import type { Slip } from "src/slips/types/Slip.type";
 
 const mapSlip = (slip: RecordModel): Slip => {
@@ -26,11 +27,10 @@ const mapSlip = (slip: RecordModel): Slip => {
 
 export const useSlips = () => {
   const { currentUser } = useAuthentication();
+  const { slips, setSlips } = useContext(context);
   const { getTopics } = useTopics();
 
-  const [slips, setSlips] = useState<Slip[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [unsubscribeFn] = useState<UnsubscribeFunc | undefined>(undefined);
 
   const getSlips = async (): Promise<void> => {
     const slipsRes = await pb
@@ -103,7 +103,10 @@ export const useSlips = () => {
       setSlips((currentSlips) =>
         currentSlips.filter((slip) => slip.id !== deletedSlip.id)
       );
-      return;
+    }
+
+    if (slipToDelete.topics.length) {
+      getTopics();
     }
   };
 
@@ -180,6 +183,5 @@ export const useSlips = () => {
     deleteSlip,
     deleteEmptySlips,
     loading,
-    unsubscribeFn,
   };
 };
