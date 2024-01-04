@@ -103,7 +103,10 @@ export const useSlips = () => {
       setSlips((currentSlips) =>
         currentSlips.filter((slip) => slip.id !== deletedSlip.id)
       );
-      return;
+    }
+
+    if (slipToDelete.topics.length) {
+      getTopics();
     }
   };
 
