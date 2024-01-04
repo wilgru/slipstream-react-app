@@ -7,7 +7,7 @@ import { generateId } from "src/pocketbase/utils/generateId";
 import { pb } from "src/pocketbase/utils/pocketbaseConfig";
 import { isSlipContentEmpty } from "src/slips/utils/isSlipContentEmpty";
 import { useTopics } from "src/topics/hooks/useTopics";
-import type { RecordModel, UnsubscribeFunc } from "pocketbase";
+import type { RecordModel } from "pocketbase";
 import type { Slip } from "src/slips/types/Slip.type";
 
 const mapSlip = (slip: RecordModel): Slip => {
@@ -31,7 +31,6 @@ export const useSlips = () => {
   const { getTopics } = useTopics();
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [unsubscribeFn] = useState<UnsubscribeFunc | undefined>(undefined);
 
   const getSlips = async (): Promise<void> => {
     const slipsRes = await pb
@@ -181,6 +180,5 @@ export const useSlips = () => {
     deleteSlip,
     deleteEmptySlips,
     loading,
-    unsubscribeFn,
   };
 };
