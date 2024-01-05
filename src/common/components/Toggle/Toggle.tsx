@@ -67,6 +67,7 @@ export const Toggle = ({
   const toggleIcon = icon
     ? getIcon(
         icon,
+        "medium",
         isToggled ? toggleToggledOnColour : toggleToggledOffColour,
         isToggled ? toggleToggledOffColour : toggleToggledOnColour
       )
