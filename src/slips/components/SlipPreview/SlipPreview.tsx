@@ -2,12 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import QuillEditor from "src/common/components/QuillEditor/QuillEditor";
 import { Toggle } from "src/common/components/Toggle/Toggle";
+import { useTopics } from "src/topics/hooks/useTopics";
 import { SlipPreviewTopicsBar } from "./SlipPreviewTopicsBar";
-// import { useTopics } from "src/topics/hooks/useTopics";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 import type { RangeStatic } from "quill";
 import type { Slip } from "src/slips/types/Slip.type";
-import type { Topic } from "src/topics/types/Topic.type";
 
 type SlipPreviewProps = {
   slip: Slip;
@@ -20,8 +19,6 @@ type SlipPreviewProps = {
     flush(): void;
   };
   onDeleteSlip: (slipId: string) => void;
-  topics: Topic[];
-  createTopic: (topic: string) => Promise<Topic>;
 };
 
 export type AnyKeyValueOfSlip = {
@@ -35,10 +32,8 @@ const SlipPreview = ({
   onBlurEditableField,
   onChangeSlip,
   onDeleteSlip,
-  topics,
-  createTopic,
 }: SlipPreviewProps) => {
-  // const { topics, createTopic } = useTopics();
+  const { topics, createTopic } = useTopics();
 
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();

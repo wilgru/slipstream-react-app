@@ -51,11 +51,11 @@ const TopicsList = ({ topics }: TopicsListProps): JSX.Element => {
 };
 
 function HomePage() {
-  const { currentUser } = useAuthentication();
   const navigate = useNavigate();
+  const { currentUser } = useAuthentication();
   const { slips, createSlip, deleteSlip, updateSlip, deleteEmptySlips } =
     useSlips();
-  const { topics, createTopic } = useTopics();
+  const { topics } = useTopics();
 
   const [showSidebar, setShowSidebar] = useState(false);
   const [initialOpenSlipId, setInitialOpenSlipId] = useState<string | null>(
@@ -94,8 +94,6 @@ function HomePage() {
           updateSlip={updateSlip}
           deleteSlip={deleteSlip}
           deleteEmptySlips={deleteEmptySlips}
-          topics={topics}
-          createTopic={createTopic}
         ></GalleryView>
       </div>
     </div>
