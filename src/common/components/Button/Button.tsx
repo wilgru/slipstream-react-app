@@ -4,6 +4,7 @@ type ButtonProps = {
   children?: string | JSX.Element;
   icon?: string;
   iconHoverColour?: string;
+  iconSize?: "small" | "medium";
   type?: "button" | "submit";
   styleType?: "block" | "block-outline" | "link" | "icon";
   size?: "medium" | "large";
@@ -48,6 +49,7 @@ export const Button = ({
   children,
   icon,
   iconHoverColour = "stone-800", // TODO make required only if is icon style type
+  iconSize = "medium",
   type = "button",
   styleType = "block",
   width = "fit",
@@ -72,6 +74,7 @@ export const Button = ({
   const buttonIcon = icon
     ? getIcon(
         icon,
+        iconSize,
         ButtonIconColour[styleType],
         ButtonIconHoverColour[styleType] || iconHoverColour
       )
