@@ -113,7 +113,19 @@ export const SlipPreviewTopicsBar = ({
   return (
     <div className="flex flex-row gap-2">
       {editableSlip.topics.map((topic) => {
-        return <TopicPill name={topic.name} />;
+        return (
+          <TopicPill
+            name={topic.name}
+            closable
+            onClose={() =>
+              onChangeSlipInternal({
+                topics: editableSlip.topics.filter(
+                  (currentTopic) => currentTopic.id !== topic.id
+                ),
+              })
+            }
+          />
+        );
       })}
 
       <DropdownMenu

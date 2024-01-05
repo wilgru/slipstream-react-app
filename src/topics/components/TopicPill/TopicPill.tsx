@@ -4,6 +4,8 @@ import { Button } from "src/common/components/Button/Button";
 type TopicPillProps = {
   size?: "medium";
   name: string;
+  closable?: boolean;
+  onClose?: () => void;
 };
 
 enum TopicPillSize {
@@ -13,6 +15,8 @@ enum TopicPillSize {
 export const TopicPill = ({
   size = "medium",
   name,
+  closable = false,
+  onClose,
 }: TopicPillProps): JSX.Element => {
   const [closeBtnVisible, setCloseBtnVisible] = useState<boolean>(false);
 
@@ -29,8 +33,13 @@ export const TopicPill = ({
       onMouseOut={() => setCloseBtnVisible(false)}
     >
       {name}
-      {closeBtnVisible && (
-        <Button styleType="icon" icon="close" iconSize="small" />
+      {closable && closeBtnVisible && (
+        <Button
+          styleType="icon"
+          icon="close"
+          iconSize="small"
+          onClick={() => onClose && onClose()}
+        />
       )}
     </div>
   );
