@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import { Modal } from "src/common/components/Modal/Modal";
 import { TopicPill } from "src/topics/components/TopicPill/TopicPill";
+import { useTopics } from "src/topics/hooks/useTopics";
 import type { Topic } from "src/topics/types/Topic.type";
 
 type TopicsListProps = {
@@ -42,9 +43,18 @@ const TopicListItem = ({ topic, onClickDelete }: TopicsListItemProps) => {
 };
 
 export const TopicList = ({ topics }: TopicsListProps): JSX.Element => {
+  const { deleteTopic } = useTopics();
+
   const [topicToDelete, setTopicToDelete] = useState<Topic | undefined>(
     undefined
   );
+
+  const onConfirmDelete = async () => {
+    if (topicToDelete) {
+      deleteTopic(topicToDelete.id);
+      setTopicToDelete(undefined);
+    }
+  };
 
   return (
     <>
@@ -62,7 +72,7 @@ export const TopicList = ({ topics }: TopicsListProps): JSX.Element => {
         title={"Confirm delete topic"}
         closeButton={"Cancel"}
         saveButton={"Confirm"}
-        onSave={() => setTopicToDelete(undefined)}
+        onSave={onConfirmDelete}
         onClose={() => setTopicToDelete(undefined)}
       >
         <p className="text-xs">

@@ -44,11 +44,21 @@ export const useTopics = () => {
     return mappedNewTopic;
   };
 
+  const deleteTopic = async (topicId: string): Promise<void> => {
+    const topicsRes = await pb.collection("topics").delete(topicId);
+
+    if (topicsRes) {
+      setTopics((currentTopic) =>
+        currentTopic.filter((topic) => topic.id !== topicId)
+      );
+    }
+  };
+
   useEffect(() => {
     // may need to define our callbacks within the useEffect?
     //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
     currentUser && getTopics();
   }, [currentUser]);
 
-  return { topics, getTopics, createTopic, loading };
+  return { topics, getTopics, createTopic, deleteTopic, loading };
 };
