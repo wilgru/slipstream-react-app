@@ -6,7 +6,6 @@ import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 import type { Slip } from "src/slips/types/Slip.type";
-import type { Topic } from "src/topics/types/Topic.type";
 
 type GalleryViewProps = {
   slips: Slip[];
@@ -14,8 +13,6 @@ type GalleryViewProps = {
   updateSlip: (slipId: string, updateSlipData: Slip) => void;
   deleteSlip: (slipId: string, hardDelete: boolean) => void;
   deleteEmptySlips: () => void;
-  topics: Topic[];
-  createTopic: (topic: string) => Promise<Topic>;
 };
 
 const GalleryView = ({
@@ -24,8 +21,6 @@ const GalleryView = ({
   updateSlip,
   deleteSlip,
   deleteEmptySlips,
-  topics,
-  createTopic,
 }: GalleryViewProps) => {
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null);
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
@@ -86,7 +81,7 @@ const GalleryView = ({
   };
 
   useEffect(() => {
-    const foundInitialOpenSlip = slips.find(
+    const foundInitialOpenSlip = sortedSlips.find(
       (slip) => slip.id === initialOpenSlipId
     );
 
@@ -94,7 +89,7 @@ const GalleryView = ({
       setOpenSlip(foundInitialOpenSlip);
       setFocusedSlipId(initialOpenSlipId);
     }
-  }, [initialOpenSlipId]);
+  }, [initialOpenSlipId, sortedSlips]);
 
   // TODO: handle sort in useSlips, exposes a sort(sortBy, direction) callback
   useEffect(() => {
@@ -161,8 +156,6 @@ const GalleryView = ({
           onBlurEditableField={onBlurSlipEditableField}
           onChangeSlip={onChangeSlip}
           onDeleteSlip={onDeleteSlip}
-          topics={topics}
-          createTopic={createTopic}
         />
       )}
     </div>
