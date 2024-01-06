@@ -66,7 +66,7 @@ const LoginPage = (): JSX.Element => {
           </div>
 
           <div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between items-baseline">
               <label className="text-sm font-medium leading-6 text-stone-700">
                 Password
               </label>
@@ -97,10 +97,12 @@ const LoginPage = (): JSX.Element => {
           </div>
         </form>
 
-        <p className="text-center text-sm text-stone-700">
-          New to SlipBox?&nbsp;
-          <Button styleType="link">Create an account</Button>
-        </p>
+        <div className="flex justify-center items-baseline">
+          <p className="text-sm text-stone-700">New to SlipBox?&nbsp;</p>
+          <Button styleType="link" size="small">
+            Create an account
+          </Button>
+        </div>
       </div>
     </div>
   );
