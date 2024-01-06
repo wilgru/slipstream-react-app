@@ -7,26 +7,27 @@ type ButtonProps = {
   iconSize?: "small" | "medium";
   type?: "button" | "submit";
   styleType?: "block" | "block-outline" | "link" | "icon";
-  size?: "medium" | "large";
+  size?: "small" | "medium" | "large";
   width?: "fit" | "full";
   disabled?: boolean;
   onClick?: () => void;
 };
 
 enum ButtonStyleType {
-  "block" = "bg-stone-700 text-stone-100 font-medium border border-stone-700 hover:bg-stone-800 hover:border-stone-800",
-  "block-outline" = "bg-stone-100 text-stone-700 font-medium border border-stone-700 hover:bg-stone-800 hover:text-stone-100 hover:border-stone-800",
+  "block" = "bg-stone-700 text-stone-100  border border-stone-700 hover:bg-stone-800 hover:border-stone-800",
+  "block-outline" = "bg-stone-100 text-stone-700 border border-stone-700 hover:bg-stone-800 hover:text-stone-100 hover:border-stone-800",
   "link" = "text-orange-500 hover:text-orange-700",
   "icon" = "",
 }
 
 enum ButtonSize {
-  "medium" = "px-4 py-1",
-  "large" = "px-6 py-2",
+  "small" = "px-2 py-1 text-xs font-normal",
+  "medium" = "px-3 py-1 text-sm font-medium",
+  "large" = "px-6 py-2 text-sm",
 }
 
 enum ButtonWidth {
-  "full" = "w-full text-center",
+  "full" = "w-full justify-center",
   "fit" = "",
 }
 
@@ -58,7 +59,7 @@ export const Button = ({
   onClick,
 }: ButtonProps) => {
   const buttonBaseStyle =
-    "text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
+    "flex items-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
   const buttonStyleType = ButtonStyleType[styleType];
   const buttonWidth = ButtonWidth[width];
   const buttonSize =
