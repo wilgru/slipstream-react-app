@@ -120,7 +120,7 @@ export const SlipPreviewTopicsBar = ({
             onClose={() =>
               onChangeSlipInternal({
                 topics: editableSlip.topics.filter(
-                  (currentTopic) => currentTopic.id !== topic.id
+                  (editableSlipTopic) => editableSlipTopic.id !== topic.id
                 ),
               })
             }
