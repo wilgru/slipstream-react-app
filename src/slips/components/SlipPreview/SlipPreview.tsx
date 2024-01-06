@@ -146,14 +146,17 @@ const SlipPreview = ({
         </div>
       </div>
 
-      <SlipPreviewTopicsBar
-        editableSlip={editableSlip}
-        topics={topics}
-        createTopic={createTopic}
-        onClickAddTopic={onClickEditableField}
-        onBlurAddTopic={onBlurEditableField}
-        onChangeSlipInternal={onChangeSlipInternal}
-      />
+      <div className="flex gap-2">
+        <Button size="small">+</Button>
+        <SlipPreviewTopicsBar
+          editableSlip={editableSlip}
+          topics={topics}
+          createTopic={createTopic}
+          onClickAddTopic={onClickEditableField}
+          onBlurAddTopic={onBlurEditableField}
+          onChangeSlipInternal={onChangeSlipInternal}
+        />
+      </div>
 
       <QuillEditor
         initialValue={initialSlip.content}
