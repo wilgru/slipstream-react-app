@@ -117,7 +117,7 @@ export const SlipPreviewTopicsBar = ({
           <TopicPill
             name={topic.name}
             closable
-            onClose={() =>
+            onClick={() =>
               onChangeSlipInternal({
                 topics: editableSlip.topics.filter(
                   (editableSlipTopic) => editableSlipTopic.id !== topic.id

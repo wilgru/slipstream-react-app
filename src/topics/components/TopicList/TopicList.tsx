@@ -22,13 +22,14 @@ const TopicListItem = ({ topic }: TopicsListItemProps) => {
     >
       <TopicPill name={topic.name} />
 
-      {closeBtnVisible ? (
-        <Button styleType="icon" icon="close" iconSize="small" />
-      ) : (
+      <div className="flex gap-2">
+        {closeBtnVisible && (
+          <Button styleType="icon" icon="close" iconSize="small" />
+        )}
         <p className="text-xs text-stone-500 w-2 text-center">
           {topic.slipCount}
         </p>
-      )}
+      </div>
     </div>
   );
 };
