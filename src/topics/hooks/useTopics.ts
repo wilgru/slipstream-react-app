@@ -44,6 +44,29 @@ export const useTopics = () => {
     return mappedNewTopic;
   };
 
+  const updateTopic = async (
+    topicId: string,
+    updateTopicData: Topic
+  ): Promise<void> => {
+    const topicToUpdate = topics.find((topic) => topic.id === topicId);
+
+    if (!topicToUpdate) {
+      return;
+    }
+
+    const updatedTopic = await pb
+      .collection("topics")
+      .update(topicId, { ...updateTopicData });
+
+    setTopics((currentTopics) => {
+      return currentTopics.map((topic) =>
+        topic.id === updatedTopic.id
+          ? mapTopic({ ...updatedTopic, totalSlips: topic.slipCount })
+          : topic
+      );
+    });
+  };
+
   const deleteTopic = async (topicId: string): Promise<void> => {
     const topicsRes = await pb.collection("topics").delete(topicId);
 
@@ -60,5 +83,5 @@ export const useTopics = () => {
     currentUser && getTopics();
   }, [currentUser]);
 
-  return { topics, getTopics, createTopic, deleteTopic, loading };
+  return { topics, getTopics, createTopic, updateTopic, deleteTopic, loading };
 };
