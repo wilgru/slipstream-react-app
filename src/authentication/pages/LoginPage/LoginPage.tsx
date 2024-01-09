@@ -66,7 +66,7 @@ const LoginPage = (): JSX.Element => {
           </div>
 
           <div>
-            <div className="flex items-center justify-between items-baseline">
+            <div className="flex items-baseline justify-between">
               <label className="text-sm font-medium leading-6 text-stone-700">
                 Password
               </label>
