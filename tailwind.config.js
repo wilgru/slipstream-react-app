@@ -14,6 +14,7 @@ export default {
   },
   plugins: [],
   safelist: [
+    "fill-stone-100",
     "fill-stone-500",
     "fill-orange-500",
     "fill-red-500",

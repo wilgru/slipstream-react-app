@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { getIcon } from "src/common/utils/getIcon";
 
 type ButtonProps = {
@@ -49,7 +50,7 @@ enum ButtonIconHoverColour {
 export const Button = ({
   children,
   icon,
-  iconHoverColour = "stone-800", // TODO make required only if is icon style type
+  iconHoverColour, // TODO make required only if is icon style type
   iconSize = "medium",
   type = "button",
   styleType = "block",
@@ -58,6 +59,8 @@ export const Button = ({
   disabled = false,
   onClick,
 }: ButtonProps) => {
+  const [hovered, setHovered] = useState<boolean>(false);
+
   const buttonBaseStyle =
     "flex items-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
   const buttonStyleType = ButtonStyleType[styleType];
@@ -73,11 +76,14 @@ export const Button = ({
   ].join(" ");
 
   const buttonIcon = icon
+    ? getIcon(icon, iconSize, ButtonIconColour[styleType])
+    : undefined;
+
+  const hoveredButtonIcon = icon
     ? getIcon(
         icon,
         iconSize,
-        ButtonIconColour[styleType],
-        ButtonIconHoverColour[styleType] || iconHoverColour
+        iconHoverColour || ButtonIconHoverColour[styleType]
       )
     : undefined;
 
@@ -87,8 +93,10 @@ export const Button = ({
       className={buttonStyles}
       disabled={disabled}
       onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
-      {buttonIcon}
+      {hovered ? hoveredButtonIcon : buttonIcon}
       {children}
     </button>
   );
