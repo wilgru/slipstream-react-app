@@ -14,6 +14,8 @@ export default {
   },
   plugins: [],
   safelist: [
+    "text-sm",
+    "text-md",
     "fill-stone-100",
     "fill-stone-500",
     "fill-orange-500",
