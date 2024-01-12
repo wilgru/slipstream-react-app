@@ -1,6 +1,7 @@
 import Bin from "src/common/icons/bin.svg?react";
 import Close from "src/common/icons/close.svg?react";
 import Flag from "src/common/icons/flag.svg?react";
+import Pencil from "src/common/icons/pencil.svg?react";
 import Pin from "src/common/icons/pin.svg?react";
 
 enum IconSize {
@@ -12,7 +13,7 @@ export const getIcon = (
   iconName: string,
   size: "small" | "medium" = "medium",
   colour: string = "stone-500",
-  hoverColour: string = "stone-800"
+  hoverColour?: string
 ): JSX.Element | undefined => {
   const iconSize = IconSize[size];
 
@@ -28,6 +29,8 @@ export const getIcon = (
       return <Flag className={iconStyle} />;
     case "bin":
       return <Bin className={iconStyle} />;
+    case "pencil":
+      return <Pencil className={iconStyle} />;
     case "close":
       return <Close className={iconStyle} />;
   }

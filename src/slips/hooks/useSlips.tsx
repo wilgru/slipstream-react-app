@@ -91,10 +91,11 @@ export const useSlips = () => {
     if (hardDelete) {
       const deletedSlip = await pb.collection("slips").delete(slipId);
 
-      deletedSlip &&
+      if (deletedSlip) {
         setSlips((currentSlips) =>
           currentSlips.filter((slip) => slip.id !== slipToDelete.id)
         );
+      }
     } else {
       const deletedSlip = await pb
         .collection("slips")

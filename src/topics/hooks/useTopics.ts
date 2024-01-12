@@ -44,11 +44,44 @@ export const useTopics = () => {
     return mappedNewTopic;
   };
 
+  const updateTopic = async (
+    topicId: string,
+    updateTopicData: Topic
+  ): Promise<void> => {
+    const topicToUpdate = topics.find((topic) => topic.id === topicId);
+
+    if (!topicToUpdate) {
+      return;
+    }
+
+    const updatedTopic = await pb
+      .collection("topics")
+      .update(topicId, { ...updateTopicData });
+
+    setTopics((currentTopics) => {
+      return currentTopics.map((topic) =>
+        topic.id === updatedTopic.id
+          ? mapTopic({ ...updatedTopic, totalSlips: topic.slipCount })
+          : topic
+      );
+    });
+  };
+
+  const deleteTopic = async (topicId: string): Promise<void> => {
+    const topicsRes = await pb.collection("topics").delete(topicId);
+
+    if (topicsRes) {
+      setTopics((currentTopic) =>
+        currentTopic.filter((topic) => topic.id !== topicId)
+      );
+    }
+  };
+
   useEffect(() => {
     // may need to define our callbacks within the useEffect?
     //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
     currentUser && getTopics();
   }, [currentUser]);
 
-  return { topics, getTopics, createTopic, loading };
+  return { topics, getTopics, createTopic, updateTopic, deleteTopic, loading };
 };
