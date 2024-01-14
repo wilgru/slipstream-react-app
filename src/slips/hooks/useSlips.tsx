@@ -34,6 +34,7 @@ export const useSlips = () => {
 
   const getSlips = useCallback(
     async (topicIds: string[]): Promise<void> => {
+      // TODO: for some reason cant use && for the multiple topics filters, which is why slipsWithAllTopics and its logic exists
       const topicsFilter = topicIds.length
         ? "&& " +
           topicIds.map((topicId) => `topics.id ?= '${topicId}'`).join(" || ")
@@ -47,13 +48,13 @@ export const useSlips = () => {
         });
       const mappedSlips = slipsRes.items.map(mapSlip);
 
-      const allTopicsSlips = mappedSlips.filter((mappedSlip) =>
+      const slipsWithAllTopics = mappedSlips.filter((mappedSlip) =>
         topicIds.every((topicId) =>
           mappedSlip.topics.some((topic) => topic.id === topicId)
         )
       );
 
-      setSlips(allTopicsSlips);
+      setSlips(slipsWithAllTopics);
       setLoading(false);
     },
     [setSlips]
