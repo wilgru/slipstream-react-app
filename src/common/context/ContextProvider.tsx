@@ -10,9 +10,19 @@ type ContextProviderProps = {
 export const ContextProvider = ({ children }: ContextProviderProps) => {
   const [slips, setSlips] = useState<Slip[]>([]);
   const [topics, setTopics] = useState<Topic[]>([]);
+  const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>([]);
 
   return (
-    <context.Provider value={{ slips, setSlips, topics, setTopics }}>
+    <context.Provider
+      value={{
+        slips,
+        setSlips,
+        topics,
+        setTopics,
+        selectedTopicIds,
+        setSelectedTopicIds,
+      }}
+    >
       {children}
     </context.Provider>
   );

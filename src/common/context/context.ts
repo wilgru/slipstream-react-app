@@ -7,6 +7,8 @@ type Context = {
   setSlips: React.Dispatch<React.SetStateAction<Slip[]>>;
   topics: Topic[];
   setTopics: React.Dispatch<React.SetStateAction<Topic[]>>;
+  selectedTopicIds: string[];
+  setSelectedTopicIds: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export const context = createContext<Context>({
@@ -14,4 +16,6 @@ export const context = createContext<Context>({
   setSlips: () => {},
   topics: [],
   setTopics: () => {},
+  selectedTopicIds: [],
+  setSelectedTopicIds: () => {},
 });
