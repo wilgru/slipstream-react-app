@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { Button } from "src/common/components/Button/Button";
+import { Toggle } from "src/common/components/Toggle/Toggle";
 
 type TopicPillProps = {
-  size?: "small";
+  id: string;
   name: string;
+  size?: "small";
   closable?: boolean;
-  onClick?: () => void;
+  isSelected: boolean;
+  onClick?: (id: string) => void;
 };
 
 export const TopicPill = ({
-  size = "small",
+  id,
   name,
+  size = "small",
   closable = false,
+  isSelected,
   onClick,
 }: TopicPillProps): JSX.Element => {
   const [closeBtnVisible, setCloseBtnVisible] = useState<boolean>(false);
@@ -21,15 +26,27 @@ export const TopicPill = ({
       onMouseOver={() => setCloseBtnVisible(true)}
       onMouseOut={() => setCloseBtnVisible(false)}
     >
-      <Button
-        styleType="block-outline"
-        size={size}
-        icon={closable && closeBtnVisible ? "close" : ""}
-        iconSize={size}
-        onClick={() => onClick && onClick()}
-      >
-        {name}
-      </Button>
+      {closable ? (
+        <Button
+          styleType="block-outline"
+          size={size}
+          icon={closable && closeBtnVisible ? "close" : ""}
+          iconSize={size}
+          onClick={() => onClick && onClick(id)}
+        >
+          {name}
+        </Button>
+      ) : (
+        <Toggle
+          styleType="block"
+          size={size}
+          iconSize={size}
+          onClick={() => onClick && onClick(id)}
+          isToggled={isSelected}
+        >
+          {name}
+        </Toggle>
+      )}
     </div>
   );
 };
