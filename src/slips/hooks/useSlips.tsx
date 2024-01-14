@@ -1,6 +1,6 @@
 import * as dayjs from "dayjs";
 import Delta from "quill-delta";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
 import { context } from "src/common/context/context";
 import { generateId } from "src/pocketbase/utils/generateId";
@@ -27,23 +27,37 @@ const mapSlip = (slip: RecordModel): Slip => {
 
 export const useSlips = () => {
   const { currentUser } = useAuthentication();
-  const { slips, setSlips } = useContext(context);
+  const { slips, setSlips, selectedTopicIds } = useContext(context);
   const { getTopics } = useTopics();
 
   const [loading, setLoading] = useState<boolean>(true);
 
-  const getSlips = async (): Promise<void> => {
-    const slipsRes = await pb
-      .collection("slips")
-      .getList(undefined, undefined, {
-        filter: "deleted = null",
-        expand: "topics",
-      });
-    const mappedSlips = slipsRes.items.map(mapSlip);
+  const getSlips = useCallback(
+    async (topicIds: string[]): Promise<void> => {
+      const topicsFilter = topicIds.length
+        ? "&& " +
+          topicIds.map((topicId) => `topics.id ?= '${topicId}'`).join(" || ")
+        : "";
 
-    setSlips(mappedSlips);
-    setLoading(false);
-  };
+      const slipsRes = await pb
+        .collection("slips")
+        .getList(undefined, undefined, {
+          filter: `deleted = null ${topicsFilter}`,
+          expand: "topics",
+        });
+      const mappedSlips = slipsRes.items.map(mapSlip);
+
+      const allTopicsSlips = mappedSlips.filter((mappedSlip) =>
+        topicIds.every((topicId) =>
+          mappedSlip.topics.some((topic) => topic.id === topicId)
+        )
+      );
+
+      setSlips(allTopicsSlips);
+      setLoading(false);
+    },
+    [setSlips]
+  );
 
   const createSlip = (): string => {
     let slipId = generateId();
@@ -174,8 +188,8 @@ export const useSlips = () => {
   useEffect(() => {
     // may need to define our callbacks within the useEffect?
     //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
-    currentUser && getSlips();
-  }, [currentUser]);
+    currentUser && getSlips(selectedTopicIds);
+  }, [currentUser, getSlips, selectedTopicIds]);
 
   return {
     slips,
