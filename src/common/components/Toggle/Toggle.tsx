@@ -3,9 +3,10 @@ import { getIcon } from "src/common/utils/getIcon";
 type ToggleProps = {
   children?: string | JSX.Element;
   icon?: string;
+  iconSize?: "small" | "medium" | "large";
   iconToggledOnColour?: string;
   styleType?: "block" | "icon";
-  size?: "medium" | "large";
+  size?: "small" | "medium" | "large";
   width?: "fit" | "full";
   disabled?: boolean;
   onClick?: () => void;
@@ -13,11 +14,12 @@ type ToggleProps = {
 };
 
 enum ToggleStyleType {
-  "block" = "border border-stone-700 font-medium hover:bg-stone-800 hover:text-stone-100",
+  "block" = "border border-stone-700 font-medium hover:bg-stone-800 hover:border-stone-800 hover:text-stone-100",
   "icon" = "",
 }
 
 enum ToggleSize {
+  "small" = "px-2 py-1",
   "medium" = "px-4 py-1",
   "large" = "px-6 py-2",
 }
@@ -38,6 +40,7 @@ enum ToggleOffColour {
 export const Toggle = ({
   children,
   icon,
+  iconSize = "medium",
   iconToggledOnColour = "stone-700", // TODO make required only if is icon style type
   styleType = "block",
   width = "fit",
@@ -67,7 +70,7 @@ export const Toggle = ({
   const toggleIcon = icon
     ? getIcon(
         icon,
-        "medium",
+        iconSize === "large" ? "medium" : iconSize, // TODO: support large size properly
         isToggled ? toggleToggledOnColour : toggleToggledOffColour,
         isToggled ? toggleToggledOffColour : toggleToggledOnColour
       )
