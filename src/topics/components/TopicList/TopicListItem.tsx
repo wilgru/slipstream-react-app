@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
+import { context } from "src/common/context/context";
 import { TopicPill } from "src/topics/components/TopicPill/TopicPill";
 import type { Topic } from "src/topics/types/Topic.type";
 
@@ -14,18 +15,37 @@ export const TopicListItem = ({
   onClickEdit,
   onClickDelete,
 }: TopicsListItemProps) => {
-  const [deleteBtnVisible, setDeleteBtnVisible] = useState<boolean>(false);
+  const { selectedTopicIds, setSelectedTopicIds } = useContext(context);
+
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+
+  const onClickTopicPill = (topicId: string) => {
+    setSelectedTopicIds((currentSelectedTopicIds) => {
+      if (currentSelectedTopicIds.includes(topicId)) {
+        return currentSelectedTopicIds.filter(
+          (selectedTopicId) => selectedTopicId !== topicId
+        );
+      } else {
+        return [...currentSelectedTopicIds, topicId];
+      }
+    });
+  };
 
   return (
     <div
       className="flex justify-between items-center"
-      onMouseOver={() => setDeleteBtnVisible(true)}
-      onMouseLeave={() => setDeleteBtnVisible(false)}
+      onMouseOver={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <TopicPill name={topic.name} />
+      <TopicPill
+        id={topic.id}
+        name={topic.name}
+        onClick={onClickTopicPill}
+        isSelected={selectedTopicIds.includes(topic.id)}
+      />
 
       <div className="flex gap-2">
-        {deleteBtnVisible && (
+        {isHovered && (
           <>
             <Button
               styleType="icon"
