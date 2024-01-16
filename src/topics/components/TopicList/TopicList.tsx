@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ColourPicker } from "src/common/components/ColourPicker/ColourPicker";
 import { Input } from "src/common/components/Input/Input";
 import { Modal } from "src/common/components/Modal/Modal";
 import { TopicListItem } from "src/topics/components/TopicList/TopicListItem";
@@ -45,28 +46,42 @@ export const TopicList = ({ topics }: TopicsListProps): JSX.Element => {
       </div>
 
       {/* edit topic modal */}
-      <Modal
-        visible={!!topicToEdit}
-        title={"Edit topic"}
-        closeButton={"Cancel"}
-        saveButton={"Save"}
-        onSave={onSaveEdit}
-        onClose={() => setTopicToEdit(undefined)}
-      >
-        <>
-          <p className="text-sm">Name</p>
-          <Input
-            size="medium"
-            id={topicToEdit?.id ?? ""}
-            value={topicToEdit?.name ?? ""}
-            onChange={(e) =>
-              setTopicToEdit((topic) =>
-                topic ? { ...topic, name: e.target.value } : undefined
-              )
-            }
-          />
-        </>
-      </Modal>
+      {topicToEdit && (
+        <Modal
+          visible={!!topicToEdit}
+          title={"Edit topic"}
+          closeButton={"Cancel"}
+          saveButton={"Save"}
+          onSave={onSaveEdit}
+          onClose={() => setTopicToEdit(undefined)}
+        >
+          <>
+            <p className="text-sm">Name</p>
+            <Input
+              size="medium"
+              id={topicToEdit.id}
+              value={topicToEdit.name}
+              onChange={(e) =>
+                setTopicToEdit((currentTopicToEdit) =>
+                  currentTopicToEdit
+                    ? { ...currentTopicToEdit, name: e.target.value }
+                    : undefined
+                )
+              }
+            />
+            <ColourPicker
+              selectedColour={topicToEdit.colour}
+              onSelectColour={(colour) => {
+                setTopicToEdit((currentTopicToEdit) =>
+                  currentTopicToEdit
+                    ? { ...currentTopicToEdit, colour }
+                    : undefined
+                );
+              }}
+            />
+          </>
+        </Modal>
+      )}
 
       {/* delete topic modal */}
       <Modal
