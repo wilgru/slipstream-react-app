@@ -55,31 +55,37 @@ export const TopicList = ({ topics }: TopicsListProps): JSX.Element => {
           onSave={onSaveEdit}
           onClose={() => setTopicToEdit(undefined)}
         >
-          <>
-            <p className="text-sm">Name</p>
-            <Input
-              size="medium"
-              id={topicToEdit.id}
-              value={topicToEdit.name}
-              onChange={(e) =>
-                setTopicToEdit((currentTopicToEdit) =>
-                  currentTopicToEdit
-                    ? { ...currentTopicToEdit, name: e.target.value }
-                    : undefined
-                )
-              }
-            />
-            <ColourPicker
-              selectedColour={topicToEdit.colour}
-              onSelectColour={(colour) => {
-                setTopicToEdit((currentTopicToEdit) =>
-                  currentTopicToEdit
-                    ? { ...currentTopicToEdit, colour }
-                    : undefined
-                );
-              }}
-            />
-          </>
+          <div className="flex flex-col gap-2">
+            <div>
+              <p className="text-sm">Name</p>
+              <Input
+                size="medium"
+                id={topicToEdit.id}
+                value={topicToEdit.name}
+                onChange={(e) =>
+                  setTopicToEdit((currentTopicToEdit) =>
+                    currentTopicToEdit
+                      ? { ...currentTopicToEdit, name: e.target.value }
+                      : undefined
+                  )
+                }
+              />
+            </div>
+
+            <div>
+              <p className="text-sm">Colour</p>
+              <ColourPicker
+                selectedColour={topicToEdit.colour}
+                onSelectColour={(colour) => {
+                  setTopicToEdit((currentTopicToEdit) =>
+                    currentTopicToEdit
+                      ? { ...currentTopicToEdit, colour }
+                      : undefined
+                  );
+                }}
+              />
+            </div>
+          </div>
         </Modal>
       )}
 
