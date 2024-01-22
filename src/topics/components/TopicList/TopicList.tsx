@@ -75,11 +75,11 @@ export const TopicList = ({ topics }: TopicsListProps): JSX.Element => {
             <div>
               <p className="text-sm">Colour</p>
               <ColourPicker
-                selectedColour={topicToEdit.colour}
+                selectedColourName={topicToEdit.colour}
                 onSelectColour={(colour) => {
                   setTopicToEdit((currentTopicToEdit) =>
                     currentTopicToEdit
-                      ? { ...currentTopicToEdit, colour }
+                      ? { ...currentTopicToEdit, colour: colour.name }
                       : undefined
                   );
                 }}
