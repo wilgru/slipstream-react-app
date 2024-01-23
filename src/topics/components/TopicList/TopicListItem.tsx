@@ -38,8 +38,7 @@ export const TopicListItem = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       <TopicPill
-        id={topic.id}
-        name={topic.name}
+        topic={topic}
         onClick={onClickTopicPill}
         isSelected={selectedTopicIds.includes(topic.id)}
       />
