@@ -49,6 +49,7 @@ export default {
     "border-amber-700",
     "bg-amber-700",
     "bg-amber-50",
+
     "border-stone-700",
     "bg-stone-700",
     "bg-stone-100",
