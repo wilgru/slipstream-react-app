@@ -29,7 +29,7 @@ export const TopicPill = ({
     ? {
         border: topicColour.primary,
         background: topicColour.secondary,
-        text: topicColour.lightText ? "stone-100" : "stone-700",
+        text: "stone-700",
       }
     : { border: "stone-700", background: "stone-300", text: "stone-700" };
 
