@@ -23,7 +23,7 @@ export const Toolbar = ({
   };
 
   return (
-    <div className="flex flex-row justify-between w-full p-3">
+    <div className="flex flex-row justify-between w-full p-3 bg-stone-100 border border-b-stone-700">
       <div className="flex flex-row gap-3">
         <Button onClick={onClickShowSidebarToggle}>
           {showSidebar ? "Hide sidebar" : "Show sidebar"}
