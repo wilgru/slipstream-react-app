@@ -19,31 +19,31 @@ export const TopicPill = ({
   isSelected = false,
   onClick,
 }: TopicPillProps): JSX.Element => {
-  const [closeBtnVisible, setCloseBtnVisible] = useState<boolean>(false);
+  const [closeButtonVisible, setCloseButtonVisible] = useState<boolean>(false);
 
-  const topicColour = customisationColours.find(
+  const topicCustomisationColour = customisationColours.find(
     (colour) => colour.name === topic.colour
   );
 
-  const buttonColour = topicColour
+  const topicButtonColour = topicCustomisationColour
     ? {
-        border: topicColour.primary,
-        background: topicColour.secondary,
+        border: topicCustomisationColour.primary,
+        background: topicCustomisationColour.secondary,
         text: "stone-700",
       }
     : { border: "stone-700", background: "stone-300", text: "stone-700" };
 
   return (
     <div
-      onMouseOver={() => setCloseBtnVisible(true)}
-      onMouseOut={() => setCloseBtnVisible(false)}
+      onMouseOver={() => setCloseButtonVisible(true)}
+      onMouseOut={() => setCloseButtonVisible(false)}
     >
       {closable ? (
         <Button
           styleType="block"
-          colour={buttonColour}
+          colour={topicButtonColour}
           size={size}
-          icon={closable && closeBtnVisible ? "close" : ""}
+          icon={closable && closeButtonVisible ? "close" : ""}
           iconSize={size}
           onClick={() => onClick && onClick(topic.id)}
         >
@@ -52,7 +52,7 @@ export const TopicPill = ({
       ) : (
         <Toggle
           styleType="block"
-          colour={buttonColour}
+          colour={topicButtonColour}
           size={size}
           iconSize={size}
           onClick={() => onClick && onClick(topic.id)}
