@@ -41,7 +41,7 @@ export const SlipPreviewTopicsBar = ({
   const onChangeAddTopic = async (input: string) => {
     setAddTopicInput(input);
 
-    let autocompleteOptions = [];
+    let autocompleteOptions: DropdownMenuOption[] = [];
 
     const similarTopicsFound = topics.filter((topic) =>
       CompareCleanStrings(topic.name, input, "like")
@@ -115,7 +115,7 @@ export const SlipPreviewTopicsBar = ({
       {editableSlip.topics.map((topic) => {
         return (
           <TopicPill
-            name={topic.name}
+            topic={topic}
             closable
             onClick={() =>
               onChangeSlipInternal({
@@ -135,6 +135,7 @@ export const SlipPreviewTopicsBar = ({
           onSubmitAddTopic({
             name: selectedTopic.value,
             id: selectedTopic.id,
+            colour: "default",
           });
         }}
       >

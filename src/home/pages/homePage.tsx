@@ -38,21 +38,23 @@ function HomePage() {
   }, []);
 
   return (
-    <div className="flex flex-row h-screen bg-stone-100">
-      {showSidebar && <Sidebar sections={sideBarSections} />}
+    <div className="flex flex-row h-screen w-full bg-stone-200">
       <div className="flex flex-col w-full">
         <Toolbar
           showSidebar={showSidebar}
           onClickShowSidebarToggle={onClickShowSidebarToggle}
           onClickNewSlipButton={onClickNewSlipButton}
         />
-        <GalleryView
-          slips={slips}
-          initialOpenSlipId={initialOpenSlipId}
-          updateSlip={updateSlip}
-          deleteSlip={deleteSlip}
-          deleteEmptySlips={deleteEmptySlips}
-        ></GalleryView>
+        <div className="flex flex-row h-full max-w-full">
+          {showSidebar && <Sidebar sections={sideBarSections} />}
+          <GalleryView
+            slips={slips}
+            initialOpenSlipId={initialOpenSlipId}
+            updateSlip={updateSlip}
+            deleteSlip={deleteSlip}
+            deleteEmptySlips={deleteEmptySlips}
+          ></GalleryView>
+        </div>
       </div>
     </div>
   );

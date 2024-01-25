@@ -1,50 +1,64 @@
 import { useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import { Toggle } from "src/common/components/Toggle/Toggle";
+import { customisationColours } from "src/common/constants/customisationColours";
+import type { Topic } from "src/topics/types/Topic.type";
 
 type TopicPillProps = {
-  id: string;
-  name: string;
+  topic: Topic;
   size?: "small";
   closable?: boolean;
-  isSelected: boolean;
+  isSelected?: boolean;
   onClick?: (id: string) => void;
 };
 
 export const TopicPill = ({
-  id,
-  name,
+  topic,
   size = "small",
   closable = false,
-  isSelected,
+  isSelected = false,
   onClick,
 }: TopicPillProps): JSX.Element => {
-  const [closeBtnVisible, setCloseBtnVisible] = useState<boolean>(false);
+  const [closeButtonVisible, setCloseButtonVisible] = useState<boolean>(false);
+
+  const topicCustomisationColour = customisationColours.find(
+    (colour) => colour.name === topic.colour
+  );
+
+  const topicButtonColour = topicCustomisationColour
+    ? {
+        border: topicCustomisationColour.primary,
+        background: topicCustomisationColour.secondary,
+        text: "stone-700",
+      }
+    : { border: "stone-700", background: "stone-300", text: "stone-700" };
 
   return (
     <div
-      onMouseOver={() => setCloseBtnVisible(true)}
-      onMouseOut={() => setCloseBtnVisible(false)}
+      onMouseOver={() => setCloseButtonVisible(true)}
+      onMouseOut={() => setCloseButtonVisible(false)}
     >
       {closable ? (
         <Button
-          styleType="block-outline"
+          styleType="block"
+          colour={topicButtonColour}
           size={size}
-          icon={closable && closeBtnVisible ? "close" : ""}
+          icon={closable && closeButtonVisible ? "close" : ""}
           iconSize={size}
-          onClick={() => onClick && onClick(id)}
+          onClick={() => onClick && onClick(topic.id)}
         >
-          {name}
+          {topic.name}
         </Button>
       ) : (
         <Toggle
           styleType="block"
+          colour={topicButtonColour}
           size={size}
           iconSize={size}
-          onClick={() => onClick && onClick(id)}
+          onClick={() => onClick && onClick(topic.id)}
           isToggled={isSelected}
         >
-          {name}
+          {topic.name}
         </Toggle>
       )}
     </div>
