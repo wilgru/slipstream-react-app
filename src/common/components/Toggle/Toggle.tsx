@@ -20,9 +20,9 @@ enum ToggleStyleType {
 }
 
 enum ToggleSize {
-  "small" = "px-2 py-1",
-  "medium" = "px-4 py-1",
-  "large" = "px-6 py-2",
+  "small" = "px-2 py-1 text-xs font-normal",
+  "medium" = "px-3 py-1 text-sm font-medium",
+  "large" = "px-6 py-2 text-sm",
 }
 
 enum ToggleWidth {
