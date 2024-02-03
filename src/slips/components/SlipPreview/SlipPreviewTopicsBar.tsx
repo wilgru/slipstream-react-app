@@ -94,7 +94,6 @@ export const SlipPreviewTopicsBar = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
         case "Enter":
-          e.preventDefault();
           handleEnterKeyDown(topics, addTopicInput, onSubmitAddTopic);
           break;
         case "Escape":

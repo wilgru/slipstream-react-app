@@ -20,5 +20,6 @@ export const handleEnterKeyDown = (
     onSubmitAddTopic({
       name: topicToAdd,
       id: CREATE_TOPIC_ID,
+      colour: "default",
     });
 };

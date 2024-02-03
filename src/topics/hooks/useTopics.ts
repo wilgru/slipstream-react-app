@@ -17,7 +17,7 @@ const mapTopic = (topic: RecordModel): Topic => {
 
 export const useTopics = () => {
   const { currentUser } = useAuthentication();
-  const { topics, setTopics } = useContext(context);
+  const { setSlips, topics, setTopics } = useContext(context);
 
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -66,6 +66,22 @@ export const useTopics = () => {
           : topic
       );
     });
+
+    // update topic for any slips
+    setSlips((currentSlips) =>
+      currentSlips.map((currentSlip) =>
+        currentSlip.topics.find((topic) => topic.id === topicId)
+          ? {
+              ...currentSlip,
+              topics: currentSlip.topics.map((topic) =>
+                topic.id === topicId
+                  ? mapTopic({ ...updatedTopic, totalSlips: topic.slipCount })
+                  : topic
+              ),
+            }
+          : currentSlip
+      )
+    );
   };
 
   const deleteTopic = async (topicId: string): Promise<void> => {
@@ -74,6 +90,20 @@ export const useTopics = () => {
     if (topicsRes) {
       setTopics((currentTopic) =>
         currentTopic.filter((topic) => topic.id !== topicId)
+      );
+
+      // remove topic from any slips
+      setSlips((currentSlips) =>
+        currentSlips.map((currentSlip) =>
+          currentSlip.topics.find((topic) => topic.id === topicId)
+            ? {
+                ...currentSlip,
+                topics: currentSlip.topics.filter(
+                  (topic) => topic.id !== topicId
+                ),
+              }
+            : currentSlip
+        )
       );
     }
   };
