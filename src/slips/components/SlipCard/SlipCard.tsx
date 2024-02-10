@@ -4,19 +4,14 @@ import FlagIcon from "src/common/icons/flag.svg?react";
 import PinIcon from "src/common/icons/pin.svg?react";
 import type { Slip } from "src/slips/types/Slip.type";
 
-type SlipPreviewProps = {
+type SlipCardProps = {
   slip: Slip;
   isFocused: boolean;
   onClick: (slipId: string) => void;
   onDblClick: (slipId: string) => void;
 };
 
-const SlipCard = ({
-  slip,
-  isFocused,
-  onClick,
-  onDblClick,
-}: SlipPreviewProps) => {
+const SlipCard = ({ slip, isFocused, onClick, onDblClick }: SlipCardProps) => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
   const [contentString, setContentString] = useState<string | null>();
 

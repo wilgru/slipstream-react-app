@@ -1,5 +1,5 @@
 import { CompareCleanStrings } from "src/common/utils/CompareCleanStrings";
-import { CREATE_TOPIC_ID } from "../SlipPreviewTopicsBar";
+import { CREATE_TOPIC_ID } from "../SlipEditorTopicsBar";
 import type { Topic } from "src/topics/types/Topic.type";
 
 export const handleEnterKeyDown = (

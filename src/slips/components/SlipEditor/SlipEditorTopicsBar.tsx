@@ -6,11 +6,11 @@ import {
 import { CompareCleanStrings } from "src/common/utils/CompareCleanStrings";
 import { TopicPill } from "src/topics/components/TopicPill/TopicPill";
 import { handleEnterKeyDown } from "./utils/handleEnterKeyDown";
-import type { AnyKeyValueOfSlip } from "./SlipPreview";
+import type { AnyKeyValueOfSlip } from "./SlipEditor";
 import type { Slip } from "src/slips/types/Slip.type";
 import type { Topic } from "src/topics/types/Topic.type";
 
-type SlipPreviewTopicsBarProps = {
+type SlipEditorTopicsBarProps = {
   editableSlip: Slip;
   topics: Topic[];
   onClickAddTopic: () => void;
@@ -24,14 +24,14 @@ type SlipPreviewTopicsBarProps = {
 
 export const CREATE_TOPIC_ID = "CREATE_TOPIC";
 
-export const SlipPreviewTopicsBar = ({
+export const SlipEditorTopicsBar = ({
   editableSlip,
   topics,
   onClickAddTopic,
   onBlurAddTopic,
   onChangeSlipInternal,
   createTopic,
-}: SlipPreviewTopicsBarProps) => {
+}: SlipEditorTopicsBarProps) => {
   const [addTopicInput, setAddTopicInput] = useState<string | undefined>(
     undefined
   );
