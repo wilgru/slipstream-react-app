@@ -1,67 +1,56 @@
 import { debounce } from "debounce";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import SlipCard from "src/slips/components/SlipCard/SlipCard";
 import SlipPreview from "src/slips/components/SlipPreview/SlipPreview";
+import { useSlips } from "src/slips/hooks/useSlips";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 import type { Slip } from "src/slips/types/Slip.type";
 
-type GalleryViewProps = {
-  slips: Slip[];
-  initialOpenSlipId: string | null;
-  updateSlip: (slipId: string, updateSlipData: Slip) => void;
-  deleteSlip: (slipId: string, hardDelete: boolean) => void;
-  deleteEmptySlips: () => void;
-};
+const GalleryView = () => {
+  const { slips, deleteSlip, updateSlip, deleteEmptySlips } = useSlips();
 
-const GalleryView = ({
-  slips,
-  initialOpenSlipId,
-  updateSlip,
-  deleteSlip,
-  deleteEmptySlips,
-}: GalleryViewProps) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null);
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
   const [editMode, setEditMode] = useState(false);
-  const [sortedSlips, setSortedSlips] = useState<Slip[]>([]);
 
   const onClickSlip = (clickedSlipId: string) => {
-    setFocusedSlipId(clickedSlipId);
+    if (searchParams.has("openSlip")) {
+      searchParams.set("openSlip", clickedSlipId);
+      setSearchParams(searchParams);
 
-    setOpenSlip((currentOpenSlip) => {
-      if (currentOpenSlip) {
-        return (
-          sortedSlips.find((sortedSlip) => sortedSlip.id === clickedSlipId) ??
-          null
-        );
-      } else {
-        return currentOpenSlip;
-      }
-    });
+      setFocusedSlipId(clickedSlipId);
+
+      return;
+    }
+
+    setFocusedSlipId(clickedSlipId);
   };
 
   const onDblClickSlip = (dblClickedSlipId: string) => {
-    setOpenSlip((currentOpenSlip) => {
-      if (currentOpenSlip?.id === dblClickedSlipId) {
-        setFocusedSlipId(null);
-        return null;
-      } else {
-        return (
-          sortedSlips.find(
-            (sortedSlip) => sortedSlip.id === dblClickedSlipId
-          ) ?? null
-        );
-      }
-    });
+    if (searchParams.has("openSlip")) {
+      searchParams.delete("openSlip");
+      setSearchParams(searchParams);
+
+      setFocusedSlipId(null);
+
+      return;
+    }
+
+    searchParams.set("openSlip", dblClickedSlipId);
+    setSearchParams(searchParams);
+
+    setFocusedSlipId(dblClickedSlipId);
   };
 
   const onClickEditableField = () => {
     setEditMode(true);
   };
 
-  const onBlurSlipEditableField = () => {
+  const onBlurEditableField = () => {
     setEditMode(false);
   };
 
@@ -69,54 +58,71 @@ const GalleryView = ({
     openSlip && updateSlip(openSlip.id, newSlipData);
 
     if (newSlipData.deleted && openSlip?.id === newSlipData.id) {
-      setOpenSlip(null);
+      searchParams.delete("openSlip");
+      setSearchParams(searchParams);
     }
   }, 500);
 
   const onDeleteSlip = async (slipId: string) => {
-    deleteSlip(slipId, false);
+    searchParams.delete("openSlip");
+    setSearchParams(searchParams);
 
-    setOpenSlip(null);
+    deleteSlip(slipId, false);
     setFocusedSlipId(null);
   };
 
   useEffect(() => {
-    const foundInitialOpenSlip = sortedSlips.find(
-      (slip) => slip.id === initialOpenSlipId
-    );
+    const openSlipId = searchParams.get("openSlip");
 
-    if (initialOpenSlipId && foundInitialOpenSlip) {
-      setOpenSlip(foundInitialOpenSlip);
-      setFocusedSlipId(initialOpenSlipId);
+    if (!openSlipId) {
+      setOpenSlip(null);
+      setFocusedSlipId(null);
+      return;
     }
-  }, [initialOpenSlipId, sortedSlips]);
 
-  // TODO: handle sort in useSlips, exposes a sort(sortBy, direction) callback
-  useEffect(() => {
-    setSortedSlips(slips.sort());
-  }, [slips]);
+    const foundOpenSlip = slips.find((slip) => slip.id === openSlipId);
+
+    if (foundOpenSlip) {
+      setOpenSlip(foundOpenSlip);
+      setFocusedSlipId(foundOpenSlip.id);
+    }
+  }, [searchParams, slips]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (editMode) return;
+      if (editMode) {
+        return;
+      }
 
       switch (e.key) {
         case "ArrowLeft":
           e.preventDefault();
-          handleArrowLeftKeyDown(setFocusedSlipId, setOpenSlip, sortedSlips);
+          handleArrowLeftKeyDown(
+            setFocusedSlipId,
+            searchParams,
+            setSearchParams,
+            slips
+          );
           break;
 
         case "ArrowRight":
           e.preventDefault();
-          handleArrowRightKeyDown(setFocusedSlipId, setOpenSlip, sortedSlips);
+          handleArrowRightKeyDown(
+            setFocusedSlipId,
+            searchParams,
+            setSearchParams,
+            slips
+          );
           break;
 
         case " ": // Spacebar key
-          handleSpaceBarKeyDown(setOpenSlip, sortedSlips, focusedSlipId);
+          handleSpaceBarKeyDown(searchParams, setSearchParams, focusedSlipId);
           break;
 
         case "Escape":
-          setOpenSlip(null);
+          searchParams.delete("openSlip");
+          setSearchParams(searchParams);
+
           setFocusedSlipId(null);
           deleteEmptySlips();
           break;
@@ -128,7 +134,14 @@ const GalleryView = ({
     return () => {
       document.removeEventListener("keydown", handleKeyDown, true);
     };
-  }, [focusedSlipId, sortedSlips, editMode]);
+  }, [
+    focusedSlipId,
+    slips,
+    editMode,
+    setSearchParams,
+    searchParams,
+    deleteEmptySlips,
+  ]);
 
   return (
     <div className="flex flex-col h-full w-full max-w-full p-3 pb-2 gap-2">
@@ -139,7 +152,7 @@ const GalleryView = ({
             : "flex-wrap justify-center"
         } gap-3`}
       >
-        {sortedSlips.map((slip) => (
+        {slips.map((slip) => (
           <SlipCard
             slip={slip}
             isFocused={focusedSlipId ? slip.id === focusedSlipId : false}
@@ -153,7 +166,7 @@ const GalleryView = ({
           slip={openSlip}
           editMode={editMode}
           onClickEditableField={onClickEditableField}
-          onBlurEditableField={onBlurSlipEditableField}
+          onBlurEditableField={onBlurEditableField}
           onChangeSlip={onChangeSlip}
           onDeleteSlip={onDeleteSlip}
         />

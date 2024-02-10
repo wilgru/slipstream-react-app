@@ -1,9 +1,11 @@
 import type { Dispatch, SetStateAction } from "react";
+import type { SetURLSearchParams } from "react-router-dom";
 import type { Slip } from "src/slips/types/Slip.type";
 
 export const handleArrowLeftKeyDown = (
   setFocusedSlipId: Dispatch<SetStateAction<string | null>>,
-  setOpenSlip: Dispatch<SetStateAction<Slip | null>>,
+  searchParams: URLSearchParams,
+  setSearchParams: SetURLSearchParams,
   sortedSlips: Slip[]
 ) => {
   setFocusedSlipId((currentFocusedSlipId) => {
@@ -14,12 +16,13 @@ export const handleArrowLeftKeyDown = (
     const nextSlipsIndex =
       currentFocusedSlipIndex - 1 < 0 ? 0 : currentFocusedSlipIndex - 1;
 
-    const newSlip = sortedSlips[nextSlipsIndex];
+    const nextSlip = sortedSlips[nextSlipsIndex];
 
-    setOpenSlip((currentOpenSlip) => {
-      return currentOpenSlip ? newSlip : currentOpenSlip;
-    });
+    if (searchParams.has("openSlip")) {
+      searchParams.set("openSlip", nextSlip.id);
+      setSearchParams(searchParams);
+    }
 
-    return newSlip.id;
+    return nextSlip.id;
   });
 };

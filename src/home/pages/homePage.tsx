@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
 import GalleryView from "src/home/components/GalleryView/GalleryView";
 import { Sidebar } from "src/home/components/Sidebar/Sidebar";
@@ -11,14 +11,12 @@ import { useTopics } from "src/topics/hooks/useTopics";
 function HomePage() {
   const navigate = useNavigate();
   const { currentUser } = useAuthentication();
-  const { slips, createSlip, deleteSlip, updateSlip, deleteEmptySlips } =
-    useSlips();
   const { topics } = useTopics();
+  const { createSlip } = useSlips();
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const [showSidebar, setShowSidebar] = useState(false);
-  const [initialOpenSlipId, setInitialOpenSlipId] = useState<string | null>(
-    null
-  );
+
   const sideBarSections = useMemo(
     () => [{ title: "Topics", component: <TopicList topics={topics} /> }],
     [topics]
@@ -26,7 +24,9 @@ function HomePage() {
 
   const onClickNewSlipButton = (): void => {
     const createdSlipId = createSlip();
-    setInitialOpenSlipId(createdSlipId);
+
+    searchParams.set("openSlip", createdSlipId);
+    setSearchParams(searchParams);
   };
 
   const onClickShowSidebarToggle = (): void => {
@@ -47,13 +47,7 @@ function HomePage() {
         />
         <div className="flex flex-row h-full max-w-full">
           {showSidebar && <Sidebar sections={sideBarSections} />}
-          <GalleryView
-            slips={slips}
-            initialOpenSlipId={initialOpenSlipId}
-            updateSlip={updateSlip}
-            deleteSlip={deleteSlip}
-            deleteEmptySlips={deleteEmptySlips}
-          ></GalleryView>
+          <GalleryView />
         </div>
       </div>
     </div>
