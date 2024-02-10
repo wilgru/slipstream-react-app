@@ -12,11 +12,9 @@ function HomePage() {
   const navigate = useNavigate();
   const { currentUser } = useAuthentication();
   const { topics } = useTopics();
-  const { slips, createSlip, deleteSlip, updateSlip, deleteEmptySlips } =
-    useSlips();
+  const { createSlip } = useSlips();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [showSidebar, setShowSidebar] = useState(false);
 
   const sideBarSections = useMemo(
@@ -27,7 +25,8 @@ function HomePage() {
   const onClickNewSlipButton = (): void => {
     const createdSlipId = createSlip();
 
-    setSearchParams({ openSlip: createdSlipId });
+    searchParams.set("openSlip", createdSlipId);
+    setSearchParams(searchParams);
   };
 
   const onClickShowSidebarToggle = (): void => {
@@ -48,12 +47,7 @@ function HomePage() {
         />
         <div className="flex flex-row h-full max-w-full">
           {showSidebar && <Sidebar sections={sideBarSections} />}
-          <GalleryView
-            slips={slips}
-            updateSlip={updateSlip}
-            deleteSlip={deleteSlip}
-            deleteEmptySlips={deleteEmptySlips}
-          ></GalleryView>
+          <GalleryView />
         </div>
       </div>
     </div>

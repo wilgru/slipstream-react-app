@@ -3,27 +3,16 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import SlipCard from "src/slips/components/SlipCard/SlipCard";
 import SlipPreview from "src/slips/components/SlipPreview/SlipPreview";
+import { useSlips } from "src/slips/hooks/useSlips";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 import type { Slip } from "src/slips/types/Slip.type";
 
-type GalleryViewProps = {
-  slips: Slip[];
-  updateSlip: (slipId: string, updateSlipData: Slip) => void;
-  deleteSlip: (slipId: string, hardDelete: boolean) => void;
-  deleteEmptySlips: () => void;
-};
+const GalleryView = () => {
+  const { slips, deleteSlip, updateSlip, deleteEmptySlips } = useSlips();
 
-const GalleryView = ({
-  slips,
-  updateSlip,
-  deleteSlip,
-  deleteEmptySlips,
-}: GalleryViewProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const openSlipId = searchParams.get("openSlip");
-
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null);
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
   const [editMode, setEditMode] = useState(false);
@@ -83,8 +72,11 @@ const GalleryView = ({
   };
 
   useEffect(() => {
+    const openSlipId = searchParams.get("openSlip");
+
     if (!openSlipId) {
       setOpenSlip(null);
+      setFocusedSlipId(null);
       return;
     }
 
@@ -94,7 +86,7 @@ const GalleryView = ({
       setOpenSlip(foundOpenSlip);
       setFocusedSlipId(foundOpenSlip.id);
     }
-  }, [openSlipId, slips]);
+  }, [searchParams, slips]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
