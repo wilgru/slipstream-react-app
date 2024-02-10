@@ -27,7 +27,6 @@ const GalleryView = ({
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null);
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
   const [editMode, setEditMode] = useState(false);
-  const [sortedSlips, setSortedSlips] = useState<Slip[]>([]);
 
   const onClickSlip = (clickedSlipId: string) => {
     if (searchParams.has("openSlip")) {
@@ -89,18 +88,13 @@ const GalleryView = ({
       return;
     }
 
-    const foundOpenSlip = sortedSlips.find((slip) => slip.id === openSlipId);
+    const foundOpenSlip = slips.find((slip) => slip.id === openSlipId);
 
     if (foundOpenSlip) {
       setOpenSlip(foundOpenSlip);
       setFocusedSlipId(foundOpenSlip.id);
     }
-  }, [openSlipId, sortedSlips]);
-
-  // TODO: handle sort in useSlips, exposes a sort(sortBy, direction) callback
-  useEffect(() => {
-    setSortedSlips(slips.sort());
-  }, [slips]);
+  }, [openSlipId, slips]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -115,7 +109,7 @@ const GalleryView = ({
             setFocusedSlipId,
             searchParams,
             setSearchParams,
-            sortedSlips
+            slips
           );
           break;
 
@@ -125,7 +119,7 @@ const GalleryView = ({
             setFocusedSlipId,
             searchParams,
             setSearchParams,
-            sortedSlips
+            slips
           );
           break;
 
@@ -150,7 +144,7 @@ const GalleryView = ({
     };
   }, [
     focusedSlipId,
-    sortedSlips,
+    slips,
     editMode,
     setSearchParams,
     searchParams,
@@ -166,7 +160,7 @@ const GalleryView = ({
             : "flex-wrap justify-center"
         } gap-3`}
       >
-        {sortedSlips.map((slip) => (
+        {slips.map((slip) => (
           <SlipCard
             slip={slip}
             isFocused={focusedSlipId ? slip.id === focusedSlipId : false}
