@@ -2,7 +2,7 @@ import { debounce } from "debounce";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import SlipCard from "src/slips/components/SlipCard/SlipCard";
-import SlipPreview from "src/slips/components/SlipPreview/SlipPreview";
+import SlipEditor from "src/slips/components/SlipEditor/SlipEditor";
 import { useSlips } from "src/slips/hooks/useSlips";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
@@ -162,7 +162,7 @@ const GalleryView = () => {
         ))}
       </div>
       {!!openSlip && (
-        <SlipPreview
+        <SlipEditor
           slip={openSlip}
           editMode={editMode}
           onClickEditableField={onClickEditableField}

@@ -3,12 +3,12 @@ import { Button } from "src/common/components/Button/Button";
 import QuillEditor from "src/common/components/QuillEditor/QuillEditor";
 import { Toggle } from "src/common/components/Toggle/Toggle";
 import { useTopics } from "src/topics/hooks/useTopics";
-import { SlipPreviewTopicsBar } from "./SlipPreviewTopicsBar";
+import { SlipEditorTopicsBar } from "./SlipEditorTopicsBar";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 import type { RangeStatic } from "quill";
 import type { Slip } from "src/slips/types/Slip.type";
 
-type SlipPreviewProps = {
+type SlipEditorProps = {
   slip: Slip;
   editMode: boolean;
   onClickEditableField: () => void;
@@ -25,20 +25,20 @@ export type AnyKeyValueOfSlip = {
   [K in keyof Slip]: { [P in K]: Slip[K] };
 }[keyof Slip];
 
-const SlipPreview = ({
+const SlipEditor = ({
   slip,
   editMode,
   onClickEditableField,
   onBlurEditableField,
   onChangeSlip,
   onDeleteSlip,
-}: SlipPreviewProps) => {
+}: SlipEditorProps) => {
   const { topics, createTopic } = useTopics();
 
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
 
-  const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to preview changes
+  const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to show in the editor changes
 
   const onChangeSlipInternal = (
     changedField: AnyKeyValueOfSlip,
@@ -148,7 +148,7 @@ const SlipPreview = ({
 
       <div className="flex gap-2">
         <Button size="small">+</Button>
-        <SlipPreviewTopicsBar
+        <SlipEditorTopicsBar
           editableSlip={editableSlip}
           topics={topics}
           createTopic={createTopic}
@@ -172,4 +172,4 @@ const SlipPreview = ({
   );
 };
 
-export default SlipPreview;
+export default SlipEditor;
