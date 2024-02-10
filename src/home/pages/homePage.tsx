@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
 import GalleryView from "src/home/components/GalleryView/GalleryView";
 import { Sidebar } from "src/home/components/Sidebar/Sidebar";
@@ -11,14 +11,14 @@ import { useTopics } from "src/topics/hooks/useTopics";
 function HomePage() {
   const navigate = useNavigate();
   const { currentUser } = useAuthentication();
+  const { topics } = useTopics();
   const { slips, createSlip, deleteSlip, updateSlip, deleteEmptySlips } =
     useSlips();
-  const { topics } = useTopics();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_searchParams, setSearchParams] = useSearchParams();
   const [showSidebar, setShowSidebar] = useState(false);
-  const [initialOpenSlipId, setInitialOpenSlipId] = useState<string | null>(
-    null
-  );
+
   const sideBarSections = useMemo(
     () => [{ title: "Topics", component: <TopicList topics={topics} /> }],
     [topics]
@@ -26,7 +26,8 @@ function HomePage() {
 
   const onClickNewSlipButton = (): void => {
     const createdSlipId = createSlip();
-    setInitialOpenSlipId(createdSlipId);
+
+    setSearchParams({ openSlip: createdSlipId });
   };
 
   const onClickShowSidebarToggle = (): void => {
@@ -49,7 +50,6 @@ function HomePage() {
           {showSidebar && <Sidebar sections={sideBarSections} />}
           <GalleryView
             slips={slips}
-            initialOpenSlipId={initialOpenSlipId}
             updateSlip={updateSlip}
             deleteSlip={deleteSlip}
             deleteEmptySlips={deleteEmptySlips}

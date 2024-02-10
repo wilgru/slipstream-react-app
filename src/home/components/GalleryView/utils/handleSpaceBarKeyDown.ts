@@ -1,15 +1,22 @@
-import type { Dispatch, SetStateAction } from "react";
-import type { Slip } from "src/slips/types/Slip.type";
+import type { SetURLSearchParams } from "react-router-dom";
+import type { URLSearchParams } from "url";
 
 export const handleSpaceBarKeyDown = (
-  setOpenSlip: Dispatch<SetStateAction<Slip | null>>,
-  sortedSlips: Slip[],
+  searchParams: URLSearchParams,
+  setSearchParams: SetURLSearchParams,
   focusedSlipId: string | null
 ) => {
-  setOpenSlip((currentOpenSlip) => {
-    const focusedSlip =
-      sortedSlips.find((sortedSlip) => sortedSlip.id === focusedSlipId) ?? null;
+  if (!focusedSlipId) {
+    return;
+  }
 
-    return !currentOpenSlip ? focusedSlip : null;
-  });
+  if (searchParams.has("openSlip")) {
+    searchParams.delete("openSlip");
+    setSearchParams(searchParams);
+
+    return;
+  }
+
+  searchParams.append("openSlip", focusedSlipId);
+  setSearchParams(searchParams);
 };
