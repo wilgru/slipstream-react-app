@@ -25,8 +25,10 @@ export const Toolbar = ({
   const settingsDropdownOptions: DropdownMenuOption[] = [
     {
       name: "Log out",
-      value: "Log out",
-      id: "hello",
+      action: () => {
+        logout();
+        navigate("/login");
+      },
     },
   ];
 
@@ -36,24 +38,12 @@ export const Toolbar = ({
     );
   };
 
-  const onSelectSettingsOption = (selectedOption: DropdownMenuOption) => {
-    console.log(selectedOption);
-
-    switch (selectedOption.value) {
-      case "Log out":
-        logout();
-        navigate("/login");
-        break;
-    }
-  };
-
   return (
     <div className="flex flex-row justify-between w-full p-3 bg-stone-100 border border-b-stone-700">
       <div className="flex flex-row gap-3">
         <DropdownMenu
           options={settingsDropdownOptions}
           visible={showSettingDropdownMenu}
-          onSelectOption={onSelectSettingsOption}
         >
           <Button onClick={onClickSettingsBtn}>Settings</Button>
         </DropdownMenu>

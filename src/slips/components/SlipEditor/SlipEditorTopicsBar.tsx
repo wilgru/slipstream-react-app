@@ -22,8 +22,6 @@ type SlipEditorTopicsBarProps = {
   createTopic: (topic: string) => Promise<Topic>;
 };
 
-export const CREATE_TOPIC_ID = "CREATE_TOPIC";
-
 export const SlipEditorTopicsBar = ({
   editableSlip,
   topics,
@@ -38,36 +36,7 @@ export const SlipEditorTopicsBar = ({
   const [addTopicAutocompleteOptions, setAddTopicAutocompleteOptions] =
     useState<DropdownMenuOption[]>([]);
 
-  const onChangeAddTopic = async (input: string) => {
-    setAddTopicInput(input);
-
-    let autocompleteOptions: DropdownMenuOption[] = [];
-
-    const similarTopicsFound = topics.filter((topic) =>
-      CompareCleanStrings(topic.name, input, "like")
-    );
-
-    autocompleteOptions = similarTopicsFound.map((topic) => ({
-      ...topic,
-      value: topic.name,
-    }));
-
-    const exactTopicFound = topics.find((topic) =>
-      CompareCleanStrings(topic.name, input)
-    );
-
-    if (!exactTopicFound) {
-      autocompleteOptions.push({
-        name: `Create '${input}'`,
-        value: input,
-        id: CREATE_TOPIC_ID,
-      });
-    }
-
-    setAddTopicAutocompleteOptions(autocompleteOptions);
-  };
-
-  const onSubmitAddTopic = async (topicToAdd: Topic) => {
+  const onSelectExistingTopic = async (topicToAdd: Topic) => {
     // if topic already added to the slip
     if (editableSlip.topics.some((topic) => topic.id === topicToAdd.id)) {
       setAddTopicInput(undefined);
@@ -81,20 +50,60 @@ export const SlipEditorTopicsBar = ({
       setAddTopicInput(undefined);
       return;
     }
+  };
 
-    if (topicToAdd.id === CREATE_TOPIC_ID && topicToAdd.name) {
-      const newTopic = await createTopic(topicToAdd.name);
-      onChangeSlipInternal({ topics: [...editableSlip.topics, newTopic] });
-      setAddTopicInput(undefined);
+  const onSelectCreateNewTopic = async (topicToCreate: string) => {
+    const newTopic = await createTopic(topicToCreate);
+    onChangeSlipInternal({ topics: [...editableSlip.topics, newTopic] });
+    setAddTopicInput(undefined);
+  };
+
+  const onChangeAddTopic = async (input: string) => {
+    if (input === "\n") {
       return;
     }
+
+    setAddTopicInput(input);
+
+    let autocompleteOptions: DropdownMenuOption[] = [];
+
+    const similarTopicsFound = topics.filter((topic) =>
+      CompareCleanStrings(topic.name, input, "like")
+    );
+
+    autocompleteOptions = similarTopicsFound.map((topic) => ({
+      name: topic.name,
+      action: () => {
+        onSelectExistingTopic(topic);
+      },
+    }));
+
+    const exactTopicFound = topics.find((topic) =>
+      CompareCleanStrings(topic.name, input)
+    );
+
+    if (!exactTopicFound) {
+      autocompleteOptions.push({
+        name: `Create '${input}'`,
+        action: () => {
+          onSelectCreateNewTopic(input);
+        },
+      });
+    }
+
+    setAddTopicAutocompleteOptions(autocompleteOptions);
   };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
         case "Enter":
-          handleEnterKeyDown(topics, addTopicInput, onSubmitAddTopic);
+          handleEnterKeyDown(
+            topics,
+            addTopicInput,
+            onSelectExistingTopic,
+            onSelectCreateNewTopic
+          );
           break;
         case "Escape":
           setAddTopicInput(undefined);
@@ -107,7 +116,7 @@ export const SlipEditorTopicsBar = ({
     return () => {
       document.removeEventListener("keydown", handleKeyDown, true);
     };
-  }, [addTopicInput, topics]);
+  }, [addTopicInput, onSelectCreateNewTopic, onSelectExistingTopic, topics]);
 
   return (
     <div className="flex flex-row gap-2">
@@ -130,13 +139,6 @@ export const SlipEditorTopicsBar = ({
       <DropdownMenu
         options={addTopicAutocompleteOptions}
         visible={!!addTopicInput && !!addTopicAutocompleteOptions.length}
-        onSelectOption={(selectedTopic) => {
-          onSubmitAddTopic({
-            name: selectedTopic.value,
-            id: selectedTopic.id,
-            colour: "default",
-          });
-        }}
       >
         <div className="flex justify-center h-full">
           <textarea

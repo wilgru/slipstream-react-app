@@ -1,30 +1,26 @@
-export type DropdownMenuOption = { name: string; value: string; id: string };
+export type DropdownMenuOption = { name: string; action: () => void };
 
 type DropdownMenuProps = {
   children: JSX.Element;
   options: DropdownMenuOption[];
   visible: boolean;
-  onSelectOption: (selectedOption: DropdownMenuOption) => void;
 };
 
 export const DropdownMenu = ({
   children,
   options,
   visible,
-  onSelectOption,
 }: DropdownMenuProps) => {
   return (
     <div className="relative">
       {children}
       {visible && (
-        <div className="absolute z-10 left-0 top-6 flex flex-col justify-start text-xs bg-stone-100 border border-orange-500">
-          {options.map((option) => (
+        <div className="absolute z-10 left-0 flex flex-col justify-start text-xs bg-stone-100 border border-orange-500">
+          {options.map((option, index) => (
             <button
-              key={option.id}
+              key={index}
               className="p-1 text-left text-stone-700 hover:bg-stone-700 hover:text-stone-100"
-              onClick={() => {
-                onSelectOption(option);
-              }}
+              onClick={option.action}
             >
               {option.name}
             </button>
