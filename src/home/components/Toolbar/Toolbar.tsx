@@ -20,7 +20,8 @@ export const Toolbar = ({
   const { logout } = useAuthentication();
   const navigate = useNavigate();
 
-  const [showSettingDropdownMenu, setShowSettingDropdownMenu] = useState(false);
+  const [showSettingsDropdownMenu, setShowSettingsDropdownMenu] =
+    useState(false);
 
   const settingsDropdownOptions: DropdownMenuOption[] = [
     {
@@ -33,8 +34,8 @@ export const Toolbar = ({
   ];
 
   const onClickSettingsBtn = () => {
-    setShowSettingDropdownMenu(
-      (currentShowSettingDropdownMenu) => !currentShowSettingDropdownMenu
+    setShowSettingsDropdownMenu(
+      (currentShowSettingsDropdownMenu) => !currentShowSettingsDropdownMenu
     );
   };
 
@@ -43,7 +44,8 @@ export const Toolbar = ({
       <div className="flex flex-row gap-3">
         <DropdownMenu
           options={settingsDropdownOptions}
-          visible={showSettingDropdownMenu}
+          visible={showSettingsDropdownMenu}
+          setVisible={setShowSettingsDropdownMenu}
         >
           <Button onClick={onClickSettingsBtn}>Settings</Button>
         </DropdownMenu>

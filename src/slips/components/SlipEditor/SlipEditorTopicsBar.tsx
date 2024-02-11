@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   DropdownMenu,
   type DropdownMenuOption,
@@ -30,33 +30,41 @@ export const SlipEditorTopicsBar = ({
   onChangeSlipInternal,
   createTopic,
 }: SlipEditorTopicsBarProps) => {
+  const [showAutocompleteDropdownMenu, setShowAutocompleteDropdownMenu] =
+    useState(false);
   const [addTopicInput, setAddTopicInput] = useState<string | undefined>(
     undefined
   );
   const [addTopicAutocompleteOptions, setAddTopicAutocompleteOptions] =
     useState<DropdownMenuOption[]>([]);
 
-  const onSelectExistingTopic = async (topicToAdd: Topic) => {
-    // if topic already added to the slip
-    if (editableSlip.topics.some((topic) => topic.id === topicToAdd.id)) {
-      setAddTopicInput(undefined);
-      return;
-    }
+  const onSelectExistingTopic = useCallback(
+    async (topicToAdd: Topic) => {
+      // if topic already added to the slip
+      if (editableSlip.topics.some((topic) => topic.id === topicToAdd.id)) {
+        setAddTopicInput(undefined);
+        return;
+      }
 
-    if (topics.find((topic) => topic.id === topicToAdd.id)) {
-      onChangeSlipInternal({
-        topics: [...editableSlip.topics, topicToAdd],
-      });
-      setAddTopicInput(undefined);
-      return;
-    }
-  };
+      if (topics.find((topic) => topic.id === topicToAdd.id)) {
+        onChangeSlipInternal({
+          topics: [...editableSlip.topics, topicToAdd],
+        });
+        setAddTopicInput(undefined);
+        return;
+      }
+    },
+    [editableSlip.topics, onChangeSlipInternal, topics]
+  );
 
-  const onSelectCreateNewTopic = async (topicToCreate: string) => {
-    const newTopic = await createTopic(topicToCreate);
-    onChangeSlipInternal({ topics: [...editableSlip.topics, newTopic] });
-    setAddTopicInput(undefined);
-  };
+  const onSelectCreateNewTopic = useCallback(
+    async (topicToCreate: string) => {
+      const newTopic = await createTopic(topicToCreate);
+      onChangeSlipInternal({ topics: [...editableSlip.topics, newTopic] });
+      setAddTopicInput(undefined);
+    },
+    [createTopic, editableSlip.topics, onChangeSlipInternal]
+  );
 
   const onChangeAddTopic = async (input: string) => {
     if (input === "\n") {
@@ -118,6 +126,12 @@ export const SlipEditorTopicsBar = ({
     };
   }, [addTopicInput, onSelectCreateNewTopic, onSelectExistingTopic, topics]);
 
+  useEffect(() => {
+    setShowAutocompleteDropdownMenu(
+      !!addTopicInput && !!addTopicAutocompleteOptions.length
+    );
+  }, [addTopicAutocompleteOptions.length, addTopicInput]);
+
   return (
     <div className="flex flex-row gap-2">
       {editableSlip.topics.map((topic) => {
@@ -138,7 +152,8 @@ export const SlipEditorTopicsBar = ({
 
       <DropdownMenu
         options={addTopicAutocompleteOptions}
-        visible={!!addTopicInput && !!addTopicAutocompleteOptions.length}
+        visible={showAutocompleteDropdownMenu}
+        setVisible={setShowAutocompleteDropdownMenu}
       >
         <div className="flex justify-center h-full">
           <textarea
