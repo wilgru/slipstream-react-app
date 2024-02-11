@@ -54,7 +54,7 @@ export const TopicListItem = ({
             />
             <Button
               styleType="icon"
-              icon="close"
+              icon="bin"
               iconSize="small"
               onClick={() => onClickDelete(topic)}
             />

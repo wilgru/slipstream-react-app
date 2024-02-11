@@ -1,30 +1,60 @@
-export type DropdownMenuOption = { name: string; value: string; id: string };
+import { useEffect, useRef } from "react";
+
+export type DropdownMenuOption = { name: string; action: () => void };
 
 type DropdownMenuProps = {
   children: JSX.Element;
   options: DropdownMenuOption[];
   visible: boolean;
-  onSelectOption: (selectedOption: DropdownMenuOption) => void;
+  setVisible: (isVisible: boolean) => void;
 };
 
 export const DropdownMenu = ({
   children,
   options,
   visible,
-  onSelectOption,
+  setVisible,
 }: DropdownMenuProps) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const dropdownMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        wrapperRef.current.contains(event.target as Node)
+      ) {
+        return;
+      }
+
+      if (
+        dropdownMenuRef.current &&
+        !dropdownMenuRef.current.contains(event.target as Node)
+      ) {
+        setVisible(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownMenuRef, setVisible]);
+
   return (
-    <div className="relative">
+    <div ref={wrapperRef} className="relative">
       {children}
       {visible && (
-        <div className="absolute z-10 left-0 top-6 flex flex-col justify-start text-xs bg-stone-100 border border-orange-500">
-          {options.map((option) => (
+        <div
+          ref={dropdownMenuRef}
+          className="absolute z-10 left-0 flex flex-col justify-start text-xs bg-stone-100 border border-orange-500"
+        >
+          {options.map((option, index) => (
             <button
-              key={option.id}
+              key={index}
               className="p-1 text-left text-stone-700 hover:bg-stone-700 hover:text-stone-100"
-              onClick={() => {
-                onSelectOption(option);
-              }}
+              onClick={option.action}
             >
               {option.name}
             </button>
