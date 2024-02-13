@@ -158,7 +158,7 @@ export const SlipEditorTopicsBar = ({
         <div className="flex justify-center h-full">
           <textarea
             value={addTopicInput ?? ""}
-            placeholder="Add topic..."
+            placeholder="+ Add topic"
             onClick={onClickAddTopic}
             onBlur={onBlurAddTopic}
             onChange={(e) => onChangeAddTopic(e.target.value)}

@@ -120,34 +120,40 @@ const SlipEditor = ({
         </div>
 
         <div className=" flex flex-row gap-2">
-          <Toggle
-            styleType="icon"
-            icon="pin"
-            iconToggledOnColour="red-500"
-            isToggled={editableSlip.isPinned}
-            onClick={() =>
-              onChangeSlipInternal({ isPinned: !editableSlip.isPinned }, true)
-            }
-          />
-          <Toggle
-            styleType="icon"
-            icon="flag"
-            iconToggledOnColour="orange-500"
-            isToggled={editableSlip.isFlagged}
-            onClick={() =>
-              onChangeSlipInternal({ isFlagged: !editableSlip.isFlagged }, true)
-            }
-          />
           <Button
             styleType="icon"
             icon="bin"
             onClick={() => onDeleteSlip(editableSlip.id)}
-          ></Button>
+          />
+          <Button styleType="icon" icon="close" onClick={() => {}} />
         </div>
       </div>
 
       <div className="flex gap-2">
-        <Button size="small">+</Button>
+        <Toggle
+          styleType="icon"
+          icon="pin"
+          iconSize="medium"
+          iconToggledOnColour="red-500"
+          isToggled={editableSlip.isPinned}
+          onClick={() =>
+            onChangeSlipInternal({ isPinned: !editableSlip.isPinned }, true)
+          }
+        />
+
+        <Toggle
+          styleType="icon"
+          icon="flag"
+          iconSize="medium"
+          iconToggledOnColour="orange-500"
+          isToggled={editableSlip.isFlagged}
+          onClick={() =>
+            onChangeSlipInternal({ isFlagged: !editableSlip.isFlagged }, true)
+          }
+        />
+
+        <Button size="small">No Type</Button>
+
         <SlipEditorTopicsBar
           editableSlip={editableSlip}
           topics={topics}
