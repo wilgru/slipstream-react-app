@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { getIcon } from "src/common/utils/getIcon";
+import { Icon } from "src/common/components/Icon/Icon";
 
 type ButtonProps = {
   children?: string | JSX.Element;
@@ -45,7 +44,7 @@ enum ButtonIconHoverColour {
   // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
   "block-outline" = "stone-100",
   "link" = "orange-700",
-  "icon" = "",
+  "icon" = "stone-800",
 }
 
 export const Button = ({
@@ -61,8 +60,6 @@ export const Button = ({
   disabled = false,
   onClick,
 }: ButtonProps) => {
-  const [hovered, setHovered] = useState<boolean>(false);
-
   const buttonBaseStyle =
     "flex items-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
   const buttonStyleType = ButtonStyleType[styleType];
@@ -82,28 +79,21 @@ export const Button = ({
     buttonSize,
   ].join(" ");
 
-  const buttonIcon = icon
-    ? getIcon(icon, iconSize, ButtonIconColour[styleType])
-    : undefined;
-
-  const hoveredButtonIcon = icon
-    ? getIcon(
-        icon,
-        iconSize,
-        iconHoverColour || ButtonIconHoverColour[styleType]
-      )
-    : undefined;
-
   return (
     <button
       type={type}
       className={buttonStyles}
       disabled={disabled}
       onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
     >
-      {hovered ? hoveredButtonIcon : buttonIcon}
+      {icon && (
+        <Icon
+          iconName={icon}
+          size={iconSize}
+          colour={ButtonIconColour[styleType]}
+          hoverColour={iconHoverColour || ButtonIconHoverColour[styleType]}
+        />
+      )}
       {children}
     </button>
   );

@@ -1,4 +1,4 @@
-import { getIcon } from "src/common/utils/getIcon";
+import { Icon } from "src/common/components/Icon/Icon";
 
 type ToggleProps = {
   children?: string | JSX.Element;
@@ -68,15 +68,6 @@ export const Toggle = ({
     isToggled ? toggleToggledOnColour : toggleToggledOffColour,
   ].join(" ");
 
-  const toggleIcon = icon
-    ? getIcon(
-        icon,
-        iconSize === "large" ? "medium" : iconSize, // TODO: support large size properly
-        isToggled ? toggleToggledOnColour : toggleToggledOffColour,
-        isToggled ? toggleToggledOffColour : toggleToggledOnColour
-      )
-    : undefined;
-
   return (
     <button
       type="button"
@@ -84,7 +75,14 @@ export const Toggle = ({
       disabled={disabled}
       onClick={onClick}
     >
-      {toggleIcon}
+      {icon && (
+        <Icon
+          iconName={icon}
+          size={iconSize}
+          colour={isToggled ? toggleToggledOnColour : toggleToggledOffColour}
+          hoverColour="stone-800"
+        />
+      )}
       {children}
     </button>
   );
