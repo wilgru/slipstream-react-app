@@ -1,7 +1,6 @@
 import Delta from "quill-delta";
 import { useEffect, useState } from "react";
-import FlagIcon from "src/common/icons/flag.svg?react";
-import PinIcon from "src/common/icons/pin.svg?react";
+import { Icon } from "src/common/components/Icon/Icon";
 import type { Slip } from "src/slips/types/Slip.type";
 
 type SlipCardProps = {
@@ -47,13 +46,9 @@ const SlipCard = ({ slip, isFocused, onClick, onDblClick }: SlipCardProps) => {
         isFocused ? " border border-orange-500" : "border border-stone-700"
       }`}
     >
-      <div className="absolute flex flex-row justify-end items-end w-full h-full">
-        {slip.isPinned && (
-          <PinIcon className="h-8 fill-red-500 stroke-stone-100" />
-        )}
-        {slip.isFlagged && (
-          <FlagIcon className="h-8 fill-orange-500 stroke-stone-100" />
-        )}
+      <div className="absolute flex flex-row justify-end items-end pb-1 pr-0.5 w-full h-full">
+        {slip.isPinned && <Icon iconName={"pin"} colour="red-500" />}
+        {slip.isFlagged && <Icon iconName={"flag"} colour="orange-500" />}
       </div>
 
       <div className="flex flex-col px-2 pt-2 h-full">
