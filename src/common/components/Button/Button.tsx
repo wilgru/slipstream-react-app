@@ -1,4 +1,4 @@
-import { Icon } from "../Icon/Icon";
+import { Icon } from "src/common/components/Icon/Icon";
 
 type ButtonProps = {
   children?: string | JSX.Element;
