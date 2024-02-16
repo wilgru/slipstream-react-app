@@ -16,9 +16,9 @@ type IconProps = {
 };
 
 enum IconSize {
-  "small" = "h-4",
-  "medium" = "h-6",
-  "large" = "h-8",
+  "small" = "h-3",
+  "medium" = "h-5",
+  "large" = "h-7",
 }
 
 const Icon = ({
