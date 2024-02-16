@@ -158,14 +158,12 @@ export const SlipEditorTopicsBar = ({
         <div className="flex justify-center h-full">
           <textarea
             value={addTopicInput ?? ""}
-            placeholder="+ Add topic"
+            placeholder="+ add topic"
             onClick={onClickAddTopic}
             onBlur={onBlurAddTopic}
             onChange={(e) => onChangeAddTopic(e.target.value)}
             className="text-xs h-4 my-auto overflow-y-hidden bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
-          >
-            add topic...
-          </textarea>
+          />
         </div>
       </DropdownMenu>
     </div>
