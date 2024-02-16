@@ -71,12 +71,19 @@ const GalleryView = () => {
     setFocusedSlipId(null);
   };
 
+  const onCloseSlip = async () => {
+    searchParams.delete("openSlip");
+    setSearchParams(searchParams);
+
+    setOpenSlip(null);
+    setFocusedSlipId(null);
+  };
+
   useEffect(() => {
     const openSlipId = searchParams.get("openSlip");
 
     if (!openSlipId) {
       setOpenSlip(null);
-      setFocusedSlipId(null);
       return;
     }
 
@@ -169,6 +176,7 @@ const GalleryView = () => {
           onBlurEditableField={onBlurEditableField}
           onChangeSlip={onChangeSlip}
           onDeleteSlip={onDeleteSlip}
+          onCloseSlip={onCloseSlip}
         />
       )}
     </div>

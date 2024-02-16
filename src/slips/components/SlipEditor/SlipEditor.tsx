@@ -21,6 +21,7 @@ type SlipEditorProps = {
     flush(): void;
   };
   onDeleteSlip: (slipId: string) => void;
+  onCloseSlip: () => void;
 };
 
 export type AnyKeyValueOfSlip = {
@@ -34,6 +35,7 @@ const SlipEditor = ({
   onBlurEditableField,
   onChangeSlip,
   onDeleteSlip,
+  onCloseSlip,
 }: SlipEditorProps) => {
   const { topics, createTopic } = useTopics();
 
@@ -150,7 +152,7 @@ const SlipEditor = ({
                 }
               />
             </DropdownMenu>
-            <Button styleType="icon" icon="close" onClick={() => {}} />
+            <Button styleType="icon" icon="close" onClick={onCloseSlip} />
           </div>
         </div>
 
