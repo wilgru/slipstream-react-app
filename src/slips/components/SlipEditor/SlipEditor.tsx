@@ -2,9 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
-import { Toggle } from "src/common/components/Toggle/Toggle";
 import { useTopics } from "src/topics/hooks/useTopics";
-import { SlipEditorTopicsBar } from "./SlipEditorTopicsBar";
+import { SlipEditorAttributesBar } from "./SlipEditorAttributesBar";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 import type { RangeStatic } from "quill";
 import type { DropdownMenuOption } from "src/common/components/DropdownMenu/DropdownMenu";
@@ -156,40 +155,14 @@ const SlipEditor = ({
           </div>
         </div>
 
-        <div className="flex gap-2">
-          <Toggle
-            styleType="icon"
-            icon="pin"
-            iconSize="medium"
-            iconToggledOnColour="red-500"
-            isToggled={editableSlip.isPinned}
-            onClick={() =>
-              onChangeSlipInternal({ isPinned: !editableSlip.isPinned }, true)
-            }
-          />
-
-          <Toggle
-            styleType="icon"
-            icon="flag"
-            iconSize="medium"
-            iconToggledOnColour="orange-500"
-            isToggled={editableSlip.isFlagged}
-            onClick={() =>
-              onChangeSlipInternal({ isFlagged: !editableSlip.isFlagged }, true)
-            }
-          />
-
-          <Button size="small">No Type</Button>
-
-          <SlipEditorTopicsBar
-            editableSlip={editableSlip}
-            topics={topics}
-            createTopic={createTopic}
-            onClickAddTopic={onClickEditableField}
-            onBlurAddTopic={onBlurEditableField}
-            onChangeSlipInternal={onChangeSlipInternal}
-          />
-        </div>
+        <SlipEditorAttributesBar
+          editableSlip={editableSlip}
+          topics={topics}
+          createTopic={createTopic}
+          onClickAddTopic={onClickEditableField}
+          onBlurAddTopic={onBlurEditableField}
+          onChangeSlipInternal={onChangeSlipInternal}
+        />
       </div>
 
       <QuillEditor
