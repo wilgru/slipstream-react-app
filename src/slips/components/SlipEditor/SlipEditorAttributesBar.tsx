@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
+import { Button } from "src/common/components/Button/Button";
 import {
   DropdownMenu,
   type DropdownMenuOption,
 } from "src/common/components/DropdownMenu/DropdownMenu";
+import { Toggle } from "src/common/components/Toggle/Toggle";
 import { CompareCleanStrings } from "src/common/utils/CompareCleanStrings";
 import { TopicPill } from "src/topics/components/TopicPill/TopicPill";
 import { handleEnterKeyDown } from "./utils/handleEnterKeyDown";
@@ -10,7 +12,7 @@ import type { AnyKeyValueOfSlip } from "./SlipEditor";
 import type { Slip } from "src/slips/types/Slip.type";
 import type { Topic } from "src/topics/types/Topic.type";
 
-type SlipEditorTopicsBarProps = {
+type SlipEditorAttributesBarProps = {
   editableSlip: Slip;
   topics: Topic[];
   onClickAddTopic: () => void;
@@ -22,14 +24,14 @@ type SlipEditorTopicsBarProps = {
   createTopic: (topic: string) => Promise<Topic>;
 };
 
-export const SlipEditorTopicsBar = ({
+export const SlipEditorAttributesBar = ({
   editableSlip,
   topics,
   onClickAddTopic,
   onBlurAddTopic,
   onChangeSlipInternal,
   createTopic,
-}: SlipEditorTopicsBarProps) => {
+}: SlipEditorAttributesBarProps) => {
   const [showAutocompleteDropdownMenu, setShowAutocompleteDropdownMenu] =
     useState(false);
   const [addTopicInput, setAddTopicInput] = useState<string | undefined>(
@@ -134,6 +136,30 @@ export const SlipEditorTopicsBar = ({
 
   return (
     <div className="flex flex-row gap-2">
+      <Toggle
+        styleType="icon"
+        icon="pin"
+        iconSize="medium"
+        iconToggledOnColour="red-500"
+        isToggled={editableSlip.isPinned}
+        onClick={() =>
+          onChangeSlipInternal({ isPinned: !editableSlip.isPinned }, true)
+        }
+      />
+
+      <Toggle
+        styleType="icon"
+        icon="flag"
+        iconSize="medium"
+        iconToggledOnColour="orange-500"
+        isToggled={editableSlip.isFlagged}
+        onClick={() =>
+          onChangeSlipInternal({ isFlagged: !editableSlip.isFlagged }, true)
+        }
+      />
+
+      <Button size="small">No Type</Button>
+
       {editableSlip.topics.map((topic) => {
         return (
           <TopicPill
@@ -158,14 +184,12 @@ export const SlipEditorTopicsBar = ({
         <div className="flex justify-center h-full">
           <textarea
             value={addTopicInput ?? ""}
-            placeholder="Add topic..."
+            placeholder="+ add topic"
             onClick={onClickAddTopic}
             onBlur={onBlurAddTopic}
             onChange={(e) => onChangeAddTopic(e.target.value)}
             className="text-xs h-4 my-auto overflow-y-hidden bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
-          >
-            add topic...
-          </textarea>
+          />
         </div>
       </DropdownMenu>
     </div>
