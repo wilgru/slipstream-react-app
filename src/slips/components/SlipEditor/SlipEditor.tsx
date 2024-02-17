@@ -43,7 +43,7 @@ const SlipEditor = ({
   const [dropdownMenuVisible, setDropdownMenuVisible] =
     useState<boolean>(false);
 
-  const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when the slip to show in the editor changes
+  const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when is an entirely different slip to show in the editor changes
 
   const moreDropdownMenuOptions: DropdownMenuOption[] = [
     {
