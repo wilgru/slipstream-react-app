@@ -39,7 +39,7 @@ function HomePage() {
 
   return (
     <div className="fixed h-screen w-screen">
-      <div className="flex flex-col h-full bg-stone-200">
+      <div className="flex flex-col h-full">
         <Toolbar
           showSidebar={showSidebar}
           onClickShowSidebarToggle={onClickShowSidebarToggle}

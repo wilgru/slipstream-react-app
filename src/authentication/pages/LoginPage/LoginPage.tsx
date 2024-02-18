@@ -37,7 +37,7 @@ const LoginPage = (): JSX.Element => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen bg-stone-100">
+    <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen">
       {!!logInError && (
         <div className="p-6 border bg-red-100 border-red-500 text-red-500 max-w-sm w-full">
           Incorrect email or password.
