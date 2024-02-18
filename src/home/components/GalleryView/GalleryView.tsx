@@ -161,6 +161,7 @@ const GalleryView = () => {
       >
         {slips.map((slip) => (
           <SlipCard
+            key={slip.id}
             slip={slip}
             isFocused={focusedSlipId ? slip.id === focusedSlipId : false}
             onClick={onClickSlip}

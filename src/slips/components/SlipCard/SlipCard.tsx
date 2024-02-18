@@ -1,5 +1,5 @@
 import Delta from "quill-delta";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "src/common/components/Icon/Icon";
 import type { Slip } from "src/slips/types/Slip.type";
 
@@ -11,7 +11,7 @@ type SlipCardProps = {
 };
 
 const SlipCard = ({ slip, isFocused, onClick, onDblClick }: SlipCardProps) => {
-  const [ref, setRef] = useState<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [contentString, setContentString] = useState<string | null>();
 
   useEffect(() => {
@@ -23,6 +23,14 @@ const SlipCard = ({ slip, isFocused, onClick, onDblClick }: SlipCardProps) => {
   }, [slip]);
 
   useEffect(() => {
+    if (isFocused) {
+      console.log(ref?.current);
+
+      ref.current?.focus({ preventScroll: false });
+    }
+  }, [isFocused]);
+
+  useEffect(() => {
     const clickCb = () => {
       onClick(slip.id);
     };
@@ -30,21 +38,20 @@ const SlipCard = ({ slip, isFocused, onClick, onDblClick }: SlipCardProps) => {
       onDblClick(slip.id);
     };
 
-    ref?.addEventListener("click", clickCb);
-    ref?.addEventListener("dblclick", dblclickCb);
+    ref.current?.addEventListener("click", clickCb);
+    ref.current?.addEventListener("dblclick", dblclickCb);
 
     return () => {
-      ref?.removeEventListener("click", clickCb);
-      ref?.removeEventListener("dblclick", dblclickCb);
+      ref.current?.removeEventListener("click", clickCb);
+      ref.current?.removeEventListener("dblclick", dblclickCb);
     };
-  }, [ref, onClick, onDblClick]); // including our callbacks here fixed the 'sortedSlips' state its using internally not being up to date https://www.reddit.com/r/reactjs/comments/x638og/dependency_array_of_usecallback_is_not_working/
+  }, [ref, onClick, onDblClick, slip.id]); // including our callbacks here fixed the 'sortedSlips' state its using internally not being up to date https://www.reddit.com/r/reactjs/comments/x638og/dependency_array_of_usecallback_is_not_working/
 
   return (
     <div
-      ref={(elem) => setRef(elem)}
-      className={`relative flex-shrink-0 w-52 h-40 mb-1 bg-stone-100 shadow-light cursor-pointer ${
-        isFocused ? " border border-orange-500" : "border border-stone-700"
-      }`}
+      tabIndex={-1}
+      ref={ref}
+      className={`relative flex-shrink-0 w-52 h-40 mb-1 bg-stone-100 border border-stone-700 focus:border-orange-500 shadow-light cursor-pointer select-none`}
     >
       <div className="absolute flex flex-row justify-end items-end pb-1 pr-0.5 w-full h-full">
         {slip.isPinned && <Icon iconName={"pin"} colour="red-500" />}
