@@ -38,14 +38,14 @@ function HomePage() {
   }, []);
 
   return (
-    <div className="flex flex-row h-screen w-full bg-stone-200">
-      <div className="flex flex-col w-full">
+    <div className="fixed h-full w-full">
+      <div className="flex flex-col h-full bg-stone-200">
         <Toolbar
           showSidebar={showSidebar}
           onClickShowSidebarToggle={onClickShowSidebarToggle}
           onClickNewSlipButton={onClickNewSlipButton}
         />
-        <div className="flex flex-row h-full max-w-full">
+        <div className="flex flex-row h-full min-h-0">
           {showSidebar && <Sidebar sections={sideBarSections} />}
           <GalleryView
             fixedWidth={showSidebar ? "calc(100% - 15rem)" : "100%"}

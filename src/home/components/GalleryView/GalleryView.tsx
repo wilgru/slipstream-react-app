@@ -157,13 +157,13 @@ const GalleryView = ({ fixedWidth }: GalleryViewProps) => {
   return (
     <div
       style={openSlip ? { width: fixedWidth } : {}}
-      className="flex flex-col h-full w-full max-w-full p-3 pb-2 gap-2"
+      className="flex flex-col gap-2 p-3 pb-2 overflow-y-auto overflow-x-hidden"
     >
       <div
         className={`flex gap-3 ${
           openSlip
-            ? "overflow-x-auto overflow-y-hidden px-3 -mx-3"
-            : "flex-wrap justify-center"
+            ? "px-3 -mx-3 overflow-x-auto overflow-y-hidden"
+            : "flex-wrap"
         }`}
       >
         {slips.map((slip) => (
