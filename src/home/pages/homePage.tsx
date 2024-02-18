@@ -47,7 +47,9 @@ function HomePage() {
         />
         <div className="flex flex-row h-full max-w-full">
           {showSidebar && <Sidebar sections={sideBarSections} />}
-          <GalleryView />
+          <GalleryView
+            fixedWidth={showSidebar ? "calc(100% - 15rem)" : "100%"}
+          />
         </div>
       </div>
     </div>

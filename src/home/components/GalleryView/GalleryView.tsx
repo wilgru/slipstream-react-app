@@ -9,7 +9,11 @@ import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 import type { Slip } from "src/slips/types/Slip.type";
 
-const GalleryView = () => {
+type GalleryViewProps = {
+  fixedWidth: string;
+};
+
+const GalleryView = ({ fixedWidth }: GalleryViewProps) => {
   const { slips, deleteSlip, updateSlip, deleteEmptySlips } = useSlips();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -151,13 +155,16 @@ const GalleryView = () => {
   ]);
 
   return (
-    <div className="flex flex-col h-full w-full max-w-full p-3 pb-2 gap-2">
+    <div
+      style={openSlip ? { width: fixedWidth } : {}}
+      className="flex flex-col h-full w-full max-w-full p-3 pb-2 gap-2"
+    >
       <div
-        className={`flex ${
+        className={`flex gap-3 ${
           openSlip
             ? "overflow-x-auto overflow-y-hidden px-3 -mx-3"
             : "flex-wrap justify-center"
-        } gap-3`}
+        }`}
       >
         {slips.map((slip) => (
           <SlipCard
@@ -168,6 +175,7 @@ const GalleryView = () => {
           />
         ))}
       </div>
+
       {!!openSlip && (
         <SlipEditor
           slip={openSlip}
