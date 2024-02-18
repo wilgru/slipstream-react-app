@@ -9,11 +9,7 @@ import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 import type { Slip } from "src/slips/types/Slip.type";
 
-type GalleryViewProps = {
-  fixedWidth: string;
-};
-
-const GalleryView = ({ fixedWidth }: GalleryViewProps) => {
+const GalleryView = () => {
   const { slips, deleteSlip, updateSlip, deleteEmptySlips } = useSlips();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -155,10 +151,7 @@ const GalleryView = ({ fixedWidth }: GalleryViewProps) => {
   ]);
 
   return (
-    <div
-      style={openSlip ? { width: fixedWidth } : {}}
-      className="flex flex-col gap-2 p-3 pb-2 overflow-y-auto overflow-x-hidden"
-    >
+    <div className="flex flex-col gap-2 p-3 pb-2 overflow-y-auto overflow-x-hidden">
       <div
         className={`flex gap-3 ${
           openSlip

@@ -38,7 +38,7 @@ function HomePage() {
   }, []);
 
   return (
-    <div className="fixed h-full w-full">
+    <div className="fixed h-screen w-screen">
       <div className="flex flex-col h-full bg-stone-200">
         <Toolbar
           showSidebar={showSidebar}
@@ -47,9 +47,7 @@ function HomePage() {
         />
         <div className="flex flex-row h-full min-h-0">
           {showSidebar && <Sidebar sections={sideBarSections} />}
-          <GalleryView
-            fixedWidth={showSidebar ? "calc(100% - 15rem)" : "100%"}
-          />
+          <GalleryView />
         </div>
       </div>
     </div>
