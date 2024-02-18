@@ -158,7 +158,8 @@ export const SlipEditorAttributesBar = ({
         }
       />
 
-      <Button size="small">No Type</Button>
+      {/* TODO: add type dropdown back in when working on it */}
+      {/* <Button size="small">No Type</Button> */}
 
       {editableSlip.topics.map((topic) => {
         return (
