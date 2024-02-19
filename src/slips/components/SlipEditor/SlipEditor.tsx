@@ -45,6 +45,8 @@ const SlipEditor = ({
 
   const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when is an entirely different slip to show in the editor changes
 
+  const quillToolbarId = "toolbar";
+
   const moreDropdownMenuOptions: DropdownMenuOption[] = [
     {
       name: "delete",
@@ -155,17 +157,35 @@ const SlipEditor = ({
           </div>
         </div>
 
-        <SlipEditorAttributesBar
-          editableSlip={editableSlip}
-          topics={topics}
-          createTopic={createTopic}
-          onClickAddTopic={onClickEditableField}
-          onBlurAddTopic={onBlurEditableField}
-          onChangeSlipInternal={onChangeSlipInternal}
-        />
+        <div className="flex flex-row justify-between w-full">
+          <SlipEditorAttributesBar
+            editableSlip={editableSlip}
+            topics={topics}
+            createTopic={createTopic}
+            onClickAddTopic={onClickEditableField}
+            onBlurAddTopic={onBlurEditableField}
+            onChangeSlipInternal={onChangeSlipInternal}
+          />
+
+          <div id={quillToolbarId} hidden={!editMode}>
+            <span className="ql-formats flex flex-row gap-2">
+              <button className="ql-bold bg-stone-700 text-stone-100">B</button>
+              <button className="ql-italic bg-stone-700 text-stone-100">
+                I
+              </button>
+              <button className="ql-underline bg-stone-700 text-stone-100">
+                U
+              </button>
+              <button className="ql-strike bg-stone-700 text-stone-100">
+                S
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
 
       <QuillEditor
+        toolbarId={quillToolbarId}
         initialValue={initialSlip.content}
         onSelectionChange={onSelectionChange}
         onTextChange={(delta) => onChangeSlipInternal({ content: delta })}
