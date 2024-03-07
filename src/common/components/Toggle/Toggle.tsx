@@ -2,6 +2,7 @@ import { Icon } from "src/common/components/Icon/Icon";
 
 type ToggleProps = {
   children?: string | JSX.Element;
+  className?: string;
   icon?: string;
   iconSize?: "small" | "medium" | "large";
   iconToggledOnColour?: string;
@@ -32,6 +33,7 @@ enum ToggleWidth {
 
 export const Toggle = ({
   children,
+  className,
   icon,
   iconSize = "medium",
   iconToggledOnColour = "stone-700", // TODO make required only if is icon style type
@@ -71,7 +73,7 @@ export const Toggle = ({
   return (
     <button
       type="button"
-      className={toggleStyles}
+      className={`${className} ${toggleStyles}`}
       disabled={disabled}
       onClick={onClick}
     >
