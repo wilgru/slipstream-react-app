@@ -2,10 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
+import { Toggle } from "src/common/components/Toggle/Toggle";
 import { useTopics } from "src/topics/hooks/useTopics";
 import { SlipEditorAttributesBar } from "./SlipEditorAttributesBar";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
-import type { RangeStatic } from "quill";
+import type { RangeStatic, StringMap } from "quill";
 import type { DropdownMenuOption } from "src/common/components/DropdownMenu/DropdownMenu";
 import type { Slip } from "src/slips/types/Slip.type";
 
@@ -39,6 +40,7 @@ const SlipEditor = ({
   const { topics, createTopic } = useTopics();
 
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
+  const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
   const [dropdownMenuVisible, setDropdownMenuVisible] =
     useState<boolean>(false);
@@ -75,6 +77,10 @@ const SlipEditor = ({
     } else if (range !== null && oldRange === null) {
       onClickEditableField && onClickEditableField();
     }
+  };
+
+  const onSelectedFormattingChange = (selectionFormatting: StringMap) => {
+    setToolbarFormatting(selectionFormatting);
   };
 
   useEffect(() => {
@@ -169,16 +175,34 @@ const SlipEditor = ({
 
           <div id={quillToolbarId} hidden={!editMode}>
             <span className="ql-formats flex flex-row gap-2">
-              <button className="ql-bold bg-stone-700 text-stone-100">B</button>
-              <button className="ql-italic bg-stone-700 text-stone-100">
+              <Toggle
+                size="small"
+                className="ql-bold font-bold"
+                isToggled={toolbarFormatting?.bold}
+              >
+                B
+              </Toggle>
+              <Toggle
+                size="small"
+                className="ql-italic italic"
+                isToggled={toolbarFormatting?.italic}
+              >
                 I
-              </button>
-              <button className="ql-underline bg-stone-700 text-stone-100">
+              </Toggle>
+              <Toggle
+                size="small"
+                className="ql-underline underline"
+                isToggled={toolbarFormatting?.underline}
+              >
                 U
-              </button>
-              <button className="ql-strike bg-stone-700 text-stone-100">
+              </Toggle>
+              <Toggle
+                size="small"
+                className="ql-strike line-through"
+                isToggled={toolbarFormatting?.strike}
+              >
                 S
-              </button>
+              </Toggle>
             </span>
           </div>
         </div>
@@ -189,6 +213,7 @@ const SlipEditor = ({
         initialValue={initialSlip.content}
         onSelectionChange={onSelectionChange}
         onTextChange={(delta) => onChangeSlipInternal({ content: delta })}
+        onSelectedFormattingChange={onSelectedFormattingChange}
       />
       {
         editMode && (

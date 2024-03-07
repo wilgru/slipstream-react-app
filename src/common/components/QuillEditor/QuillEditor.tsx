@@ -8,14 +8,19 @@ import {
   useRef,
   useState,
 } from "react";
-import type { RangeStatic } from "quill";
+import type { RangeStatic, StringMap } from "quill";
 
 type QuillEditorProps = {
   toolbarId: string;
   initialValue: Delta;
   onTextChange: (delta: Delta) => void;
   onSelectionChange: (range: RangeStatic, oldRange: RangeStatic) => void;
+  onSelectedFormattingChange: (selectionFormatting: StringMap) => void;
 };
+
+// https://quilljs.com/docs/modules/toolbar/
+// https://quilljs.com/docs/api#formatting
+// https://medium.com/@mircea.calugaru/react-quill-editor-with-full-toolbar-options-and-custom-buttons-undo-redo-176d79f8d375
 
 // TODO: override quills internal value updating? make this comp more like textarea, pass value and onChange and use onChange to update a state to pass to the value
 const QuillEditor = forwardRef(
@@ -24,6 +29,7 @@ const QuillEditor = forwardRef(
     initialValue,
     onTextChange,
     onSelectionChange,
+    onSelectedFormattingChange,
   }: QuillEditorProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const onTextChangeRef = useRef(onTextChange);
@@ -48,12 +54,32 @@ const QuillEditor = forwardRef(
 
     useEffect(() => {
       quillEditor?.on("text-change", () => {
+        const selection = quillEditor.getSelection();
+
+        if (selection) {
+          const selectionFormatting = quillEditor.getFormat(
+            selection.index,
+            selection.length
+          );
+
+          onSelectedFormattingChange(selectionFormatting);
+        }
+
         onTextChangeRef.current?.(quillEditor?.getContents());
       });
 
       quillEditor?.on(
         "selection-change",
         (range: RangeStatic, oldRange: RangeStatic) => {
+          if (range) {
+            const selectionFormatting = quillEditor.getFormat(
+              range.index,
+              range.length
+            );
+
+            onSelectedFormattingChange(selectionFormatting);
+          }
+
           onSelectionChangeRef.current?.(range, oldRange);
         }
       );
@@ -70,7 +96,7 @@ const QuillEditor = forwardRef(
           }
         );
       };
-    }, [quillEditor]);
+    }, [onSelectedFormattingChange, quillEditor]);
 
     useEffect(() => {
       const container = containerRef.current;
@@ -103,6 +129,57 @@ const QuillEditor = forwardRef(
                 );
 
                 quill.format("bold", selectionFormatting.bold ? false : true);
+              },
+              italic: function () {
+                const selection = quill.getSelection();
+
+                if (!selection) {
+                  return;
+                }
+
+                const selectionFormatting = quill.getFormat(
+                  selection.index,
+                  selection.length
+                );
+
+                quill.format(
+                  "italic",
+                  selectionFormatting.italic ? false : true
+                );
+              },
+              underline: function () {
+                const selection = quill.getSelection();
+
+                if (!selection) {
+                  return;
+                }
+
+                const selectionFormatting = quill.getFormat(
+                  selection.index,
+                  selection.length
+                );
+
+                quill.format(
+                  "underline",
+                  selectionFormatting.underline ? false : true
+                );
+              },
+              strike: function () {
+                const selection = quill.getSelection();
+
+                if (!selection) {
+                  return;
+                }
+
+                const selectionFormatting = quill.getFormat(
+                  selection.index,
+                  selection.length
+                );
+
+                quill.format(
+                  "strike",
+                  selectionFormatting.strike ? false : true
+                );
               },
             },
           },
