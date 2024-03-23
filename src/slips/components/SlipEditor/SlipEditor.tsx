@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
-import { Toggle } from "src/common/components/Toggle/Toggle";
+import { ToggleBar } from "src/common/components/ToggleBar/ToggleBar";
 import { useTopics } from "src/topics/hooks/useTopics";
 import { SlipEditorAttributesBar } from "./SlipEditorAttributesBar";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
@@ -24,6 +24,8 @@ type SlipEditorProps = {
   onCloseSlip: () => void;
 };
 
+// TODO move to types folder under common module?
+// AnyKeyValueOf
 export type AnyKeyValueOfSlip = {
   [K in keyof Slip]: { [P in K]: Slip[K] };
 }[keyof Slip];
@@ -175,34 +177,31 @@ const SlipEditor = ({
 
           <div id={quillToolbarId} hidden={!editMode}>
             <span className="ql-formats flex flex-row gap-2">
-              <Toggle
+              <ToggleBar
                 size="small"
-                className="ql-bold font-bold"
-                isToggled={toolbarFormatting?.bold}
-              >
-                B
-              </Toggle>
-              <Toggle
-                size="small"
-                className="ql-italic italic"
-                isToggled={toolbarFormatting?.italic}
-              >
-                I
-              </Toggle>
-              <Toggle
-                size="small"
-                className="ql-underline underline"
-                isToggled={toolbarFormatting?.underline}
-              >
-                U
-              </Toggle>
-              <Toggle
-                size="small"
-                className="ql-strike line-through"
-                isToggled={toolbarFormatting?.strike}
-              >
-                S
-              </Toggle>
+                options={[
+                  {
+                    child: <span className="font-bold">B</span>,
+                    className: "ql-bold",
+                    isToggled: toolbarFormatting?.bold,
+                  },
+                  {
+                    child: <span className="italic">I</span>,
+                    className: "ql-italic",
+                    isToggled: toolbarFormatting?.italic,
+                  },
+                  {
+                    child: <span className="underline">U</span>,
+                    className: "ql-underline",
+                    isToggled: toolbarFormatting?.underline,
+                  },
+                  {
+                    child: <span className="line-through">S</span>,
+                    className: "ql-strike",
+                    isToggled: toolbarFormatting?.strike,
+                  },
+                ]}
+              />
             </span>
           </div>
         </div>
