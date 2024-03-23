@@ -2,10 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
+import { ToggleBar } from "src/common/components/ToggleBar/ToggleBar";
 import { useTopics } from "src/topics/hooks/useTopics";
 import { SlipEditorAttributesBar } from "./SlipEditorAttributesBar";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
-import type { RangeStatic } from "quill";
+import type { RangeStatic, StringMap } from "quill";
 import type { DropdownMenuOption } from "src/common/components/DropdownMenu/DropdownMenu";
 import type { Slip } from "src/slips/types/Slip.type";
 
@@ -23,6 +24,8 @@ type SlipEditorProps = {
   onCloseSlip: () => void;
 };
 
+// TODO move to types folder under common module?
+// AnyKeyValueOf
 export type AnyKeyValueOfSlip = {
   [K in keyof Slip]: { [P in K]: Slip[K] };
 }[keyof Slip];
@@ -39,11 +42,14 @@ const SlipEditor = ({
   const { topics, createTopic } = useTopics();
 
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
+  const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
   const [dropdownMenuVisible, setDropdownMenuVisible] =
     useState<boolean>(false);
 
   const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when is an entirely different slip to show in the editor changes
+
+  const quillToolbarId = "toolbar";
 
   const moreDropdownMenuOptions: DropdownMenuOption[] = [
     {
@@ -73,6 +79,10 @@ const SlipEditor = ({
     } else if (range !== null && oldRange === null) {
       onClickEditableField && onClickEditableField();
     }
+  };
+
+  const onSelectedFormattingChange = (selectionFormatting: StringMap) => {
+    setToolbarFormatting(selectionFormatting);
   };
 
   useEffect(() => {
@@ -155,20 +165,54 @@ const SlipEditor = ({
           </div>
         </div>
 
-        <SlipEditorAttributesBar
-          editableSlip={editableSlip}
-          topics={topics}
-          createTopic={createTopic}
-          onClickAddTopic={onClickEditableField}
-          onBlurAddTopic={onBlurEditableField}
-          onChangeSlipInternal={onChangeSlipInternal}
-        />
+        <div className="flex flex-row justify-between w-full">
+          <SlipEditorAttributesBar
+            editableSlip={editableSlip}
+            topics={topics}
+            createTopic={createTopic}
+            onClickAddTopic={onClickEditableField}
+            onBlurAddTopic={onBlurEditableField}
+            onChangeSlipInternal={onChangeSlipInternal}
+          />
+
+          <div id={quillToolbarId} hidden={!editMode}>
+            <span className="ql-formats flex flex-row gap-2">
+              <ToggleBar
+                size="small"
+                options={[
+                  {
+                    child: <span className="font-bold">B</span>,
+                    className: "ql-bold",
+                    isToggled: toolbarFormatting?.bold,
+                  },
+                  {
+                    child: <span className="italic">I</span>,
+                    className: "ql-italic",
+                    isToggled: toolbarFormatting?.italic,
+                  },
+                  {
+                    child: <span className="underline">U</span>,
+                    className: "ql-underline",
+                    isToggled: toolbarFormatting?.underline,
+                  },
+                  {
+                    child: <span className="line-through">S</span>,
+                    className: "ql-strike",
+                    isToggled: toolbarFormatting?.strike,
+                  },
+                ]}
+              />
+            </span>
+          </div>
+        </div>
       </div>
 
       <QuillEditor
+        toolbarId={quillToolbarId}
         initialValue={initialSlip.content}
         onSelectionChange={onSelectionChange}
         onTextChange={(delta) => onChangeSlipInternal({ content: delta })}
+        onSelectedFormattingChange={onSelectedFormattingChange}
       />
       {
         editMode && (

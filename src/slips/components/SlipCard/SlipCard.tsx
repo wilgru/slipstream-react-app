@@ -24,8 +24,6 @@ const SlipCard = ({ slip, isFocused, onClick, onDblClick }: SlipCardProps) => {
 
   useEffect(() => {
     if (isFocused) {
-      console.log(ref?.current);
-
       ref.current?.focus({ preventScroll: false });
     }
   }, [isFocused]);
