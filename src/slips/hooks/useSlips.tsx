@@ -1,6 +1,7 @@
 import * as dayjs from "dayjs";
 import Delta from "quill-delta";
 import { useCallback, useContext, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
 import { context } from "src/common/context/context";
 import { generateId } from "src/pocketbase/utils/generateId";
@@ -31,6 +32,7 @@ export const useSlips = () => {
   const { getTopics } = useTopics();
 
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const getSlips = useCallback(
     async (topicIds: string[]): Promise<void> => {
@@ -54,10 +56,21 @@ export const useSlips = () => {
         )
       );
 
+      // TODO: also remove focused slip somehow
+      const openSlipId = searchParams.get("openSlip");
+      const foundSlip = slipsWithAllTopics.some(
+        (slip) => slip.id === openSlipId
+      );
+
+      if (!foundSlip) {
+        searchParams.delete("openSlip");
+        setSearchParams(searchParams);
+      }
+
       setSlips(slipsWithAllTopics);
       setLoading(false);
     },
-    [setSlips]
+    [setSlips, searchParams, setSearchParams]
   );
 
   const createSlip = (): string => {
