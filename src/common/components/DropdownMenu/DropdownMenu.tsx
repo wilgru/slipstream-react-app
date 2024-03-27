@@ -44,7 +44,8 @@ export const DropdownMenu = ({
 
   return (
     <div ref={wrapperRef} className="relative">
-      {children}
+      <div className="h-full">{children}</div>
+
       {visible && (
         <div
           ref={dropdownMenuRef}

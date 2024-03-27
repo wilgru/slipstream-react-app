@@ -22,11 +22,11 @@ const SlipCard = ({ slip, isFocused, onClick, onDblClick }: SlipCardProps) => {
     );
   }, [slip]);
 
-  useEffect(() => {
-    if (isFocused) {
-      ref.current?.focus({ preventScroll: false });
-    }
-  }, [isFocused]);
+  // useEffect(() => {
+  //   if (isFocused) {
+  //     ref.current?.focus({ preventScroll: false });
+  //   }
+  // }, [isFocused]);
 
   useEffect(() => {
     const clickCb = () => {
@@ -47,9 +47,10 @@ const SlipCard = ({ slip, isFocused, onClick, onDblClick }: SlipCardProps) => {
 
   return (
     <div
-      tabIndex={-1}
       ref={ref}
-      className={`relative flex-shrink-0 w-52 h-40 mb-1 bg-stone-100 border border-stone-700 focus:border-orange-500 shadow-light cursor-pointer select-none`}
+      className={`relative flex-shrink-0 w-52 h-40 mb-1 bg-stone-100 shadow-light cursor-pointer select-none ${
+        isFocused ? "border border-orange-500" : "border border-stone-700"
+      }`}
     >
       <div className="absolute flex flex-row justify-end items-end pb-1 pr-0.5 w-full h-full">
         {slip.isPinned && <Icon iconName={"pin"} colour="red-500" />}
