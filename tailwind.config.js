@@ -5,6 +5,7 @@ export default {
   theme: {
     fontFamily: {
       title: ["Plantagenet Cherokee"],
+      // sans: ["Arial"],
       // body: [""],
     },
     boxShadow: {

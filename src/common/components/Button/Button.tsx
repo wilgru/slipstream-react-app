@@ -61,7 +61,7 @@ export const Button = ({
   onClick,
 }: ButtonProps) => {
   const buttonBaseStyle =
-    "flex items-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
+    "flex items-center gap-2 h-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
   const buttonStyleType = ButtonStyleType[styleType];
   const buttonColourStyle =
     styleType === "block"
