@@ -205,20 +205,6 @@ export const useSlips = () => {
     currentUser && getSlips(selectedTopicIds);
   }, [currentUser, getSlips, selectedTopicIds]);
 
-  useEffect(() => {
-    const openSlipId = searchParams.get("openSlip");
-
-    const foundSlip = slips.some((slip) => slip.id === openSlipId);
-    console.log(foundSlip);
-
-    if (!foundSlip) {
-      console.log("GELLO");
-
-      searchParams.delete("openSlip");
-      setSearchParams(searchParams);
-    }
-  }, [slips]);
-
   return {
     slips,
     createSlip,
