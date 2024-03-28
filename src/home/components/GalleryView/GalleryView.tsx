@@ -151,7 +151,7 @@ const GalleryView = () => {
   ]);
 
   return (
-    <div className="flex flex-col w-full gap-2 p-3 pb-2 overflow-y-auto overflow-x-hidden">
+    <div className="flex flex-col w-full -my-3 py-3 pr-3 gap-2 overflow-y-auto overflow-x-hidden">
       <div
         className={`flex gap-3 ${
           openSlip

@@ -108,7 +108,7 @@ const SlipEditor = ({
   return (
     <div
       className={
-        "flex-grow flex flex-col gap-4 w-full p-2 mb-1 bg-stone-100 border border-stone-700 shadow-light"
+        "flex-grow flex flex-col gap-4 w-full p-2 mb-1 bg-white border border-black rounded-lg shadow-light"
       }
     >
       <div className="flex flex-col gap-2">
@@ -120,7 +120,7 @@ const SlipEditor = ({
               onChange={(e) => onChangeSlipInternal({ title: e.target.value })}
               onClick={onClickEditableField}
               onBlur={onBlurEditableField}
-              className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
+              className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-white text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
             />
             <div className="flex flex-row gap-2">
               <p

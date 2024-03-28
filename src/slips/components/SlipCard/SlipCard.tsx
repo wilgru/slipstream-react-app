@@ -48,8 +48,8 @@ const SlipCard = ({ slip, isFocused, onClick, onDblClick }: SlipCardProps) => {
   return (
     <div
       ref={ref}
-      className={`relative flex-shrink-0 w-52 h-40 mb-1 bg-stone-100 shadow-light cursor-pointer select-none ${
-        isFocused ? "border border-orange-500" : "border border-stone-700"
+      className={`relative flex-shrink-0 w-52 h-40 mb-1 bg-white shadow-light cursor-pointer select-none rounded-lg ${
+        isFocused ? "border-2 border-orange-500" : "border border-black"
       }`}
     >
       <div className="absolute flex flex-row justify-end items-end pb-1 pr-0.5 w-full h-full">
@@ -58,7 +58,11 @@ const SlipCard = ({ slip, isFocused, onClick, onDblClick }: SlipCardProps) => {
       </div>
 
       <div className="flex flex-col px-2 pt-2 h-full">
-        <h1 className="text-xl font-normal font-title tracking-tight text-stone-700 select-none">
+        <h1
+          className={`text-xl font-normal font-title tracking-tight select-none ${
+            isFocused ? "text-orange-500" : "text-stone-700"
+          }`}
+        >
           {slip.title}
         </h1>
 

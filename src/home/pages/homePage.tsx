@@ -45,7 +45,7 @@ function HomePage() {
           onClickShowSidebarToggle={onClickShowSidebarToggle}
           onClickNewSlipButton={onClickNewSlipButton}
         />
-        <div className="flex flex-row h-full min-h-0">
+        <div className="flex flex-row gap-3 h-full min-h-0 mt-3 ml-3 mb-2">
           {showSidebar && <Sidebar sections={sideBarSections} />}
           <GalleryView />
         </div>
