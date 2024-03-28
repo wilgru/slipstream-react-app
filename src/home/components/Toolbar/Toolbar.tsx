@@ -40,7 +40,7 @@ export const Toolbar = ({
   };
 
   return (
-    <div className="flex flex-row justify-between w-full p-3 bg-stone-100 border border-b-stone-700">
+    <div className="flex flex-row justify-between w-full p-3 bg-white border border-b-stone-700">
       <div className="flex flex-row gap-3">
         <DropdownMenu
           options={settingsDropdownOptions}
@@ -55,7 +55,7 @@ export const Toolbar = ({
         </Button>
       </div>
       <div className="flex flex-row gap-3">
-        <Button onClick={onClickNewSlipButton}>New Slip</Button>
+        <Button onClick={onClickNewSlipButton}>New</Button>
         <Search />
       </div>
     </div>
