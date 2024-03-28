@@ -46,7 +46,7 @@ export const Toggle = ({
   isToggled,
 }: ToggleProps) => {
   const toggleBaseStyle =
-    "text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
+    "rounded-full text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
   const toggleStyleType = ToggleStyleType[styleType];
   const toggleColourStyle =
     styleType === "block" ? `border-${colour.border}` : "";
