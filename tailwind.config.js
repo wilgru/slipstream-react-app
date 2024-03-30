@@ -55,12 +55,12 @@ export default {
     "bg-stone-600",
     "bg-stone-50",
 
+    "fill-black",
     "border-black",
     "bg-black",
     "hover:bg-black",
     "hover:border-black",
 
-    "fill-black",
     "fill-white",
     "bg-white",
     "text-white",
