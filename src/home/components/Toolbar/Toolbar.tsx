@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
 import { Button } from "src/common/components/Button/Button";
 import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
-import { Search } from "src/common/components/Search/Search";
 import type { DropdownMenuOption } from "src/common/components/DropdownMenu/DropdownMenu";
 
 type ToolbarProps = {
@@ -55,8 +54,7 @@ export const Toolbar = ({
         </Button>
       </div>
       <div className="flex flex-row gap-3">
-        <Button onClick={onClickNewSlipButton}>New</Button>
-        <Search />
+        <Button onClick={onClickNewSlipButton}>New Slip</Button>
       </div>
     </div>
   );
