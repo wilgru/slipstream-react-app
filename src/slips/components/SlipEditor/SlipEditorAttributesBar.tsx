@@ -188,7 +188,7 @@ export const SlipEditorAttributesBar = ({
             onClick={onClickAddTopic}
             onBlur={onBlurAddTopic}
             onChange={(e) => onChangeAddTopic(e.target.value)}
-            className="text-xs h-4 my-auto overflow-y-hidden bg-stone-100 text-stone-700 placeholder-stone-500 border-stone-700 select-none resize-none outline-none"
+            className="text-xs h-4 my-auto overflow-y-hidden text-black placeholder-stone-500 border-black select-none resize-none outline-none"
           />
         </div>
       </DropdownMenu>

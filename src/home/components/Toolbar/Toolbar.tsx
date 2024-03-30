@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
 import { Button } from "src/common/components/Button/Button";
 import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
-import { Search } from "src/common/components/Search/Search";
 import type { DropdownMenuOption } from "src/common/components/DropdownMenu/DropdownMenu";
 
 type ToolbarProps = {
@@ -40,7 +39,7 @@ export const Toolbar = ({
   };
 
   return (
-    <div className="flex flex-row justify-between w-full p-3 bg-stone-100 border border-b-stone-700">
+    <div className="flex flex-row justify-between w-full p-3 bg-white border border-b-stone-700">
       <div className="flex flex-row gap-3">
         <DropdownMenu
           options={settingsDropdownOptions}
@@ -56,7 +55,6 @@ export const Toolbar = ({
       </div>
       <div className="flex flex-row gap-3">
         <Button onClick={onClickNewSlipButton}>New Slip</Button>
-        <Search />
       </div>
     </div>
   );

@@ -15,8 +15,8 @@ type ButtonProps = {
 };
 
 enum ButtonStyleType {
-  "block" = "border hover:bg-stone-800 hover:text-stone-100 hover:border-stone-800",
-  "block-outline" = "bg-stone-100 text-stone-700 border border-stone-700 hover:bg-stone-800 hover:text-stone-100 hover:border-stone-800",
+  "block" = "border hover:bg-black hover:text-white hover:border-black",
+  "block-outline" = "bg-white text-black border border-black hover:bg-black hover:text-white hover:border-black",
   "link" = "text-orange-500 hover:text-orange-700",
   "icon" = "",
 }
@@ -33,16 +33,16 @@ enum ButtonWidth {
 }
 
 enum ButtonIconColour {
-  "block" = "stone-100",
-  "block-outline" = "stone-700",
+  "block" = "white",
+  "block-outline" = "black",
   "link" = "orange-500",
   "icon" = "stone-500",
 }
 
 enum ButtonIconHoverColour {
-  "block" = "stone-100",
+  "block" = "white",
   // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
-  "block-outline" = "stone-100",
+  "block-outline" = "white",
   "link" = "orange-700",
   "icon" = "stone-800",
 }
@@ -54,14 +54,14 @@ export const Button = ({
   iconSize = "medium",
   type = "button",
   styleType = "block",
-  colour = { border: "stone-700", background: "stone-700", text: "stone-100" },
+  colour = { border: "black", background: "white", text: "black" },
   width = "fit",
   size = "medium",
   disabled = false,
   onClick,
 }: ButtonProps) => {
   const buttonBaseStyle =
-    "flex items-center gap-2 h-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
+    "flex gap-2 h-full rounded-full items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
   const buttonStyleType = ButtonStyleType[styleType];
   const buttonColourStyle =
     styleType === "block"
