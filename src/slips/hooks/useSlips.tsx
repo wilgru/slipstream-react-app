@@ -70,7 +70,7 @@ export const useSlips = () => {
       setSlips(slipsWithAllTopics);
       setLoading(false);
     },
-    [setSlips, searchParams, setSearchParams]
+    [setSlips]
   );
 
   const createSlip = (): string => {

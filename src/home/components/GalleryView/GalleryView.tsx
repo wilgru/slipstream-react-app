@@ -13,7 +13,7 @@ const GalleryView = () => {
   const { slips, deleteSlip, updateSlip, deleteEmptySlips } = useSlips();
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null);
+  const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null); // TODO: redundant state?
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
   const [editMode, setEditMode] = useState(false);
 
@@ -75,8 +75,9 @@ const GalleryView = () => {
     searchParams.delete("openSlip");
     setSearchParams(searchParams);
 
-    setOpenSlip(null);
     setFocusedSlipId(null);
+
+    deleteEmptySlips();
   };
 
   useEffect(() => {
@@ -123,7 +124,12 @@ const GalleryView = () => {
           break;
 
         case " ": // Spacebar key
-          handleSpaceBarKeyDown(searchParams, setSearchParams, focusedSlipId);
+          handleSpaceBarKeyDown(
+            searchParams,
+            setSearchParams,
+            deleteEmptySlips,
+            focusedSlipId
+          );
           break;
 
         case "Escape":
