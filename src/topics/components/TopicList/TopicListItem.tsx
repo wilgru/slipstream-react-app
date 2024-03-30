@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useAtom } from "jotai";
+import { useState } from "react";
 import { Button } from "src/common/components/Button/Button";
-import { context } from "src/common/context/context";
+import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import { TopicPill } from "src/topics/components/TopicPill/TopicPill";
 import type { Topic } from "src/topics/types/Topic.type";
 
@@ -15,8 +16,7 @@ export const TopicListItem = ({
   onClickEdit,
   onClickDelete,
 }: TopicsListItemProps) => {
-  const { selectedTopicIds, setSelectedTopicIds } = useContext(context);
-
+  const [selectedTopicIds, setSelectedTopicIds] = useAtom(selectedTopicIdsAtom);
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const onClickTopicPill = (topicId: string) => {

@@ -1,8 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useAtom, useSetAtom } from "jotai";
+import { useEffect, useState } from "react";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
-import { context } from "src/common/context/context";
 import { generateId } from "src/pocketbase/utils/generateId";
 import { pb } from "src/pocketbase/utils/pocketbaseConfig";
+import { slipsAtom } from "src/slips/atoms/slipsAtom";
+import { topicsAtom } from "../atoms/topicsAtom";
 import type { RecordModel } from "pocketbase";
 import type { Topic } from "src/topics/types/Topic.type";
 
@@ -17,8 +19,9 @@ const mapTopic = (topic: RecordModel): Topic => {
 
 export const useTopics = () => {
   const { currentUser } = useAuthentication();
-  const { setSlips, topics, setTopics } = useContext(context);
 
+  const [topics, setTopics] = useAtom(topicsAtom);
+  const setSlips = useSetAtom(slipsAtom);
   const [loading, setLoading] = useState<boolean>(true);
 
   const getTopics = async (): Promise<void> => {

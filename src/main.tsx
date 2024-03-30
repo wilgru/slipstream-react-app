@@ -7,7 +7,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import LoginPage from "src/authentication/pages/LoginPage/LoginPage.tsx";
-import { ContextProvider } from "src/common/context/ContextProvider";
 import HomePage from "src/home/pages/homePage.tsx";
 import "src/index.css";
 
@@ -18,11 +17,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: (
-      <ContextProvider>
-        <HomePage />
-      </ContextProvider>
-    ),
+    element: <HomePage />,
   },
   {
     path: "*",

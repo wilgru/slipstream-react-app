@@ -1,13 +1,15 @@
 import * as dayjs from "dayjs";
+import { useAtom, useAtomValue } from "jotai";
 import Delta from "quill-delta";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
-import { context } from "src/common/context/context";
 import { generateId } from "src/pocketbase/utils/generateId";
 import { pb } from "src/pocketbase/utils/pocketbaseConfig";
 import { isSlipContentEmpty } from "src/slips/utils/isSlipContentEmpty";
+import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import { useTopics } from "src/topics/hooks/useTopics";
+import { slipsAtom } from "../atoms/slipsAtom";
 import type { RecordModel } from "pocketbase";
 import type { Slip } from "src/slips/types/Slip.type";
 
@@ -28,11 +30,12 @@ const mapSlip = (slip: RecordModel): Slip => {
 
 export const useSlips = () => {
   const { currentUser } = useAuthentication();
-  const { slips, setSlips, selectedTopicIds } = useContext(context);
   const { getTopics } = useTopics();
 
-  const [loading, setLoading] = useState<boolean>(true);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [slips, setSlips] = useAtom(slipsAtom);
+  const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const getSlips = useCallback(
     async (topicIds: string[]): Promise<void> => {
