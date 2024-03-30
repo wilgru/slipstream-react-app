@@ -16,7 +16,7 @@ type ToggleProps = {
 };
 
 enum ToggleStyleType {
-  "block" = "border font-medium hover:bg-stone-800 hover:border-stone-800 hover:text-stone-100",
+  "block" = "border font-medium hover:bg-black hover:border-black hover:text-white",
   "icon" = "",
 }
 
@@ -36,9 +36,9 @@ export const Toggle = ({
   className,
   icon,
   iconSize = "medium",
-  iconToggledOnColour = "stone-700", // TODO make required only if is icon style type
+  iconToggledOnColour = "black", // TODO make required only if is icon style type
   styleType = "block",
-  colour = { border: "stone-700", background: "stone-100", text: "stone-100" },
+  colour = { border: "black", background: "white", text: "white" },
   width = "fit",
   size = "medium",
   disabled = false,
@@ -55,11 +55,9 @@ export const Toggle = ({
   const toggleToggledOnColour =
     styleType === "icon"
       ? iconToggledOnColour
-      : `bg-${colour.border} text-stone-100`;
+      : `bg-${colour.border} text-white`;
   const toggleToggledOffColour =
-    styleType === "icon"
-      ? "stone-500"
-      : `bg-${colour.background} text-stone-700`;
+    styleType === "icon" ? "stone-500" : `bg-${colour.background} text-black`;
 
   const toggleStyles = [
     toggleBaseStyle,
@@ -82,7 +80,7 @@ export const Toggle = ({
           iconName={icon}
           size={iconSize}
           colour={isToggled ? toggleToggledOnColour : toggleToggledOffColour}
-          hoverColour="stone-800"
+          hoverColour="black"
         />
       )}
       {children}

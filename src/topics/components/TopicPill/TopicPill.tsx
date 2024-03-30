@@ -27,11 +27,11 @@ export const TopicPill = ({
 
   const topicButtonColour = topicCustomisationColour
     ? {
-        border: topicCustomisationColour.primary,
-        background: topicCustomisationColour.secondary,
-        text: "stone-700",
+        border: "black",
+        background: topicCustomisationColour.primary,
+        text: "black",
       }
-    : { border: "stone-700", background: "stone-300", text: "stone-700" };
+    : { border: "black", background: "stone-300", text: "black" };
 
   return (
     <div
