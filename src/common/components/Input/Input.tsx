@@ -31,7 +31,7 @@ export const Input = ({
       autoComplete={type}
       onChange={onChange}
       value={value}
-      className={`block w-full ${InputSize[size]} bg-stone-100 text-stone-700 border border-stone-700 placeholder:text-stone-500 focus:border-orange-500`}
+      className={`block w-full ${InputSize[size]} bg-white text-black border border-black placeholder:text-stone-500 focus:border-orange-500`}
     />
   );
 };
