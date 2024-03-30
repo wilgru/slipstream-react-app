@@ -58,6 +58,7 @@ export default {
     "fill-black",
     "border-black",
     "bg-black",
+    "hover:fill-black",
     "hover:bg-black",
     "hover:border-black",
 
@@ -72,7 +73,6 @@ export default {
     "fill-stone-500",
     "fill-orange-500",
     "fill-red-500",
-    "hover:fill-stone-500",
     "hover:fill-stone-800",
     "hover:fill-orange-500",
     "hover:fill-red-500",
