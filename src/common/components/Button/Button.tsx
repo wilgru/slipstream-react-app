@@ -44,7 +44,7 @@ enum ButtonIconHoverColour {
   // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
   "block-outline" = "white",
   "link" = "orange-700",
-  "icon" = "stone-800",
+  "icon" = "black",
 }
 
 export const Button = ({
