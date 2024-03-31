@@ -60,6 +60,7 @@ export const useSlips = () => {
       );
 
       // TODO: also remove focused slip somehow
+      // TODO: this logic may need to be moved elsewhere after query hooks are used - maybe in a useEffect in slipEditor or galleryView?
       const openSlipId = searchParams.get("openSlip");
       const foundSlip = slipsWithAllTopics.some(
         (slip) => slip.id === openSlipId

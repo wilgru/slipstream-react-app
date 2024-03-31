@@ -101,6 +101,7 @@ const SlipEditor = ({
     };
   }, []);
 
+  // TODO: redundant?
   useEffect(() => {
     setEditableSlip(slip);
   }, [slip]);
