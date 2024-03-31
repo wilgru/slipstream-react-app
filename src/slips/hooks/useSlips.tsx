@@ -194,19 +194,26 @@ export const useSlips = () => {
     return;
   };
 
-  const deleteEmptySlips = () => {
-    slips.forEach((slip) => {
-      if (!slip.title && isSlipContentEmpty(slip.content)) {
-        deleteSlip(slip.id, false);
-      }
-    });
-  };
-
   useEffect(() => {
     // may need to define our callbacks within the useEffect?
     //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
     currentUser && getSlips(selectedTopicIds);
   }, [currentUser, getSlips, selectedTopicIds]);
+
+  // following hooks are the only ones that stay
+  const deleteEmptySlips = () => {
+    slips.forEach((slip) => {
+      if (!slip.title && isSlipContentEmpty(slip.content)) {
+        deleteSlip(slip.id, false); // TODO: allow delete multiple and call it once instead?
+      }
+    });
+  };
+
+  const findSlip = (slipId: string): Slip | undefined => {
+    const foundSlip = slips.find((slip) => slip.id === slipId);
+
+    return foundSlip;
+  };
 
   return {
     slips,
@@ -214,6 +221,7 @@ export const useSlips = () => {
     updateSlip,
     deleteSlip,
     deleteEmptySlips,
+    findSlip,
     loading,
   };
 };
