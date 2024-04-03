@@ -48,31 +48,31 @@ const SlipCard = ({ slip, isFocused, onClick, onDblClick }: SlipCardProps) => {
   return (
     <div
       ref={ref}
-      className={`relative flex-shrink-0 w-52 h-40 mb-1 bg-white shadow-light cursor-pointer select-none rounded-lg ${
+      className={`relative mb-1 h-40 w-52 flex-shrink-0 cursor-pointer select-none rounded-lg bg-white shadow-light ${
         isFocused ? "border-2 border-orange-500" : "border border-black"
       }`}
     >
-      <div className="absolute flex flex-row justify-end items-end pb-1 pr-0.5 w-full h-full">
+      <div className="absolute flex h-full w-full flex-row items-end justify-end pb-1 pr-0.5">
         {slip.isPinned && <Icon iconName={"pin"} colour="red-500" />}
         {slip.isFlagged && <Icon iconName={"flag"} colour="orange-500" />}
       </div>
 
-      <div className="flex flex-col px-2 pt-2 h-full">
+      <div className="flex h-full flex-col px-2 pt-2">
         <h1
-          className={`text-xl font-normal font-title tracking-tight select-none ${
+          className={`select-none font-title text-xl font-normal tracking-tight ${
             isFocused ? "text-orange-500" : "text-stone-700"
           }`}
         >
           {slip.title}
         </h1>
 
-        <p className="text-stone-500 text-xs mb-1">
+        <p className="mb-1 text-xs text-stone-500">
           {slip.created.format("D MMMM YYYY")}
         </p>
 
         <p
           style={{ overflowWrap: "break-word" }}
-          className="overflow-y-hidden font-normal text-xs text-stone-700 select-none"
+          className="select-none overflow-y-hidden text-xs font-normal text-stone-700"
         >
           {contentString}
         </p>
