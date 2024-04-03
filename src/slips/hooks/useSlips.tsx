@@ -1,13 +1,15 @@
 import * as dayjs from "dayjs";
+import { useAtom, useAtomValue } from "jotai";
 import Delta from "quill-delta";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
-import { context } from "src/common/context/context";
 import { generateId } from "src/pocketbase/utils/generateId";
 import { pb } from "src/pocketbase/utils/pocketbaseConfig";
 import { isSlipContentEmpty } from "src/slips/utils/isSlipContentEmpty";
+import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import { useTopics } from "src/topics/hooks/useTopics";
+import { slipsAtom } from "../atoms/slipsAtom";
 import type { RecordModel } from "pocketbase";
 import type { Slip } from "src/slips/types/Slip.type";
 
@@ -28,11 +30,12 @@ const mapSlip = (slip: RecordModel): Slip => {
 
 export const useSlips = () => {
   const { currentUser } = useAuthentication();
-  const { slips, setSlips, selectedTopicIds } = useContext(context);
   const { getTopics } = useTopics();
 
-  const [loading, setLoading] = useState<boolean>(true);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [slips, setSlips] = useAtom(slipsAtom);
+  const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const getSlips = useCallback(
     async (topicIds: string[]): Promise<void> => {
@@ -57,6 +60,7 @@ export const useSlips = () => {
       );
 
       // TODO: also remove focused slip somehow
+      // TODO: this logic may need to be moved elsewhere after query hooks are used - maybe in a useEffect in slipEditor or galleryView?
       const openSlipId = searchParams.get("openSlip");
       const foundSlip = slipsWithAllTopics.some(
         (slip) => slip.id === openSlipId
@@ -191,19 +195,26 @@ export const useSlips = () => {
     return;
   };
 
-  const deleteEmptySlips = () => {
-    slips.forEach((slip) => {
-      if (!slip.title && isSlipContentEmpty(slip.content)) {
-        deleteSlip(slip.id, false);
-      }
-    });
-  };
-
   useEffect(() => {
     // may need to define our callbacks within the useEffect?
     //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
     currentUser && getSlips(selectedTopicIds);
   }, [currentUser, getSlips, selectedTopicIds]);
+
+  // following hooks are the only ones that stay
+  const deleteEmptySlips = () => {
+    slips.forEach((slip) => {
+      if (!slip.title && isSlipContentEmpty(slip.content)) {
+        deleteSlip(slip.id, false); // TODO: allow delete multiple and call it once instead?
+      }
+    });
+  };
+
+  const findSlip = (slipId: string): Slip | undefined => {
+    const foundSlip = slips.find((slip) => slip.id === slipId);
+
+    return foundSlip;
+  };
 
   return {
     slips,
@@ -211,6 +222,7 @@ export const useSlips = () => {
     updateSlip,
     deleteSlip,
     deleteEmptySlips,
+    findSlip,
     loading,
   };
 };
