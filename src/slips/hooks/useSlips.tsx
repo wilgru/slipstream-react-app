@@ -34,48 +34,48 @@ export const useSlips = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [slips, setSlips] = useAtom(slipsAtom);
-  const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
+  // const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const getSlips = useCallback(
-    async (topicIds: string[]): Promise<void> => {
-      // TODO: for some reason cant use && for the multiple topics filters, which is why slipsWithAllTopics and its logic exists
-      const topicsFilter = topicIds.length
-        ? "&& " +
-          topicIds.map((topicId) => `topics.id ?= '${topicId}'`).join(" || ")
-        : "";
+  // const getSlips = useCallback(
+  //   async (topicIds: string[]): Promise<void> => {
+  //     // TODO: for some reason cant use && for the multiple topics filters, which is why slipsWithAllTopics and its logic exists
+  //     const topicsFilter = topicIds.length
+  //       ? "&& " +
+  //         topicIds.map((topicId) => `topics.id ?= '${topicId}'`).join(" || ")
+  //       : "";
 
-      const slipsRes = await pb
-        .collection("slips")
-        .getList(undefined, undefined, {
-          filter: `deleted = null ${topicsFilter}`,
-          expand: "topics",
-        });
-      const mappedSlips = slipsRes.items.map(mapSlip);
+  //     const slipsRes = await pb
+  //       .collection("slips")
+  //       .getList(undefined, undefined, {
+  //         filter: `deleted = null ${topicsFilter}`,
+  //         expand: "topics",
+  //       });
+  //     const mappedSlips = slipsRes.items.map(mapSlip);
 
-      const slipsWithAllTopics = mappedSlips.filter((mappedSlip) =>
-        topicIds.every((topicId) =>
-          mappedSlip.topics.some((topic) => topic.id === topicId)
-        )
-      );
+  //     const slipsWithAllTopics = mappedSlips.filter((mappedSlip) =>
+  //       topicIds.every((topicId) =>
+  //         mappedSlip.topics.some((topic) => topic.id === topicId)
+  //       )
+  //     );
 
-      // TODO: also remove focused slip somehow
-      // TODO: this logic may need to be moved elsewhere after query hooks are used - maybe in a useEffect in slipEditor or galleryView?
-      const openSlipId = searchParams.get("openSlip");
-      const foundSlip = slipsWithAllTopics.some(
-        (slip) => slip.id === openSlipId
-      );
+  //     // TODO: also remove focused slip somehow
+  //     // TODO: this logic may need to be moved elsewhere after query hooks are used - maybe in a useEffect in slipEditor or galleryView?
+  //     const openSlipId = searchParams.get("openSlip");
+  //     const foundSlip = slipsWithAllTopics.some(
+  //       (slip) => slip.id === openSlipId
+  //     );
 
-      if (!foundSlip) {
-        searchParams.delete("openSlip");
-        setSearchParams(searchParams);
-      }
+  //     if (!foundSlip) {
+  //       searchParams.delete("openSlip");
+  //       setSearchParams(searchParams);
+  //     }
 
-      setSlips(slipsWithAllTopics);
-      setLoading(false);
-    },
-    [setSlips]
-  );
+  //     setSlips(slipsWithAllTopics);
+  //     setLoading(false);
+  //   },
+  //   [setSlips]
+  // );
 
   const createSlip = (): string => {
     let slipId = generateId();
@@ -195,11 +195,11 @@ export const useSlips = () => {
     return;
   };
 
-  useEffect(() => {
-    // may need to define our callbacks within the useEffect?
-    //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
-    currentUser && getSlips(selectedTopicIds);
-  }, [currentUser, getSlips, selectedTopicIds]);
+  // useEffect(() => {
+  //   // may need to define our callbacks within the useEffect?
+  //   //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
+  //   currentUser && getSlips(selectedTopicIds);
+  // }, [currentUser, getSlips, selectedTopicIds]);
 
   // following hooks are the only ones that stay
   const deleteEmptySlips = () => {

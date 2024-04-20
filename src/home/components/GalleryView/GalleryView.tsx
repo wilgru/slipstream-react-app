@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import SlipCard from "src/slips/components/SlipCard/SlipCard";
 import SlipEditor from "src/slips/components/SlipEditor/SlipEditor";
+import { useGetSlips } from "src/slips/hooks/useGetSlips";
 import { useSlips } from "src/slips/hooks/useSlips";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
@@ -10,7 +11,8 @@ import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 import type { Slip } from "src/slips/types/Slip.type";
 
 const GalleryView = () => {
-  const { slips, deleteSlip, updateSlip, deleteEmptySlips } = useSlips();
+  const { deleteSlip, updateSlip, deleteEmptySlips } = useSlips();
+  const { slips } = useGetSlips();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null); // TODO: redundant state?
