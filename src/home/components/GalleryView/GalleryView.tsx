@@ -6,14 +6,14 @@ import SlipEditor from "src/slips/components/SlipEditor/SlipEditor";
 import { usePurgeEmptySlips } from "src/slips/hooks/useDeleteEmptySlips";
 import { useDeleteSlip } from "src/slips/hooks/useDeleteSlip";
 import { useGetSlips } from "src/slips/hooks/useGetSlips";
-import { useSlips } from "src/slips/hooks/useSlips";
+import { useUpdateSlip } from "src/slips/hooks/useUpdateSlip";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 import type { Slip } from "src/slips/types/Slip.type";
 
 const GalleryView = () => {
-  const { updateSlip } = useSlips();
+  const { updateSlip } = useUpdateSlip();
   const { slips } = useGetSlips();
   const { deleteSlip } = useDeleteSlip();
   const { purgeEmptySlips } = usePurgeEmptySlips();
@@ -61,7 +61,8 @@ const GalleryView = () => {
   };
 
   const onChangeSlip = debounce(async (newSlipData: Slip) => {
-    openSlip && updateSlip(openSlip.id, newSlipData);
+    openSlip &&
+      updateSlip({ slipId: openSlip.id, updateSlipData: newSlipData });
 
     if (newSlipData.deleted && openSlip?.id === newSlipData.id) {
       searchParams.delete("openSlip");
