@@ -1,4 +1,6 @@
 /// <reference types="vite-plugin-svgr/client" />
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import {
@@ -9,6 +11,8 @@ import {
 import LoginPage from "src/authentication/pages/LoginPage/LoginPage.tsx";
 import HomePage from "src/home/pages/homePage.tsx";
 import "src/index.css";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -27,6 +31,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   </React.StrictMode>
 );
