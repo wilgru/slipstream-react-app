@@ -1,13 +1,8 @@
 import * as dayjs from "dayjs";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import Delta from "quill-delta";
-import { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
-import { generateId } from "src/pocketbase/utils/generateId";
 import { pb } from "src/pocketbase/utils/pocketbaseConfig";
-import { isSlipContentEmpty } from "src/slips/utils/isSlipContentEmpty";
-import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import { useTopics } from "src/topics/hooks/useTopics";
 import { slipsAtom } from "../atoms/slipsAtom";
 import type { RecordModel } from "pocketbase";
@@ -32,116 +27,43 @@ export const useSlips = () => {
   const { currentUser } = useAuthentication();
   const { getTopics } = useTopics();
 
-  const [searchParams, setSearchParams] = useSearchParams();
   const [slips, setSlips] = useAtom(slipsAtom);
-  // const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
-  const [loading, setLoading] = useState<boolean>(true);
 
-  // const getSlips = useCallback(
-  //   async (topicIds: string[]): Promise<void> => {
-  //     // TODO: for some reason cant use && for the multiple topics filters, which is why slipsWithAllTopics and its logic exists
-  //     const topicsFilter = topicIds.length
-  //       ? "&& " +
-  //         topicIds.map((topicId) => `topics.id ?= '${topicId}'`).join(" || ")
-  //       : "";
+  // const deleteSlip = async (slipId: string, hardDelete: boolean = false) => {
+  //   const slipToDelete = slips.find((slip) => slip.id === slipId);
 
-  //     const slipsRes = await pb
-  //       .collection("slips")
-  //       .getList(undefined, undefined, {
-  //         filter: `deleted = null ${topicsFilter}`,
-  //         expand: "topics",
-  //       });
-  //     const mappedSlips = slipsRes.items.map(mapSlip);
+  //   if (!slipToDelete) {
+  //     return;
+  //   }
 
-  //     const slipsWithAllTopics = mappedSlips.filter((mappedSlip) =>
-  //       topicIds.every((topicId) =>
-  //         mappedSlip.topics.some((topic) => topic.id === topicId)
-  //       )
-  //     );
+  //   // instead of delete from db, again because its not in the db just remove it from the slips array state
+  //   if (slipToDelete.draft) {
+  //     setSlips((currentSlips) => currentSlips.filter((slip) => !slip.draft));
+  //     return;
+  //   }
 
-  //     // TODO: also remove focused slip somehow
-  //     // TODO: this logic may need to be moved elsewhere after query hooks are used - maybe in a useEffect in slipEditor or galleryView?
-  //     const openSlipId = searchParams.get("openSlip");
-  //     const foundSlip = slipsWithAllTopics.some(
-  //       (slip) => slip.id === openSlipId
-  //     );
+  //   if (hardDelete) {
+  //     const deletedSlip = await pb.collection("slips").delete(slipId);
 
-  //     if (!foundSlip) {
-  //       searchParams.delete("openSlip");
-  //       setSearchParams(searchParams);
+  //     if (deletedSlip) {
+  //       setSlips((currentSlips) =>
+  //         currentSlips.filter((slip) => slip.id !== slipToDelete.id)
+  //       );
   //     }
+  //   } else {
+  //     const deletedSlip = await pb
+  //       .collection("slips")
+  //       .update(slipId, { ...slipToDelete, deleted: dayjs() });
 
-  //     setSlips(slipsWithAllTopics);
-  //     setLoading(false);
-  //   },
-  //   [setSlips]
-  // );
+  //     setSlips((currentSlips) =>
+  //       currentSlips.filter((slip) => slip.id !== deletedSlip.id)
+  //     );
+  //   }
 
-  const createSlip = (): string => {
-    let slipId = generateId();
-
-    setSlips((currentSlips) => {
-      const existingDraftSlip = currentSlips.find((slip) => slip.draft);
-
-      if (existingDraftSlip) {
-        slipId = existingDraftSlip.id;
-        return currentSlips;
-      }
-
-      const slipDraft: Slip = {
-        id: slipId,
-        draft: true,
-        title: null,
-        content: new Delta(),
-        isPinned: false,
-        isFlagged: false,
-        topics: [],
-        deleted: null,
-        created: dayjs(),
-        updated: dayjs(),
-      };
-
-      return [...currentSlips, slipDraft];
-    });
-
-    return slipId; // TODO: return whole slip instead?
-  };
-
-  const deleteSlip = async (slipId: string, hardDelete: boolean = false) => {
-    const slipToDelete = slips.find((slip) => slip.id === slipId);
-
-    if (!slipToDelete) {
-      return;
-    }
-
-    // instead of delete from db, again because its not in the db just remove it from the slips array state
-    if (slipToDelete.draft) {
-      setSlips((currentSlips) => currentSlips.filter((slip) => !slip.draft));
-      return;
-    }
-
-    if (hardDelete) {
-      const deletedSlip = await pb.collection("slips").delete(slipId);
-
-      if (deletedSlip) {
-        setSlips((currentSlips) =>
-          currentSlips.filter((slip) => slip.id !== slipToDelete.id)
-        );
-      }
-    } else {
-      const deletedSlip = await pb
-        .collection("slips")
-        .update(slipId, { ...slipToDelete, deleted: dayjs() });
-
-      setSlips((currentSlips) =>
-        currentSlips.filter((slip) => slip.id !== deletedSlip.id)
-      );
-    }
-
-    if (slipToDelete.topics.length) {
-      getTopics();
-    }
-  };
+  //   if (slipToDelete.topics.length) {
+  //     getTopics();
+  //   }
+  // };
 
   const updateSlip = async (
     slipId: string,
@@ -195,21 +117,6 @@ export const useSlips = () => {
     return;
   };
 
-  // useEffect(() => {
-  //   // may need to define our callbacks within the useEffect?
-  //   //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
-  //   currentUser && getSlips(selectedTopicIds);
-  // }, [currentUser, getSlips, selectedTopicIds]);
-
-  // following hooks are the only ones that stay
-  const deleteEmptySlips = () => {
-    slips.forEach((slip) => {
-      if (!slip.title && isSlipContentEmpty(slip.content)) {
-        deleteSlip(slip.id, false); // TODO: allow delete multiple and call it once instead?
-      }
-    });
-  };
-
   const findSlip = (slipId: string): Slip | undefined => {
     const foundSlip = slips.find((slip) => slip.id === slipId);
 
@@ -218,11 +125,7 @@ export const useSlips = () => {
 
   return {
     slips,
-    createSlip,
     updateSlip,
-    deleteSlip,
-    deleteEmptySlips,
     findSlip,
-    loading,
   };
 };
