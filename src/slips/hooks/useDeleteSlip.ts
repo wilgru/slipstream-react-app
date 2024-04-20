@@ -40,7 +40,7 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
     }
 
     // instead of delete from db, again because its not in the db just remove it from the slips array state
-    if (slipToDelete.draft) {
+    if (slipToDelete.isDraft) {
       return slipId;
     }
 

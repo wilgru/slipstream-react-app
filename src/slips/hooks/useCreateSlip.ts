@@ -19,7 +19,7 @@ export const useCreateSlip = (): UseCreateSlipsResponse => {
   const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
 
   const createSlip = async (): Promise<Slip | undefined> => {
-    const existingDraftSlip = slips.find((slip) => slip.draft);
+    const existingDraftSlip = slips.find((slip) => slip.isDraft);
 
     if (existingDraftSlip) {
       return undefined;
@@ -28,7 +28,7 @@ export const useCreateSlip = (): UseCreateSlipsResponse => {
     const slipId = generateId();
     const slipDraft: Slip = {
       id: slipId,
-      draft: true,
+      isDraft: true,
       title: null,
       content: new Delta(),
       isPinned: false,

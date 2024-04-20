@@ -46,7 +46,7 @@ export const useUpdateSlip = (): UseDeleteSlipResponse => {
     let updatedSlip;
 
     // if slip is a draft then its not actually in the db, so persist it
-    if (slipToUpdate.draft) {
+    if (slipToUpdate.isDraft) {
       updatedSlip = await pb.collection("slips").create(
         {
           ...updateSlipData,
