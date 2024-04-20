@@ -1,5 +1,5 @@
 import { isSlipContentEmpty } from "src/slips/utils/isSlipContentEmpty";
-import { useDeleteSlip } from "./useDeleteSlips";
+import { useDeleteSlip } from "./useDeleteSlip";
 import { useGetSlips } from "./useGetSlips";
 
 export const usePurgeEmptySlips = () => {

@@ -29,42 +29,6 @@ export const useSlips = () => {
 
   const [slips, setSlips] = useAtom(slipsAtom);
 
-  // const deleteSlip = async (slipId: string, hardDelete: boolean = false) => {
-  //   const slipToDelete = slips.find((slip) => slip.id === slipId);
-
-  //   if (!slipToDelete) {
-  //     return;
-  //   }
-
-  //   // instead of delete from db, again because its not in the db just remove it from the slips array state
-  //   if (slipToDelete.draft) {
-  //     setSlips((currentSlips) => currentSlips.filter((slip) => !slip.draft));
-  //     return;
-  //   }
-
-  //   if (hardDelete) {
-  //     const deletedSlip = await pb.collection("slips").delete(slipId);
-
-  //     if (deletedSlip) {
-  //       setSlips((currentSlips) =>
-  //         currentSlips.filter((slip) => slip.id !== slipToDelete.id)
-  //       );
-  //     }
-  //   } else {
-  //     const deletedSlip = await pb
-  //       .collection("slips")
-  //       .update(slipId, { ...slipToDelete, deleted: dayjs() });
-
-  //     setSlips((currentSlips) =>
-  //       currentSlips.filter((slip) => slip.id !== deletedSlip.id)
-  //     );
-  //   }
-
-  //   if (slipToDelete.topics.length) {
-  //     getTopics();
-  //   }
-  // };
-
   const updateSlip = async (
     slipId: string,
     updateSlipData: Slip

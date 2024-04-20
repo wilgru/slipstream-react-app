@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import SlipCard from "src/slips/components/SlipCard/SlipCard";
 import SlipEditor from "src/slips/components/SlipEditor/SlipEditor";
 import { usePurgeEmptySlips } from "src/slips/hooks/useDeleteEmptySlips";
-import { useDeleteSlip } from "src/slips/hooks/useDeleteSlips";
+import { useDeleteSlip } from "src/slips/hooks/useDeleteSlip";
 import { useGetSlips } from "src/slips/hooks/useGetSlips";
 import { useSlips } from "src/slips/hooks/useSlips";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
