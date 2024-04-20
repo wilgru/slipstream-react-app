@@ -53,7 +53,7 @@ export const useCreateSlip = (): UseCreateSlipsResponse => {
 
       queryClient.setQueryData(
         ["slips.list", selectedTopicIds],
-        (current: Slip[]) => [...current, data]
+        (currentSlips: Slip[]) => [...currentSlips, data]
       );
     },
     // staleTime: 2 * 60 * 1000,

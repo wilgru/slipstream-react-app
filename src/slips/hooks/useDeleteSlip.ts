@@ -67,7 +67,9 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
       queryClient.setQueryData(
         ["slips.list", selectedTopicIds],
         (currentSlips: Slip[]) =>
-          data ? currentSlips.filter((slip) => slip.id !== data) : currentSlips
+          data
+            ? currentSlips.filter((currentSlip) => currentSlip.id !== data)
+            : currentSlips
       );
     },
     // staleTime: 2 * 60 * 1000,

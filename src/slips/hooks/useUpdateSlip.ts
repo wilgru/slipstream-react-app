@@ -55,12 +55,6 @@ export const useUpdateSlip = (): UseDeleteSlipResponse => {
         },
         { expand: "topics" }
       );
-
-      // setSlips((currentSlips) => {
-      //   return currentSlips.map((slip) =>
-      //     slip.id === createdSlip.id ? mapSlip(createdSlip) : slip
-      //   );
-      // });
     } else {
       updatedSlip = await pb
         .collection("slips")
@@ -69,15 +63,8 @@ export const useUpdateSlip = (): UseDeleteSlipResponse => {
           { ...updateSlipData, topics: mappedTopics },
           { expand: "topics" }
         );
-
-      // setSlips((currentSlips) => {
-      //   return currentSlips.map((slip) =>
-      //     slip.id === updatedSlip.id ? mapSlip(updatedSlip) : slip
-      //   );
-      // });
     }
 
-    // TODO check this works after adding state context manager
     if (updateSlipData.topics.length !== slipToUpdate?.topics.length) {
       getTopics();
     }

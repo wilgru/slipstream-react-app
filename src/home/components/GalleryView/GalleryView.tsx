@@ -13,8 +13,8 @@ import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 import type { Slip } from "src/slips/types/Slip.type";
 
 const GalleryView = () => {
-  const { updateSlip } = useUpdateSlip();
   const { slips } = useGetSlips();
+  const { updateSlip } = useUpdateSlip();
   const { deleteSlip } = useDeleteSlip();
   const { purgeEmptySlips } = usePurgeEmptySlips();
 
