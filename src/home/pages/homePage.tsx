@@ -4,7 +4,7 @@ import { useAuthentication } from "src/authentication/hooks/useAuthentication";
 import GalleryView from "src/home/components/GalleryView/GalleryView";
 import { Sidebar } from "src/home/components/Sidebar/Sidebar";
 import { Toolbar } from "src/home/components/Toolbar/Toolbar";
-import { useSlips } from "src/slips/hooks/useSlips";
+import { useCreateSlip } from "src/slips/hooks/useCreateSlip";
 import { TopicList } from "src/topics/components/TopicList/TopicList";
 import { useTopics } from "src/topics/hooks/useTopics";
 
@@ -12,7 +12,7 @@ function HomePage() {
   const navigate = useNavigate();
   const { currentUser } = useAuthentication();
   const { topics } = useTopics();
-  const { createSlip } = useSlips();
+  const { createSlip } = useCreateSlip();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [showSidebar, setShowSidebar] = useState(false);
@@ -22,11 +22,13 @@ function HomePage() {
     [topics]
   );
 
-  const onClickNewSlipButton = (): void => {
-    const createdSlipId = createSlip();
+  const onClickNewSlipButton = async (): Promise<void> => {
+    const createdSlip = await createSlip();
 
-    searchParams.set("openSlip", createdSlipId);
-    setSearchParams(searchParams);
+    if (createdSlip) {
+      searchParams.set("openSlip", createdSlip.id);
+      setSearchParams(searchParams);
+    }
   };
 
   const onClickShowSidebarToggle = (): void => {

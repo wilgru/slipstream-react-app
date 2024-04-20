@@ -3,14 +3,20 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import SlipCard from "src/slips/components/SlipCard/SlipCard";
 import SlipEditor from "src/slips/components/SlipEditor/SlipEditor";
-import { useSlips } from "src/slips/hooks/useSlips";
+import { usePurgeEmptySlips } from "src/slips/hooks/useDeleteEmptySlips";
+import { useDeleteSlip } from "src/slips/hooks/useDeleteSlip";
+import { useGetSlips } from "src/slips/hooks/useGetSlips";
+import { useUpdateSlip } from "src/slips/hooks/useUpdateSlip";
 import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
 import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 import type { Slip } from "src/slips/types/Slip.type";
 
 const GalleryView = () => {
-  const { slips, deleteSlip, updateSlip, deleteEmptySlips } = useSlips();
+  const { slips } = useGetSlips();
+  const { updateSlip } = useUpdateSlip();
+  const { deleteSlip } = useDeleteSlip();
+  const { purgeEmptySlips } = usePurgeEmptySlips();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null); // TODO: redundant state?
@@ -55,7 +61,8 @@ const GalleryView = () => {
   };
 
   const onChangeSlip = debounce(async (newSlipData: Slip) => {
-    openSlip && updateSlip(openSlip.id, newSlipData);
+    openSlip &&
+      updateSlip({ slipId: openSlip.id, updateSlipData: newSlipData });
 
     if (newSlipData.deleted && openSlip?.id === newSlipData.id) {
       searchParams.delete("openSlip");
@@ -67,7 +74,7 @@ const GalleryView = () => {
     searchParams.delete("openSlip");
     setSearchParams(searchParams);
 
-    deleteSlip(slipId, false);
+    deleteSlip({ slipId });
     setFocusedSlipId(null);
   };
 
@@ -77,7 +84,7 @@ const GalleryView = () => {
 
     setFocusedSlipId(null);
 
-    deleteEmptySlips();
+    purgeEmptySlips();
   };
 
   useEffect(() => {
@@ -127,7 +134,7 @@ const GalleryView = () => {
           handleSpaceBarKeyDown(
             searchParams,
             setSearchParams,
-            deleteEmptySlips,
+            purgeEmptySlips,
             focusedSlipId
           );
           break;
@@ -137,7 +144,7 @@ const GalleryView = () => {
           setSearchParams(searchParams);
 
           setFocusedSlipId(null);
-          deleteEmptySlips();
+          purgeEmptySlips();
           break;
       }
     };
@@ -153,7 +160,7 @@ const GalleryView = () => {
     editMode,
     setSearchParams,
     searchParams,
-    deleteEmptySlips,
+    purgeEmptySlips,
   ]);
 
   return (

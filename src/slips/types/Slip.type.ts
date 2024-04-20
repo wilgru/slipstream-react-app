@@ -4,7 +4,7 @@ import type { Topic } from "src/topics/types/Topic.type";
 
 export type Slip = {
   id: string;
-  draft: boolean;
+  isDraft: boolean; // FE property only
   title: string | null;
   content: Delta;
   isPinned: boolean;
