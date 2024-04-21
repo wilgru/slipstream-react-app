@@ -6,12 +6,12 @@ import { Sidebar } from "src/home/components/Sidebar/Sidebar";
 import { Toolbar } from "src/home/components/Toolbar/Toolbar";
 import { useCreateSlip } from "src/slips/hooks/useCreateSlip";
 import { TopicList } from "src/topics/components/TopicList/TopicList";
-import { useTopics } from "src/topics/hooks/useTopics";
+import { useGetTopics } from "src/topics/hooks/useGetTopics";
 
 function HomePage() {
   const navigate = useNavigate();
   const { currentUser } = useAuthentication();
-  const { topics } = useTopics();
+  const { topics } = useGetTopics();
   const { createSlip } = useCreateSlip();
 
   const [searchParams, setSearchParams] = useSearchParams();
