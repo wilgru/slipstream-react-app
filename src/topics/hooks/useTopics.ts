@@ -45,35 +45,11 @@ export const useTopics = () => {
     );
   };
 
-  const deleteTopic = async (topicId: string): Promise<void> => {
-    const topicsRes = await pb.collection("topics").delete(topicId);
-
-    if (topicsRes) {
-      setTopics((currentTopic) =>
-        currentTopic.filter((topic) => topic.id !== topicId)
-      );
-
-      // remove topic from any slips
-      setSlips((currentSlips) =>
-        currentSlips.map((currentSlip) =>
-          currentSlip.topics.find((topic) => topic.id === topicId)
-            ? {
-                ...currentSlip,
-                topics: currentSlip.topics.filter(
-                  (topic) => topic.id !== topicId
-                ),
-              }
-            : currentSlip
-        )
-      );
-    }
-  };
-
   // useEffect(() => {
   //   // may need to define our callbacks within the useEffect?
   //   //https://dev.to/vinodchauhan7/react-hooks-with-async-await-1n9g
   //   currentUser && getTopics();
   // }, [currentUser]);
 
-  return { updateTopic, deleteTopic };
+  return { updateTopic };
 };

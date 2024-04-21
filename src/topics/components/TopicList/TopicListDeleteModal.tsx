@@ -1,5 +1,5 @@
 import { Modal } from "src/common/components/Modal/Modal";
-import { useTopics } from "src/topics/hooks/useTopics";
+import { useDeleteTopic } from "src/topics/hooks/useDeleteTopic";
 import type { Topic } from "src/topics/types/Topic.type";
 
 type TopicListDeleteModalProps = {
@@ -11,7 +11,7 @@ export const TopicListDeleteModal = ({
   topicToDelete,
   setTopicToDelete,
 }: TopicListDeleteModalProps) => {
-  const { deleteTopic } = useTopics();
+  const { deleteTopic } = useDeleteTopic();
 
   const onConfirmDelete = async () => {
     if (topicToDelete) {
