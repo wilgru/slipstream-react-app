@@ -3,7 +3,7 @@ import { useAtomValue } from "jotai";
 import { useAuthentication } from "src/authentication/hooks/useAuthentication";
 import { pb } from "src/pocketbase/utils/pocketbaseConfig";
 import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
-import { useTopics } from "src/topics/hooks/useTopics";
+import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { mapSlip } from "../utils/mapSlip";
 import { useGetSlips } from "./useGetSlips";
 import type { Slip } from "../types/Slip.type";
@@ -27,7 +27,7 @@ export const useUpdateSlip = (): UseDeleteSlipResponse => {
   const queryClient = useQueryClient();
   const { currentUser } = useAuthentication();
   const { slips } = useGetSlips();
-  const { getTopics } = useTopics();
+  const { refetchTopics } = useGetTopics();
 
   const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
 
@@ -66,7 +66,7 @@ export const useUpdateSlip = (): UseDeleteSlipResponse => {
     }
 
     if (updateSlipData.topics.length !== slipToUpdate?.topics.length) {
-      getTopics();
+      await refetchTopics();
     }
 
     return mapSlip(updatedSlip);

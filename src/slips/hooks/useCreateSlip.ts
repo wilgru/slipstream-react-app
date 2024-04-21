@@ -8,11 +8,11 @@ import { useGetSlips } from "./useGetSlips";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 import type { Slip } from "src/slips/types/Slip.type";
 
-type UseCreateSlipsResponse = {
+type UseCreateSlipResponse = {
   createSlip: UseMutateAsyncFunction<Slip | undefined, Error, void, unknown>;
 };
 
-export const useCreateSlip = (): UseCreateSlipsResponse => {
+export const useCreateSlip = (): UseCreateSlipResponse => {
   const queryClient = useQueryClient();
   const { slips } = useGetSlips();
 
