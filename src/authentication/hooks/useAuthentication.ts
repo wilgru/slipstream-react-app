@@ -1,16 +1,7 @@
 import { useState } from "react";
 import { pb } from "src/pocketbase/utils/pocketbaseConfig";
-import type { AuthModel } from "pocketbase";
+import { mapUser } from "../utils/mapUser";
 import type { User } from "src/authentication/types/User.type";
-
-const mapUser = (authStoreModel: NonNullable<AuthModel>): User => {
-  return {
-    id: authStoreModel.id,
-    username: authStoreModel.username,
-    email: authStoreModel.email,
-    name: authStoreModel.name,
-  };
-};
 
 const useAuthentication = () => {
   const [logInLoading, setLogInLoading] = useState<boolean>(false);

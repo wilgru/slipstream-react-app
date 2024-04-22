@@ -3,7 +3,8 @@ import { Button } from "src/common/components/Button/Button";
 import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
 import { ToggleBar } from "src/common/components/ToggleBar/ToggleBar";
-import { useTopics } from "src/topics/hooks/useTopics";
+import { useCreateTopic } from "src/topics/hooks/useCreateTopic";
+import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { SlipEditorAttributesBar } from "./SlipEditorAttributesBar";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 import type { RangeStatic, StringMap } from "quill";
@@ -39,7 +40,8 @@ const SlipEditor = ({
   onDeleteSlip,
   onCloseSlip,
 }: SlipEditorProps) => {
-  const { topics, createTopic } = useTopics();
+  const { topics } = useGetTopics();
+  const { createTopic } = useCreateTopic();
 
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
   const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();

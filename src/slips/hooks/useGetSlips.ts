@@ -21,13 +21,14 @@ export const useGetSlips = (): UseGetSlipsResponse => {
           .join(" || ")
       : "";
 
-    const slipsRes = await pb
+    const rawSlips = await pb
       .collection("slips")
       .getList(undefined, undefined, {
         filter: `deleted = null ${topicsFilter}`,
         expand: "topics",
       });
-    const mappedSlips = slipsRes.items.map(mapSlip);
+
+    const mappedSlips = rawSlips.items.map(mapSlip);
 
     const slipsWithAllTopics = mappedSlips.filter((mappedSlip) =>
       selectedTopicIds.every((topicId) =>

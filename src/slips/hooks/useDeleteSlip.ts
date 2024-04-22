@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { useAtomValue } from "jotai";
 import { pb } from "src/pocketbase/utils/pocketbaseConfig";
 import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
-import { useTopics } from "src/topics/hooks/useTopics";
+import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { useGetSlips } from "./useGetSlips";
 import type { Slip } from "../types/Slip.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
@@ -25,7 +25,7 @@ type UseDeleteSlipResponse = {
 export const useDeleteSlip = (): UseDeleteSlipResponse => {
   const queryClient = useQueryClient();
   const { slips } = useGetSlips();
-  const { getTopics } = useTopics();
+  const { refetchTopics } = useGetTopics();
 
   const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
 
@@ -53,7 +53,7 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
     }
 
     if (slipToDelete.topics.length) {
-      getTopics();
+      refetchTopics();
     }
 
     return slipId;
