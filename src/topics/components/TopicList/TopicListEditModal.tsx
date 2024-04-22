@@ -1,7 +1,7 @@
 import { ColourPicker } from "src/common/components/ColourPicker/ColourPicker";
 import { Input } from "src/common/components/Input/Input";
 import { Modal } from "src/common/components/Modal/Modal";
-import { useTopics } from "src/topics/hooks/useTopics";
+import { useUpdateTopic } from "src/topics/hooks/useUpdateTopic";
 import type { Topic } from "src/topics/types/Topic.type";
 
 type TopicListEditModalProps = {
@@ -13,11 +13,11 @@ export const TopicListEditModal = ({
   topicToEdit,
   setTopicToEdit,
 }: TopicListEditModalProps) => {
-  const { updateTopic } = useTopics();
+  const { updateTopic } = useUpdateTopic();
 
   const onSaveEdit = async () => {
     if (topicToEdit?.id) {
-      updateTopic(topicToEdit.id, topicToEdit);
+      updateTopic({ topicId: topicToEdit.id, updateTopicData: topicToEdit });
     }
 
     setTopicToEdit(undefined);
