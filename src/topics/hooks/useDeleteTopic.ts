@@ -32,7 +32,7 @@ export const useDeleteTopic = (): UseDeleteTopicResponse => {
 
   // TODO: modifying times not needed yet I dont think
   const { mutateAsync } = useMutation({
-    mutationKey: ["slips.delete"],
+    mutationKey: ["topics.delete"],
     mutationFn: deleteTopic,
     onSuccess: (data) => {
       if (!data) {
@@ -48,11 +48,11 @@ export const useDeleteTopic = (): UseDeleteTopicResponse => {
         ["slips.list", selectedTopicIds],
         (currentSlips: Slip[]) => {
           return currentSlips.map((currentSlip) => {
-            const foundCurrentSlip = currentSlip.topics.find(
+            const slipHasTopic = currentSlip.topics.find(
               (topic) => topic.id === data
             );
 
-            if (!foundCurrentSlip) {
+            if (!slipHasTopic) {
               return currentSlip;
             }
 

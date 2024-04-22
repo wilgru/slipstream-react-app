@@ -74,7 +74,7 @@ export const useUpdateSlip = (): UseDeleteSlipResponse => {
 
   // TODO: modifying times not needed yet I dont think
   const { mutateAsync } = useMutation({
-    mutationKey: ["slips.delete"],
+    mutationKey: ["slips.update"],
     mutationFn: updateSlip,
     onSuccess: (data) => {
       queryClient.setQueryData(
