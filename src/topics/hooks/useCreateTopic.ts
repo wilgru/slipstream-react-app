@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuthentication } from "src/authentication/hooks/useAuthentication";
+import { useUser } from "src/authentication/hooks/useUser";
 import { generateId } from "src/pocketbase/utils/generateId";
 import { pb } from "src/pocketbase/utils/pocketbaseConfig";
 import { mapTopic } from "../utils/mapTopic";
@@ -12,7 +12,7 @@ type UseCreateTopicResponse = {
 
 export const useCreateTopic = (): UseCreateTopicResponse => {
   const queryClient = useQueryClient();
-  const { currentUser } = useAuthentication();
+  const { currentUser } = useUser();
 
   const createTopic = async (topicName: string): Promise<Topic> => {
     const topicId = generateId();

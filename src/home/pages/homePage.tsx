@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useAuthentication } from "src/authentication/hooks/useAuthentication";
+import { useUser } from "src/authentication/hooks/useUser";
 import GalleryView from "src/home/components/GalleryView/GalleryView";
 import { Sidebar } from "src/home/components/Sidebar/Sidebar";
 import { Toolbar } from "src/home/components/Toolbar/Toolbar";
@@ -10,7 +10,7 @@ import { useGetTopics } from "src/topics/hooks/useGetTopics";
 
 function HomePage() {
   const navigate = useNavigate();
-  const { currentUser } = useAuthentication();
+  const { currentUser } = useUser();
   const { topics } = useGetTopics();
   const { createSlip } = useCreateSlip();
 

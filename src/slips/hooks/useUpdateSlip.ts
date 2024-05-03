@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
-import { useAuthentication } from "src/authentication/hooks/useAuthentication";
+import { useUser } from "src/authentication/hooks/useUser";
 import { pb } from "src/pocketbase/utils/pocketbaseConfig";
 import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
@@ -25,7 +25,7 @@ type UseDeleteSlipResponse = {
 
 export const useUpdateSlip = (): UseDeleteSlipResponse => {
   const queryClient = useQueryClient();
-  const { currentUser } = useAuthentication();
+  const { currentUser } = useUser();
   const { slips } = useGetSlips();
   const { refetchTopics } = useGetTopics();
 
