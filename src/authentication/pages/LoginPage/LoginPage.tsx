@@ -1,6 +1,7 @@
 import { useState, type FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthentication } from "src/authentication/hooks/useAuthentication";
+import { useAuthentication } from "src/authentication/hooks/useLogin";
+import { useUser } from "src/authentication/hooks/useUser";
 import { Button } from "src/common/components/Button/Button";
 
 type FormData = {
@@ -9,7 +10,8 @@ type FormData = {
 };
 
 const LoginPage = (): JSX.Element => {
-  const { currentUser, login, logInLoading, logInError } = useAuthentication();
+  const { login, loginLoading, loginError } = useAuthentication();
+  const { currentUser } = useUser();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     email: "",
@@ -27,7 +29,7 @@ const LoginPage = (): JSX.Element => {
     e.preventDefault();
 
     // redirect on successful login
-    login(formData.email, formData.password).then(() => {
+    login({ email: formData.email, password: formData.password }).then(() => {
       navigate("/");
     });
   };
@@ -38,7 +40,7 @@ const LoginPage = (): JSX.Element => {
 
   return (
     <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen">
-      {!!logInError && (
+      {!!loginError && (
         <div className="p-6 border bg-red-100 border-red-500 text-red-500 max-w-sm w-full">
           Incorrect email or password.
         </div>
@@ -87,12 +89,12 @@ const LoginPage = (): JSX.Element => {
 
           <div>
             <Button
-              disabled={logInLoading}
+              disabled={loginLoading}
               type="submit"
               width="full"
               size="large"
             >
-              {logInLoading ? "Loading..." : "Log in"}
+              {loginLoading ? "Loading..." : "Log in"}
             </Button>
           </div>
         </form>

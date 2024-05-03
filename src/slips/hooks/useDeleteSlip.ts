@@ -53,7 +53,7 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
     }
 
     if (slipToDelete.topics.length) {
-      refetchTopics();
+      await refetchTopics();
     }
 
     return slipId;

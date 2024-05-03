@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthentication } from "src/authentication/hooks/useAuthentication";
+import { useAuthentication } from "src/authentication/hooks/useLogin";
 import { Button } from "src/common/components/Button/Button";
 import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
 import type { DropdownMenuOption } from "src/common/components/DropdownMenu/DropdownMenu";
