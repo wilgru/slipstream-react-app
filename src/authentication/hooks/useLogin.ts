@@ -4,7 +4,7 @@ import { mapUser } from "../utils/mapUser";
 import { useUser } from "./useUser";
 import type { User } from "src/authentication/types/User.type";
 
-const useAuthentication = () => {
+const useLogin = () => {
   const { setCurrentUser } = useUser();
 
   const login = async ({
@@ -45,4 +45,4 @@ const useAuthentication = () => {
   };
 };
 
-export { useAuthentication };
+export { useLogin };
