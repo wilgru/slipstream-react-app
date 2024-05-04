@@ -15,7 +15,7 @@ type UseGetTopicsResponse = {
 };
 
 export const useGetTopics = (): UseGetTopicsResponse => {
-  const getTopics = async (): Promise<Topic[]> => {
+  const queryFn = async (): Promise<Topic[]> => {
     const rawTopics = await pb
       .collection("topicsWithSlipCounts")
       .getList(undefined, undefined);
@@ -28,7 +28,7 @@ export const useGetTopics = (): UseGetTopicsResponse => {
   // TODO: modifying times not needed yet I dont think
   const { data, refetch } = useQuery({
     queryKey: ["topics.list"],
-    queryFn: getTopics,
+    queryFn,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
   });

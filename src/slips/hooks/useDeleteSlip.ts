@@ -29,7 +29,7 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
 
   const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
 
-  const deleteSlip = async ({
+  const mutationFn = async ({
     slipId,
     hardDelete = false,
   }: deleteSlipProps): Promise<string | undefined> => {
@@ -59,19 +59,21 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
     return slipId;
   };
 
+  const onSuccess = (data: string | undefined) => {
+    queryClient.setQueryData(
+      ["slips.list", selectedTopicIds],
+      (currentSlips: Slip[]) =>
+        data
+          ? currentSlips.filter((currentSlip) => currentSlip.id !== data)
+          : currentSlips
+    );
+  };
+
   // TODO: modifying times not needed yet I dont think
   const { mutateAsync } = useMutation({
     mutationKey: ["slips.delete"],
-    mutationFn: deleteSlip,
-    onSuccess: (data) => {
-      queryClient.setQueryData(
-        ["slips.list", selectedTopicIds],
-        (currentSlips: Slip[]) =>
-          data
-            ? currentSlips.filter((currentSlip) => currentSlip.id !== data)
-            : currentSlips
-      );
-    },
+    mutationFn,
+    onSuccess,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
   });

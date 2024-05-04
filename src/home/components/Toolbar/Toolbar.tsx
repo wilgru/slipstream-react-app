@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthentication } from "src/authentication/hooks/useLogin";
+import { useLogin } from "src/authentication/hooks/useLogin";
 import { Button } from "src/common/components/Button/Button";
 import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
 import type { DropdownMenuOption } from "src/common/components/DropdownMenu/DropdownMenu";
@@ -16,7 +16,7 @@ export const Toolbar = ({
   showSidebar,
   onClickNewSlipButton,
 }: ToolbarProps) => {
-  const { logout } = useAuthentication();
+  const { logout } = useLogin();
   const navigate = useNavigate();
 
   const [showSettingsDropdownMenu, setShowSettingsDropdownMenu] =

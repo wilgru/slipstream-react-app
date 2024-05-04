@@ -1,6 +1,6 @@
 import { useState, type FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthentication } from "src/authentication/hooks/useLogin";
+import { useLogin } from "src/authentication/hooks/useLogin";
 import { useUser } from "src/authentication/hooks/useUser";
 import { Button } from "src/common/components/Button/Button";
 
@@ -10,7 +10,7 @@ type FormData = {
 };
 
 const LoginPage = (): JSX.Element => {
-  const { login, loginLoading, loginError } = useAuthentication();
+  const { login, loginLoading, loginError } = useLogin();
   const { currentUser } = useUser();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
