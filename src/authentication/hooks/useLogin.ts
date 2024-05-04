@@ -7,7 +7,7 @@ import type { User } from "src/authentication/types/User.type";
 const useLogin = () => {
   const { setCurrentUser } = useUser();
 
-  const login = async ({
+  const mutationFn = async ({
     email,
     password,
   }: {
@@ -21,21 +21,23 @@ const useLogin = () => {
     return mapUser(rawUser.record);
   };
 
+  const onSuccess = (data: User) => {
+    setCurrentUser(data);
+  };
+
+  const { mutateAsync, isPending, isError } = useMutation({
+    mutationKey: ["authentication.login"],
+    mutationFn,
+    onSuccess,
+    // staleTime: 2 * 60 * 1000,
+    // gcTime: 2 * 60 * 1000,
+  });
+
   const logout = () => {
     pb.authStore.clear();
 
     setCurrentUser(undefined);
   };
-
-  const { mutateAsync, isPending, isError } = useMutation({
-    mutationKey: ["authentication.login"],
-    mutationFn: login,
-    onSuccess: (data) => {
-      setCurrentUser(data);
-    },
-    // staleTime: 2 * 60 * 1000,
-    // gcTime: 2 * 60 * 1000,
-  });
 
   return {
     login: mutateAsync,

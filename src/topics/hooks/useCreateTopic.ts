@@ -14,7 +14,7 @@ export const useCreateTopic = (): UseCreateTopicResponse => {
   const queryClient = useQueryClient();
   const { currentUser } = useUser();
 
-  const createTopic = async (topicName: string): Promise<Topic> => {
+  const mutationFn = async (topicName: string): Promise<Topic> => {
     const topicId = generateId();
 
     const newTopic = await pb
@@ -26,16 +26,18 @@ export const useCreateTopic = (): UseCreateTopicResponse => {
     return mappedNewTopic;
   };
 
+  const onSuccess = (data: Topic) => {
+    queryClient.setQueryData(["topics.list"], (currentTopics: Topic[]) => [
+      ...currentTopics,
+      data,
+    ]);
+  };
+
   // TODO: modifying times not needed yet I dont think
   const { mutateAsync } = useMutation({
     mutationKey: ["topics.create"],
-    mutationFn: createTopic,
-    onSuccess: (data) => {
-      queryClient.setQueryData(["topics.list"], (currentTopics: Topic[]) => [
-        ...currentTopics,
-        data,
-      ]);
-    },
+    mutationFn,
+    onSuccess,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
   });

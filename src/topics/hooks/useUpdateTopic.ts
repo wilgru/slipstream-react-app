@@ -28,7 +28,7 @@ export const useUpdateTopic = (): UseUpdateTopicResponse => {
 
   const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
 
-  const updateTopic = async ({
+  const mutationFn = async ({
     topicId,
     updateTopicData,
   }: UpdateTopicProps): Promise<Topic | undefined> => {
@@ -45,44 +45,46 @@ export const useUpdateTopic = (): UseUpdateTopicResponse => {
     return mapTopic(rawUpdatedTopic);
   };
 
+  const onSuccess = (data: Topic | undefined) => {
+    if (!data) {
+      return;
+    }
+
+    queryClient.setQueryData(["topics.list"], (currentTopic: Topic[]) => {
+      return currentTopic.map((currentTopic) =>
+        currentTopic.id === data.id ? data : currentTopic
+      );
+    });
+
+    // update topic in any slips that have it
+    queryClient.setQueryData(
+      ["slips.list", selectedTopicIds],
+      (currentSlips: Slip[]) => {
+        return currentSlips.map((currentSlip) => {
+          const slipHasTopic = currentSlip.topics.find(
+            (topic) => topic.id === data?.id
+          );
+
+          if (!slipHasTopic) {
+            return currentSlip;
+          }
+
+          return {
+            ...currentSlip,
+            topics: currentSlip.topics.map((topic) =>
+              topic.id === data.id ? data : topic
+            ),
+          };
+        });
+      }
+    );
+  };
+
   // TODO: modifying times not needed yet I dont think
   const { mutateAsync } = useMutation({
     mutationKey: ["topics.update"],
-    mutationFn: updateTopic,
-    onSuccess: (data) => {
-      if (!data) {
-        return;
-      }
-
-      queryClient.setQueryData(["topics.list"], (currentTopic: Topic[]) => {
-        return currentTopic.map((currentTopic) =>
-          currentTopic.id === data.id ? data : currentTopic
-        );
-      });
-
-      // update topic in any slips that have it
-      queryClient.setQueryData(
-        ["slips.list", selectedTopicIds],
-        (currentSlips: Slip[]) => {
-          return currentSlips.map((currentSlip) => {
-            const slipHasTopic = currentSlip.topics.find(
-              (topic) => topic.id === data?.id
-            );
-
-            if (!slipHasTopic) {
-              return currentSlip;
-            }
-
-            return {
-              ...currentSlip,
-              topics: currentSlip.topics.map((topic) =>
-                topic.id === data.id ? data : topic
-              ),
-            };
-          });
-        }
-      );
-    },
+    mutationFn,
+    onSuccess,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
   });

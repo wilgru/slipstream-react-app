@@ -18,7 +18,7 @@ export const useCreateSlip = (): UseCreateSlipResponse => {
 
   const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
 
-  const createSlip = async (): Promise<Slip | undefined> => {
+  const mutationFn = async (): Promise<Slip | undefined> => {
     const existingDraftSlip = slips.find((slip) => slip.isDraft);
 
     if (existingDraftSlip) {
@@ -42,20 +42,22 @@ export const useCreateSlip = (): UseCreateSlipResponse => {
     return slipDraft;
   };
 
+  const onSuccess = (data: Slip | undefined) => {
+    if (!data) {
+      return;
+    }
+
+    queryClient.setQueryData(
+      ["slips.list", selectedTopicIds],
+      (currentSlips: Slip[]) => [...currentSlips, data]
+    );
+  };
+
   // TODO: modifying times not needed yet I dont think
   const { mutateAsync } = useMutation({
     mutationKey: ["slips.create"],
-    mutationFn: createSlip,
-    onSuccess: (data) => {
-      if (!data) {
-        return;
-      }
-
-      queryClient.setQueryData(
-        ["slips.list", selectedTopicIds],
-        (currentSlips: Slip[]) => [...currentSlips, data]
-      );
-    },
+    mutationFn,
+    onSuccess,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
   });

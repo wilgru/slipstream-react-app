@@ -20,7 +20,7 @@ export const useDeleteTopic = (): UseDeleteTopicResponse => {
 
   const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
 
-  const deleteTopic = async (topicId: string): Promise<string | undefined> => {
+  const mutationFn = async (topicId: string): Promise<string | undefined> => {
     const isTopicDeleted = await pb.collection("topics").delete(topicId);
 
     if (isTopicDeleted) {
@@ -30,40 +30,42 @@ export const useDeleteTopic = (): UseDeleteTopicResponse => {
     return undefined;
   };
 
+  const onSuccess = (data: string | undefined) => {
+    if (!data) {
+      return;
+    }
+
+    queryClient.setQueryData(["topics.list"], (currentTopics: Topic[]) => {
+      return currentTopics.filter((topic) => topic.id !== data);
+    });
+
+    // remove topic from any slips
+    queryClient.setQueryData(
+      ["slips.list", selectedTopicIds],
+      (currentSlips: Slip[]) => {
+        return currentSlips.map((currentSlip) => {
+          const slipHasTopic = currentSlip.topics.find(
+            (topic) => topic.id === data
+          );
+
+          if (!slipHasTopic) {
+            return currentSlip;
+          }
+
+          return {
+            ...currentSlip,
+            topics: currentSlip.topics.filter((topic) => topic.id !== data),
+          };
+        });
+      }
+    );
+  };
+
   // TODO: modifying times not needed yet I dont think
   const { mutateAsync } = useMutation({
     mutationKey: ["topics.delete"],
-    mutationFn: deleteTopic,
-    onSuccess: (data) => {
-      if (!data) {
-        return;
-      }
-
-      queryClient.setQueryData(["topics.list"], (currentTopics: Topic[]) => {
-        return currentTopics.filter((topic) => topic.id !== data);
-      });
-
-      // remove topic from any slips
-      queryClient.setQueryData(
-        ["slips.list", selectedTopicIds],
-        (currentSlips: Slip[]) => {
-          return currentSlips.map((currentSlip) => {
-            const slipHasTopic = currentSlip.topics.find(
-              (topic) => topic.id === data
-            );
-
-            if (!slipHasTopic) {
-              return currentSlip;
-            }
-
-            return {
-              ...currentSlip,
-              topics: currentSlip.topics.filter((topic) => topic.id !== data),
-            };
-          });
-        }
-      );
-    },
+    mutationFn,
+    onSuccess,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
   });
