@@ -87,7 +87,7 @@ export const useUpdateSlip = (): UseDeleteSlipResponse => {
     );
   };
 
-  // TODO: modifying times not needed yet I dont think
+  // TODO: consider time caching for better performance
   const { mutateAsync } = useMutation({
     mutationKey: ["slips.update"],
     mutationFn,

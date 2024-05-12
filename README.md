@@ -1,13 +1,125 @@
-# Slipbox
+# SlipBox
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SlipBox is a web based note taking app inspired by the 'zettelkasten' note taking method.
+
+## Setup Local Development
+
+### 1. Install recommended extensions (VS Code)
+
+Install all the recommended extensions for this repo to make sure you have as close the same development environment as everyone else (strongly recommend the Sort Imports and Tailwind extensions at the least).
+
+The recommended extensions can be found under `.vscode/extensions.json` but VSCode should prompt you to install them when first opening the repo as well.
+
+### 2. Create .env file
+
+Run the following command at the root of the repo's directory to create your `.env` file:
+
+```
+cp .env.example .env
+```
+
+_Make sure you don't commit this file with git_
+
+### 3. Install npm Packages
+
+Run this command to install this repos npm packages locally:
+
+```
+npm install
+```
+
+### 4. Make sure ESLint and Prettier are set up
+
+Make sure you've installed the ESLint and Prettier extensions for your IDE
+
+### 5. Start the Pocketbase Docker Container
+
+Run the following command at the root of the repo's directory to create your `Dockerfile`:
+
+```
+cp Dockerfile.example Dockerfile
+```
+
+Once the docker file is created you can use `docker compose` start up the to create Pocketbase image and start the container. For the first time you run the Docker compose, run this command:
+
+```
+docker compose up --build
+```
+
+Otherwise you can run the command without the --build flag:
+
+```
+docker compose up
+```
+
+After stopping the container, use this command to make sure its properly spun down:
+
+```
+docker compose down
+```
+
+### 6. Start the React App
+
+The React app and Vite server hasn't been dockerised yet, so will just run on your local machine for now.
+
+To start the Vite server, run this npm command:
+
+```
+npm run start:dev
+```
+
+## File Structure and Naming Conventions
+
+Use the following folder tree as a source of truth for how to organise your files in the `src` directory and what naming convention to use for certain files/folders depending on the context:
+
+```
+src
+├── moduleName
+│   ├── components
+│   │   └── ComponentName
+│   │       ├── subComponents
+│   │       │   └── SubComponentName.tsx
+│   │       ├── utils
+│   │       │   └── utilName.ts
+│   │       └── ComponentName.tsx
+│   │       └── ComponentName.module.css
+│   ├── hooks
+│   │   └── useHookName.ts
+│   ├── types
+│   │   └── TypeName.type.ts
+│   ├── pages
+│   │   └── PageName.tsx
+│   └── utils
+│       └── utilName.ts
+```
+
+### General Rules
+
+- You don't need to have all of these folders for each module, but you'll most likely end up having most if not all of them anyways
+- Good rule of thumb, if a piece of code is being used multiple times within a file then abstract it within that file, otherwise if its used across multiple files, move it to its own file in the most relevant of the generic folders at the top of the respective module
+- If a particular file is getting way to big, split out its logic to other files nearby, and keep all the related files close together in its own folder with some structure - For example in the context of a component, create a `subComponents` and/or `utils` folders within that components respective folder.
+- Don't move any logic to the generic folders at the top of the module if is not planned to be used anywhere else, unless its truly generic, feel free to move it to the `common` module
+- Try to keep each file exporting only one thing, so you know exactly whats coming out of that file just based on the name
+- Should use tailwind for all normal styling needs, but in the case where you must use vanilla css, use `.module.css` files
+
+### The Common Module
+
+The `common` module is a bit different to the other modules, it may have folders that the other modules wouldn't have like `constants` for example.
+
+## Commenting
+
+Ideally the code itself should be used as the source of truth as much as possible, so if you decide to leave a comment somewhere make sure it says something the code doesn't. Something that can make your comments richer as well is to use the prefixes that come with the Better Comments extension, which can make your comments stand out more with highlighting. Consider using the following:
+
+TODOs and FIXMEs in particular can also be tracked using the TODO tree extension if you have that installed.
+
+## Vite
 
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+### Expanding the ESLint configuration
 
 If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 

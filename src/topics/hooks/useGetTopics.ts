@@ -25,7 +25,7 @@ export const useGetTopics = (): UseGetTopicsResponse => {
     return mappedTopics;
   };
 
-  // TODO: modifying times not needed yet I dont think
+  // TODO: consider time caching for better performance
   const { data, refetch } = useQuery({
     queryKey: ["topics.list"],
     queryFn,

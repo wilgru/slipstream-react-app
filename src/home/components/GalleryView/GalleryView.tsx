@@ -19,7 +19,7 @@ const GalleryView = () => {
   const { purgeEmptySlips } = usePurgeEmptySlips();
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null); // TODO: redundant state?
+  const [focusedSlipId, setFocusedSlipId] = useState<string | null>(null); //? redundant state?
   const [openSlip, setOpenSlip] = useState<Slip | null>(null);
   const [editMode, setEditMode] = useState(false);
 
