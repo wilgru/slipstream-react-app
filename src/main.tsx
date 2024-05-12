@@ -9,7 +9,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import LoginPage from "src/authentication/pages/LoginPage/LoginPage.tsx";
-import HomePage from "src/home/pages/homePage.tsx";
+import HomePage from "src/home/pages/HomePage/HomePage";
 import "src/index.css";
 
 const queryClient = new QueryClient();

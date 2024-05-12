@@ -12,7 +12,7 @@ import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
 import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
 import type { Slip } from "src/slips/types/Slip.type";
 
-const GalleryView = () => {
+export const SlipGallery = () => {
   const { slips } = useGetSlips();
   const { updateSlip } = useUpdateSlip();
   const { deleteSlip } = useDeleteSlip();
@@ -197,5 +197,3 @@ const GalleryView = () => {
     </div>
   );
 };
-
-export default GalleryView;

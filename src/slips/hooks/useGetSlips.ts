@@ -13,7 +13,7 @@ export const useGetSlips = (): UseGetSlipsResponse => {
   const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
 
   const queryFn = async (): Promise<Slip[]> => {
-    //* for some reason cant use && for the multiple topics filters, which is why slipsWithAllTopics and its logic exists
+    // for some reason cant use && for the multiple topics filters, which is why slipsWithAllTopics and its logic exists
     const topicsFilter = selectedTopicIds.length
       ? "&& " +
         selectedTopicIds
@@ -37,7 +37,7 @@ export const useGetSlips = (): UseGetSlipsResponse => {
     );
 
     // TODO: also remove focused slip somehow
-    // TODO: this logic may need to be moved elsewhere after query hooks are used - maybe in a useEffect in slipEditor or galleryView?
+    // TODO: this logic may need to be moved elsewhere after query hooks are used - maybe in a useEffect in slipEditor or SlipGallery?
     const openSlipId = searchParams.get("openSlip");
     const foundSlip = slipsWithAllTopics.some((slip) => slip.id === openSlipId);
 
