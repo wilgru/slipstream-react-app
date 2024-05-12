@@ -88,17 +88,17 @@ src
 │   ├── types
 │   │   └── TypeName.type.ts
 │   ├── pages
-│   │   └── PageName.tsx
+│   │   └── PageName
+│   │       └── PageName.tsx
 │   └── utils
 │       └── utilName.ts
 ```
 
 ### General Rules
 
-- You don't need to have all of these folders for each module, but you'll most likely end up having most if not all of them anyways
-- Good rule of thumb, if a piece of code is being used multiple times within a file then abstract it within that file, otherwise if its used across multiple files, move it to its own file in the most relevant of the generic folders at the top of the respective module
-- If a particular file is getting way to big, split out its logic to other files nearby, and keep all the related files close together in its own folder with some structure - For example in the context of a component, create a `subComponents` and/or `utils` folders within that components respective folder.
-- Don't move any logic to the generic folders at the top of the module if is not planned to be used anywhere else, unless its truly generic, feel free to move it to the `common` module
+- You don't need to have all of these folders for each module, but will most likely end up having most if not all of them
+- If a particular file is getting too big, split out its logic using whatever organisation structure seems the simplest or most appropriate. Look for examples of existing structures in the code
+- If a piece of code or logic is truly generic, feel free to move it somewhere in the `common` module
 - Try to keep each file exporting only one thing, so you know exactly whats coming out of that file just based on the name
 - Should use tailwind for all normal styling needs, but in the case where you must use vanilla css, use `.module.css` files
 
