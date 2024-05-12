@@ -6,7 +6,7 @@ export const customisationColours: Colour[] = [
   {
     name: "orange",
     primary: "orange-400",
-    secondary: "orange-50", // TODO: delete secondary colours?
+    secondary: "orange-50", //? delete secondary colours?
   },
   {
     name: "yellow",

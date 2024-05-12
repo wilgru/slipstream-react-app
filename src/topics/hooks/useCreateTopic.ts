@@ -33,7 +33,7 @@ export const useCreateTopic = (): UseCreateTopicResponse => {
     ]);
   };
 
-  // TODO: modifying times not needed yet I dont think
+  // TODO: consider time caching for better performance
   const { mutateAsync } = useMutation({
     mutationKey: ["topics.create"],
     mutationFn,

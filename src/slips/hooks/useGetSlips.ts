@@ -13,7 +13,7 @@ export const useGetSlips = (): UseGetSlipsResponse => {
   const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
 
   const queryFn = async (): Promise<Slip[]> => {
-    // TODO: for some reason cant use && for the multiple topics filters, which is why slipsWithAllTopics and its logic exists
+    //* for some reason cant use && for the multiple topics filters, which is why slipsWithAllTopics and its logic exists
     const topicsFilter = selectedTopicIds.length
       ? "&& " +
         selectedTopicIds
@@ -49,7 +49,7 @@ export const useGetSlips = (): UseGetSlipsResponse => {
     return slipsWithAllTopics;
   };
 
-  // TODO: modifying times not needed yet I dont think
+  // TODO: consider time caching for better performance
   const { data } = useQuery({
     queryKey: ["slips.list", selectedTopicIds],
     queryFn,

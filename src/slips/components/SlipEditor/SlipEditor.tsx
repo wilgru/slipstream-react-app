@@ -25,7 +25,7 @@ type SlipEditorProps = {
   onCloseSlip: () => void;
 };
 
-// TODO move to types folder under common module?
+//? move to types folder under common module?
 // AnyKeyValueOf
 export type AnyKeyValueOfSlip = {
   [K in keyof Slip]: { [P in K]: Slip[K] };
@@ -103,7 +103,7 @@ const SlipEditor = ({
     };
   }, []);
 
-  // TODO: redundant?
+  //? redundant?
   useEffect(() => {
     setEditableSlip(slip);
   }, [slip]);
