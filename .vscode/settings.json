@@ -20,15 +20,6 @@
       "italic": false
     },
     {
-      "tag": "//",
-      "color": "#474747",
-      "strikethrough": true,
-      "underline": false,
-      "backgroundColor": "transparent",
-      "bold": false,
-      "italic": false
-    },
-    {
       "tag": "todo",
       "color": "#FF8C00",
       "strikethrough": false,
@@ -39,16 +30,7 @@
     },
     {
       "tag": "fixme",
-      "color": "#FF8C00",
-      "strikethrough": false,
-      "underline": false,
-      "backgroundColor": "transparent",
-      "bold": false,
-      "italic": false
-    },
-    {
-      "tag": "*",
-      "color": "#98C379",
+      "color": "#ebe665",
       "strikethrough": false,
       "underline": false,
       "backgroundColor": "transparent",
