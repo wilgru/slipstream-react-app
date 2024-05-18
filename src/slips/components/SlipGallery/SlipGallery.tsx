@@ -167,12 +167,12 @@ export const SlipGallery = () => {
     <div className="flex flex-col w-full gap-2 p-3 pb-2 overflow-y-auto overflow-x-hidden">
       <div
         style={{
-          gridTemplateColumns: "repeat(auto-fill, minmax(15rem, 1fr))",
+          gridTemplateColumns: "repeat(auto-fill, 15rem)",
         }}
         className={
           openSlip
             ? "flex gap-3 px-3 -mx-3 overflow-x-auto overflow-y-hidden"
-            : "grid gap-3"
+            : "grid justify-between gap-3"
         }
       >
         {slips.map((slip) => (
