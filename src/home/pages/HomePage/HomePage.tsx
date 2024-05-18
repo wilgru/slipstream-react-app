@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useUser } from "src/authentication/hooks/useUser";
-import GalleryView from "src/home/components/GalleryView/GalleryView";
 import { Sidebar } from "src/home/components/Sidebar/Sidebar";
 import { Toolbar } from "src/home/components/Toolbar/Toolbar";
+import { SlipGallery } from "src/slips/components/SlipGallery/SlipGallery";
 import { useCreateSlip } from "src/slips/hooks/useCreateSlip";
 import { TopicList } from "src/topics/components/TopicList/TopicList";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
@@ -49,7 +49,7 @@ function HomePage() {
         />
         <div className="flex flex-row h-full min-h-0">
           {showSidebar && <Sidebar sections={sideBarSections} />}
-          <GalleryView />
+          <SlipGallery />
         </div>
       </div>
     </div>
