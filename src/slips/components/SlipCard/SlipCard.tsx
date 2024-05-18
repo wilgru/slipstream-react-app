@@ -48,7 +48,8 @@ const SlipCard = ({ slip, isFocused, onClick, onDblClick }: SlipCardProps) => {
   return (
     <div
       ref={ref}
-      className={`relative mb-1 h-40 w-52 flex-shrink-0 cursor-pointer select-none rounded-lg bg-white shadow-light ${
+      style={{ minWidth: "15rem" }}
+      className={`relative mb-1 h-40 cursor-pointer select-none rounded-lg bg-white shadow-light ${
         isFocused ? "border-2 border-orange-500" : "border border-black"
       }`}
     >
