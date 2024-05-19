@@ -7,10 +7,10 @@ type SidebarProps = {
 
 export const Sidebar = ({ sections }: SidebarProps) => {
   return (
-    <div className=" w-60 flex-shrink-0 border-r bg-white border-stone-700 overflow-y-scroll">
+    <div className=" w-60 flex-shrink-0 border-r bg-stone-100 border-black overflow-y-scroll">
       {sections?.map((section) => (
-        <div className="p-2 flex flex-col gap-2 text-stone-700 border-b border-stone-700">
-          <p className="text-sm font-medium">{section.title}</p>
+        <div className="p-2 flex flex-col gap-2 text-black">
+          <h1 className="font-title text-lg">{section.title}</h1>
           {section.component}
         </div>
       ))}
