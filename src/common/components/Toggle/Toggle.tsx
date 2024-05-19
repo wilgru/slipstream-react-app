@@ -1,11 +1,9 @@
-import { Icon } from "src/common/components/Icon/Icon";
+import { useState } from "react";
 
 type ToggleProps = {
   children?: string | JSX.Element;
   className?: string;
-  icon?: string;
-  iconSize?: "small" | "medium" | "large";
-  iconToggledOnColour?: string;
+  toggledOnColour?: string;
   styleType?: "block" | "icon";
   colour?: { border: string; background: string; text: string };
   width?: "fit" | "full";
@@ -13,10 +11,11 @@ type ToggleProps = {
   disabled?: boolean;
   onClick?: () => void;
   isToggled: boolean;
+  icon?: (isToggleHovered: boolean) => JSX.Element;
 };
 
 enum ToggleStyleType {
-  "block" = "border font-medium hover:bg-black hover:border-black hover:text-white",
+  "block" = "border border-black font-medium",
   "icon" = "",
 }
 
@@ -34,55 +33,53 @@ enum ToggleWidth {
 export const Toggle = ({
   children,
   className,
-  icon,
-  iconSize = "medium",
-  iconToggledOnColour = "black", // TODO make required only if is icon style type
   styleType = "block",
   colour = { border: "black", background: "white", text: "white" },
+  toggledOnColour = "black",
   width = "fit",
   size = "medium",
   disabled = false,
   onClick,
   isToggled,
+  icon,
 }: ToggleProps) => {
-  const toggleBaseStyle =
-    "rounded-full text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
+  const [isToggleHovered, setIsToggleHovered] = useState(false);
+
   const toggleStyleType = ToggleStyleType[styleType];
-  const toggleColourStyle =
-    styleType === "block" ? `border-${colour.border}` : "";
   const toggleWidth = ToggleWidth[width];
   const toggleSize = styleType === "icon" ? "" : ToggleSize[size];
+  const toggleToggledOffColour =
+    styleType === "icon"
+      ? "text-stone-500"
+      : `bg-${colour.background} text-black`;
   const toggleToggledOnColour =
     styleType === "icon"
-      ? iconToggledOnColour
-      : `bg-${colour.border} text-white`;
-  const toggleToggledOffColour =
-    styleType === "icon" ? "stone-500" : `bg-${colour.background} text-black`;
+      ? `text-${toggledOnColour}`
+      : `bg-${toggledOnColour} text-white`;
+
+  const hoverColour =
+    styleType === "icon"
+      ? `hover:text-${toggledOnColour}`
+      : `hover:bg-${toggledOnColour} hover:text-white`;
 
   const toggleStyles = [
-    toggleBaseStyle,
     toggleStyleType,
-    toggleColourStyle,
     toggleWidth,
     toggleSize,
     isToggled ? toggleToggledOnColour : toggleToggledOffColour,
+    hoverColour,
   ].join(" ");
 
   return (
     <button
       type="button"
-      className={`${className} ${toggleStyles}`}
+      className={`flex gap-2 rounded-full text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 ${className} ${toggleStyles}`}
       disabled={disabled}
+      onMouseEnter={() => setIsToggleHovered(true)}
+      onMouseLeave={() => setIsToggleHovered(false)}
       onClick={onClick}
     >
-      {icon && (
-        <Icon
-          iconName={icon}
-          size={iconSize}
-          colour={isToggled ? toggleToggledOnColour : toggleToggledOffColour}
-          hoverColour="black"
-        />
-      )}
+      {icon && icon(isToggleHovered)}
       {children}
     </button>
   );

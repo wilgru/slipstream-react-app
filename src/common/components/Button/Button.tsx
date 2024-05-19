@@ -1,8 +1,7 @@
-import { Icon } from "src/common/components/Icon/Icon";
+import { useState } from "react";
 
 type ButtonProps = {
   children?: string | JSX.Element;
-  icon?: string;
   iconHoverColour?: string;
   iconSize?: "small" | "medium";
   type?: "button" | "submit";
@@ -12,13 +11,14 @@ type ButtonProps = {
   size?: "small" | "medium" | "large";
   disabled?: boolean;
   onClick?: () => void;
+  icon?: (isButtonHovered: boolean) => JSX.Element;
 };
 
 enum ButtonStyleType {
   "block" = "border hover:bg-black hover:text-white hover:border-black",
   "block-outline" = "bg-white text-black border border-black hover:bg-black hover:text-white hover:border-black",
   "link" = "text-orange-500 hover:text-orange-700",
-  "icon" = "",
+  "icon" = "text-stone-500 hover:text-black",
 }
 
 enum ButtonSize {
@@ -32,26 +32,8 @@ enum ButtonWidth {
   "fit" = "",
 }
 
-enum ButtonIconColour {
-  "block" = "white",
-  "block-outline" = "black",
-  "link" = "orange-500",
-  "icon" = "stone-500",
-}
-
-enum ButtonIconHoverColour {
-  "block" = "white",
-  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
-  "block-outline" = "white",
-  "link" = "orange-700",
-  "icon" = "black",
-}
-
 export const Button = ({
   children,
-  icon,
-  iconHoverColour, // TODO make required only if is icon style type
-  iconSize = "medium",
   type = "button",
   styleType = "block",
   colour = { border: "black", background: "white", text: "black" },
@@ -59,9 +41,10 @@ export const Button = ({
   size = "medium",
   disabled = false,
   onClick,
+  icon,
 }: ButtonProps) => {
-  const buttonBaseStyle =
-    "flex gap-2 h-full rounded-full items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
+
   const buttonStyleType = ButtonStyleType[styleType];
   const buttonColourStyle =
     styleType === "block"
@@ -72,7 +55,6 @@ export const Button = ({
     styleType === "icon" || styleType === "link" ? "" : ButtonSize[size];
 
   const buttonStyles = [
-    buttonBaseStyle,
     buttonStyleType,
     buttonColourStyle,
     buttonWidth,
@@ -82,18 +64,13 @@ export const Button = ({
   return (
     <button
       type={type}
-      className={buttonStyles}
+      className={`flex gap-2 h-full rounded-full items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 ${buttonStyles}`}
       disabled={disabled}
+      onMouseEnter={() => setIsButtonHovered(true)}
+      onMouseLeave={() => setIsButtonHovered(false)}
       onClick={onClick}
     >
-      {icon && (
-        <Icon
-          iconName={icon}
-          size={iconSize}
-          colour={ButtonIconColour[styleType]}
-          hoverColour={iconHoverColour || ButtonIconHoverColour[styleType]}
-        />
-      )}
+      {icon && icon(isButtonHovered)}
       {children}
     </button>
   );
