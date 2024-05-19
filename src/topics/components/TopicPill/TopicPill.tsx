@@ -1,3 +1,4 @@
+import { ChatCircle, X } from "@phosphor-icons/react";
 import { useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import { Toggle } from "src/common/components/Toggle/Toggle";
@@ -43,9 +44,14 @@ export const TopicPill = ({
           styleType="block"
           colour={topicButtonColour}
           size={size}
-          icon={closable && closeButtonVisible ? "close" : ""}
-          iconSize={size}
           onClick={() => onClick && onClick(topic.id)}
+          icon={() =>
+            closable && closeButtonVisible ? (
+              <X size={16} />
+            ) : (
+              <ChatCircle size={16} />
+            )
+          }
         >
           {topic.name}
         </Button>
@@ -54,9 +60,9 @@ export const TopicPill = ({
           styleType="block"
           colour={topicButtonColour}
           size={size}
-          iconSize={size}
           onClick={() => onClick && onClick(topic.id)}
           isToggled={isSelected}
+          icon={() => <ChatCircle size={16} />}
         >
           {topic.name}
         </Toggle>
