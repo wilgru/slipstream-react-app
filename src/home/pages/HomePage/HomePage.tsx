@@ -36,21 +36,19 @@ function HomePage() {
   };
 
   useEffect(() => {
-    !currentUser && navigate("/login");
+    // !currentUser && navigate("/login");
   }, []);
 
   return (
-    <div className="fixed h-screen w-screen">
-      <div className="flex flex-col h-full">
+    <div className="fixed flex h-screen w-screen">
+      {showSidebar && <Sidebar sections={sideBarSections} />}
+      <div className="flex flex-col w-full min-w-0">
         <Toolbar
           showSidebar={showSidebar}
           onClickShowSidebarToggle={onClickShowSidebarToggle}
           onClickNewSlipButton={onClickNewSlipButton}
         />
-        <div className="flex flex-row h-full min-h-0">
-          {showSidebar && <Sidebar sections={sideBarSections} />}
-          <SlipGallery />
-        </div>
+        <SlipGallery />
       </div>
     </div>
   );
