@@ -71,6 +71,9 @@ export default {
     "bg-stone-500",
 
     "hover:text-red-500",
+
+    "bg-orange-500",
+    "text-orange-500",
     "hover:text-orange-500",
   ],
 };
