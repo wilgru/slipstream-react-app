@@ -2,24 +2,15 @@ import { useState } from "react";
 
 type ButtonProps = {
   children?: string | JSX.Element;
-  iconHoverColour?: string;
-  iconSize?: "small" | "medium";
-  type?: "button" | "submit";
   styleType?: "block" | "block-outline" | "link" | "icon";
   colour?: { border: string; background: string; text: string };
   width?: "fit" | "full";
   size?: "small" | "medium" | "large";
+  type?: "button" | "submit";
   disabled?: boolean;
   onClick?: () => void;
   icon?: (isButtonHovered: boolean) => JSX.Element;
 };
-
-enum ButtonStyleType {
-  "block" = "border hover:bg-black hover:text-white hover:border-black",
-  "block-outline" = "bg-white text-black border border-black hover:bg-black hover:text-white hover:border-black",
-  "link" = "text-orange-500 hover:text-orange-700",
-  "icon" = "text-stone-500 hover:text-black",
-}
 
 enum ButtonSize {
   "small" = "px-2 py-1 text-xs font-normal",
@@ -45,26 +36,44 @@ export const Button = ({
 }: ButtonProps) => {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
 
-  const buttonStyleType = ButtonStyleType[styleType];
-  const buttonColourStyle =
-    styleType === "block"
-      ? `bg-${colour.background} border-${colour.border} text-${colour.text}`
-      : "";
-  const buttonWidth = ButtonWidth[width];
-  const buttonSize =
-    styleType === "icon" || styleType === "link" ? "" : ButtonSize[size];
+  let _styleType;
+  let _colour;
+  let _size;
+  const _width = ButtonWidth[width];
 
-  const buttonStyles = [
-    buttonStyleType,
-    buttonColourStyle,
-    buttonWidth,
-    buttonSize,
-  ].join(" ");
+  switch (styleType) {
+    case "icon":
+      _styleType = "text-stone-500 hover:text-black";
+      _size = "";
+      _colour = "";
+      break;
+
+    case "link":
+      _styleType = "text-orange-500 hover:text-orange-700";
+      _size = "";
+      _colour = "";
+      break;
+
+    case "block":
+      _styleType = "border hover:bg-black hover:text-white hover:border-black";
+      _size = ButtonSize[size];
+      _colour = `bg-${colour.background} border-${colour.border} text-${colour.text}`;
+      break;
+
+    case "block-outline":
+      _styleType =
+        "bg-white text-black border border-black hover:bg-black hover:text-white hover:border-black";
+      _size = ButtonSize[size];
+      _colour = "";
+      break;
+  }
+
+  const buttonStyles = [_styleType, _width, _size, _colour].join(" ");
 
   return (
     <button
       type={type}
-      className={`flex gap-2 h-full rounded-full items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 ${buttonStyles}`}
+      className={`${buttonStyles} flex gap-2 h-full rounded-full items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500`}
       disabled={disabled}
       onMouseEnter={() => setIsButtonHovered(true)}
       onMouseLeave={() => setIsButtonHovered(false)}
