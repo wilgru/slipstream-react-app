@@ -9,7 +9,7 @@ export default {
       // body: [""],
     },
     boxShadow: {
-      light: "black 4px 4px ", // stone-700, 1 spacing
+      light: "black 4px 4px ", // 1 spacing
     },
     extend: {},
   },
