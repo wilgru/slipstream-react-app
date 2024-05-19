@@ -36,7 +36,7 @@ function HomePage() {
   };
 
   useEffect(() => {
-    // !currentUser && navigate("/login");
+    !currentUser && navigate("/login");
   }, []);
 
   return (

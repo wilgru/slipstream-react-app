@@ -29,7 +29,7 @@ export const Toggle = ({
   children,
   className,
   styleType = "block",
-  colour = { border: "black", background: "white", text: "white" },
+  colour,
   toggledOnColour = "black",
   width = "fit",
   size = "medium",
@@ -52,7 +52,9 @@ export const Toggle = ({
       _styleType = "";
       _size = "";
       _toggledOnColour = `text-${toggledOnColour}`;
-      _toggledOffColour = "text-stone-500";
+      _toggledOffColour = colour
+        ? `text-${colour.background}`
+        : "text-stone-500";
       _hoverColour = `hover:text-${toggledOnColour}`;
       break;
 
@@ -60,10 +62,14 @@ export const Toggle = ({
       _styleType = "border border-black font-medium";
       _size = ToggleSize[size];
       _toggledOnColour = `bg-${toggledOnColour} text-white`;
-      _toggledOffColour = `bg-${colour.background} text-black`;
+      _toggledOffColour = `bg-${
+        colour ? colour.background : "white"
+      } text-black`;
       _hoverColour = `hover:bg-${toggledOnColour} hover:text-white`;
       break;
   }
+
+  console.log(_toggledOffColour);
 
   const toggleStyles = [
     _styleType,
