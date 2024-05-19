@@ -1,24 +1,18 @@
-import { Icon } from "src/common/components/Icon/Icon";
+import { useState } from "react";
 
 type ToggleProps = {
-  children?: string | JSX.Element;
   className?: string;
-  icon?: string;
-  iconSize?: "small" | "medium" | "large";
-  iconToggledOnColour?: string;
+  children?: string | JSX.Element;
   styleType?: "block" | "icon";
   colour?: { border: string; background: string; text: string };
+  toggledOnColour?: string;
   width?: "fit" | "full";
   size?: "small" | "medium" | "large";
+  isToggled: boolean;
   disabled?: boolean;
   onClick?: () => void;
-  isToggled: boolean;
+  icon?: (isToggleHovered: boolean) => JSX.Element;
 };
-
-enum ToggleStyleType {
-  "block" = "border font-medium hover:bg-black hover:border-black hover:text-white",
-  "icon" = "",
-}
 
 enum ToggleSize {
   "small" = "px-2 py-1 text-xs font-normal",
@@ -34,55 +28,61 @@ enum ToggleWidth {
 export const Toggle = ({
   children,
   className,
-  icon,
-  iconSize = "medium",
-  iconToggledOnColour = "black", // TODO make required only if is icon style type
   styleType = "block",
   colour = { border: "black", background: "white", text: "white" },
+  toggledOnColour = "black",
   width = "fit",
   size = "medium",
   disabled = false,
   onClick,
   isToggled,
+  icon,
 }: ToggleProps) => {
-  const toggleBaseStyle =
-    "rounded-full text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
-  const toggleStyleType = ToggleStyleType[styleType];
-  const toggleColourStyle =
-    styleType === "block" ? `border-${colour.border}` : "";
-  const toggleWidth = ToggleWidth[width];
-  const toggleSize = styleType === "icon" ? "" : ToggleSize[size];
-  const toggleToggledOnColour =
-    styleType === "icon"
-      ? iconToggledOnColour
-      : `bg-${colour.border} text-white`;
-  const toggleToggledOffColour =
-    styleType === "icon" ? "stone-500" : `bg-${colour.background} text-black`;
+  const [isToggleHovered, setIsToggleHovered] = useState(false);
+
+  let _styleType;
+  let _size;
+  let _toggledOnColour;
+  let _toggledOffColour;
+  let _hoverColour;
+  const _width = ToggleWidth[width];
+
+  switch (styleType) {
+    case "icon":
+      _styleType = "";
+      _size = "";
+      _toggledOnColour = `text-${toggledOnColour}`;
+      _toggledOffColour = "text-stone-500";
+      _hoverColour = `hover:text-${toggledOnColour}`;
+      break;
+
+    case "block":
+      _styleType = "border border-black font-medium";
+      _size = ToggleSize[size];
+      _toggledOnColour = `bg-${toggledOnColour} text-white`;
+      _toggledOffColour = `bg-${colour.background} text-black`;
+      _hoverColour = `hover:bg-${toggledOnColour} hover:text-white`;
+      break;
+  }
 
   const toggleStyles = [
-    toggleBaseStyle,
-    toggleStyleType,
-    toggleColourStyle,
-    toggleWidth,
-    toggleSize,
-    isToggled ? toggleToggledOnColour : toggleToggledOffColour,
+    _styleType,
+    _width,
+    _size,
+    isToggled ? _toggledOnColour : _toggledOffColour,
+    _hoverColour,
   ].join(" ");
 
   return (
     <button
       type="button"
-      className={`${className} ${toggleStyles}`}
+      className={`${className} ${toggleStyles} flex gap-2 rounded-full text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500`}
       disabled={disabled}
+      onMouseEnter={() => setIsToggleHovered(true)}
+      onMouseLeave={() => setIsToggleHovered(false)}
       onClick={onClick}
     >
-      {icon && (
-        <Icon
-          iconName={icon}
-          size={iconSize}
-          colour={isToggled ? toggleToggledOnColour : toggleToggledOffColour}
-          hoverColour="black"
-        />
-      )}
+      {icon && icon(isToggleHovered)}
       {children}
     </button>
   );

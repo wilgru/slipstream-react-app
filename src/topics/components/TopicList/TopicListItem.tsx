@@ -1,3 +1,4 @@
+import { Pencil, Trash } from "@phosphor-icons/react";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { Button } from "src/common/components/Button/Button";
@@ -48,15 +49,13 @@ export const TopicListItem = ({
           <>
             <Button
               styleType="icon"
-              icon="pencil"
-              iconSize="small"
               onClick={() => onClickEdit(topic)}
+              icon={() => <Pencil size={16} weight="bold" />}
             />
             <Button
               styleType="icon"
-              icon="bin"
-              iconSize="small"
               onClick={() => onClickDelete(topic)}
+              icon={() => <Trash size={16} weight="bold" />}
             />
           </>
         )}

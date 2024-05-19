@@ -1,25 +1,16 @@
-import { Icon } from "src/common/components/Icon/Icon";
+import { useState } from "react";
 
 type ButtonProps = {
   children?: string | JSX.Element;
-  icon?: string;
-  iconHoverColour?: string;
-  iconSize?: "small" | "medium";
-  type?: "button" | "submit";
   styleType?: "block" | "block-outline" | "link" | "icon";
   colour?: { border: string; background: string; text: string };
   width?: "fit" | "full";
   size?: "small" | "medium" | "large";
+  type?: "button" | "submit";
   disabled?: boolean;
   onClick?: () => void;
+  icon?: (isButtonHovered: boolean) => JSX.Element;
 };
-
-enum ButtonStyleType {
-  "block" = "border hover:bg-black hover:text-white hover:border-black",
-  "block-outline" = "bg-white text-black border border-black hover:bg-black hover:text-white hover:border-black",
-  "link" = "text-orange-500 hover:text-orange-700",
-  "icon" = "",
-}
 
 enum ButtonSize {
   "small" = "px-2 py-1 text-xs font-normal",
@@ -32,26 +23,8 @@ enum ButtonWidth {
   "fit" = "",
 }
 
-enum ButtonIconColour {
-  "block" = "white",
-  "block-outline" = "black",
-  "link" = "orange-500",
-  "icon" = "stone-500",
-}
-
-enum ButtonIconHoverColour {
-  "block" = "white",
-  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
-  "block-outline" = "white",
-  "link" = "orange-700",
-  "icon" = "black",
-}
-
 export const Button = ({
   children,
-  icon,
-  iconHoverColour, // TODO make required only if is icon style type
-  iconSize = "medium",
   type = "button",
   styleType = "block",
   colour = { border: "black", background: "white", text: "black" },
@@ -59,41 +32,54 @@ export const Button = ({
   size = "medium",
   disabled = false,
   onClick,
+  icon,
 }: ButtonProps) => {
-  const buttonBaseStyle =
-    "flex gap-2 h-full rounded-full items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
-  const buttonStyleType = ButtonStyleType[styleType];
-  const buttonColourStyle =
-    styleType === "block"
-      ? `bg-${colour.background} border-${colour.border} text-${colour.text}`
-      : "";
-  const buttonWidth = ButtonWidth[width];
-  const buttonSize =
-    styleType === "icon" || styleType === "link" ? "" : ButtonSize[size];
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
 
-  const buttonStyles = [
-    buttonBaseStyle,
-    buttonStyleType,
-    buttonColourStyle,
-    buttonWidth,
-    buttonSize,
-  ].join(" ");
+  let _styleType;
+  let _colour;
+  let _size;
+  const _width = ButtonWidth[width];
+
+  switch (styleType) {
+    case "icon":
+      _styleType = "text-stone-500 hover:text-black";
+      _size = "";
+      _colour = "";
+      break;
+
+    case "link":
+      _styleType = "text-orange-500 hover:text-orange-700";
+      _size = "";
+      _colour = "";
+      break;
+
+    case "block":
+      _styleType = "border hover:bg-black hover:text-white hover:border-black";
+      _size = ButtonSize[size];
+      _colour = `bg-${colour.background} border-${colour.border} text-${colour.text}`;
+      break;
+
+    case "block-outline":
+      _styleType =
+        "bg-white text-black border border-black hover:bg-black hover:text-white hover:border-black";
+      _size = ButtonSize[size];
+      _colour = "";
+      break;
+  }
+
+  const buttonStyles = [_styleType, _width, _size, _colour].join(" ");
 
   return (
     <button
       type={type}
-      className={buttonStyles}
+      className={`${buttonStyles} flex gap-2 h-full rounded-full items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500`}
       disabled={disabled}
+      onMouseEnter={() => setIsButtonHovered(true)}
+      onMouseLeave={() => setIsButtonHovered(false)}
       onClick={onClick}
     >
-      {icon && (
-        <Icon
-          iconName={icon}
-          size={iconSize}
-          colour={ButtonIconColour[styleType]}
-          hoverColour={iconHoverColour || ButtonIconHoverColour[styleType]}
-        />
-      )}
+      {icon && icon(isButtonHovered)}
       {children}
     </button>
   );

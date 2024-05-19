@@ -1,3 +1,4 @@
+import { DotsThree, X } from "@phosphor-icons/react";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
@@ -156,15 +157,19 @@ const SlipEditor = ({
             >
               <Button
                 styleType="icon"
-                icon="ellipsis"
                 onClick={() =>
                   setDropdownMenuVisible(
                     (currentDropdownMenuVisible) => !currentDropdownMenuVisible
                   )
                 }
+                icon={() => <DotsThree size={32} weight="bold" />}
               />
             </DropdownMenu>
-            <Button styleType="icon" icon="close" onClick={onCloseSlip} />
+            <Button
+              styleType="icon"
+              onClick={onCloseSlip}
+              icon={() => <X size={32} weight="bold" />}
+            />
           </div>
         </div>
 

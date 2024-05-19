@@ -1,3 +1,7 @@
+#quill-editor p {
+  font-family: "Helvetica Neue";
+}
+
 #quill-editor .ql-editor {
   padding: 0;
 }

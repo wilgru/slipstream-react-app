@@ -5,7 +5,7 @@ export default {
   theme: {
     fontFamily: {
       title: ["Plantagenet Cherokee"],
-      // sans: ["Arial"],
+      sans: ["Helvetica Neue"],
       // body: [""],
     },
     boxShadow: {
@@ -55,26 +55,22 @@ export default {
     "bg-stone-600",
     "bg-stone-50",
 
-    "fill-black",
+    //TODO: eventually get rid of above?
+    "text-sm",
+    "text-md",
+
     "border-black",
     "bg-black",
-    "hover:fill-black",
     "hover:bg-black",
     "hover:border-black",
 
-    "fill-white",
     "bg-white",
     "text-white",
     "hover:text-white",
 
-    "text-sm",
-    "text-md",
-    "fill-stone-100",
-    "fill-stone-500",
-    "fill-orange-500",
-    "fill-red-500",
-    "hover:fill-stone-800",
-    "hover:fill-orange-500",
-    "hover:fill-red-500",
+    "bg-stone-500",
+
+    "hover:text-red-500",
+    "hover:text-orange-500",
   ],
 };
