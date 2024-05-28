@@ -69,8 +69,6 @@ export const Toggle = ({
       break;
   }
 
-  console.log(_toggledOffColour);
-
   const toggleStyles = [
     _styleType,
     _width,
@@ -82,7 +80,7 @@ export const Toggle = ({
   return (
     <button
       type="button"
-      className={`${className} ${toggleStyles} flex gap-2 rounded-full text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500`}
+      className={`${className} ${toggleStyles} flex items-center gap-2 rounded-full text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500`}
       disabled={disabled}
       onMouseEnter={() => setIsToggleHovered(true)}
       onMouseLeave={() => setIsToggleHovered(false)}

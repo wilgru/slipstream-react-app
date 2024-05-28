@@ -73,7 +73,7 @@ export const Button = ({
   return (
     <button
       type={type}
-      className={`${buttonStyles} flex gap-2 h-full rounded-full items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500`}
+      className={`${buttonStyles} flex items-center gap-2 h-full rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500`}
       disabled={disabled}
       onMouseEnter={() => setIsButtonHovered(true)}
       onMouseLeave={() => setIsButtonHovered(false)}
