@@ -9,7 +9,7 @@ export default {
       // body: [""],
     },
     boxShadow: {
-      light: "black 4px 4px ", // stone-700, 1 spacing
+      light: "black 4px 4px ", // 1 spacing
     },
     extend: {},
   },
@@ -71,6 +71,9 @@ export default {
     "bg-stone-500",
 
     "hover:text-red-500",
+
+    "bg-orange-500",
+    "text-orange-500",
     "hover:text-orange-500",
   ],
 };

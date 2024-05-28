@@ -36,6 +36,7 @@ export const TopicPill = ({
 
   return (
     <div
+      className="h-fit"
       onMouseOver={() => setCloseButtonVisible(true)}
       onMouseOut={() => setCloseButtonVisible(false)}
     >

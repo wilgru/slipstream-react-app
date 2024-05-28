@@ -1,4 +1,9 @@
 {
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
   "cSpell.words": ["colours", "Customisation"],
   "better-comments.tags": [
     {
@@ -30,7 +35,7 @@
     },
     {
       "tag": "fixme",
-      "color": "#ebe665",
+      "color": "#FF8C00",
       "strikethrough": false,
       "underline": false,
       "backgroundColor": "transparent",
