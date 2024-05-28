@@ -26,7 +26,7 @@ type SlipEditorProps = {
   onCloseSlip: () => void;
 };
 
-//? move to types folder under common module?
+//TODO: move to types folder under common module?
 // AnyKeyValueOf
 export type AnyKeyValueOfSlip = {
   [K in keyof Slip]: { [P in K]: Slip[K] };
