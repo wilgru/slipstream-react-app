@@ -1,11 +1,27 @@
-import { atom, useAtom } from "jotai";
+import { useQuery } from "@tanstack/react-query";
+import { pb } from "src/pocketbase/utils/pocketbaseConfig";
+import { mapUser } from "../utils/mapUser";
 import type { User } from "../types/User.type";
 
-const currentUserAtom = atom<User | undefined>(undefined);
-
 export const useUser = () => {
-  //FIXME: this obviously needs to be stored somewhere that is saved across age refreshes, reuse authStore from PB?
-  const [currentUser, setCurrentUser] = useAtom(currentUserAtom); //somehow store user data in a query cache/access the data from the cache here instead of an atom?
+  const queryFn = async (): Promise<User | null> => {
+    if (pb.authStore?.model) {
+      return mapUser(pb.authStore.model);
+    }
 
-  return { currentUser, setCurrentUser };
+    return null;
+  };
+
+  const { data, isPending, isError } = useQuery({
+    queryKey: ["authentication.user"],
+    queryFn,
+    // staleTime: 2 * 60 * 1000,
+    // gcTime: 2 * 60 * 1000,
+  });
+
+  return {
+    user: data ?? null,
+    userLoading: isPending,
+    userError: isError,
+  };
 };
