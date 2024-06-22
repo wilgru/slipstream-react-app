@@ -10,7 +10,7 @@ import { useGetTopics } from "src/topics/hooks/useGetTopics";
 
 function HomePage() {
   const navigate = useNavigate();
-  const { currentUser } = useUser();
+  const { user } = useUser();
   const { topics } = useGetTopics();
   const { createSlip } = useCreateSlip();
 
@@ -36,8 +36,8 @@ function HomePage() {
   };
 
   useEffect(() => {
-    !currentUser && navigate("/login");
-  }, []);
+    !user && navigate("/login");
+  }, [user, navigate]);
 
   return (
     <div className="fixed flex h-screen w-screen">

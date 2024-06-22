@@ -13,7 +13,7 @@ type FormData = {
 
 const SignUpPage = (): JSX.Element => {
   const { signUp, signUpLoading, signUpError } = useSignUp();
-  const { currentUser } = useUser();
+  const { user } = useUser();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -39,8 +39,8 @@ const SignUpPage = (): JSX.Element => {
   };
 
   useEffect(() => {
-    currentUser && navigate("/");
-  }, []);
+    user && navigate("/");
+  }, [navigate, user]);
 
   return (
     <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen bg-stone-300">

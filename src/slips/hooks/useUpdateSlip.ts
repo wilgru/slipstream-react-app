@@ -25,7 +25,7 @@ type UseDeleteSlipResponse = {
 
 export const useUpdateSlip = (): UseDeleteSlipResponse => {
   const queryClient = useQueryClient();
-  const { currentUser } = useUser();
+  const { user } = useUser();
   const { slips } = useGetSlips();
   const { refetchTopics } = useGetTopics();
 
@@ -51,7 +51,7 @@ export const useUpdateSlip = (): UseDeleteSlipResponse => {
         {
           ...updateSlipData,
           topics: mappedTopics,
-          user: currentUser?.id,
+          user: user?.id,
         },
         { expand: "topics" }
       );
