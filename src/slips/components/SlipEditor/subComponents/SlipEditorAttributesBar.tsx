@@ -7,8 +7,8 @@ import {
 import { Toggle } from "src/common/components/Toggle/Toggle";
 import { CompareCleanStrings } from "src/common/utils/CompareCleanStrings";
 import { TopicPill } from "src/topics/components/TopicPill/TopicPill";
-import { handleEnterKeyDown } from "./utils/handleEnterKeyDown";
-import type { AnyKeyValueOfSlip } from "./SlipEditor";
+import { handleEnterKeyDown } from "../utils/handleEnterKeyDown";
+import type { AnyKeyValueOfSlip } from "../SlipEditor";
 import type { Slip } from "src/slips/types/Slip.type";
 import type { Topic } from "src/topics/types/Topic.type";
 
