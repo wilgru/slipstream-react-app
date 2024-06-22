@@ -1,4 +1,5 @@
 /// <reference types="vite-plugin-svgr/client" />
+
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
@@ -11,6 +12,7 @@ import {
 import LoginPage from "src/authentication/pages/LoginPage/LoginPage.tsx";
 import HomePage from "src/home/pages/HomePage/HomePage";
 import "src/index.css";
+import SignUpPage from "./authentication/pages/SignUpPage/SignUpPage";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/sign-up",
+    element: <SignUpPage />,
   },
   {
     path: "/",
