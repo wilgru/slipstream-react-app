@@ -12,14 +12,14 @@ type UseCreateTopicResponse = {
 
 export const useCreateTopic = (): UseCreateTopicResponse => {
   const queryClient = useQueryClient();
-  const { currentUser } = useUser();
+  const { user } = useUser();
 
   const mutationFn = async (topicName: string): Promise<Topic> => {
     const topicId = generateId();
 
     const newTopic = await pb
       .collection("topics")
-      .create({ id: topicId, name: topicName, user: currentUser?.id });
+      .create({ id: topicId, name: topicName, user: user?.id });
 
     const mappedNewTopic = mapTopic(newTopic);
 

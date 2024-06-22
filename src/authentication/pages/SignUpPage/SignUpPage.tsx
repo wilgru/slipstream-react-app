@@ -1,21 +1,25 @@
 import { useState, type FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLogin } from "src/authentication/hooks/useLogin";
+import { useSignUp } from "src/authentication/hooks/useSignUp";
 import { useUser } from "src/authentication/hooks/useUser";
 import { Button } from "src/common/components/Button/Button";
 
 type FormData = {
+  name: string;
   email: string;
   password: string;
+  passwordConfirm: string;
 };
 
-const LoginPage = (): JSX.Element => {
-  const { login, loginLoading, loginError } = useLogin();
+const SignUpPage = (): JSX.Element => {
+  const { signUp, signUpLoading, signUpError } = useSignUp();
   const { user } = useUser();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
+    name: "",
     email: "",
     password: "",
+    passwordConfirm: "",
   });
 
   const onChange = (e: { target: { name: string; value: string } }) => {
@@ -28,28 +32,48 @@ const LoginPage = (): JSX.Element => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    await login({ email: formData.email, password: formData.password });
+    await signUp(formData);
 
-    // redirect on successful login
+    // redirect on successful sign up
     navigate("/");
   };
 
   useEffect(() => {
     user && navigate("/");
-  }, [user, navigate]);
+  }, [navigate, user]);
 
   return (
     <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen bg-stone-300">
-      {!!loginError && (
+      {!!signUpError && (
+        // TODO: show actual error message
         <div className="p-6 border border-red-500 rounded-lg bg-red-100 text-red-500 max-w-sm w-full">
-          Incorrect email or password.
+          Something went wrong. Please try again
         </div>
       )}
       <div className="flex flex-col gap-6 p-6 border bg-stone-100 border-black rounded-lg max-w-sm w-full shadow-light">
         <h1 className="text-4xl font-normal font-title tracking-tight text-black">
-          SlipBox
+          Sign Up
         </h1>
         <form className="space-y-6" onSubmit={onSubmit}>
+          <div>
+            <div className="flex items-baseline justify-between">
+              <label className="text-sm font-medium leading-6 text-black">
+                Name
+              </label>
+            </div>
+            <div>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autoComplete="given-name"
+                onChange={onChange}
+                required
+                className="block w-full p-2 bg-white text-black border border-black rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
+              />
+            </div>
+          </div>
+
           <div>
             <label className="text-sm font-medium leading-6 text-black">
               Email
@@ -72,14 +96,32 @@ const LoginPage = (): JSX.Element => {
               <label className="text-sm font-medium leading-6 text-black">
                 Password
               </label>
-              {/*<Button styleType="link">Forgot password?</Button>*/}
             </div>
             <div>
               <input
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
+                onChange={onChange}
+                required
+                className="block w-full p-2 bg-white text-black border border-black rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
+              />
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-baseline justify-between">
+              <label className="text-sm font-medium leading-6 text-black">
+                Confirm Password
+              </label>
+            </div>
+            <div>
+              <input
+                id="passwordConfirm"
+                name="passwordConfirm"
+                type="password"
+                autoComplete="new-password"
                 onChange={onChange}
                 required
                 className="block w-full p-2 bg-white text-black border border-black rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
@@ -89,7 +131,7 @@ const LoginPage = (): JSX.Element => {
 
           <div>
             <Button
-              disabled={loginLoading}
+              disabled={signUpLoading}
               colour={{
                 border: "black",
                 background: "orange-500",
@@ -99,21 +141,21 @@ const LoginPage = (): JSX.Element => {
               width="full"
               size="large"
             >
-              {loginLoading ? "Loading..." : "Log in"}
+              {signUpLoading ? "Loading..." : "Sign up"}
             </Button>
           </div>
         </form>
 
         <div className="flex justify-center items-baseline">
-          <p className="text-sm text-black">New to SlipBox?&nbsp;</p>
+          <p className="text-sm text-black">Already have an account?&nbsp;</p>
           <Button
             styleType="link"
             size="small"
             onClick={() => {
-              navigate("/sign-up");
+              navigate("/login");
             }}
           >
-            Create an account
+            Log in
           </Button>
         </div>
       </div>
@@ -121,4 +163,4 @@ const LoginPage = (): JSX.Element => {
   );
 };
 
-export default LoginPage;
+export default SignUpPage;
