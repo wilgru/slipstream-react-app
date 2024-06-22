@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { TopicListEditModal } from "src/topics/components/TopicList/TopicListEditModal";
-import { TopicListItem } from "src/topics/components/TopicList/TopicListItem";
-import { TopicListDeleteModal } from "./TopicListDeleteModal";
+import { TopicListEditModal } from "src/topics/components/TopicList/subComponents/TopicListEditModal";
+import { TopicListItem } from "src/topics/components/TopicList/subComponents/TopicListItem";
+import { TopicListDeleteModal } from "./subComponents/TopicListDeleteModal";
 import type { Topic } from "src/topics/types/Topic.type";
 
 type TopicsListProps = {

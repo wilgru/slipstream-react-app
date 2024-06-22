@@ -6,7 +6,7 @@ import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
 import { ToggleBar } from "src/common/components/ToggleBar/ToggleBar";
 import { useCreateTopic } from "src/topics/hooks/useCreateTopic";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
-import { SlipEditorAttributesBar } from "./SlipEditorAttributesBar";
+import { SlipEditorAttributesBar } from "./subComponents/SlipEditorAttributesBar";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 import type { RangeStatic, StringMap } from "quill";
 import type { DropdownMenuOption } from "src/common/components/DropdownMenu/DropdownMenu";
