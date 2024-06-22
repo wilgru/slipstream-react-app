@@ -1,11 +1,11 @@
 import type { User } from "../types/User.type";
-import type { RecordModel } from "pocketbase";
+import type { AuthModel } from "pocketbase";
 
-export const mapUser = (recordModel: RecordModel): User => {
+export const mapUser = (authModel: NonNullable<AuthModel>): User => {
   return {
-    id: recordModel.id,
-    username: recordModel.username,
-    email: recordModel.email,
-    name: recordModel.name,
+    id: authModel.id,
+    username: authModel.username,
+    email: authModel.email,
+    name: authModel.name,
   };
 };
