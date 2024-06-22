@@ -28,10 +28,10 @@ const LoginPage = (): JSX.Element => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
+    await login({ email: formData.email, password: formData.password });
+
     // redirect on successful login
-    login({ email: formData.email, password: formData.password }).then(() => {
-      navigate("/");
-    });
+    navigate("/");
   };
 
   useEffect(() => {
@@ -39,19 +39,19 @@ const LoginPage = (): JSX.Element => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen">
+    <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen bg-stone-300">
       {!!loginError && (
-        <div className="p-6 border bg-red-100 border-red-500 text-red-500 max-w-sm w-full">
+        <div className="p-6 border border-red-500 rounded-lg bg-red-100 text-red-500 max-w-sm w-full">
           Incorrect email or password.
         </div>
       )}
-      <div className="flex flex-col gap-6 p-6 border bg-stone-100 border-stone-700 max-w-sm w-full">
-        <h1 className="text-4xl font-normal font-title tracking-tight text-stone-700">
+      <div className="flex flex-col gap-6 p-6 border bg-stone-100 border-black rounded-lg max-w-sm w-full shadow-light">
+        <h1 className="text-4xl font-normal font-title tracking-tight text-black">
           SlipBox
         </h1>
         <form className="space-y-6" onSubmit={onSubmit}>
           <div>
-            <label className="text-sm font-medium leading-6 text-stone-700">
+            <label className="text-sm font-medium leading-6 text-black">
               Email
             </label>
             <div>
@@ -62,17 +62,17 @@ const LoginPage = (): JSX.Element => {
                 autoComplete="email"
                 onChange={onChange}
                 required
-                className="block w-full p-2 bg-stone-100 text-stone-700 border border-stone-700 placeholder:text-stone-500 focus:border-orange-500 sm:text-sm sm:leading-6"
+                className="block w-full p-2 bg-white text-black border border-black rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
               />
             </div>
           </div>
 
           <div>
             <div className="flex items-baseline justify-between">
-              <label className="text-sm font-medium leading-6 text-stone-700">
+              <label className="text-sm font-medium leading-6 text-black">
                 Password
               </label>
-              <Button styleType="link">Forgot password?</Button>
+              {/*<Button styleType="link">Forgot password?</Button>*/}
             </div>
             <div>
               <input
@@ -82,7 +82,7 @@ const LoginPage = (): JSX.Element => {
                 autoComplete="current-password"
                 onChange={onChange}
                 required
-                className="block w-full p-2 bg-stone-100 text-stone-700 border border-stone-700 placeholder:text-stone-500 focus:border-orange-500 sm:text-sm sm:leading-6"
+                className="block w-full p-2 bg-white text-black border border-black rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
               />
             </div>
           </div>
@@ -90,6 +90,11 @@ const LoginPage = (): JSX.Element => {
           <div>
             <Button
               disabled={loginLoading}
+              colour={{
+                border: "black",
+                background: "orange-500",
+                text: "black",
+              }}
               type="submit"
               width="full"
               size="large"
@@ -100,8 +105,14 @@ const LoginPage = (): JSX.Element => {
         </form>
 
         <div className="flex justify-center items-baseline">
-          <p className="text-sm text-stone-700">New to SlipBox?&nbsp;</p>
-          <Button styleType="link" size="small">
+          <p className="text-sm text-black">New to SlipBox?&nbsp;</p>
+          <Button
+            styleType="link"
+            size="small"
+            onClick={() => {
+              navigate("/sign-up");
+            }}
+          >
             Create an account
           </Button>
         </div>
