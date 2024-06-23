@@ -6,7 +6,7 @@ import type { Slip } from "src/slips/types/Slip.type";
 export const mapSlip = (slip: RecordModel): Slip => {
   return {
     id: slip.id,
-    draft: false,
+    isDraft: false,
     title: slip.title,
     content: slip.content ? new Delta(slip.content) : new Delta(), // TODO: make not nullable in pocketbase
     isPinned: slip.isPinned,
