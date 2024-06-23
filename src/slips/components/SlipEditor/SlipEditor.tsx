@@ -1,7 +1,7 @@
 import { DotsThree, X } from "@phosphor-icons/react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
-import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
 import { ToggleBar } from "src/common/components/ToggleBar/ToggleBar";
 import { useCreateTopic } from "src/topics/hooks/useCreateTopic";
@@ -9,7 +9,6 @@ import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { SlipEditorAttributesBar } from "./subComponents/SlipEditorAttributesBar";
 import { handleEscapeKeyDown } from "./utils/handleEscapeKeyDown";
 import type { RangeStatic, StringMap } from "quill";
-import type { DropdownMenuOption } from "src/common/components/DropdownMenu/DropdownMenu";
 import type { Slip } from "src/slips/types/Slip.type";
 
 type SlipEditorProps = {
@@ -47,19 +46,10 @@ const SlipEditor = ({
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
   const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
-  const [dropdownMenuVisible, setDropdownMenuVisible] =
-    useState<boolean>(false);
 
   const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when is an entirely different slip to show in the editor changes
 
   const quillToolbarId = "toolbar";
-
-  const moreDropdownMenuOptions: DropdownMenuOption[] = [
-    {
-      name: "delete",
-      action: () => onDeleteSlip(editableSlip.id),
-    },
-  ];
 
   const onChangeSlipInternal = (
     changedField: AnyKeyValueOfSlip,
@@ -150,21 +140,35 @@ const SlipEditor = ({
           </div>
 
           <div className=" flex flex-row gap-3">
-            <DropdownMenu
-              options={moreDropdownMenuOptions}
-              visible={dropdownMenuVisible}
-              setVisible={setDropdownMenuVisible}
-            >
-              <Button
-                styleType="icon"
-                onClick={() =>
-                  setDropdownMenuVisible(
-                    (currentDropdownMenuVisible) => !currentDropdownMenuVisible
-                  )
-                }
-                icon={() => <DotsThree size={32} weight="bold" />}
-              />
-            </DropdownMenu>
+            {/* https://www.radix-ui.com/primitives/docs/components/dropdown-menu */}
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger asChild>
+                <div>
+                  <Button
+                    styleType="icon"
+                    icon={() => <DotsThree size={32} weight="bold" />}
+                  />
+                </div>
+              </DropdownMenu.Trigger>
+
+              <DropdownMenu.Portal>
+                <DropdownMenu.Content
+                  className="bg-white border border-black rounded-md p-2 shadow-light"
+                  sideOffset={2}
+                  align="end"
+                >
+                  <DropdownMenu.Arrow className="fill-black" />
+
+                  <DropdownMenu.Item
+                    className="leading-none"
+                    onClick={() => onDeleteSlip(editableSlip.id)}
+                  >
+                    Delete
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Portal>
+            </DropdownMenu.Root>
+
             <Button
               styleType="icon"
               onClick={onCloseSlip}
