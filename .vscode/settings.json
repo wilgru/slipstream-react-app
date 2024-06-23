@@ -11,7 +11,7 @@
       "tag": "!",
       "color": "#FF2D00",
       "strikethrough": false,
-      "underline": false,
+      "underline": true,
       "backgroundColor": "transparent",
       "bold": false,
       "italic": false
@@ -38,7 +38,7 @@
       "tag": "fixme",
       "color": "#FF8C00",
       "strikethrough": false,
-      "underline": false,
+      "underline": true,
       "backgroundColor": "transparent",
       "bold": false,
       "italic": false
