@@ -1,23 +1,46 @@
-FROM alpine:latest
+# syntax = docker/dockerfile:1
 
-ARG PB_VERSION=0.20.0
+# Adjust NODE_VERSION as desired
+ARG NODE_VERSION=18.14.0
+FROM node:${NODE_VERSION}-slim as base
 
-RUN apk add --no-cache \
-    unzip \
-    ca-certificates
+LABEL fly_launch_runtime="Vite"
 
-# download and unzip PocketBase
-ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip /tmp/pb.zip
-RUN unzip /tmp/pb.zip -d /pb/
+# Vite app lives here
+WORKDIR /app
 
-# uncomment to copy the local pb_migrations dir into the image
-# COPY ./pb_migrations /pb/pb_migrations
+# Set production environment
+ENV NODE_ENV="production"
 
-# uncomment to copy the local pb_hooks dir into the image
-# COPY ./pb_hooks /pb/pb_hooks
+# Throw-away build stage to reduce size of final image
+FROM base as build
 
-COPY ./.env /.env
-EXPOSE 8080
+# Build arguments/env variables
+ARG VITE_POCKETBASE_URL="https://slipbox-pocketbase.fly.dev"
 
-# start PocketBase
-CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:8080"]
+# Install packages needed to build node modules
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
+
+# Install node modules
+COPY --link package-lock.json package.json ./
+RUN npm ci --include=dev
+
+# Copy application code
+COPY --link . .
+
+# Build application
+RUN npm run build
+
+# Remove development dependencies
+RUN npm prune --omit=dev
+
+# Final stage for app image
+FROM nginx
+
+# Copy built application
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Start the server by default, this can be overwritten at runtime
+EXPOSE 80
+CMD [ "/usr/sbin/nginx", "-g", "daemon off;" ]
