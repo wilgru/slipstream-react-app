@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import * as dayjs from "dayjs";
 import Delta from "quill-delta";
 import type { RecordModel } from "pocketbase";
 import type { Slip } from "src/slips/types/Slip.type";
