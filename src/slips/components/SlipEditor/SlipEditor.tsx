@@ -218,25 +218,25 @@ const SlipEditor = ({
             >
               <span className="ql-formats flex flex-row gap-1">
                 <ToggleGroup.Item
-                  className="ql-bold rounded-md text-stone-500 data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
+                  className="ql-bold rounded-md text-stone-500 data-[state=off]:hover:bg-orange-300 data-[state=off]:hover:text-white data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
                   value="bold"
                 >
                   <TextB size={16} weight="bold" />
                 </ToggleGroup.Item>
                 <ToggleGroup.Item
-                  className="ql-italic rounded-md text-stone-500 data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
+                  className="ql-italic rounded-md text-stone-500 data-[state=off]:hover:bg-orange-300 data-[state=off]:hover:text-white data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
                   value="italic"
                 >
                   <TextItalic size={16} weight="bold" />
                 </ToggleGroup.Item>
                 <ToggleGroup.Item
-                  className="ql-underline rounded-md text-stone-500 data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
+                  className="ql-underline rounded-md text-stone-500 data-[state=off]:hover:bg-orange-300 data-[state=off]:hover:text-white data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
                   value="underline"
                 >
                   <TextUnderline size={16} weight="bold" />
                 </ToggleGroup.Item>
                 <ToggleGroup.Item
-                  className=" ql-strike rounded-md text-stone-500 data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
+                  className=" ql-strike rounded-md text-stone-500 data-[state=off]:hover:bg-orange-300 data-[state=off]:hover:text-white data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
                   value="strike"
                 >
                   <TextStrikethrough size={16} weight="bold" />
