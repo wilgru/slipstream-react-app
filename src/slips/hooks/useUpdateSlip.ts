@@ -80,9 +80,29 @@ export const useUpdateSlip = (): UseDeleteSlipResponse => {
           return;
         }
 
-        return currentSlips.map((currentSlip) =>
-          currentSlip.id === data.id ? data : currentSlip
-        );
+        let hasNewSlipPinnedChanged = false;
+
+        const mappedSlips = currentSlips.map((currentSlip) => {
+          if (currentSlip.id === data.id) {
+            hasNewSlipPinnedChanged = currentSlip.isPinned !== data.isPinned;
+
+            return data;
+          }
+
+          return currentSlip;
+        });
+
+        if (!hasNewSlipPinnedChanged) {
+          return mappedSlips;
+        }
+
+        return mappedSlips.sort((a, b) => {
+          if (a.isPinned !== b.isPinned) {
+            return a.isPinned ? -1 : 1;
+          }
+
+          return b.created.isBefore(a.created) ? 1 : -1;
+        });
       }
     );
   };
