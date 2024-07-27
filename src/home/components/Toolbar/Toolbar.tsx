@@ -1,16 +1,15 @@
 import { Funnel, Gear, Plus } from "@phosphor-icons/react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLogin } from "src/authentication/hooks/useLogin";
 import { Button } from "src/common/components/Button/Button";
-import { DropdownMenu } from "src/common/components/DropdownMenu/DropdownMenu";
 import { Toggle } from "src/common/components/Toggle/Toggle";
 import { useGetSlips } from "src/slips/hooks/useGetSlips";
 import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import { TopicPill } from "src/topics/components/TopicPill/TopicPill";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
-import type { DropdownMenuOption } from "src/common/components/DropdownMenu/DropdownMenu";
 
 type ToolbarProps = {
   onClickShowSidebarToggle: () => void;
@@ -28,22 +27,11 @@ export const Toolbar = ({
   const { logout } = useLogin();
   const navigate = useNavigate();
 
-  const [showSettingsDropdownMenu, setShowSettingsDropdownMenu] =
-    useState(false);
+  const [OptionsVisible, setOptionsVisible] = useState<boolean>(false);
   const [selectedTopicIds, setSelectedTopicIds] = useAtom(selectedTopicIdsAtom);
 
-  const settingsDropdownOptions: DropdownMenuOption[] = [
-    {
-      name: "Log out",
-      action: () => {
-        logout();
-        navigate("/login");
-      },
-    },
-  ];
-
   const onClickSettingsBtn = () => {
-    setShowSettingsDropdownMenu(
+    setOptionsVisible(
       (currentShowSettingsDropdownMenu) => !currentShowSettingsDropdownMenu
     );
   };
@@ -96,19 +84,44 @@ export const Toolbar = ({
         ))}
       </div>
       <div className="flex flex-row gap-3">
-        <DropdownMenu
-          options={settingsDropdownOptions}
-          visible={showSettingsDropdownMenu}
-          setVisible={setShowSettingsDropdownMenu}
-        >
-          <Button
-            styleType="icon"
-            icon={(isButtonHovered: boolean) => (
-              <Gear size={24} weight={isButtonHovered ? "fill" : "regular"} />
-            )}
-            onClick={onClickSettingsBtn}
-          />
-        </DropdownMenu>
+        <DropdownMenu.Root onOpenChange={(isOpen) => setOptionsVisible(isOpen)}>
+          <DropdownMenu.Trigger asChild>
+            <div>
+              <Button
+                styleType="icon"
+                icon={(isButtonHovered: boolean) => (
+                  <Gear
+                    size={24}
+                    weight={
+                      isButtonHovered || OptionsVisible ? "fill" : "regular"
+                    }
+                    className={OptionsVisible ? "text-orange-500" : undefined}
+                  />
+                )}
+                onClick={onClickSettingsBtn}
+              />
+            </div>
+          </DropdownMenu.Trigger>
+
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              className="bg-white border border-black rounded-md p-1 w-40 shadow-lighter"
+              sideOffset={2}
+              align="end"
+            >
+              <DropdownMenu.Item
+                className="leading-none text-sm p-1 data-[highlighted]:bg-orange-400 outline-none data-[highlighted]:text-white rounded-sm cursor-pointer"
+                onClick={() => {
+                  logout();
+                  navigate("/login");
+                }}
+              >
+                Log out
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
+
         <Button
           icon={() => <Plus size={16} weight="bold" />}
           colour={{ border: "black", background: "orange-500", text: "black" }}

@@ -49,12 +49,12 @@ export const DropdownMenu = ({
       {visible && (
         <div
           ref={dropdownMenuRef}
-          className="absolute z-10 left-0 flex flex-col justify-start text-xs bg-stone-100 border border-orange-500"
+          className="absolute z-10 left-0 flex flex-col justify-start text-xs bg-white border border-black rounded-md"
         >
           {options.map((option, index) => (
             <button
               key={index}
-              className="p-1 text-left text-stone-700 hover:bg-stone-700 hover:text-stone-100"
+              className="p-1 text-left text-black hover:bg-black hover:text-white"
               onClick={option.action}
             >
               {option.name}
