@@ -1,9 +1,16 @@
-import { DotsThree, X } from "@phosphor-icons/react";
+import {
+  DotsThree,
+  TextB,
+  TextItalic,
+  TextStrikethrough,
+  TextUnderline,
+  X,
+} from "@phosphor-icons/react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
-import { ToggleBar } from "src/common/components/ToggleBar/ToggleBar";
 import { useCreateTopic } from "src/topics/hooks/useCreateTopic";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { SlipEditorAttributesBar } from "./subComponents/SlipEditorAttributesBar";
@@ -197,33 +204,45 @@ const SlipEditor = ({
           />
 
           <div id={quillToolbarId} hidden={!editMode}>
-            <span className="ql-formats flex flex-row gap-2">
-              <ToggleBar
-                size="small"
-                options={[
-                  {
-                    child: <span className="font-bold">B</span>,
-                    className: "ql-bold",
-                    isToggled: toolbarFormatting?.bold,
-                  },
-                  {
-                    child: <span className="italic">I</span>,
-                    className: "ql-italic",
-                    isToggled: toolbarFormatting?.italic,
-                  },
-                  {
-                    child: <span className="underline">U</span>,
-                    className: "ql-underline",
-                    isToggled: toolbarFormatting?.underline,
-                  },
-                  {
-                    child: <span className="line-through">S</span>,
-                    className: "ql-strike",
-                    isToggled: toolbarFormatting?.strike,
-                  },
-                ]}
-              />
-            </span>
+            <ToggleGroup.Root
+              className="font-medium text-sm"
+              type="multiple"
+              defaultValue={[]}
+              value={[
+                ...(toolbarFormatting?.bold ? ["bold"] : []),
+                ...(toolbarFormatting?.italic ? ["italic"] : []),
+                ...(toolbarFormatting?.underline ? ["underline"] : []),
+                ...(toolbarFormatting?.strike ? ["strike"] : []),
+              ]}
+              aria-label="Text alignment"
+            >
+              <span className="ql-formats flex flex-row gap-1">
+                <ToggleGroup.Item
+                  className="ql-bold rounded-md text-stone-500 data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
+                  value="bold"
+                >
+                  <TextB size={16} weight="bold" />
+                </ToggleGroup.Item>
+                <ToggleGroup.Item
+                  className="ql-italic rounded-md text-stone-500 data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
+                  value="italic"
+                >
+                  <TextItalic size={16} weight="bold" />
+                </ToggleGroup.Item>
+                <ToggleGroup.Item
+                  className="ql-underline rounded-md text-stone-500 data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
+                  value="underline"
+                >
+                  <TextUnderline size={16} weight="bold" />
+                </ToggleGroup.Item>
+                <ToggleGroup.Item
+                  className=" ql-strike rounded-md text-stone-500 data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
+                  value="strike"
+                >
+                  <TextStrikethrough size={16} weight="bold" />
+                </ToggleGroup.Item>
+              </span>
+            </ToggleGroup.Root>
           </div>
         </div>
       </div>
