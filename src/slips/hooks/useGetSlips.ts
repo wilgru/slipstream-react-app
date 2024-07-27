@@ -26,6 +26,7 @@ export const useGetSlips = (): UseGetSlipsResponse => {
       .getList(undefined, undefined, {
         filter: `deleted = null ${topicsFilter}`,
         expand: "topics",
+        sort: "-isPinned",
       });
 
     const mappedSlips = rawSlips.items.map(mapSlip);
