@@ -46,6 +46,7 @@ const SlipEditor = ({
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
   const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
+  const [OptionsVisible, setOptionsVisible] = useState<boolean>(false);
 
   const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when is an entirely different slip to show in the editor changes
 
@@ -141,26 +142,34 @@ const SlipEditor = ({
 
           <div className=" flex flex-row gap-3">
             {/* https://www.radix-ui.com/primitives/docs/components/dropdown-menu */}
-            <DropdownMenu.Root>
+            <DropdownMenu.Root
+              onOpenChange={(isOpen) => setOptionsVisible(isOpen)}
+            >
               <DropdownMenu.Trigger asChild>
                 <div>
                   <Button
                     styleType="icon"
-                    icon={() => <DotsThree size={32} weight="bold" />}
+                    icon={() => (
+                      <DotsThree
+                        size={32}
+                        weight="bold"
+                        className={
+                          OptionsVisible ? "text-orange-500" : undefined
+                        }
+                      />
+                    )}
                   />
                 </div>
               </DropdownMenu.Trigger>
 
               <DropdownMenu.Portal>
                 <DropdownMenu.Content
-                  className="bg-white border border-black rounded-md p-2 shadow-light"
+                  className="bg-white border border-black rounded-md p-1 w-40 shadow-lighter"
                   sideOffset={2}
                   align="end"
                 >
-                  <DropdownMenu.Arrow className="fill-black" />
-
                   <DropdownMenu.Item
-                    className="leading-none"
+                    className="leading-none text-sm p-1 data-[highlighted]:bg-orange-400 outline-none data-[highlighted]:text-white rounded-sm cursor-pointer"
                     onClick={() => onDeleteSlip(editableSlip.id)}
                   >
                     Delete
