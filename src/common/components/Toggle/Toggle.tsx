@@ -1,93 +1,82 @@
+import * as TogglePrimitive from "@radix-ui/react-toggle";
+import { cva } from "class-variance-authority";
 import { useState } from "react";
+import { cn } from "src/common/utils/cn";
+import { Icon } from "../Icon/Icon";
 
 type ToggleProps = {
   className?: string;
   children?: string | JSX.Element;
-  styleType?: "block" | "icon";
-  colour?: { border: string; background: string; text: string };
-  toggledOnColour?: string;
-  width?: "fit" | "full";
-  size?: "small" | "medium" | "large";
+  size?: "sm" | "md" | "lg";
+  colour?: "default" | "red";
   isToggled: boolean;
   disabled?: boolean;
   onClick?: () => void;
-  icon?: (isToggleHovered: boolean) => JSX.Element;
+  iconName?: string;
 };
 
-enum ToggleSize {
-  "small" = "px-2 py-1 text-xs font-normal",
-  "medium" = "px-3 py-1 text-sm font-medium",
-  "large" = "px-6 py-2 text-sm",
-}
-
-enum ToggleWidth {
-  "full" = "w-full text-center",
-  "fit" = "",
-}
+const toggleVariants = cva(
+  [
+    "flex",
+    "items-center",
+    "gap-2",
+    "rounded-full",
+    "text-sm",
+    "data-[state=off]:text-stone-500",
+    "focus-visible:outline",
+    "focus-visible:outline-2",
+    "focus-visible:outline-offset-2",
+    "focus-visible:outline-orange-500",
+  ],
+  {
+    variants: {
+      size: {
+        sm: "p-1 text-xs font-normal",
+        md: "p-2 text-sm font-medium",
+        lg: "p-6 text-sm",
+      },
+      colour: {
+        default:
+          "data-[state=on]:text-orange-500 data-[state=off]:hover:text-orange-500 hover:bg-orange-100",
+        red: "data-[state=on]:text-red-500 data-[state=off]:hover:text-red-500 hover:bg-red-100",
+      },
+    },
+    defaultVariants: {
+      size: "md",
+      colour: "default",
+    },
+  }
+);
 
 export const Toggle = ({
   children,
   className,
-  styleType = "block",
-  colour,
-  toggledOnColour = "black",
-  width = "fit",
-  size = "medium",
+  size = "md",
+  colour = "default",
   disabled = false,
   onClick,
   isToggled,
-  icon,
+  iconName,
 }: ToggleProps) => {
   const [isToggleHovered, setIsToggleHovered] = useState(false);
 
-  let _styleType;
-  let _size;
-  let _toggledOnColour;
-  let _toggledOffColour;
-  let _hoverColour;
-  const _width = ToggleWidth[width];
-
-  switch (styleType) {
-    case "icon":
-      _styleType = "";
-      _size = "";
-      _toggledOnColour = `text-${toggledOnColour}`;
-      _toggledOffColour = colour
-        ? `text-${colour.background}`
-        : "text-stone-500";
-      _hoverColour = `hover:text-${toggledOnColour}`;
-      break;
-
-    case "block":
-      _styleType = "border border-black font-medium";
-      _size = ToggleSize[size];
-      _toggledOnColour = `bg-${toggledOnColour} text-white`;
-      _toggledOffColour = `bg-${
-        colour ? colour.background : "white"
-      } text-black`;
-      _hoverColour = `hover:bg-${toggledOnColour} hover:text-white`;
-      break;
-  }
-
-  const toggleStyles = [
-    _styleType,
-    _width,
-    _size,
-    isToggled ? _toggledOnColour : _toggledOffColour,
-    _hoverColour,
-  ].join(" ");
-
   return (
-    <button
-      type="button"
-      className={`${className} ${toggleStyles} flex items-center gap-2 rounded-full text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500`}
+    <TogglePrimitive.Root
+      className={cn(toggleVariants({ size, colour, className }))}
       disabled={disabled}
+      onClick={onClick}
       onMouseEnter={() => setIsToggleHovered(true)}
       onMouseLeave={() => setIsToggleHovered(false)}
-      onClick={onClick}
+      pressed={isToggled}
     >
-      {icon && icon(isToggleHovered)}
+      {iconName && (
+        <Icon
+          iconName={iconName}
+          size={size}
+          weight={isToggled || isToggleHovered ? "fill" : "regular"}
+        />
+      )}
       {children}
-    </button>
+    </TogglePrimitive.Root>
   );
 };

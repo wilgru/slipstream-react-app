@@ -1,10 +1,8 @@
 import {
-  DotsThree,
   TextB,
   TextItalic,
   TextStrikethrough,
   TextUnderline,
-  X,
 } from "@phosphor-icons/react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
@@ -53,7 +51,6 @@ const SlipEditor = ({
   const [editableSlip, setEditableSlip] = useState<Slip>(slip); // cant push any changes to the actual slip itself, this will be replenished with the most recent version of the slip whenever that slip state updates
   const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
-  const [OptionsVisible, setOptionsVisible] = useState<boolean>(false);
 
   const initialSlip = useMemo(() => slip, [slip.id]); // capture the slip to set as the initial slip only when is an entirely different slip to show in the editor changes
 
@@ -149,23 +146,10 @@ const SlipEditor = ({
 
           <div className=" flex flex-row gap-3">
             {/* https://www.radix-ui.com/primitives/docs/components/dropdown-menu */}
-            <DropdownMenu.Root
-              onOpenChange={(isOpen) => setOptionsVisible(isOpen)}
-            >
+            <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild>
                 <div>
-                  <Button
-                    styleType="icon"
-                    icon={() => (
-                      <DotsThree
-                        size={32}
-                        weight="bold"
-                        className={
-                          OptionsVisible ? "text-orange-500" : undefined
-                        }
-                      />
-                    )}
-                  />
+                  <Button variant="ghost" iconName="dotsThree" />
                 </div>
               </DropdownMenu.Trigger>
 
@@ -176,7 +160,7 @@ const SlipEditor = ({
                   align="end"
                 >
                   <DropdownMenu.Item
-                    className="leading-none text-sm p-1 data-[highlighted]:bg-orange-400 outline-none data-[highlighted]:text-white rounded-sm cursor-pointer"
+                    className="leading-none text-sm p-1 data-[highlighted]:bg-orange-100 outline-none data-[highlighted]:text-orange-500 rounded-sm cursor-pointer"
                     onClick={() => onDeleteSlip(editableSlip.id)}
                   >
                     Delete
@@ -185,11 +169,7 @@ const SlipEditor = ({
               </DropdownMenu.Portal>
             </DropdownMenu.Root>
 
-            <Button
-              styleType="icon"
-              onClick={onCloseSlip}
-              icon={() => <X size={32} weight="bold" />}
-            />
+            <Button variant="ghost" onClick={onCloseSlip} iconName="x" />
           </div>
         </div>
 
@@ -218,25 +198,25 @@ const SlipEditor = ({
             >
               <span className="ql-formats flex flex-row gap-1">
                 <ToggleGroup.Item
-                  className="ql-bold rounded-md text-stone-500 data-[state=off]:hover:bg-orange-300 data-[state=off]:hover:text-white data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
+                  className="ql-bold rounded-md text-stone-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
                   value="bold"
                 >
                   <TextB size={16} weight="bold" />
                 </ToggleGroup.Item>
                 <ToggleGroup.Item
-                  className="ql-italic rounded-md text-stone-500 data-[state=off]:hover:bg-orange-300 data-[state=off]:hover:text-white data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
+                  className="ql-italic rounded-md text-stone-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
                   value="italic"
                 >
                   <TextItalic size={16} weight="bold" />
                 </ToggleGroup.Item>
                 <ToggleGroup.Item
-                  className="ql-underline rounded-md text-stone-500 data-[state=off]:hover:bg-orange-300 data-[state=off]:hover:text-white data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
+                  className="ql-underline rounded-md text-stone-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
                   value="underline"
                 >
                   <TextUnderline size={16} weight="bold" />
                 </ToggleGroup.Item>
                 <ToggleGroup.Item
-                  className=" ql-strike rounded-md text-stone-500 data-[state=off]:hover:bg-orange-300 data-[state=off]:hover:text-white data-[state=on]:bg-orange-500 data-[state=on]:text-white px-2 py-1"
+                  className=" ql-strike rounded-md text-stone-500 data-[state=off]:hover:bg-orange-100 data-[state=off]:hover:text-orange-500 data-[state=on]:bg-orange-100 data-[state=on]:text-orange-500 px-2 py-1"
                   value="strike"
                 >
                   <TextStrikethrough size={16} weight="bold" />

@@ -1,13 +1,13 @@
 import { ChatCircle, X } from "@phosphor-icons/react";
+import * as Toggle from "@radix-ui/react-toggle";
 import { useState } from "react";
 import { Button } from "src/common/components/Button/Button";
-import { Toggle } from "src/common/components/Toggle/Toggle";
 import { customisationColours } from "src/common/constants/customisationColours";
 import type { Topic } from "src/topics/types/Topic.type";
 
 type TopicPillProps = {
   topic: Topic;
-  size?: "small";
+  size?: "sm" | "md" | "lg";
   closable?: boolean;
   isSelected?: boolean;
   onClick?: (id: string) => void;
@@ -15,7 +15,7 @@ type TopicPillProps = {
 
 export const TopicPill = ({
   topic,
-  size = "small",
+  size = "sm",
   closable = false,
   isSelected = false,
   onClick,
@@ -27,13 +27,10 @@ export const TopicPill = ({
   );
 
   const topicButtonColour = topicCustomisationColour
-    ? {
-        border: "black",
-        background: topicCustomisationColour.primary,
-        text: "black",
-      }
-    : { border: "black", background: "stone-300", text: "black" };
+    ? `text-${topicCustomisationColour?.primary}`
+    : "text-stone-300";
 
+  // TODO: make always closable?
   return (
     <div
       className="h-fit"
@@ -42,7 +39,7 @@ export const TopicPill = ({
     >
       {closable ? (
         <Button
-          styleType="block"
+          variant="block"
           colour={topicButtonColour}
           size={size}
           onClick={() => onClick && onClick(topic.id)}
@@ -57,16 +54,14 @@ export const TopicPill = ({
           {topic.name}
         </Button>
       ) : (
-        <Toggle
-          styleType="block"
-          colour={topicButtonColour}
-          size={size}
+        <Toggle.Root
+          className=""
           onClick={() => onClick && onClick(topic.id)}
-          isToggled={isSelected}
-          icon={() => <ChatCircle size={16} />}
+          pressed={isSelected}
         >
+          <ChatCircle size={16} className={topicButtonColour} />
           {topic.name}
-        </Toggle>
+        </Toggle.Root>
       )}
     </div>
   );

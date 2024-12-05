@@ -1,60 +1,54 @@
-import Bin from "src/common/icons/bin.svg?react";
-import Close from "src/common/icons/close.svg?react";
-import Ellipsis from "src/common/icons/ellipsis.svg?react";
-import Flag from "src/common/icons/flag.svg?react";
-import LeftArrowWithBar from "src/common/icons/leftArrowWithBar.svg?react";
-import MagnifyingGlass from "src/common/icons/magnifyingGlass.svg?react";
-import Pencil from "src/common/icons/pencil.svg?react";
-import Pin from "src/common/icons/pin.svg?react";
-import RightArrowWithBar from "src/common/icons/rightArrowWithBar.svg?react";
+import {
+  Gear,
+  Pencil,
+  Plus,
+  SidebarSimple,
+  X,
+  Flag,
+  PushPin,
+  Trash,
+  DotsThree,
+} from "@phosphor-icons/react";
 
 type IconProps = {
   iconName: string;
-  size?: "small" | "medium" | "large";
-  colour?: string;
-  hoverColour?: string;
+  size?: "sm" | "md" | "lg";
+  className?: string;
+  weight?: "fill" | "regular";
 };
 
 enum IconSize {
-  "small" = "h-3",
-  "medium" = "h-5",
-  "large" = "h-7",
+  "sm" = 18,
+  "md" = 24,
+  "lg" = 32,
 }
 
-const Icon = ({
-  iconName,
-  size = "medium",
-  colour = "stone-500",
-  hoverColour,
-}: IconProps) => {
+const Icon = ({ iconName, size = "md", weight = "fill" }: IconProps) => {
   const iconSize = IconSize[size];
 
-  // NOTE: Tailwind wont recognize these classes since they're calculated at runtime,
-  // so have to include the possible styles explicitly in the safelist in tailwind.config.js
-  // otherwise the styles will get purged in the build process
-  const iconStyle = `${iconSize} fill-${colour} ${
-    hoverColour ? `hover:fill-${hoverColour}` : ""
-  }`;
+  const iconProps = { size: iconSize, weight };
 
   switch (iconName) {
-    case "pin":
-      return <Pin className={iconStyle} />;
+    case "pushPin":
+      return <PushPin {...iconProps} />;
     case "flag":
-      return <Flag className={iconStyle} />;
-    case "bin":
-      return <Bin className={iconStyle} />;
+      return <Flag {...iconProps} />;
+    case "trash":
+      return <Trash {...iconProps} />;
     case "pencil":
-      return <Pencil className={iconStyle} />;
-    case "close":
-      return <Close className={iconStyle} />;
-    case "ellipsis":
-      return <Ellipsis className={iconStyle} />;
-    case "magnifyingGlass":
-      return <MagnifyingGlass className={iconStyle} />;
-    case "leftArrowWithBar":
-      return <LeftArrowWithBar className={iconStyle} />;
-    case "rightArrowWithBar":
-      return <RightArrowWithBar className={iconStyle} />;
+      return <Pencil {...iconProps} />;
+    case "x":
+      return <X {...iconProps} weight="bold" />;
+    case "gear":
+      return <Gear {...iconProps} />;
+    case "plus":
+      return <Plus {...iconProps} weight="bold" />;
+    case "sidebarSimple":
+      return <SidebarSimple {...iconProps} />;
+    case "dotsThree":
+      return <DotsThree {...iconProps} weight="bold" />;
+    default:
+      return <></>;
   }
 };
 

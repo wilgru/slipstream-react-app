@@ -1,85 +1,105 @@
+import { cva } from "class-variance-authority";
 import { useState } from "react";
+import { cn } from "src/common/utils/cn";
+import { Icon } from "../Icon/Icon";
 
 type ButtonProps = {
   children?: string | JSX.Element;
-  styleType?: "block" | "block-outline" | "link" | "icon";
-  colour?: { border: string; background: string; text: string };
-  width?: "fit" | "full";
-  size?: "small" | "medium" | "large";
+  variant?: "block" | "link" | "ghost";
+  colour?: string;
+  size?: "sm" | "md" | "lg";
   type?: "button" | "submit";
+  className?: string;
   disabled?: boolean;
   onClick?: () => void;
-  icon?: (isButtonHovered: boolean) => JSX.Element;
+  iconName?: string;
 };
 
-enum ButtonSize {
-  "small" = "px-2 py-1 text-xs font-normal",
-  "medium" = "px-3 py-1 text-sm font-medium",
-  "large" = "px-6 py-2 text-sm",
-}
-
-enum ButtonWidth {
-  "full" = "w-full justify-center",
-  "fit" = "",
-}
+const buttonVariants = cva(
+  [
+    "flex",
+    "items-center",
+    "gap-2",
+    "h-full",
+    "rounded-full",
+    "focus-visible:outline",
+    "focus-visible:outline-2",
+    "focus-visible:outline-offset-2",
+    "focus-visible:outline-orange-500",
+  ],
+  {
+    variants: {
+      intent: {
+        primary: null,
+        secondary: null,
+        destructive: null,
+      },
+      variant: {
+        block:
+          "text-black border border-black hover:bg-black hover:text-white hover:border-black",
+        ghost: "text-stone-500",
+        link: "underline-offset-4 hover:underline",
+      },
+      size: {
+        sm: "p-1 text-xs font-normal",
+        md: "p-2 text-sm font-medium",
+        lg: "p-3 text-md font-medium",
+      },
+    },
+    compoundVariants: [
+      {
+        intent: "primary",
+        variant: "block",
+        className: "bg-orange-100",
+      },
+      {
+        intent: "primary",
+        variant: "ghost",
+        className: "hover:bg-orange-100 hover:text-orange-500",
+      },
+      {
+        intent: ["primary", "secondary"],
+        variant: "link",
+        className: "text-stone-500 hover:text-orange-500 hover:bg-orange-100",
+      },
+    ],
+    defaultVariants: {
+      intent: "primary",
+      variant: "block",
+      size: "md",
+    },
+  }
+);
 
 export const Button = ({
   children,
   type = "button",
-  styleType = "block",
-  colour = { border: "black", background: "white", text: "black" },
-  width = "fit",
-  size = "medium",
+  variant = "block",
+  size = "md",
+  className,
   disabled = false,
   onClick,
-  icon,
+  iconName,
 }: ButtonProps) => {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
-
-  let _styleType;
-  let _colour;
-  let _size;
-  const _width = ButtonWidth[width];
-
-  switch (styleType) {
-    case "icon":
-      _styleType = "text-stone-500 hover:text-black";
-      _size = "";
-      _colour = "";
-      break;
-
-    case "link":
-      _styleType = "text-orange-500 hover:text-orange-700";
-      _size = "";
-      _colour = "";
-      break;
-
-    case "block":
-      _styleType = "border hover:bg-black hover:text-white hover:border-black";
-      _size = ButtonSize[size];
-      _colour = `bg-${colour.background} border-${colour.border} text-${colour.text}`;
-      break;
-
-    case "block-outline":
-      _styleType =
-        "bg-white text-black border border-black hover:bg-black hover:text-white hover:border-black";
-      _size = ButtonSize[size];
-      _colour = "";
-      break;
-  }
-
-  const buttonStyles = [_styleType, _width, _size, _colour].join(" ");
 
   return (
     <button
       type={type}
-      className={`${buttonStyles} flex items-center gap-2 h-full rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500`}
+      className={cn(buttonVariants({ variant, size, className }), className)}
       disabled={disabled}
       onMouseEnter={() => setIsButtonHovered(true)}
       onMouseLeave={() => setIsButtonHovered(false)}
       onClick={onClick}
     >
-      {icon && icon(isButtonHovered)}
+      {iconName && (
+        <Icon
+          iconName={iconName}
+          size={size}
+          className={isButtonHovered ? "text-orange-500" : "text-stone-500"}
+          weight={isButtonHovered ? "fill" : "regular"}
+        />
+      )}
       {children}
     </button>
   );

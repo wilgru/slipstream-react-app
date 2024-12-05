@@ -1,4 +1,3 @@
-import { Flag, PushPin } from "@phosphor-icons/react";
 import { useCallback, useEffect, useState } from "react";
 import {
   DropdownMenu,
@@ -137,35 +136,22 @@ export const SlipEditorAttributesBar = ({
   return (
     <div className="flex flex-row gap-2">
       <Toggle
-        styleType="icon"
+        colour="red"
+        size="sm"
         isToggled={editableSlip.isPinned}
-        toggledOnColour={"red-500"}
         onClick={() =>
           onChangeSlipInternal({ isPinned: !editableSlip.isPinned }, true)
         }
-        icon={(isToggleHovered: boolean) => (
-          <PushPin
-            size={24}
-            weight={editableSlip.isPinned || isToggleHovered ? "fill" : "light"}
-          />
-        )}
+        iconName="pushPin"
       />
 
       <Toggle
-        styleType="icon"
+        size="sm"
         isToggled={editableSlip.isFlagged}
-        toggledOnColour={"orange-500"}
         onClick={() =>
           onChangeSlipInternal({ isFlagged: !editableSlip.isFlagged }, true)
         }
-        icon={(isToggleHovered: boolean) => (
-          <Flag
-            size={24}
-            weight={
-              editableSlip.isFlagged || isToggleHovered ? "fill" : "light"
-            }
-          />
-        )}
+        iconName="flag"
       />
 
       {/* TODO: add type dropdown back in when working on it */}

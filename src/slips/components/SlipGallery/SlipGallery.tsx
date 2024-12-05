@@ -164,27 +164,20 @@ export const SlipGallery = () => {
   ]);
 
   return (
-    <div className="flex flex-col h-full gap-2 p-3 pb-2 pt-0 overflow-y-auto overflow-x-hidden">
-      <div
-        style={{
-          gridTemplateColumns: "repeat(auto-fill, 15rem)",
-        }}
-        className={
-          openSlip
-            ? "flex gap-3 px-3 -mx-3 overflow-x-auto overflow-y-hidden"
-            : "grid justify-between gap-3"
-        }
-      >
-        {slips.map((slip) => (
-          <SlipCard
-            key={slip.id}
-            slip={slip}
-            isFocused={focusedSlipId ? slip.id === focusedSlipId : false}
-            onClick={onClickSlip}
-            onDblClick={onDblClickSlip}
-          />
-        ))}
+    <div className="flex flex-col h-full gap-2 p-6 w-full overflow-y-auto overflow-x-hidden">
+      <div className="flex justify-center">
+        <h1 className="font-title text-lg">{slips.length} Slips</h1>
       </div>
+
+      {slips.map((slip) => (
+        <SlipCard
+          key={slip.id}
+          slip={slip}
+          isFocused={focusedSlipId ? slip.id === focusedSlipId : false}
+          onClick={onClickSlip}
+          onDblClick={onDblClickSlip}
+        />
+      ))}
 
       {!!openSlip && (
         <SlipEditor
