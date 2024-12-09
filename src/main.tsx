@@ -10,28 +10,40 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import LoginPage from "src/authentication/pages/LoginPage/LoginPage.tsx";
-import HomePage from "src/home/pages/HomePage/HomePage";
+import JournalPage from "src/journals/pages/JournalPage";
+import StreamPage from "src/stream/pages/StreamPage";
 import "src/index.css";
 import SignUpPage from "./authentication/pages/SignUpPage/SignUpPage";
+import RootPage from "./root/pages/RootPage";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: "/login/",
     element: <LoginPage />,
   },
   {
-    path: "/sign-up",
+    path: "/sign-up/",
     element: <SignUpPage />,
   },
   {
     path: "/",
-    element: <HomePage />,
+    element: <RootPage />,
+    children: [
+      {
+        path: "stream/",
+        element: <StreamPage />,
+      },
+      {
+        path: "journals/:id/",
+        element: <JournalPage />,
+      },
+    ],
   },
   {
     path: "*",
-    element: <Navigate to="/" />,
+    element: <Navigate to="stream/" />,
   },
 ]);
 

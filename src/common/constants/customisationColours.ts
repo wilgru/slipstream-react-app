@@ -2,49 +2,60 @@ import type { Colour } from "src/common/types/Colour";
 
 // these colours are manually included with the build via the tailwind.config.js
 export const customisationColours: Colour[] = [
-  { name: "red", primary: "red-400" },
+  { name: "red", textClass: "text-red-400", backgroundClass: "bg-red-400" },
   {
     name: "orange",
-    primary: "orange-400",
+    textClass: "text-orange-400",
+    backgroundClass: "bg-red-400",
   },
   {
     name: "yellow",
-    primary: "yellow-400",
+    textClass: "text-yellow-400",
+    backgroundClass: "bg-red-400",
   },
   {
     name: "lime",
-    primary: "lime-400",
+    textClass: "text-lime-400",
+    backgroundClass: "bg-red-400",
   },
   {
     name: "green",
-    primary: "green-400",
+    textClass: "text-green-400",
+    backgroundClass: "bg-red-400",
   },
   {
     name: "blue",
-    primary: "blue-400",
+    textClass: "text-blue-400",
+    backgroundClass: "bg-red-400",
   },
   {
     name: "cyan",
-    primary: "cyan-400",
+    textClass: "text-cyan-400",
+    backgroundClass: "bg-red-400",
   },
   {
     name: "pink",
-    primary: "pink-400",
+    textClass: "text-pink-400",
+    backgroundClass: "bg-red-400",
   },
   {
     name: "purple",
-    primary: "purple-400",
+    textClass: "text-purple-400",
+    backgroundClass: "bg-red-400",
   },
   {
     name: "brown",
-    primary: "amber-600",
+    textClass: "text-amber-600",
+    backgroundClass: "bg-red-400",
   },
   {
     name: "grey",
-    primary: "gray-400",
+    textClass: "text-gray-400",
+    backgroundClass: "bg-red-400",
   },
   {
     name: "default",
-    primary: "stone-600",
+    textClass: "text-stone-600",
+    backgroundClass: "bg-red-400",
   },
 ];

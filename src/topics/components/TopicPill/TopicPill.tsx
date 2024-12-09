@@ -1,7 +1,7 @@
-import { ChatCircle, X } from "@phosphor-icons/react";
 import * as Toggle from "@radix-ui/react-toggle";
 import { useState } from "react";
 import { Button } from "src/common/components/Button/Button";
+import { Icon } from "src/common/components/Icon/Icon";
 import { customisationColours } from "src/common/constants/customisationColours";
 import type { Topic } from "src/topics/types/Topic.type";
 
@@ -27,7 +27,7 @@ export const TopicPill = ({
   );
 
   const topicButtonColour = topicCustomisationColour
-    ? `text-${topicCustomisationColour?.primary}`
+    ? topicCustomisationColour?.textClass
     : "text-stone-300";
 
   // TODO: make always closable?
@@ -43,13 +43,7 @@ export const TopicPill = ({
           colour={topicButtonColour}
           size={size}
           onClick={() => onClick && onClick(topic.id)}
-          icon={() =>
-            closable && closeButtonVisible ? (
-              <X size={16} />
-            ) : (
-              <ChatCircle size={16} />
-            )
-          }
+          iconName={closable && closeButtonVisible ? "x" : "ChatCircle"}
         >
           {topic.name}
         </Button>
@@ -59,7 +53,7 @@ export const TopicPill = ({
           onClick={() => onClick && onClick(topic.id)}
           pressed={isSelected}
         >
-          <ChatCircle size={16} className={topicButtonColour} />
+          <Icon iconName="ChatCircle" className={topicButtonColour} />
           {topic.name}
         </Toggle.Root>
       )}

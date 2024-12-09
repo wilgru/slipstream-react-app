@@ -1,18 +1,21 @@
 import { debounce } from "debounce";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useUser } from "src/authentication/hooks/useUser";
 import SlipCard from "src/slips/components/SlipCard/SlipCard";
 import SlipEditor from "src/slips/components/SlipEditor/SlipEditor";
 import { usePurgeEmptySlips } from "src/slips/hooks/useDeleteEmptySlips";
 import { useDeleteSlip } from "src/slips/hooks/useDeleteSlip";
 import { useGetSlips } from "src/slips/hooks/useGetSlips";
 import { useUpdateSlip } from "src/slips/hooks/useUpdateSlip";
-import { handleArrowLeftKeyDown } from "./utils/handleArrowLeftKeyDown";
-import { handleArrowRightKeyDown } from "./utils/handleArrowRightKeyDown";
-import { handleSpaceBarKeyDown } from "./utils/handleSpaceBarKeyDown";
+import { handleArrowLeftKeyDown } from "src/stream/pages/utils/handleArrowLeftKeyDown";
+import { handleArrowRightKeyDown } from "src/stream/pages/utils/handleArrowRightKeyDown";
+import { handleSpaceBarKeyDown } from "src/stream/pages/utils/handleSpaceBarKeyDown";
 import type { Slip } from "src/slips/types/Slip.type";
 
-export const SlipGallery = () => {
+export default function StreamPage() {
+  const navigate = useNavigate();
+  const { user } = useUser();
   const { slips } = useGetSlips();
   const { updateSlip } = useUpdateSlip();
   const { deleteSlip } = useDeleteSlip();
@@ -163,6 +166,10 @@ export const SlipGallery = () => {
     purgeEmptySlips,
   ]);
 
+  useEffect(() => {
+    !user && navigate("/login");
+  }, [user, navigate]);
+
   return (
     <div className="flex flex-col h-full gap-2 p-6 w-full overflow-y-auto overflow-x-hidden">
       <div className="flex justify-center">
@@ -192,4 +199,4 @@ export const SlipGallery = () => {
       )}
     </div>
   );
-};
+}

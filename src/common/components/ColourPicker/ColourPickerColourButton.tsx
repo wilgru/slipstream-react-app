@@ -14,9 +14,9 @@ export const ColourPickerColourButton = ({
   return (
     <button
       onClick={() => onClick(colour)}
-      style={{ backgroundColor: colour.primary }}
+      style={{ backgroundColor: colour.backgroundClass }}
       className={`h-8 w-8 ${selected && "border-2 border-orange-500"} bg-${
-        colour.primary
+        colour.backgroundClass
       }`}
     ></button>
   );

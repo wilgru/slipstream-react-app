@@ -1,4 +1,5 @@
 export type Colour = {
   name: string;
-  primary: string;
+  textClass: string;
+  backgroundClass: string;
 };

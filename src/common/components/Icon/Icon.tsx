@@ -8,6 +8,8 @@ import {
   PushPin,
   Trash,
   DotsThree,
+  Rows,
+  Book,
 } from "@phosphor-icons/react";
 
 type IconProps = {
@@ -23,10 +25,15 @@ enum IconSize {
   "lg" = 32,
 }
 
-const Icon = ({ iconName, size = "md", weight = "fill" }: IconProps) => {
+const Icon = ({
+  iconName,
+  size = "md",
+  weight = "fill",
+  className,
+}: IconProps) => {
   const iconSize = IconSize[size];
 
-  const iconProps = { size: iconSize, weight };
+  const iconProps = { size: iconSize, weight, className };
 
   switch (iconName) {
     case "pushPin":
@@ -47,6 +54,10 @@ const Icon = ({ iconName, size = "md", weight = "fill" }: IconProps) => {
       return <SidebarSimple {...iconProps} />;
     case "dotsThree":
       return <DotsThree {...iconProps} weight="bold" />;
+    case "Book":
+      return <Book {...iconProps} />;
+    case "Rows":
+      return <Rows {...iconProps} />;
     default:
       return <></>;
   }
