@@ -6,6 +6,7 @@ import { Icon } from "../Icon/Icon";
 type ButtonProps = {
   children?: string | JSX.Element;
   variant?: "block" | "link" | "ghost";
+  intent?: "primary" | "secondary" | "destructive";
   colour?: string;
   size?: "sm" | "md" | "lg";
   type?: "button" | "submit";
@@ -62,6 +63,11 @@ const buttonVariants = cva(
         variant: "link",
         className: "text-stone-500 hover:text-orange-500 hover:bg-orange-100",
       },
+      {
+        intent: "destructive",
+        variant: "block",
+        className: "bg-red-400",
+      },
     ],
     defaultVariants: {
       intent: "primary",
@@ -75,6 +81,7 @@ export const Button = ({
   children,
   type = "button",
   variant = "block",
+  intent = "primary",
   size = "md",
   className,
   disabled = false,
@@ -86,7 +93,10 @@ export const Button = ({
   return (
     <button
       type={type}
-      className={cn(buttonVariants({ variant, size, className }), className)}
+      className={cn(
+        buttonVariants({ variant, intent, size, className }),
+        className
+      )}
       disabled={disabled}
       onMouseEnter={() => setIsButtonHovered(true)}
       onMouseLeave={() => setIsButtonHovered(false)}

@@ -13,8 +13,7 @@ import type { RangeStatic, StringMap } from "quill";
 type QuillEditorProps = {
   toolbarId: string;
   initialValue: Delta;
-  onTextChange: (delta: Delta) => void;
-  onSelectionChange: (range: RangeStatic, oldRange: RangeStatic) => void;
+  onChange: (delta: Delta) => void;
   onSelectedFormattingChange: (selectionFormatting: StringMap) => void;
 };
 
@@ -27,25 +26,22 @@ const QuillEditor = forwardRef(
   ({
     toolbarId,
     initialValue,
-    onTextChange,
-    onSelectionChange,
+    onChange,
     onSelectedFormattingChange,
   }: QuillEditorProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const onTextChangeRef = useRef(onTextChange);
-    const onSelectionChangeRef = useRef(onSelectionChange);
+    const onChangeRef = useRef(onChange);
 
     const [quillEditor, setQuillEditor] = useState<Quill | null>();
 
-    const onTextChangeInternal = (delta: Delta) => {
+    const onChangeInternal = (delta: Delta) => {
       const contentDelta = delta ?? new Delta();
 
-      onTextChange(contentDelta);
+      onChange(contentDelta);
     };
 
     useLayoutEffect(() => {
-      onTextChangeRef.current = onTextChangeInternal;
-      onSelectionChangeRef.current = onSelectionChange;
+      onChangeRef.current = onChangeInternal;
     });
 
     useEffect(() => {
@@ -65,36 +61,24 @@ const QuillEditor = forwardRef(
           onSelectedFormattingChange(selectionFormatting);
         }
 
-        onTextChangeRef.current?.(quillEditor?.getContents());
+        onChangeRef.current?.(quillEditor?.getContents());
       });
 
-      quillEditor?.on(
-        "selection-change",
-        (range: RangeStatic, oldRange: RangeStatic) => {
-          if (range) {
-            const selectionFormatting = quillEditor.getFormat(
-              range.index,
-              range.length
-            );
+      quillEditor?.on("selection-change", (range: RangeStatic) => {
+        if (range) {
+          const selectionFormatting = quillEditor.getFormat(
+            range.index,
+            range.length
+          );
 
-            onSelectedFormattingChange(selectionFormatting);
-          }
-
-          onSelectionChangeRef.current?.(range, oldRange);
+          onSelectedFormattingChange(selectionFormatting);
         }
-      );
+      });
 
       return () => {
         quillEditor?.off("text-change", () => {
-          onTextChangeRef.current?.(quillEditor?.getContents());
+          onChangeRef.current?.(quillEditor?.getContents());
         });
-
-        quillEditor?.off(
-          "selection-change",
-          (range: RangeStatic, oldRange: RangeStatic) => {
-            onSelectionChangeRef.current?.(range, oldRange);
-          }
-        );
       };
     }, [onSelectedFormattingChange, quillEditor]);
 
@@ -189,27 +173,12 @@ const QuillEditor = forwardRef(
 
       setQuillEditor(quill);
 
-      // if (initialValueRef.current) {
-      //   quill.setContents(initialValueRef.current);
-      // }
-
-      // quill.on("text-change", () => {
-      //   onTextChangeRef.current?.(quill.getContents());
-      // });
-
-      // quill.on(
-      //   "selection-change",
-      //   (range: RangeStatic, oldRange: RangeStatic) => {
-      //     onSelectionChangeRef.current?.(range, oldRange);
-      //   }
-      // );
-
       return () => {
         container.innerHTML = "";
 
         setQuillEditor(null);
       };
-    }, []);
+    }, [toolbarId]);
 
     return (
       <div
