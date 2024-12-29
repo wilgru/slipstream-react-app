@@ -2,6 +2,7 @@ import { Flag, PushPin } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import Delta from "quill-delta";
 import { useEffect, useRef, useState } from "react";
+import { cn } from "src/common/utils/cn";
 import EditSlipModal from "../EditSlipModal/EditSlipModal";
 import type { Slip } from "src/slips/types/Slip.type";
 
@@ -27,9 +28,18 @@ const SlipCard = ({ slip, isFocused }: SlipCardProps) => {
       <Dialog.Trigger asChild>
         <div
           ref={ref}
-          className={`relative w-full mb-2 cursor-pointer select-none rounded-lg bg-white shadow-light ${
+          className={cn(
+            "relative",
+            "w-full",
+            "mb-2",
+            "cursor-pointer",
+            "select-none",
+            "rounded-lg",
+            "bg-white",
+            "shadow-light",
+            "hover:bg-orange-100",
             isFocused ? "border-2 border-orange-500" : "border border-black"
-          }`}
+          )}
         >
           <div className="absolute flex h-full w-full flex-row items-end justify-end p-2 gap-2">
             {slip.isPinned && (
