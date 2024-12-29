@@ -119,7 +119,7 @@ const EditSlipModal = ({ slip }: EditSlipModalProps) => {
             </div>
           </div>
 
-          <div className="flex flex-row justify-between w-full">
+          <div className="flex flex-row justify-between w-full border-t border-stone-300 pt-2">
             <EditSlipModalAttributesBar
               initialSlip={slip}
               onChange={(topics) =>
