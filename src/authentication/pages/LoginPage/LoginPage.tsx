@@ -31,11 +31,11 @@ const LoginPage = (): JSX.Element => {
     await login({ email: formData.email, password: formData.password });
 
     // redirect on successful login
-    navigate("/");
+    navigate("/stream/");
   };
 
   useEffect(() => {
-    user && navigate("/");
+    user && navigate("/stream/");
   }, [user, navigate]);
 
   return (

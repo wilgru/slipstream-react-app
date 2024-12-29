@@ -35,11 +35,11 @@ const SignUpPage = (): JSX.Element => {
     await signUp(formData);
 
     // redirect on successful sign up
-    navigate("/");
+    navigate("/stream/");
   };
 
   useEffect(() => {
-    user && navigate("/");
+    user && navigate("/stream/");
   }, [navigate, user]);
 
   return (
