@@ -195,7 +195,7 @@ const EditSlipModal = ({ slip }: EditSlipModalProps) => {
             setToolbarFormatting(selectionFormatting);
           }}
         />
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-between gap-2">
           <Dialog.Close asChild>
             <Button
               variant="block"
@@ -206,22 +206,25 @@ const EditSlipModal = ({ slip }: EditSlipModalProps) => {
               Delete
             </Button>
           </Dialog.Close>
-          <Dialog.Close asChild>
-            <Button variant="ghost" intent="secondary" size="sm">
-              Cancel
-            </Button>
-          </Dialog.Close>
-          <Dialog.Close asChild>
-            <Button
-              variant="block"
-              size="sm"
-              onClick={() =>
-                updateSlip({ slipId: slip.id, updateSlipData: editableSlip })
-              }
-            >
-              Save
-            </Button>
-          </Dialog.Close>
+
+          <div className="flex gap-2">
+            <Dialog.Close asChild>
+              <Button variant="ghost" intent="secondary" size="sm">
+                Cancel
+              </Button>
+            </Dialog.Close>
+            <Dialog.Close asChild>
+              <Button
+                variant="block"
+                size="sm"
+                onClick={() =>
+                  updateSlip({ slipId: slip.id, updateSlipData: editableSlip })
+                }
+              >
+                Save
+              </Button>
+            </Dialog.Close>
+          </div>
         </div>
       </Dialog.Content>
     </Dialog.Portal>
