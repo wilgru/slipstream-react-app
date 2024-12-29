@@ -12,7 +12,7 @@ import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
 import { Toggle } from "src/common/components/Toggle/Toggle";
 import { useDeleteSlip } from "src/slips/hooks/useDeleteSlip";
 import { useUpdateSlip } from "src/slips/hooks/useUpdateSlip";
-import { EditSlipModalAttributesBar } from "./EditSlipModalAttributesBar";
+import { JournalMultiSelect } from "./JournalMultiSelect";
 import type { StringMap } from "quill";
 import type { Slip } from "src/slips/types/Slip.type";
 
@@ -120,7 +120,7 @@ const EditSlipModal = ({ slip }: EditSlipModalProps) => {
           </div>
 
           <div className="flex flex-row justify-between w-full border-t border-stone-300 pt-2">
-            <EditSlipModalAttributesBar
+            <JournalMultiSelect
               initialSlip={slip}
               onChange={(topics) =>
                 setEditableSlip((currentEditableSlip) => {

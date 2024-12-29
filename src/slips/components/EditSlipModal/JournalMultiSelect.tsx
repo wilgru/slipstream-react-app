@@ -10,7 +10,7 @@ import type { Colour } from "src/common/types/Colour";
 import type { Slip } from "src/slips/types/Slip.type";
 import type { Topic } from "src/topics/types/Topic.type";
 
-type EditSlipModalAttributesBarProps = {
+type JournalMultiSelectProps = {
   initialSlip: Slip;
   onChange: (topics: Topic[]) => void;
 };
@@ -20,20 +20,18 @@ type Option = {
   value: string;
 };
 
-const getTopicBackgroundColourFromTopicId = (
+const getCustomisationColourFromTopicId = (
   topics: Topic[],
   topicId: string
 ): Colour => {
   const topic = topics.find((topic) => topic.id === topicId);
-  console.log(topic);
 
-  const topicCustomisationColour = customisationColours.find(
+  const customisationColour = customisationColours.find(
     (colour) => colour.name === topic?.colour
   );
 
-  console.log(topicCustomisationColour);
   return (
-    topicCustomisationColour ?? {
+    customisationColour ?? {
       name: "grey",
       textClass: "text-gray-400",
       backgroundClass: "bg-gray-400",
@@ -41,10 +39,10 @@ const getTopicBackgroundColourFromTopicId = (
   );
 };
 
-export const EditSlipModalAttributesBar = ({
+export const JournalMultiSelect = ({
   initialSlip,
   onChange,
-}: EditSlipModalAttributesBarProps) => {
+}: JournalMultiSelectProps) => {
   const { topics } = useGetTopics();
   const { createTopic } = useCreateTopic();
 
@@ -54,23 +52,6 @@ export const EditSlipModalAttributesBar = ({
       label: topic.name,
     }))
   );
-
-  // const onSelectExistingTopic = useCallback(
-  //   async (topicToAdd: Topic) => {
-  //     // if topic already added to the slip
-  //     if (initialSlip.topics.some((topic) => topic.id === topicToAdd.id)) {
-  //       setAddTopicInput(undefined);
-  //       return;
-  //     }
-
-  //     if (topics.find((topic) => topic.id === topicToAdd.id)) {
-  //       onChange([...initialSlip.topics, topicToAdd]);
-  //       setAddTopicInput(undefined);
-  //       return;
-  //     }
-  //   },
-  //   [initialSlip, onChange, topics]
-  // );
 
   const onCreateNewTopic = useCallback(
     async (topicToCreate: string) => {
@@ -86,71 +67,11 @@ export const EditSlipModalAttributesBar = ({
     [createTopic, initialSlip.topics, onChange]
   );
 
-  // const onChangeAddTopic = async (input: string) => {
-  //   if (input === "\n") {
-  //     return;
-  //   }
-
-  //   setAddTopicInput(input);
-
-  //   let autocompleteOptions: DropdownMenuOption[] = [];
-
-  //   const similarTopicsFound = topics.filter((topic) =>
-  //     CompareCleanStrings(topic.name, input, "like")
-  //   );
-
-  //   autocompleteOptions = similarTopicsFound.map((topic) => ({
-  //     name: topic.name,
-  //     action: () => {
-  //       onSelectExistingTopic(topic);
-  //     },
-  //   }));
-
-  //   const exactTopicFound = topics.find((topic) =>
-  //     CompareCleanStrings(topic.name, input)
-  //   );
-
-  //   if (!exactTopicFound) {
-  //     autocompleteOptions.push({
-  //       name: `Create '${input}'`,
-  //       action: () => {
-  //         onSelectCreateNewTopic(input);
-  //       },
-  //     });
-  //   }
-
-  //   setAddTopicAutocompleteOptions(autocompleteOptions);
-  // };
-
   const options = topics.map((topic) => ({
     value: topic.id,
     label: topic.name,
     colour: topic.colour,
   }));
-
-  // useEffect(() => {
-  //   const handleKeyDown = (e: KeyboardEvent) => {
-  //     switch (e.key) {
-  //       case "Enter":
-  //         handleEnterKeyDown(
-  //           topics,
-  //           addTopicInput,
-  //           onSelectExistingTopic,
-  //           onSelectCreateNewTopic
-  //         );
-  //         break;
-  //       case "Escape":
-  //         setAddTopicInput(undefined);
-  //         break;
-  //     }
-  //   };
-
-  //   document.addEventListener("keydown", handleKeyDown, true);
-
-  //   return () => {
-  //     document.removeEventListener("keydown", handleKeyDown, true);
-  //   };
-  // }, [addTopicInput, onSelectCreateNewTopic, onSelectExistingTopic, topics]);
 
   return (
     <div className="flex flex-row gap-2">
@@ -211,7 +132,7 @@ export const EditSlipModalAttributesBar = ({
             return cn(
               "rounded-full",
               "text-xs",
-              getTopicBackgroundColourFromTopicId(topics, props.data.value)
+              getCustomisationColourFromTopicId(topics, props.data.value)
                 .backgroundClass
             );
           },
@@ -303,37 +224,6 @@ export const EditSlipModalAttributesBar = ({
           }),
         }}
       />
-
-      {/* {initialSlip.topics.map((topic) => {
-        return (
-          <TopicPill
-            topic={topic}
-            closable
-            onClick={() =>
-              onChange(
-                initialSlip.topics.filter(
-                  (initialSlipTopic) => initialSlipTopic.id !== topic.id
-                )
-              )
-            }
-          />
-        );
-      })}
-
-      <DropdownMenu
-        options={addTopicAutocompleteOptions}
-        visible={showAutocompleteDropdownMenu}
-        setVisible={setShowAutocompleteDropdownMenu}
-      >
-        <div className="flex justify-center h-full">
-          <textarea
-            value={addTopicInput ?? ""}
-            placeholder="+ add topic"
-            onChange={(e) => onChangeAddTopic(e.target.value)}
-            className="text-xs h-4 my-auto overflow-y-hidden text-black placeholder-stone-500 border-black select-none resize-none outline-none"
-          />
-        </div>
-      </DropdownMenu> */}
     </div>
   );
 };
