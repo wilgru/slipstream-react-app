@@ -64,6 +64,11 @@ const buttonVariants = cva(
         className: "text-stone-500 hover:text-orange-500 hover:bg-orange-100",
       },
       {
+        intent: "secondary",
+        variant: "ghost",
+        className: "hover:bg-orange-100 hover:text-orange-500",
+      },
+      {
         intent: "destructive",
         variant: "block",
         className: "bg-red-400",
