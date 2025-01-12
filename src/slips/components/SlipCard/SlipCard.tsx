@@ -16,7 +16,7 @@ const SlipCard = ({ slip, isFocused }: SlipCardProps) => {
   const [contentString, setContentString] = useState<string | null>();
 
   useEffect(() => {
-    const contentDelta = slip.content && new Delta(slip.content);
+    const contentDelta = slip.content && new Delta(slip.content); // ? redundant new Delta() call?
 
     setContentString(
       contentDelta ? contentDelta?.reduce((acc, op) => acc + op.insert, "") : ""
