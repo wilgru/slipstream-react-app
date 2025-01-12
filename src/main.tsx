@@ -36,7 +36,7 @@ const router = createBrowserRouter([
         element: <StreamPage />,
       },
       {
-        path: "journals/:id/",
+        path: "journals/:journalId/",
         element: <JournalPage />,
       },
     ],

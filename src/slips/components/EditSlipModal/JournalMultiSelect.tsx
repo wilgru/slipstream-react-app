@@ -78,7 +78,7 @@ export const JournalMultiSelect = ({
       <CreatableSelect
         isMulti
         options={options}
-        placeholder="Add to journal"
+        placeholder="Add journal"
         value={value}
         onChange={(selectedTopics) => {
           setValue([...selectedTopics]);
