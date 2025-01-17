@@ -9,8 +9,8 @@ export default {
       // body: [""],
     },
     boxShadow: {
+      light: "0 0 20px -10px rgba(0, 0, 0, 0.3)", // 1 spacing
       lighter: "black 2px 2px", // 0.5 spacing
-      light: "black 4px 4px ", // 1 spacing
     },
     extend: {},
   },

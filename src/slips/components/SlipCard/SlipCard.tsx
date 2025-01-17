@@ -38,7 +38,7 @@ const SlipCard = ({ slip, isFocused }: SlipCardProps) => {
             "bg-white",
             "shadow-light",
             "hover:bg-orange-100",
-            isFocused ? "border-2 border-orange-500" : "border border-black"
+            isFocused ? "border-2 border-orange-500" : "border border-stone-300"
           )}
         >
           <div className="absolute flex h-full w-full flex-row items-end justify-end p-2 gap-2">
@@ -53,7 +53,7 @@ const SlipCard = ({ slip, isFocused }: SlipCardProps) => {
           <div className="flex h-full flex-col p-2">
             <h1
               className={`select-none font-title text-xl font-normal tracking-tight ${
-                isFocused ? "text-orange-500" : "text-black"
+                isFocused ? "text-orange-500" : "text-stone-700"
               }`}
             >
               {slip.title}
