@@ -10,6 +10,7 @@ import {
   DotsThree,
   Rows,
   Book,
+  ArrowsDownUp,
 } from "@phosphor-icons/react";
 
 type IconProps = {
@@ -58,6 +59,8 @@ const Icon = ({
       return <Book {...iconProps} />;
     case "Rows":
       return <Rows {...iconProps} />;
+    case "arrowsDownUp":
+      return <ArrowsDownUp {...iconProps} />;
     default:
       return <></>;
   }
