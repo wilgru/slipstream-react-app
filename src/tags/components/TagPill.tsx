@@ -5,7 +5,7 @@ import { Icon } from "src/common/components/Icon/Icon";
 import { customisationColours } from "src/common/constants/customisationColours";
 import type { Topic } from "src/topics/types/Topic.type";
 
-type TopicPillProps = {
+type TagPillProps = {
   topic: Topic;
   size?: "sm" | "md" | "lg";
   closable?: boolean;
@@ -13,13 +13,13 @@ type TopicPillProps = {
   onClick?: (id: string) => void;
 };
 
-export const TopicPill = ({
+export const TagPill = ({
   topic,
   size = "sm",
   closable = false,
   isSelected = false,
   onClick,
-}: TopicPillProps): JSX.Element => {
+}: TagPillProps): JSX.Element => {
   const [closeButtonVisible, setCloseButtonVisible] = useState<boolean>(false);
 
   const topicCustomisationColour = customisationColours.find(
