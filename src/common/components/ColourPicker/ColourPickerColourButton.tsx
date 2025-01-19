@@ -1,3 +1,4 @@
+import { cn } from "src/common/utils/cn";
 import type { Colour } from "src/common/types/Colour";
 
 type ColourButtonProps = {
@@ -15,9 +16,11 @@ export const ColourPickerColourButton = ({
     <button
       onClick={() => onClick(colour)}
       style={{ backgroundColor: colour.backgroundClass }}
-      className={`h-8 w-8 ${selected && "border-2 border-orange-500"} bg-${
-        colour.backgroundClass
-      }`}
+      className={cn(
+        "h-8 w-8",
+        colour.backgroundClass,
+        selected && "border-2 border-orange-500"
+      )}
     ></button>
   );
 };

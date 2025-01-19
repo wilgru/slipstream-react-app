@@ -3,11 +3,11 @@ import { Button } from "src/common/components/Button/Button";
 import { useDeleteTopic } from "src/topics/hooks/useDeleteTopic";
 import type { Topic } from "src/topics/types/Topic.type";
 
-type TopicListDeleteModalProps = {
+type DeleteJournalModalProps = {
   topic: Topic;
 };
 
-export const TopicListDeleteModal = ({ topic }: TopicListDeleteModalProps) => {
+export const DeleteJournalModal = ({ topic }: DeleteJournalModalProps) => {
   const { deleteTopic } = useDeleteTopic();
 
   const onConfirmDelete = async () => {
