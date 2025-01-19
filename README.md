@@ -56,7 +56,7 @@ docker compose down
 
 ### 5. Start the React App
 
-The React app isn't dockerised, so you can just run it on your local machine.
+The React app isn't dockerised, so you can just run it locally on your machine.
 
 To start the Vite server, run this npm command:
 
@@ -64,7 +64,7 @@ To start the Vite server, run this npm command:
 npm run start:dev
 ```
 
-## Development Guide
+## Development
 
 ### Using VS Code
 
@@ -74,45 +74,12 @@ Ensure the ESlint and Prettier extensions are installed and enabled in your vsco
 
 Ensure you are using the workspace settings instead of your personal settings (workspace setting should override personal settings by default) to allow our pre-configured settings to be in use, including ESlint's auto-fixing on save and auto format using Prettier on save and paste.
 
-### File Structure and Naming Conventions
+### General Rules
 
-Use the following folder tree as a source of truth for how to organise your files in the `src` directory and what naming convention to use for certain files/folders depending on the context:
-
-```
-src
-├── moduleName
-│   ├── components
-│   │   └── ComponentName
-│   │       ├── subComponents
-│   │       │   └── SubComponentName.tsx
-│   │       ├── utils
-│   │       │   └── utilName.ts
-│   │       └── ComponentName.tsx
-│   │       └── ComponentName.module.css
-│   ├── hooks
-│   │   └── useHookName.ts
-│   ├── types
-│   │   └── TypeName.type.ts
-│   ├── pages
-│   │   └── PageName
-│   │       └── PageName.tsx
-│   └── utils
-│       └── utilName.ts
-```
-
-#### General Rules
-
-- You don't need to have all of these folders for each module, but will most likely end up having most if not all of them
 - If a particular file is getting too big, split out its logic using whatever organisation structure seems the simplest or most appropriate. Look for examples of existing structures in the code
-- If a piece of code or logic is truly generic, feel free to move it somewhere in the `common` module
+- If a piece of code or logic is truly generic, feel free to move it somewhere in the `common` folder
 - Try to keep each file exporting only one thing, so you know exactly whats coming out of that file just based on the name
 - Should use tailwind for all normal styling needs, but in the case where you must use vanilla css, use `.module.css` files
-
-#### The Common Module
-
-The `common` module is a bit different to the other modules, it may have folders that the other modules wouldn't have like `constants` for example.
-
-### Commenting
 
 Ideally the code itself should be used as the source of truth as much as possible, so if you decide to leave a comment somewhere make sure it says something the code doesn't. Something that can make your comments richer as well is to use the prefixes that come with the Better Comments extension, which can make your comments stand out more with highlighting. Consider using the following:
 
@@ -120,16 +87,22 @@ Ideally the code itself should be used as the source of truth as much as possibl
 
 TODOs and FIXMEs in particular can also be tracked using the TODO tree extension if you have that installed.
 
-## Vite Information
+### File Structure
+
+#### common
+
+#### root
+
+#### models
+
+## Vite
 
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-### Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+If you are developing a production application, we recommend updating the ESLint configuration to enable type aware lint rules:
 
 - Configure the top-level `parserOptions` property like this:
 

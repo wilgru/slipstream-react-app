@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
-import { pb } from "src/pocketbase/utils/pocketbaseConfig";
+import { pb } from "src/config/pocketbase";
 import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import type { Topic } from "../types/Topic.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";

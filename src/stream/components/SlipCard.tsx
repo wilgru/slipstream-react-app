@@ -2,9 +2,9 @@ import { Flag, PushPin } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import Delta from "quill-delta";
 import { useEffect, useRef, useState } from "react";
+import EditSlipModal from "src/common/components/EditSlipModal/EditSlipModal";
 import { cn } from "src/common/utils/cn";
-import EditSlipModal from "../EditSlipModal/EditSlipModal";
-import type { Slip } from "src/slips/types/Slip.type";
+import type { Slip } from "src/models/slip/types/Slip.type";
 
 type SlipCardProps = {
   slip: Slip;

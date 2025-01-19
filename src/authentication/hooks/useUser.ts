@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { pb } from "src/pocketbase/utils/pocketbaseConfig";
+import { pb } from "src/config/pocketbase";
 import { mapUser } from "../utils/mapUser";
 import type { User } from "../types/User.type";
 

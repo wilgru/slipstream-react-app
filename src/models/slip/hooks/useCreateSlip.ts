@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useAtomValue } from "jotai";
 import Delta from "quill-delta";
-import { generateId } from "src/pocketbase/utils/generateId";
+import { generateId } from "src/common/utils/generateId";
 import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import { useGetSlips } from "./useGetSlips";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";

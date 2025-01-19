@@ -10,11 +10,11 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import LoginPage from "src/authentication/pages/LoginPage/LoginPage.tsx";
-import JournalPage from "src/journals/pages/JournalPage";
-import StreamPage from "src/stream/pages/StreamPage";
+import JournalPage from "src/journals/JournalPage";
+import StreamPage from "src/stream/StreamPage";
 import "src/index.css";
 import SignUpPage from "./authentication/pages/SignUpPage/SignUpPage";
-import RootPage from "./root/pages/RootPage";
+import RootPage from "./root/RootPage";
 
 const queryClient = new QueryClient();
 

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useAtomValue } from "jotai";
-import { pb } from "src/pocketbase/utils/pocketbaseConfig";
+import { pb } from "src/config/pocketbase";
 import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { useGetSlips } from "./useGetSlips";

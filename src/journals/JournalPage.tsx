@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import { Button } from "src/common/components/Button/Button";
 import { customisationColours } from "src/common/constants/customisationColours";
 import { cn } from "src/common/utils/cn";
-import { EditJournalModal } from "../components/EditJournalModal";
-import { useJournal } from "../hooks/useJournal";
+import { useJournal } from "../models/journal/hooks/useJournal";
+import { EditJournalModal } from "./components/EditJournalModal";
 
 export default function JournalPage() {
   const { journalId } = useParams<{ journalId: string }>();

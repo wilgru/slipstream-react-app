@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { useSearchParams } from "react-router-dom";
-import { pb } from "src/pocketbase/utils/pocketbaseConfig";
+import { pb } from "src/config/pocketbase";
 import { mapSlip } from "src/slips/utils/mapSlip";
 import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import type { Slip } from "src/slips/types/Slip.type";

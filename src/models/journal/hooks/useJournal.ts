@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { pb } from "src/pocketbase/utils/pocketbaseConfig";
-import { mapSlip } from "src/slips/utils/mapSlip";
+import { pb } from "src/config/pocketbase";
+import { mapSlip } from "src/models/slip/utils/mapSlip";
 import type { Journal } from "../types/Journal.type";
 import type {
   QueryObserverResult,

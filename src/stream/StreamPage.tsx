@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useUser } from "src/authentication/hooks/useUser";
-import SlipCard from "src/slips/components/SlipCard/SlipCard";
-import { usePurgeEmptySlips } from "src/slips/hooks/useDeleteEmptySlips";
-import { useGetSlips } from "src/slips/hooks/useGetSlips";
-import { handleArrowLeftKeyDown } from "src/stream/pages/utils/handleArrowLeftKeyDown";
-import { handleArrowRightKeyDown } from "src/stream/pages/utils/handleArrowRightKeyDown";
-import { handleSpaceBarKeyDown } from "src/stream/pages/utils/handleSpaceBarKeyDown";
+import { usePurgeEmptySlips } from "src/models/slip/hooks/useDeleteEmptySlips";
+import { useGetSlips } from "src/models/slip/hooks/useGetSlips";
+import SlipCard from "src/stream/components/SlipCard";
+import { handleArrowLeftKeyDown } from "src/stream/utils/handleArrowLeftKeyDown";
+import { handleArrowRightKeyDown } from "src/stream/utils/handleArrowRightKeyDown";
+import { handleSpaceBarKeyDown } from "src/stream/utils/handleSpaceBarKeyDown";
 
 export default function StreamPage() {
   const navigate = useNavigate();
