@@ -14,7 +14,7 @@ type UpdateSlipProps = {
   updateSlipData: Slip;
 };
 
-type UseDeleteSlipResponse = {
+type UseUpdateSlipResponse = {
   updateSlip: UseMutateAsyncFunction<
     Slip | undefined,
     Error,
@@ -23,7 +23,7 @@ type UseDeleteSlipResponse = {
   >;
 };
 
-export const useUpdateSlip = (): UseDeleteSlipResponse => {
+export const useUpdateSlip = (): UseUpdateSlipResponse => {
   const queryClient = useQueryClient();
   const { user } = useUser();
   const { slips } = useGetSlips();

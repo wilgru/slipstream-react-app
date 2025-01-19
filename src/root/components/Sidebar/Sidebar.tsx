@@ -5,7 +5,7 @@ import { useLogin } from "src/authentication/hooks/useLogin";
 import { Button } from "src/common/components/Button/Button";
 import { Toggle } from "src/common/components/Toggle/Toggle";
 import { cn } from "src/common/utils/cn";
-import { useCreateSlip } from "src/slips/hooks/useCreateSlip";
+import { useCreateSlip } from "src/models/slip/hooks/useCreateSlip";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { NavItem } from "./NavItem";
 
@@ -65,7 +65,7 @@ export const Sidebar = () => {
 
       <div
         className={`${
-          expanded ? "flex-row" : "flex-col"
+          expanded ? "flex-row" : "flex-col-reverse"
         } flex gap-3 justify-around items-center`}
       >
         <Toggle

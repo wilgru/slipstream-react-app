@@ -10,11 +10,11 @@ import { useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
 import { Toggle } from "src/common/components/Toggle/Toggle";
-import { useDeleteSlip } from "src/slips/hooks/useDeleteSlip";
-import { useUpdateSlip } from "src/slips/hooks/useUpdateSlip";
+import { useDeleteSlip } from "src/models/slip/hooks/useDeleteSlip";
+import { useUpdateSlip } from "src/models/slip/hooks/useUpdateSlip";
 import { JournalMultiSelect } from "./JournalMultiSelect";
 import type { StringMap } from "quill";
-import type { Slip } from "src/slips/types/Slip.type";
+import type { Slip } from "src/models/slip/types/Slip.type";
 
 type EditSlipModalProps = {
   slip: Slip;

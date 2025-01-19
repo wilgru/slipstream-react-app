@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { Sidebar } from "../components/Sidebar/Sidebar";
+import { Sidebar } from "./components/Sidebar/Sidebar";
 
 export default function RootPage() {
   return (
@@ -7,7 +7,7 @@ export default function RootPage() {
       <Sidebar />
 
       {/* all the other elements */}
-      <div id="detail">
+      <div id="detail" className="w-full">
         <Outlet />
       </div>
     </div>

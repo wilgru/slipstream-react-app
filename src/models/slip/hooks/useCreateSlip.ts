@@ -6,7 +6,7 @@ import { generateId } from "src/common/utils/generateId";
 import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import { useGetSlips } from "./useGetSlips";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { Slip } from "src/slips/types/Slip.type";
+import type { Slip } from "src/models/slip/types/Slip.type";
 
 type UseCreateSlipResponse = {
   createSlip: UseMutateAsyncFunction<Slip | undefined, Error, void, unknown>;

@@ -1,6 +1,5 @@
 import type { Dayjs } from "dayjs";
 import type Delta from "quill-delta";
-import type { Category } from "src/categories/types/Category.type";
 import type { Topic } from "src/topics/types/Topic.type";
 
 export type Slip = {
@@ -11,7 +10,6 @@ export type Slip = {
   isPinned: boolean;
   isFlagged: boolean;
   topics: Topic[];
-  Category: Category | null;
   deleted: Dayjs | null;
   created: Dayjs;
   updated: Dayjs;

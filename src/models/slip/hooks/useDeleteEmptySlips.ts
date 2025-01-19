@@ -1,4 +1,4 @@
-import { isSlipContentEmpty } from "src/slips/utils/isSlipContentEmpty";
+import { isSlipContentEmpty } from "src/models/slip/utils/isSlipContentEmpty";
 import { useDeleteSlip } from "./useDeleteSlip";
 import { useGetSlips } from "./useGetSlips";
 
