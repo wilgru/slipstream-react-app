@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { SetURLSearchParams } from "react-router-dom";
-import type { Slip } from "src/slips/types/Slip.type";
+import type { Slip } from "src/models/slip/types/Slip.type";
 
 export const handleArrowLeftKeyDown = (
   setFocusedSlipId: Dispatch<SetStateAction<string | null>>,

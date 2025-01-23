@@ -6,7 +6,7 @@ import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { mapTopic } from "../utils/mapTopic";
 import type { Topic } from "../types/Topic.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { Slip } from "src/slips/types/Slip.type";
+import type { Slip } from "src/models/slip/types/Slip.type";
 
 type UpdateTopicProps = {
   topicId: string;

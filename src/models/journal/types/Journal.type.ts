@@ -1,4 +1,4 @@
-import type { Slip } from "src/slips/types/Slip.type";
+import type { Slip } from "src/models/slip/types/Slip.type";
 
 export type Journal = {
   id: string;

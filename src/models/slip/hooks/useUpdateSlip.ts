@@ -36,6 +36,7 @@ export const useUpdateSlip = (): UseUpdateSlipResponse => {
 
     let updatedSlip;
     if (!slipToUpdate) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { id, ...slipData } = updateSlipData;
 
       // if slip is a draft then its not actually in the db, so persist it
