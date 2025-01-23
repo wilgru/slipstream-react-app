@@ -61,10 +61,12 @@ export default function JournalPage() {
           </div>
         </div>
 
-        <h3 className="text-stone-500">{journal.slips?.length} notes</h3>
+        <h3 className="text-stone-500">
+          1 section, {journal.slips?.length} notes
+        </h3>
       </div>
 
-      <div className="p-4 mb-4 mx-4 border min-h-full border-stone-300 rounded-lg flex flex-col gap-7 bg-white shadow-light">
+      <div className="p-4 mb-4 mx-4 border min-h-full border-stone-300 rounded-lg flex flex-col gap-5 bg-white shadow-light">
         {sectionedSlips.noTitles.map((slip) => (
           <div key={slip.id}>
             <h1
@@ -75,6 +77,10 @@ export default function JournalPage() {
 
             <p className="text-sm">
               {slip.content.reduce((acc, op) => acc + op.insert, "")}
+            </p>
+
+            <p className={"text-xs text-stone-500"}>
+              {slip.created.format("ddd D MMMM YYYY")}
             </p>
           </div>
         ))}
@@ -98,6 +104,10 @@ export default function JournalPage() {
 
             <p className="text-sm">
               {slip.content.reduce((acc, op) => acc + op.insert, "")}
+            </p>
+
+            <p className={"text-xs text-stone-500"}>
+              {slip.created.format("ddd D MMMM YYYY")}
             </p>
           </div>
         ))}
