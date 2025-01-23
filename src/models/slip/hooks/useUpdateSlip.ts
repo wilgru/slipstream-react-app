@@ -1,8 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
 import { useUser } from "src/authentication/hooks/useUser";
 import { pb } from "src/config/pocketbase";
-import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { mapSlip } from "../utils/mapSlip";
 import { useGetSlips } from "./useGetSlips";
@@ -29,27 +27,21 @@ export const useUpdateSlip = (): UseUpdateSlipResponse => {
   const { slips } = useGetSlips();
   const { refetchTopics } = useGetTopics();
 
-  const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
-
   const mutationFn = async ({
     slipId,
     updateSlipData,
   }: UpdateSlipProps): Promise<Slip | undefined> => {
     const slipToUpdate = slips.find((slip) => slip.id === slipId);
-
-    if (!slipToUpdate) {
-      return;
-    }
-
     const mappedTopics = updateSlipData.topics.map((topic) => topic.id);
 
     let updatedSlip;
+    if (!slipToUpdate) {
+      const { id, ...slipData } = updateSlipData;
 
-    // if slip is a draft then its not actually in the db, so persist it
-    if (slipToUpdate.isDraft) {
+      // if slip is a draft then its not actually in the db, so persist it
       updatedSlip = await pb.collection("slips").create(
         {
-          ...updateSlipData,
+          ...slipData,
           topics: mappedTopics,
           user: user?.id,
         },
@@ -73,38 +65,35 @@ export const useUpdateSlip = (): UseUpdateSlipResponse => {
   };
 
   const onSuccess = (data: Slip | undefined) => {
-    queryClient.setQueryData(
-      ["slips.list", selectedTopicIds],
-      (currentSlips: Slip[]) => {
-        if (!data) {
-          return;
-        }
-
-        let hasNewSlipPinnedChanged = false;
-
-        const mappedSlips = currentSlips.map((currentSlip) => {
-          if (currentSlip.id === data.id) {
-            hasNewSlipPinnedChanged = currentSlip.isPinned !== data.isPinned;
-
-            return data;
-          }
-
-          return currentSlip;
-        });
-
-        if (!hasNewSlipPinnedChanged) {
-          return mappedSlips;
-        }
-
-        return mappedSlips.sort((a, b) => {
-          if (a.isPinned !== b.isPinned) {
-            return a.isPinned ? -1 : 1;
-          }
-
-          return b.created.isBefore(a.created) ? 1 : -1;
-        });
+    queryClient.setQueryData(["slips.list"], (currentSlips: Slip[]) => {
+      if (!data) {
+        return;
       }
-    );
+
+      let hasNewSlipPinnedChanged = false;
+
+      const mappedSlips = currentSlips.map((currentSlip) => {
+        if (currentSlip.id === data.id) {
+          hasNewSlipPinnedChanged = currentSlip.isPinned !== data.isPinned;
+
+          return data;
+        }
+
+        return currentSlip;
+      });
+
+      if (!hasNewSlipPinnedChanged) {
+        return mappedSlips;
+      }
+
+      return mappedSlips.sort((a, b) => {
+        if (a.isPinned !== b.isPinned) {
+          return a.isPinned ? -1 : 1;
+        }
+
+        return b.created.isBefore(a.created) ? 1 : -1;
+      });
+    });
   };
 
   // TODO: consider time caching for better performance

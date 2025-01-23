@@ -6,6 +6,8 @@ import {
 } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
+import dayjs from "dayjs";
+import Delta from "quill-delta";
 import { useState } from "react";
 import { Button } from "src/common/components/Button/Button";
 import { QuillEditor } from "src/common/components/QuillEditor/QuillEditor";
@@ -17,7 +19,8 @@ import type { StringMap } from "quill";
 import type { Slip } from "src/models/slip/types/Slip.type";
 
 type EditSlipModalProps = {
-  slip: Slip;
+  slip?: Slip;
+  onSave?: () => void;
 };
 
 //TODO: move to types folder under common module
@@ -28,16 +31,32 @@ export type AnyKeyValueOfSlip = {
 
 const QUILL_TOOLBAR_ID = "toolbar";
 
-const EditSlipModal = ({ slip }: EditSlipModalProps) => {
+const getInitialSlip = (slip: Slip | undefined): Slip => {
+  return {
+    id: slip?.id || "",
+    title: slip?.title || "",
+    content: slip?.content || new Delta(),
+    topics: slip?.topics || [],
+    isFlagged: slip?.isFlagged || false,
+    isPinned: slip?.isPinned || false,
+    created: slip?.created || dayjs(),
+    updated: slip?.updated || dayjs(),
+    deleted: slip?.deleted || null,
+    isDraft: false,
+  };
+};
+
+const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
   const { updateSlip } = useUpdateSlip();
   const { deleteSlip } = useDeleteSlip();
 
-  const [editableSlip, setEditableSlip] = useState<Slip>(slip);
+  const initialSlip = getInitialSlip(slip);
+  const [editedSlip, setEditedSlip] = useState<Slip>(initialSlip);
   const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
 
   const onDeleteSlip = async () => {
-    deleteSlip({ slipId: slip.id });
+    deleteSlip({ slipId: initialSlip.id });
   };
 
   return (
@@ -48,12 +67,12 @@ const EditSlipModal = ({ slip }: EditSlipModalProps) => {
           <div className="flex flex-row items-start">
             <div className="flex-grow flex flex-col">
               <textarea
-                value={editableSlip.title ?? ""}
+                value={editedSlip.title ?? ""}
                 placeholder="No Title"
                 onChange={(e) =>
-                  setEditableSlip((currentEditableSlip) => {
+                  setEditedSlip((currentEditedSlip) => {
                     const newSlipData = {
-                      ...currentEditableSlip,
+                      ...currentEditedSlip,
                       title: e.target.value,
                     };
 
@@ -71,7 +90,7 @@ const EditSlipModal = ({ slip }: EditSlipModalProps) => {
                     )
                   }
                 >
-                  {editableSlip.created.format("ddd D MMMM YYYY, hh:mm a")}
+                  {editedSlip.created.format("ddd D MMMM YYYY, hh:mm a")}
                 </p>
                 <p
                   className={`${
@@ -79,7 +98,7 @@ const EditSlipModal = ({ slip }: EditSlipModalProps) => {
                   } text-stone-500 text-xs italic`}
                 >
                   {"(Last edited " +
-                    editableSlip.updated.format("ddd D MMMM YYYY, hh:mm a") +
+                    editedSlip.updated.format("ddd D MMMM YYYY, hh:mm a") +
                     ")"}
                 </p>
               </div>
@@ -88,12 +107,12 @@ const EditSlipModal = ({ slip }: EditSlipModalProps) => {
             <div className=" flex flex-row gap-1">
               <Toggle
                 colour="red"
-                isToggled={editableSlip.isPinned}
+                isToggled={editedSlip.isPinned}
                 onClick={() =>
-                  setEditableSlip((currentEditableSlip) => {
+                  setEditedSlip((currentEditedSlip) => {
                     const newSlipData = {
-                      ...currentEditableSlip,
-                      isPinned: !editableSlip.isPinned,
+                      ...currentEditedSlip,
+                      isPinned: !editedSlip.isPinned,
                     };
 
                     return newSlipData;
@@ -103,12 +122,12 @@ const EditSlipModal = ({ slip }: EditSlipModalProps) => {
               />
 
               <Toggle
-                isToggled={editableSlip.isFlagged}
+                isToggled={editedSlip.isFlagged}
                 onClick={() =>
-                  setEditableSlip((currentEditableSlip) => {
+                  setEditedSlip((currentEditedSlip) => {
                     const newSlipData = {
-                      ...currentEditableSlip,
-                      isFlagged: !editableSlip.isFlagged,
+                      ...currentEditedSlip,
+                      isFlagged: !editedSlip.isFlagged,
                     };
 
                     return newSlipData;
@@ -121,11 +140,11 @@ const EditSlipModal = ({ slip }: EditSlipModalProps) => {
 
           <div className="flex flex-row justify-between w-full border-t border-stone-300 pt-2">
             <JournalMultiSelect
-              initialSlip={slip}
+              initialSlip={initialSlip}
               onChange={(topics) =>
-                setEditableSlip((currentEditableSlip) => {
+                setEditedSlip((currentEditedSlip) => {
                   const newSlipData = {
-                    ...currentEditableSlip,
+                    ...currentEditedSlip,
                     topics,
                   };
 
@@ -180,11 +199,11 @@ const EditSlipModal = ({ slip }: EditSlipModalProps) => {
 
         <QuillEditor
           toolbarId={QUILL_TOOLBAR_ID}
-          initialValue={slip.content}
+          initialValue={initialSlip.content}
           onChange={(delta) =>
-            setEditableSlip((currentEditableSlip) => {
+            setEditedSlip((currentEditedSlip) => {
               const newSlipData = {
-                ...currentEditableSlip,
+                ...currentEditedSlip,
                 content: delta,
               };
 
@@ -217,9 +236,13 @@ const EditSlipModal = ({ slip }: EditSlipModalProps) => {
               <Button
                 variant="block"
                 size="sm"
-                onClick={() =>
-                  updateSlip({ slipId: slip.id, updateSlipData: editableSlip })
-                }
+                onClick={() => {
+                  updateSlip({
+                    slipId: editedSlip.id,
+                    updateSlipData: editedSlip,
+                  });
+                  onSave && onSave();
+                }}
               >
                 Save
               </Button>

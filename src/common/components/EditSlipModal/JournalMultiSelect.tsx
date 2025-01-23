@@ -7,7 +7,7 @@ import { cn } from "src/common/utils/cn";
 import { useCreateTopic } from "src/topics/hooks/useCreateTopic";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import type { Colour } from "src/common/types/Colour";
-import type { Slip } from "src/slips/types/Slip.type";
+import type { Slip } from "src/models/slip/types/Slip.type";
 import type { Topic } from "src/topics/types/Topic.type";
 
 type JournalMultiSelectProps = {

@@ -1,8 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useAtomValue } from "jotai";
 import { pb } from "src/config/pocketbase";
-import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { useGetSlips } from "./useGetSlips";
 import type { Slip } from "../types/Slip.type";
@@ -26,8 +24,6 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
   const queryClient = useQueryClient();
   const { slips } = useGetSlips();
   const { refetchTopics } = useGetTopics();
-
-  const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
 
   const mutationFn = async ({
     slipId,
@@ -60,12 +56,10 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
   };
 
   const onSuccess = (data: string | undefined) => {
-    queryClient.setQueryData(
-      ["slips.list", selectedTopicIds],
-      (currentSlips: Slip[]) =>
-        data
-          ? currentSlips.filter((currentSlip) => currentSlip.id !== data)
-          : currentSlips
+    queryClient.setQueryData(["slips.list"], (currentSlips: Slip[]) =>
+      data
+        ? currentSlips.filter((currentSlip) => currentSlip.id !== data)
+        : currentSlips
     );
   };
 

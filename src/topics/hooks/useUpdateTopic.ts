@@ -82,7 +82,7 @@ export const useUpdateTopic = (): UseUpdateTopicResponse => {
 
   // TODO: consider time caching for better performance
   const { mutateAsync } = useMutation({
-    mutationKey: ["topics.update"],
+    mutationKey: ["journals.update"],
     mutationFn,
     onSuccess,
     // staleTime: 2 * 60 * 1000,

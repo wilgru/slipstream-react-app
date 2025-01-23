@@ -1,31 +1,22 @@
+import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLogin } from "src/authentication/hooks/useLogin";
 import { Button } from "src/common/components/Button/Button";
+import EditSlipModal from "src/common/components/EditSlipModal/EditSlipModal";
 import { Toggle } from "src/common/components/Toggle/Toggle";
 import { cn } from "src/common/utils/cn";
-import { useCreateSlip } from "src/models/slip/hooks/useCreateSlip";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { NavItem } from "./NavItem";
 
 export const Sidebar = () => {
   const { logout } = useLogin();
   const navigate = useNavigate();
-  const { createSlip } = useCreateSlip();
   const { topics } = useGetTopics();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [showEditSlipModal, setShowEditSlipModal] = useState(false);
   const [expanded, setExpanded] = useState(false);
-
-  const onClickNewSlipButton = async (): Promise<void> => {
-    const createdSlip = await createSlip();
-
-    if (createdSlip) {
-      searchParams.set("openSlip", createdSlip.id);
-      setSearchParams(searchParams);
-    }
-  };
 
   const onClickShowSidebarToggle = (): void => {
     setExpanded((currentShowSidebar) => !currentShowSidebar);
@@ -41,9 +32,16 @@ export const Sidebar = () => {
       <div>
         <section className="p-2 flex flex-col gap-1 text-black">
           <NavItem
-            iconName="Rows"
+            iconName="chatCircle"
             title={"Stream"}
             to={`/stream/`}
+            expanded={expanded}
+          ></NavItem>
+
+          <NavItem
+            iconName="flag"
+            title={"Flagged"}
+            to={`/flagged/`}
             expanded={expanded}
           ></NavItem>
         </section>
@@ -100,12 +98,25 @@ export const Sidebar = () => {
           </DropdownMenu.Portal>
         </DropdownMenu.Root>
 
-        <Button
-          variant="ghost"
-          iconName="plus"
-          colour={"orange-500"}
-          onClick={onClickNewSlipButton}
-        ></Button>
+        <Dialog.Root>
+          <Dialog.Trigger asChild>
+            <Button
+              variant="ghost"
+              iconName="plus"
+              colour={"orange-500"}
+              onClick={() => {
+                setShowEditSlipModal(true);
+              }}
+            />
+          </Dialog.Trigger>
+          {showEditSlipModal && (
+            <EditSlipModal
+              onSave={() => {
+                setShowEditSlipModal(false);
+              }}
+            />
+          )}
+        </Dialog.Root>
       </div>
     </aside>
   );

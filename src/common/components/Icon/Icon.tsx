@@ -8,7 +8,7 @@ import {
   PushPin,
   Trash,
   DotsThree,
-  Rows,
+  ChatCircle,
   Book,
   ArrowsDownUp,
 } from "@phosphor-icons/react";
@@ -57,8 +57,8 @@ const Icon = ({
       return <DotsThree {...iconProps} weight="bold" />;
     case "Book":
       return <Book {...iconProps} />;
-    case "Rows":
-      return <Rows {...iconProps} />;
+    case "chatCircle":
+      return <ChatCircle {...iconProps} />;
     case "arrowsDownUp":
       return <ArrowsDownUp {...iconProps} />;
     default:

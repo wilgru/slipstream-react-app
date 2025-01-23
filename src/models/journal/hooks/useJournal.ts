@@ -34,7 +34,7 @@ export const useJournal = (journalId: string): UseJournalResponse => {
 
   // TODO: consider time caching for better performance
   const { data, refetch } = useQuery({
-    queryKey: ["journal.get", journalId],
+    queryKey: ["journals.get", journalId],
     queryFn,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,

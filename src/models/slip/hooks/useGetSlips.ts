@@ -52,7 +52,7 @@ export const useGetSlips = (): UseGetSlipsResponse => {
 
   // TODO: consider time caching for better performance
   const { data } = useQuery({
-    queryKey: ["slips.list", selectedTopicIds],
+    queryKey: ["slips.list"],
     queryFn,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,

@@ -1,9 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useAtomValue } from "jotai";
 import Delta from "quill-delta";
 import { generateId } from "src/common/utils/generateId";
-import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import { useGetSlips } from "./useGetSlips";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 import type { Slip } from "src/models/slip/types/Slip.type";
@@ -15,8 +13,6 @@ type UseCreateSlipResponse = {
 export const useCreateSlip = (): UseCreateSlipResponse => {
   const queryClient = useQueryClient();
   const { slips } = useGetSlips();
-
-  const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
 
   const mutationFn = async (): Promise<Slip | undefined> => {
     const existingDraftSlip = slips.find((slip) => slip.isDraft);
@@ -47,10 +43,10 @@ export const useCreateSlip = (): UseCreateSlipResponse => {
       return;
     }
 
-    queryClient.setQueryData(
-      ["slips.list", selectedTopicIds],
-      (currentSlips: Slip[]) => [...currentSlips, data]
-    );
+    queryClient.setQueryData(["slips.list"], (currentSlips: Slip[]) => [
+      ...currentSlips,
+      data,
+    ]);
   };
 
   // TODO: consider time caching for better performance
