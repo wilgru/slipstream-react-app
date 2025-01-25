@@ -12,7 +12,9 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as StreamIndexImport } from './routes/stream/index'
-import { Route as JournalsJournalIdIndexImport } from './routes/journals/$journalId/index'
+import { Route as FlaggedIndexImport } from './routes/flagged/index'
+import { Route as TagsTagIdIndexImport } from './routes/tags.$tagId/index'
+import { Route as JournalsJournalIdIndexImport } from './routes/journals.$journalId/index'
 import { Route as authenticationSignupIndexImport } from './routes/(authentication)/signup/index'
 import { Route as authenticationLoginIndexImport } from './routes/(authentication)/login/index'
 
@@ -21,6 +23,18 @@ import { Route as authenticationLoginIndexImport } from './routes/(authenticatio
 const StreamIndexRoute = StreamIndexImport.update({
   id: '/stream/',
   path: '/stream/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const FlaggedIndexRoute = FlaggedIndexImport.update({
+  id: '/flagged/',
+  path: '/flagged/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TagsTagIdIndexRoute = TagsTagIdIndexImport.update({
+  id: '/tags/$tagId/',
+  path: '/tags/$tagId/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,6 +60,13 @@ const authenticationLoginIndexRoute = authenticationLoginIndexImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/flagged/': {
+      id: '/flagged/'
+      path: '/flagged'
+      fullPath: '/flagged'
+      preLoaderRoute: typeof FlaggedIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/stream/': {
       id: '/stream/'
       path: '/stream'
@@ -74,59 +95,90 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JournalsJournalIdIndexImport
       parentRoute: typeof rootRoute
     }
+    '/tags/$tagId/': {
+      id: '/tags/$tagId/'
+      path: '/tags/$tagId'
+      fullPath: '/tags/$tagId'
+      preLoaderRoute: typeof TagsTagIdIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
+  '/flagged': typeof FlaggedIndexRoute
   '/stream': typeof StreamIndexRoute
   '/login': typeof authenticationLoginIndexRoute
   '/signup': typeof authenticationSignupIndexRoute
   '/journals/$journalId': typeof JournalsJournalIdIndexRoute
+  '/tags/$tagId': typeof TagsTagIdIndexRoute
 }
 
 export interface FileRoutesByTo {
+  '/flagged': typeof FlaggedIndexRoute
   '/stream': typeof StreamIndexRoute
   '/login': typeof authenticationLoginIndexRoute
   '/signup': typeof authenticationSignupIndexRoute
   '/journals/$journalId': typeof JournalsJournalIdIndexRoute
+  '/tags/$tagId': typeof TagsTagIdIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/flagged/': typeof FlaggedIndexRoute
   '/stream/': typeof StreamIndexRoute
   '/(authentication)/login/': typeof authenticationLoginIndexRoute
   '/(authentication)/signup/': typeof authenticationSignupIndexRoute
   '/journals/$journalId/': typeof JournalsJournalIdIndexRoute
+  '/tags/$tagId/': typeof TagsTagIdIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/stream' | '/login' | '/signup' | '/journals/$journalId'
+  fullPaths:
+    | '/flagged'
+    | '/stream'
+    | '/login'
+    | '/signup'
+    | '/journals/$journalId'
+    | '/tags/$tagId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/stream' | '/login' | '/signup' | '/journals/$journalId'
+  to:
+    | '/flagged'
+    | '/stream'
+    | '/login'
+    | '/signup'
+    | '/journals/$journalId'
+    | '/tags/$tagId'
   id:
     | '__root__'
+    | '/flagged/'
     | '/stream/'
     | '/(authentication)/login/'
     | '/(authentication)/signup/'
     | '/journals/$journalId/'
+    | '/tags/$tagId/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
+  FlaggedIndexRoute: typeof FlaggedIndexRoute
   StreamIndexRoute: typeof StreamIndexRoute
   authenticationLoginIndexRoute: typeof authenticationLoginIndexRoute
   authenticationSignupIndexRoute: typeof authenticationSignupIndexRoute
   JournalsJournalIdIndexRoute: typeof JournalsJournalIdIndexRoute
+  TagsTagIdIndexRoute: typeof TagsTagIdIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  FlaggedIndexRoute: FlaggedIndexRoute,
   StreamIndexRoute: StreamIndexRoute,
   authenticationLoginIndexRoute: authenticationLoginIndexRoute,
   authenticationSignupIndexRoute: authenticationSignupIndexRoute,
   JournalsJournalIdIndexRoute: JournalsJournalIdIndexRoute,
+  TagsTagIdIndexRoute: TagsTagIdIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -139,11 +191,16 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/flagged/",
         "/stream/",
         "/(authentication)/login/",
         "/(authentication)/signup/",
-        "/journals/$journalId/"
+        "/journals/$journalId/",
+        "/tags/$tagId/"
       ]
+    },
+    "/flagged/": {
+      "filePath": "flagged/index.tsx"
     },
     "/stream/": {
       "filePath": "stream/index.tsx"
@@ -155,7 +212,10 @@ export const routeTree = rootRoute
       "filePath": "(authentication)/signup/index.tsx"
     },
     "/journals/$journalId/": {
-      "filePath": "journals/$journalId/index.tsx"
+      "filePath": "journals.$journalId/index.tsx"
+    },
+    "/tags/$tagId/": {
+      "filePath": "tags.$tagId/index.tsx"
     }
   }
 }

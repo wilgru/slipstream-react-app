@@ -1,44 +1,44 @@
-import * as Dialog from "@radix-ui/react-dialog";
-import { createFileRoute } from "@tanstack/react-router";
-import { Button } from "src/common/components/Button/Button";
-import { customisationColours } from "src/common/constants/customisationColours";
-import { cn } from "src/common/utils/cn";
-import { useJournal } from "src/models/journal/hooks/useJournal";
-import { EditJournalModal } from "./-components/EditJournalModal";
-import type { Slip } from "src/models/slip/types/Slip.type";
+import * as Dialog from '@radix-ui/react-dialog'
+import { createFileRoute } from '@tanstack/react-router'
+import { Button } from 'src/common/components/Button/Button'
+import { customisationColours } from 'src/common/constants/customisationColours'
+import { cn } from 'src/common/utils/cn'
+import { useJournal } from 'src/models/journal/hooks/useJournal'
+import { EditJournalModal } from './-components/EditJournalModal'
+import type { Slip } from 'src/models/slip/types/Slip.type'
 
-export const Route = createFileRoute("/journals/$journalId/")({
+export const Route = createFileRoute('/journals/$journalId/')({
   // loader: ({ params }) => fetchJournal(params.journalId),
   component: JournalComponent,
-});
+})
 
 export default function JournalComponent() {
-  const { journalId } = Route.useParams();
-  const { journal } = useJournal(journalId ?? "");
+  const { journalId } = Route.useParams()
+  const { journal } = useJournal(journalId ?? '')
 
   if (!journal) {
-    return null;
+    return null
   }
 
   const customisationColour = customisationColours.find(
-    (colour) => colour.name === journal.colour
-  );
+    (colour) => colour.name === journal.colour,
+  )
 
   const sectionedSlips: {
-    noTitles: Slip[];
-    withTitles: Slip[];
+    noTitles: Slip[]
+    withTitles: Slip[]
   } = {
     noTitles: [],
     withTitles: [],
-  };
+  }
 
   journal.slips?.forEach((slip) => {
     if (slip.title) {
-      sectionedSlips.withTitles.push(slip);
+      sectionedSlips.withTitles.push(slip)
     } else {
-      sectionedSlips.noTitles.push(slip);
+      sectionedSlips.noTitles.push(slip)
     }
-  });
+  })
 
   return (
     <div className="h-full w-full overflow-y-scroll z-10">
@@ -47,7 +47,7 @@ export default function JournalComponent() {
           <h1
             className={cn(
               customisationColour?.textClass,
-              "font-title text-5xl"
+              'font-title text-5xl',
             )}
           >
             {journal.name}
@@ -80,11 +80,11 @@ export default function JournalComponent() {
             </h1>
 
             <p className="text-sm">
-              {slip.content.reduce((acc, op) => acc + op.insert, "")}
+              {slip.content.reduce((acc, op) => acc + op.insert, '')}
             </p>
 
-            <p className={"text-xs text-stone-500"}>
-              {slip.created.format("ddd D MMMM YYYY")}
+            <p className={'text-xs text-stone-500'}>
+              {slip.created.format('ddd D MMMM YYYY')}
             </p>
           </div>
         ))}
@@ -107,15 +107,15 @@ export default function JournalComponent() {
             </h1>
 
             <p className="text-sm">
-              {slip.content.reduce((acc, op) => acc + op.insert, "")}
+              {slip.content.reduce((acc, op) => acc + op.insert, '')}
             </p>
 
-            <p className={"text-xs text-stone-500"}>
-              {slip.created.format("ddd D MMMM YYYY")}
+            <p className={'text-xs text-stone-500'}>
+              {slip.created.format('ddd D MMMM YYYY')}
             </p>
           </div>
         ))}
       </div>
     </div>
-  );
+  )
 }

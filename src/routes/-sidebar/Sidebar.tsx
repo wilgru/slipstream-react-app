@@ -9,7 +9,7 @@ import { Toggle } from "src/common/components/Toggle/Toggle";
 import { cn } from "src/common/utils/cn";
 import { useLogin } from "src/models/user/hooks/useLogin";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
-import { NavItem } from "./NavItem";
+import { NavItem } from "./-components/NavItem";
 
 export const Sidebar = () => {
   const { logout } = useLogin();
