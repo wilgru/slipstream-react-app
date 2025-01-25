@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
-import { useSearchParams } from "react-router-dom";
+
 import { pb } from "src/config/pocketbase";
 import { mapSlip } from "src/models/slip/utils/mapSlip";
 import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
@@ -9,7 +9,6 @@ import type { Slip } from "src/models/slip/types/Slip.type";
 type UseGetSlipsResponse = { slips: Slip[] };
 
 export const useGetSlips = (): UseGetSlipsResponse => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
 
   const queryFn = async (): Promise<Slip[]> => {
@@ -36,16 +35,6 @@ export const useGetSlips = (): UseGetSlipsResponse => {
         mappedSlip.topics.some((topic) => topic.id === topicId)
       )
     );
-
-    // TODO: also remove focused slip somehow
-    // TODO: this logic may need to be moved elsewhere after query hooks are used - maybe in a useEffect in slipEditor or SlipGallery?
-    const openSlipId = searchParams.get("openSlip");
-    const foundSlip = slipsWithAllTopics.some((slip) => slip.id === openSlipId);
-
-    if (!foundSlip) {
-      searchParams.delete("openSlip");
-      setSearchParams(searchParams);
-    }
 
     return slipsWithAllTopics;
   };

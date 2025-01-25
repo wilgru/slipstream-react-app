@@ -1,8 +1,8 @@
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSignUp } from "src/authentication/hooks/useSignUp";
-import { useUser } from "src/authentication/hooks/useUser";
 import { Button } from "src/common/components/Button/Button";
+import { useSignUp } from "src/models/user/hooks/useSignUp";
+import { useUser } from "src/models/user/hooks/useUser";
 
 type FormData = {
   name: string;
@@ -11,7 +11,11 @@ type FormData = {
   passwordConfirm: string;
 };
 
-const SignUpPage = (): JSX.Element => {
+export const Route = createFileRoute("/(authentication)/signup/")({
+  component: SignUpIndexComponent,
+});
+
+function SignUpIndexComponent(): JSX.Element {
   const { signUp, signUpLoading, signUpError } = useSignUp();
   const { user } = useUser();
   const navigate = useNavigate();
@@ -35,11 +39,11 @@ const SignUpPage = (): JSX.Element => {
     await signUp(formData);
 
     // redirect on successful sign up
-    navigate("/stream/");
+    navigate({ to: "/stream" });
   };
 
   useEffect(() => {
-    user && navigate("/stream/");
+    user && navigate({ to: "/stream" });
   }, [navigate, user]);
 
   return (
@@ -130,17 +134,7 @@ const SignUpPage = (): JSX.Element => {
           </div>
 
           <div>
-            <Button
-              disabled={signUpLoading}
-              colour={{
-                border: "black",
-                background: "orange-500",
-                text: "black",
-              }}
-              type="submit"
-              width="full"
-              size="large"
-            >
+            <Button disabled={signUpLoading} type="submit">
               {signUpLoading ? "Loading..." : "Sign up"}
             </Button>
           </div>
@@ -149,10 +143,10 @@ const SignUpPage = (): JSX.Element => {
         <div className="flex justify-center items-baseline">
           <p className="text-sm text-black">Already have an account?&nbsp;</p>
           <Button
-            styleType="link"
-            size="small"
+            variant="link"
+            size="sm"
             onClick={() => {
-              navigate("/login");
+              navigate({ to: "/login" });
             }}
           >
             Log in
@@ -161,6 +155,4 @@ const SignUpPage = (): JSX.Element => {
       </div>
     </div>
   );
-};
-
-export default SignUpPage;
+}

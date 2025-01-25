@@ -1,4 +1,4 @@
-import type { User } from "../types/User.type";
+import type { User } from "../../../models/user/types/User.type";
 import type { AuthModel } from "pocketbase";
 
 export const mapUser = (authModel: NonNullable<AuthModel>): User => {

@@ -1,15 +1,19 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { useParams } from "react-router-dom";
+import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "src/common/components/Button/Button";
 import { customisationColours } from "src/common/constants/customisationColours";
 import { cn } from "src/common/utils/cn";
-import { useJournal } from "../models/journal/hooks/useJournal";
-import { EditJournalModal } from "./components/EditJournalModal";
+import { useJournal } from "src/models/journal/hooks/useJournal";
+import { EditJournalModal } from "./-components/EditJournalModal";
 import type { Slip } from "src/models/slip/types/Slip.type";
 
-export default function JournalPage() {
-  const { journalId } = useParams<{ journalId: string }>();
+export const Route = createFileRoute("/journals/$journalId/")({
+  // loader: ({ params }) => fetchJournal(params.journalId),
+  component: JournalComponent,
+});
 
+export default function JournalComponent() {
+  const { journalId } = Route.useParams();
   const { journal } = useJournal(journalId ?? "");
 
   if (!journal) {

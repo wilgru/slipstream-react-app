@@ -1,12 +1,13 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useLogin } from "src/authentication/hooks/useLogin";
+
 import { Button } from "src/common/components/Button/Button";
 import EditSlipModal from "src/common/components/EditSlipModal/EditSlipModal";
 import { Toggle } from "src/common/components/Toggle/Toggle";
 import { cn } from "src/common/utils/cn";
+import { useLogin } from "src/models/user/hooks/useLogin";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { NavItem } from "./NavItem";
 
@@ -89,7 +90,7 @@ export const Sidebar = () => {
                 className="leading-none text-sm p-1 data-[highlighted]:bg-orange-100 data-[highlighted]:text-orange-500 outline-none rounded-sm cursor-pointer"
                 onClick={() => {
                   logout();
-                  navigate("/login");
+                  navigate({ to: "/login" });
                 }}
               >
                 Log out
