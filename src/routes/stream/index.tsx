@@ -1,21 +1,25 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useGetSlips } from "src/models/slip/hooks/useGetSlips";
-import { useUser } from "src/models/user/hooks/useUser";
+import isAuthenticated from "src/models/user/utils/isAuthenticated";
 import SlipCard from "src/routes/stream/-components/SlipCard";
 
 export const Route = createFileRoute("/stream/")({
   component: StreamIndexComponent,
+  beforeLoad: async ({ location }) => {
+    if (!isAuthenticated()) {
+      throw redirect({
+        to: "/login",
+        search: {
+          // (Do not use `router.state.resolvedLocation` as it can potentially lag behind the actual current location)
+          redirect: location.href,
+        },
+      });
+    }
+  },
 });
 
 function StreamIndexComponent() {
-  const navigate = useNavigate();
-  const { user } = useUser();
   const { slips } = useGetSlips();
-
-  useEffect(() => {
-    !user && navigate({ to: "/login" });
-  }, [user, navigate]);
 
   return (
     <div className="flex flex-col h-full gap-2 p-6 w-full overflow-y-auto overflow-x-hidden">

@@ -5,8 +5,8 @@ import type { User } from "../types/User.type";
 
 export const useUser = () => {
   const queryFn = async (): Promise<User | null> => {
-    if (pb.authStore?.model) {
-      return mapUser(pb.authStore.model);
+    if (pb.authStore?.record) {
+      return mapUser(pb.authStore.record);
     }
 
     return null;
