@@ -1,8 +1,8 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
-import { Button } from "src/common/components/Button/Button";
-import { ColourPicker } from "src/common/components/ColourPicker/ColourPicker";
-import { Input } from "src/common/components/Input/Input";
+import { Button } from "src/lib/components/Button/Button";
+import { ColourPicker } from "src/lib/components/ColourPicker/ColourPicker";
+import { Input } from "src/lib/components/Input/Input";
 import { useUpdateTopic } from "src/topics/hooks/useUpdateTopic";
 import type { Topic } from "src/topics/types/Topic.type";
 

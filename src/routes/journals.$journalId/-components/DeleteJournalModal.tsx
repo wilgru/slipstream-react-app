@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { Button } from "src/common/components/Button/Button";
+import { Button } from "src/lib/components/Button/Button";
 import { useDeleteTopic } from "src/topics/hooks/useDeleteTopic";
 import type { Topic } from "src/topics/types/Topic.type";
 

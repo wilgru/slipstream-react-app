@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { generateId } from "src/common/utils/generateId";
-import { pb } from "src/config/pocketbase";
-import { useUser } from "src/models/user/hooks/useUser";
+import { generateId } from "src/lib/utils/generateId";
+import { pb } from "src/lib/pocketbase/pocketbase";
+import { useUser } from "src/lib/user/hooks/useUser";
 import { mapTopic } from "../utils/mapTopic";
 import type { Topic } from "../types/Topic.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";

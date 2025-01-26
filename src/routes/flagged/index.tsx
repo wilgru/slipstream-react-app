@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import isAuthenticated from "src/models/user/utils/isAuthenticated";
+import isAuthenticated from "src/lib/user/utils/isAuthenticated";
 
 export const Route = createFileRoute("/flagged/")({
   component: RouteComponent,

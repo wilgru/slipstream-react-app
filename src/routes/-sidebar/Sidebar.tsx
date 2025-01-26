@@ -2,12 +2,11 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-
-import { Button } from "src/common/components/Button/Button";
-import EditSlipModal from "src/common/components/EditSlipModal/EditSlipModal";
-import { Toggle } from "src/common/components/Toggle/Toggle";
-import { cn } from "src/common/utils/cn";
-import { useLogin } from "src/models/user/hooks/useLogin";
+import { Button } from "src/lib/components/Button/Button";
+import EditSlipModal from "src/lib/components/EditSlipModal/EditSlipModal";
+import { Toggle } from "src/lib/components/Toggle/Toggle";
+import { useLogin } from "src/lib/user/hooks/useLogin";
+import { cn } from "src/lib/utils/cn";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { NavItem } from "./-components/NavItem";
 

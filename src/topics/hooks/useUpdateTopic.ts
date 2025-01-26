@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
-import { pb } from "src/config/pocketbase";
+import { pb } from "src/lib/pocketbase/pocketbase";
 import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { mapTopic } from "../utils/mapTopic";
 import type { Topic } from "../types/Topic.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { Slip } from "src/models/slip/types/Slip.type";
+import type { Slip } from "src/lib/slip/types/Slip.type";
 
 type UpdateTopicProps = {
   topicId: string;

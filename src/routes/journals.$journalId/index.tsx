@@ -1,12 +1,12 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { Button } from "src/common/components/Button/Button";
-import { customisationColours } from "src/common/constants/customisationColours";
-import { cn } from "src/common/utils/cn";
-import { useJournal } from "src/models/journal/hooks/useJournal";
-import isAuthenticated from "src/models/user/utils/isAuthenticated";
+import { customisationColours } from "src/lib/colour/constants/customisationColours";
+import { Button } from "src/lib/components/Button/Button";
+import { useJournal } from "src/lib/journal/hooks/useJournal";
+import isAuthenticated from "src/lib/user/utils/isAuthenticated";
+import { cn } from "src/lib/utils/cn";
 import { EditJournalModal } from "./-components/EditJournalModal";
-import type { Slip } from "src/models/slip/types/Slip.type";
+import type { Slip } from "src/lib/slip/types/Slip.type";
 
 export const Route = createFileRoute("/journals/$journalId/")({
   component: JournalComponent,

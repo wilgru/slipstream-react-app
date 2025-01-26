@@ -1,8 +1,8 @@
 import * as Toggle from "@radix-ui/react-toggle";
 import { useState } from "react";
-import { Button } from "src/common/components/Button/Button";
-import { Icon } from "src/common/components/Icon/Icon";
-import { customisationColours } from "src/common/constants/customisationColours";
+import { customisationColours } from "src/lib/colour/constants/customisationColours";
+import { Button } from "src/lib/components/Button/Button";
+import { Icon } from "src/lib/components/Icon/Icon";
 import type { Topic } from "src/topics/types/Topic.type";
 
 type TagPillProps = {
