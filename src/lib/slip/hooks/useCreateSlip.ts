@@ -29,7 +29,7 @@ export const useCreateSlip = (): UseCreateSlipResponse => {
       content: new Delta(),
       isPinned: false,
       isFlagged: false,
-      topics: [],
+      journals: [],
       deleted: null,
       created: dayjs(),
       updated: dayjs(),

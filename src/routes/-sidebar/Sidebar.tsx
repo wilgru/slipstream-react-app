@@ -5,15 +5,15 @@ import { useState } from "react";
 import { Button } from "src/lib/components/Button/Button";
 import EditSlipModal from "src/lib/components/EditSlipModal/EditSlipModal";
 import { Toggle } from "src/lib/components/Toggle/Toggle";
+import { useGetJournals } from "src/lib/journal/hooks/useGetJournals";
 import { useLogin } from "src/lib/user/hooks/useLogin";
 import { cn } from "src/lib/utils/cn";
-import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import { NavItem } from "./-components/NavItem";
 
 export const Sidebar = () => {
   const { logout } = useLogin();
   const navigate = useNavigate();
-  const { topics } = useGetTopics();
+  const { journals } = useGetJournals();
 
   const [showEditSlipModal, setShowEditSlipModal] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -48,13 +48,13 @@ export const Sidebar = () => {
 
         <section className="p-2 flex flex-col gap-1 text-black">
           {expanded && <h1 className="font-title text-lg">Journals</h1>}
-          {topics.map((topic) => (
+          {journals.map((journal) => (
             <NavItem
               iconName="Book"
-              iconColour={topic.colour}
-              title={topic.name}
-              preview={topic.slipCount}
-              to={`/journals/${topic.id}`}
+              iconColour={journal.colour}
+              title={journal.name}
+              preview={journal.slipCount}
+              to={`/journals/${journal.id}`}
               expanded={expanded}
             ></NavItem>
           ))}

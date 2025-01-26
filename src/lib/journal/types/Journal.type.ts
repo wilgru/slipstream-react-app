@@ -1,8 +1,10 @@
-import type { Slip } from "src/lib/slip/types/Slip.type";
+import type { Dayjs } from "dayjs";
 
 export type Journal = {
   id: string;
   name: string;
   colour: string;
-  slips?: Slip[];
+  slipCount: number;
+  created: Dayjs;
+  updated: Dayjs;
 };

@@ -3,20 +3,23 @@ import { useState } from "react";
 import { Button } from "src/lib/components/Button/Button";
 import { ColourPicker } from "src/lib/components/ColourPicker/ColourPicker";
 import { Input } from "src/lib/components/Input/Input";
-import { useUpdateTopic } from "src/topics/hooks/useUpdateTopic";
-import type { Topic } from "src/topics/types/Topic.type";
+import { useUpdateJournal } from "src/lib/journal/hooks/useUpdateJournal";
+import type { Journal } from "src/lib/journal/types/Journal.type";
 
 type EditJournalModalProps = {
-  topic: Topic;
+  journal: Journal;
 };
 
-export const EditJournalModal = ({ topic }: EditJournalModalProps) => {
-  const [editedTopic, setEditedTopic] = useState<Topic>(topic);
-  const { updateTopic } = useUpdateTopic();
+export const EditJournalModal = ({ journal }: EditJournalModalProps) => {
+  const [editedJournal, setEditedJournal] = useState<Journal>(journal);
+  const { updateJournal } = useUpdateJournal();
 
   const onSaveEdit = async () => {
-    if (topic?.id) {
-      updateTopic({ topicId: editedTopic.id, updateTopicData: editedTopic });
+    if (journal?.id) {
+      updateJournal({
+        journalId: editedJournal.id,
+        updateJournalData: editedJournal,
+      });
     }
   };
 
@@ -31,11 +34,11 @@ export const EditJournalModal = ({ topic }: EditJournalModalProps) => {
             <p className="text-sm">Name</p>
             <Input
               size="medium"
-              id={topic.id}
-              value={editedTopic.name}
+              id={journal.id}
+              value={editedJournal.name}
               onChange={(e) =>
-                setEditedTopic((currentTopicToEdit) => {
-                  return { ...currentTopicToEdit, name: e.target.value };
+                setEditedJournal((currentJournalToEdit) => {
+                  return { ...currentJournalToEdit, name: e.target.value };
                 })
               }
             />
@@ -44,10 +47,10 @@ export const EditJournalModal = ({ topic }: EditJournalModalProps) => {
           <div>
             <p className="text-sm">Colour</p>
             <ColourPicker
-              selectedColourName={editedTopic.colour}
+              selectedColourName={editedJournal.colour}
               onSelectColour={(colour) => {
-                setEditedTopic((currentTopicToEdit) => {
-                  return { ...currentTopicToEdit, colour: colour.name };
+                setEditedJournal((currentJournalToEdit) => {
+                  return { ...currentJournalToEdit, colour: colour.name };
                 });
               }}
             />

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useUser } from "src/lib/user/hooks/useUser";
+import { useGetJournals } from "src/lib/journal/hooks/useGetJournals";
 import { pb } from "src/lib/pocketbase/pocketbase";
-import { useGetTopics } from "src/topics/hooks/useGetTopics";
+import { useUser } from "src/lib/user/hooks/useUser";
 import { mapSlip } from "../utils/mapSlip";
 import { useGetSlips } from "./useGetSlips";
 import type { Slip } from "../types/Slip.type";
@@ -25,14 +25,14 @@ export const useUpdateSlip = (): UseUpdateSlipResponse => {
   const queryClient = useQueryClient();
   const { user } = useUser();
   const { slips } = useGetSlips();
-  const { refetchTopics } = useGetTopics();
+  const { refetchJournals } = useGetJournals();
 
   const mutationFn = async ({
     slipId,
     updateSlipData,
   }: UpdateSlipProps): Promise<Slip | undefined> => {
     const slipToUpdate = slips.find((slip) => slip.id === slipId);
-    const mappedTopics = updateSlipData.topics.map((topic) => topic.id);
+    const mappedJournals = updateSlipData.journals.map((journal) => journal.id);
 
     let updatedSlip;
     if (!slipToUpdate) {
@@ -43,23 +43,23 @@ export const useUpdateSlip = (): UseUpdateSlipResponse => {
       updatedSlip = await pb.collection("slips").create(
         {
           ...slipData,
-          topics: mappedTopics,
+          journals: mappedJournals,
           user: user?.id,
         },
-        { expand: "topics" }
+        { expand: "journals" }
       );
     } else {
       updatedSlip = await pb
         .collection("slips")
         .update(
           slipId,
-          { ...updateSlipData, topics: mappedTopics },
-          { expand: "topics" }
+          { ...updateSlipData, journals: mappedJournals },
+          { expand: "journals" }
         );
     }
 
-    if (updateSlipData.topics.length !== slipToUpdate?.topics.length) {
-      await refetchTopics();
+    if (updateSlipData.journals.length !== slipToUpdate?.journals.length) {
+      await refetchJournals();
     }
 
     return mapSlip(updatedSlip);

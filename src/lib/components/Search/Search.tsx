@@ -11,7 +11,7 @@ export const Search = () => {
           type="search"
           id="default-search"
           className="block w-72 p-1 pl-10 text-sm text-black placeholder-stone-500 border border-black rounded-full bg-white"
-          placeholder="Search slips, topics..."
+          placeholder="Search slips, journals..."
           required
         />
       </div>

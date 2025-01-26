@@ -3,16 +3,16 @@ import { useCallback, useState } from "react";
 import { components } from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { customisationColours } from "src/lib/colour/constants/customisationColours";
+import { useCreateJournal } from "src/lib/journal/hooks/useCreateJournal";
+import { useGetJournals } from "src/lib/journal/hooks/useGetJournals";
 import { cn } from "src/lib/utils/cn";
-import { useCreateTopic } from "src/topics/hooks/useCreateTopic";
-import { useGetTopics } from "src/topics/hooks/useGetTopics";
 import type { Colour } from "src/lib/colour/types/Colour";
+import type { Journal } from "src/lib/journal/types/Journal.type";
 import type { Slip } from "src/lib/slip/types/Slip.type";
-import type { Topic } from "src/topics/types/Topic.type";
 
 type JournalMultiSelectProps = {
   initialSlip: Slip;
-  onChange: (topics: Topic[]) => void;
+  onChange: (journals: Journal[]) => void;
 };
 
 type Option = {
@@ -20,14 +20,14 @@ type Option = {
   value: string;
 };
 
-const getCustomisationColourFromTopicId = (
-  topics: Topic[],
-  topicId: string
+const getCustomisationColourFromJournalId = (
+  journals: Journal[],
+  journalId: string
 ): Colour => {
-  const topic = topics.find((topic) => topic.id === topicId);
+  const journal = journals.find((journal) => journal.id === journalId);
 
   const customisationColour = customisationColours.find(
-    (colour) => colour.name === topic?.colour
+    (colour) => colour.name === journal?.colour
   );
 
   return (
@@ -43,34 +43,34 @@ export const JournalMultiSelect = ({
   initialSlip,
   onChange,
 }: JournalMultiSelectProps) => {
-  const { topics } = useGetTopics();
-  const { createTopic } = useCreateTopic();
+  const { journals } = useGetJournals();
+  const { createJournal } = useCreateJournal();
 
   const [value, setValue] = useState<Option[]>(
-    initialSlip.topics.map((topic) => ({
-      value: topic.id,
-      label: topic.name,
+    initialSlip.journals.map((journal) => ({
+      value: journal.id,
+      label: journal.name,
     }))
   );
 
-  const onCreateNewTopic = useCallback(
-    async (topicToCreate: string) => {
-      const newTopic = await createTopic(topicToCreate);
+  const onCreateNewJournal = useCallback(
+    async (journalToCreate: string) => {
+      const newJournal = await createJournal(journalToCreate);
 
       setValue((currentValue) => [
         ...currentValue,
-        { value: newTopic.id, label: newTopic.name },
+        { value: newJournal.id, label: newJournal.name },
       ]);
 
-      onChange([...initialSlip.topics, newTopic]);
+      onChange([...initialSlip.journals, newJournal]);
     },
-    [createTopic, initialSlip.topics, onChange]
+    [createJournal, initialSlip.journals, onChange]
   );
 
-  const options = topics.map((topic) => ({
-    value: topic.id,
-    label: topic.name,
-    colour: topic.colour,
+  const options = journals.map((journal) => ({
+    value: journal.id,
+    label: journal.name,
+    colour: journal.colour,
   }));
 
   return (
@@ -80,24 +80,24 @@ export const JournalMultiSelect = ({
         options={options}
         placeholder="Add journal"
         value={value}
-        onChange={(selectedTopics) => {
-          setValue([...selectedTopics]);
+        onChange={(selectedJournals) => {
+          setValue([...selectedJournals]);
 
           onChange(
-            selectedTopics.reduce((acc: Topic[], selectedTopic) => {
-              const topic = topics.find(
-                (topic) => topic.id === selectedTopic.value
+            selectedJournals.reduce((acc: Journal[], selectedJournal) => {
+              const journal = journals.find(
+                (journal) => journal.id === selectedJournal.value
               );
 
-              if (topic) {
-                acc.push(topic);
+              if (journal) {
+                acc.push(journal);
               }
 
               return acc;
             }, [])
           );
         }}
-        onCreateOption={onCreateNewTopic}
+        onCreateOption={onCreateNewJournal}
         components={{
           DropdownIndicator: (props) => {
             return (
@@ -132,7 +132,7 @@ export const JournalMultiSelect = ({
             return cn(
               "rounded-full",
               "text-xs",
-              getCustomisationColourFromTopicId(topics, props.data.value)
+              getCustomisationColourFromJournalId(journals, props.data.value)
                 .backgroundClass
             );
           },

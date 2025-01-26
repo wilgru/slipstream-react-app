@@ -1,6 +1,6 @@
 import type { Dayjs } from "dayjs";
 
-export type Category = {
+export type Tag = {
   id: string;
   name: string;
   created: Dayjs;

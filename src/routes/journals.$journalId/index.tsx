@@ -2,7 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { customisationColours } from "src/lib/colour/constants/customisationColours";
 import { Button } from "src/lib/components/Button/Button";
-import { useJournal } from "src/lib/journal/hooks/useJournal";
+import { useGetJournal } from "src/lib/journal/hooks/useGetJournal";
 import isAuthenticated from "src/lib/user/utils/isAuthenticated";
 import { cn } from "src/lib/utils/cn";
 import { EditJournalModal } from "./-components/EditJournalModal";
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/journals/$journalId/")({
 
 export default function JournalComponent() {
   const { journalId } = Route.useParams();
-  const { journal } = useJournal(journalId ?? "");
+  const { journal, slips } = useGetJournal(journalId ?? "");
 
   if (!journal) {
     return null;
@@ -43,7 +43,7 @@ export default function JournalComponent() {
     withTitles: [],
   };
 
-  journal.slips?.forEach((slip) => {
+  slips.forEach((slip) => {
     if (slip.title) {
       sectionedSlips.withTitles.push(slip);
     } else {
@@ -70,15 +70,13 @@ export default function JournalComponent() {
                 <Button variant="ghost" iconName="pencil" />
               </Dialog.Trigger>
 
-              <EditJournalModal topic={journal} />
+              <EditJournalModal journal={journal} />
             </Dialog.Root>
             <Button variant="ghost" iconName="arrowsDownUp" />
           </div>
         </div>
 
-        <h3 className="text-stone-500">
-          1 section, {journal.slips?.length} notes
-        </h3>
+        <h3 className="text-stone-500">1 section, {slips.length} notes</h3>
       </div>
 
       <div className="p-4 mb-4 mx-4 border min-h-full border-stone-300 rounded-lg flex flex-col gap-5 bg-white shadow-light">

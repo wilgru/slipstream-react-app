@@ -1,42 +1,41 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
-
+import { selectedJournalIdsAtom } from "src/lib/journal/atoms/selectedJournalIdsAtom";
 import { pb } from "src/lib/pocketbase/pocketbase";
 import { mapSlip } from "src/lib/slip/utils/mapSlip";
-import { selectedTopicIdsAtom } from "src/topics/atoms/selectedTopicIdsAtom";
 import type { Slip } from "src/lib/slip/types/Slip.type";
 
 type UseGetSlipsResponse = { slips: Slip[] };
 
 export const useGetSlips = (): UseGetSlipsResponse => {
-  const selectedTopicIds = useAtomValue(selectedTopicIdsAtom);
+  const selectedJournalIds = useAtomValue(selectedJournalIdsAtom);
 
   const queryFn = async (): Promise<Slip[]> => {
-    // for some reason cant use && for the multiple topics filters, which is why slipsWithAllTopics and its logic exists
-    const topicsFilter = selectedTopicIds.length
+    // for some reason cant use && for the multiple journals filters, which is why slipsWithAllJournals and its logic exists
+    const journalsFilter = selectedJournalIds.length
       ? "&& " +
-        selectedTopicIds
-          .map((topicId) => `topics.id ?= '${topicId}'`)
+        selectedJournalIds
+          .map((journalId) => `journals.id ?= '${journalId}'`)
           .join(" || ")
       : "";
 
     const rawSlips = await pb
       .collection("slips")
       .getList(undefined, undefined, {
-        filter: `deleted = null ${topicsFilter}`,
-        expand: "topics",
+        filter: `deleted = null ${journalsFilter}`,
+        expand: "journals",
         sort: "-isPinned",
       });
 
     const mappedSlips = rawSlips.items.map(mapSlip);
 
-    const slipsWithAllTopics = mappedSlips.filter((mappedSlip) =>
-      selectedTopicIds.every((topicId) =>
-        mappedSlip.topics.some((topic) => topic.id === topicId)
+    const slipsWithAllJournals = mappedSlips.filter((mappedSlip) =>
+      selectedJournalIds.every((journalId) =>
+        mappedSlip.journals.some((journal) => journal.id === journalId)
       )
     );
 
-    return slipsWithAllTopics;
+    return slipsWithAllJournals;
   };
 
   // TODO: consider time caching for better performance

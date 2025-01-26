@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { pb } from "src/lib/pocketbase/pocketbase";
-import { useGetTopics } from "src/topics/hooks/useGetTopics";
+import { useGetJournals } from "src/lib/journal/hooks/useGetJournals";
 import { useGetSlips } from "./useGetSlips";
 import type { Slip } from "../types/Slip.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
@@ -23,7 +23,7 @@ type UseDeleteSlipResponse = {
 export const useDeleteSlip = (): UseDeleteSlipResponse => {
   const queryClient = useQueryClient();
   const { slips } = useGetSlips();
-  const { refetchTopics } = useGetTopics();
+  const { refetchJournals } = useGetJournals();
 
   const mutationFn = async ({
     slipId,
@@ -48,8 +48,8 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
         .update(slipId, { ...slipToDelete, deleted: dayjs() });
     }
 
-    if (slipToDelete.topics.length) {
-      await refetchTopics();
+    if (slipToDelete.journals.length) {
+      await refetchJournals();
     }
 
     return slipId;

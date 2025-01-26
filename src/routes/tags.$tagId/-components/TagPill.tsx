@@ -3,10 +3,10 @@ import { useState } from "react";
 import { customisationColours } from "src/lib/colour/constants/customisationColours";
 import { Button } from "src/lib/components/Button/Button";
 import { Icon } from "src/lib/components/Icon/Icon";
-import type { Topic } from "src/topics/types/Topic.type";
+import type { Journal } from "src/lib/journal/types/Journal.type";
 
 type TagPillProps = {
-  topic: Topic;
+  journal: Journal;
   size?: "sm" | "md" | "lg";
   closable?: boolean;
   isSelected?: boolean;
@@ -14,7 +14,7 @@ type TagPillProps = {
 };
 
 export const TagPill = ({
-  topic,
+  journal,
   size = "sm",
   closable = false,
   isSelected = false,
@@ -22,12 +22,12 @@ export const TagPill = ({
 }: TagPillProps): JSX.Element => {
   const [closeButtonVisible, setCloseButtonVisible] = useState<boolean>(false);
 
-  const topicCustomisationColour = customisationColours.find(
-    (colour) => colour.name === topic.colour
+  const journalCustomisationColour = customisationColours.find(
+    (colour) => colour.name === journal.colour
   );
 
-  const topicButtonColour = topicCustomisationColour
-    ? topicCustomisationColour?.textClass
+  const journalButtonColour = journalCustomisationColour
+    ? journalCustomisationColour?.textClass
     : "text-stone-300";
 
   // TODO: make always closable?
@@ -40,21 +40,21 @@ export const TagPill = ({
       {closable ? (
         <Button
           variant="block"
-          colour={topicButtonColour}
+          colour={journalButtonColour}
           size={size}
-          onClick={() => onClick && onClick(topic.id)}
+          onClick={() => onClick && onClick(journal.id)}
           iconName={closable && closeButtonVisible ? "x" : "ChatCircle"}
         >
-          {topic.name}
+          {journal.name}
         </Button>
       ) : (
         <Toggle.Root
           className=""
-          onClick={() => onClick && onClick(topic.id)}
+          onClick={() => onClick && onClick(journal.id)}
           pressed={isSelected}
         >
-          <Icon iconName="ChatCircle" className={topicButtonColour} />
-          {topic.name}
+          <Icon iconName="ChatCircle" className={journalButtonColour} />
+          {journal.name}
         </Toggle.Root>
       )}
     </div>

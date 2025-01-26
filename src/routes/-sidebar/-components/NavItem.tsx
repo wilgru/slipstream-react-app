@@ -23,7 +23,7 @@ export const NavItem = ({
 }: NavItemProps) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  const topicCustomisationColour = customisationColours.find(
+  const journalCustomisationColour = customisationColours.find(
     (colour) => colour.name === iconColour
   );
 
@@ -46,7 +46,7 @@ export const NavItem = ({
                 iconName={iconName}
                 className={
                   ((isHovered || isActive) && "text-orange-500") ||
-                  topicCustomisationColour?.textClass ||
+                  journalCustomisationColour?.textClass ||
                   "text-stone-500"
                 }
                 weight={isHovered || isActive ? "fill" : "regular"}

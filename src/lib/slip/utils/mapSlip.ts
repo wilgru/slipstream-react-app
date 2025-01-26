@@ -11,7 +11,7 @@ export const mapSlip = (slip: RecordModel): Slip => {
     content: slip.content ? new Delta(slip.content) : new Delta(), // TODO: make not nullable in pocketbase
     isPinned: slip.isPinned,
     isFlagged: slip.isFlagged,
-    topics: slip?.expand?.topics ?? [],
+    journals: slip?.expand?.journals ?? [],
     deleted: null,
     created: dayjs(slip.created),
     updated: dayjs(slip.updated),

@@ -36,7 +36,7 @@ const getInitialSlip = (slip: Slip | undefined): Slip => {
     id: slip?.id || "",
     title: slip?.title || "",
     content: slip?.content || new Delta(),
-    topics: slip?.topics || [],
+    journals: slip?.journals || [],
     isFlagged: slip?.isFlagged || false,
     isPinned: slip?.isPinned || false,
     created: slip?.created || dayjs(),
@@ -141,11 +141,11 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
           <div className="flex flex-row justify-between w-full border-t border-stone-300 pt-2">
             <JournalMultiSelect
               initialSlip={initialSlip}
-              onChange={(topics) =>
+              onChange={(journals) =>
                 setEditedSlip((currentEditedSlip) => {
                   const newSlipData = {
                     ...currentEditedSlip,
-                    topics,
+                    journals,
                   };
 
                   return newSlipData;

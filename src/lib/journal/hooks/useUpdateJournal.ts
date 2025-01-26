@@ -1,0 +1,95 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
+import { selectedJournalIdsAtom } from "src/lib/journal/atoms/selectedJournalIdsAtom";
+import { useGetJournals } from "src/lib/journal/hooks/useGetJournals";
+import { pb } from "src/lib/pocketbase/pocketbase";
+import { mapJournal } from "../utils/mapJournal";
+import type { Journal } from "../types/Journal.type";
+import type { UseMutateAsyncFunction } from "@tanstack/react-query";
+import type { Slip } from "src/lib/slip/types/Slip.type";
+
+type UpdateJournalProps = {
+  journalId: string;
+  updateJournalData: Journal;
+};
+
+type UseUpdateJournalResponse = {
+  updateJournal: UseMutateAsyncFunction<
+    Journal | undefined,
+    Error,
+    UpdateJournalProps,
+    unknown
+  >;
+};
+
+export const useUpdateJournal = (): UseUpdateJournalResponse => {
+  const queryClient = useQueryClient();
+  const { journals } = useGetJournals();
+
+  const selectedJournalIds = useAtomValue(selectedJournalIdsAtom);
+
+  const mutationFn = async ({
+    journalId,
+    updateJournalData,
+  }: UpdateJournalProps): Promise<Journal | undefined> => {
+    const journalToUpdate = journals.find(
+      (journal) => journal.id === journalId
+    );
+
+    if (!journalToUpdate) {
+      return;
+    }
+
+    const rawUpdatedJournal = await pb
+      .collection("journals")
+      .update(journalId, { ...updateJournalData });
+
+    return mapJournal(rawUpdatedJournal);
+  };
+
+  const onSuccess = (data: Journal | undefined) => {
+    if (!data) {
+      return;
+    }
+
+    queryClient.setQueryData(["journals.list"], (currentJournal: Journal[]) => {
+      return currentJournal.map((currentJournal) =>
+        currentJournal.id === data.id ? data : currentJournal
+      );
+    });
+
+    // update journal in any slips that have it
+    queryClient.setQueryData(
+      ["slips.list", selectedJournalIds],
+      (currentSlips: Slip[]) => {
+        return currentSlips.map((currentSlip) => {
+          const slipHasJournal = currentSlip.journals.find(
+            (journal) => journal.id === data?.id
+          );
+
+          if (!slipHasJournal) {
+            return currentSlip;
+          }
+
+          return {
+            ...currentSlip,
+            journals: currentSlip.journals.map((journal) =>
+              journal.id === data.id ? data : journal
+            ),
+          };
+        });
+      }
+    );
+  };
+
+  // TODO: consider time caching for better performance
+  const { mutateAsync } = useMutation({
+    mutationKey: ["journals.update"],
+    mutationFn,
+    onSuccess,
+    // staleTime: 2 * 60 * 1000,
+    // gcTime: 2 * 60 * 1000,
+  });
+
+  return { updateJournal: mutateAsync };
+};
