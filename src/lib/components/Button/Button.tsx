@@ -36,22 +36,30 @@ const buttonVariants = cva(
         destructive: null,
       },
       variant: {
-        block:
-          "text-black border border-black hover:bg-black hover:text-white hover:border-black",
+        block: "hover:bg-orange-100 hover:text-orange-500",
         ghost: "text-stone-500",
         link: "underline-offset-4 hover:underline",
       },
       size: {
-        sm: "p-1 text-xs font-normal",
-        md: "p-2 text-sm font-medium",
-        lg: "p-3 text-md font-medium",
+        sm: "text-xs font-normal",
+        md: "text-sm font-medium",
+        lg: "text-md font-medium",
+      },
+      content: {
+        text: null,
+        icon: null,
       },
     },
     compoundVariants: [
       {
         intent: "primary",
         variant: "block",
-        className: "bg-orange-100",
+        className: "text-green-700 bg-green-100",
+      },
+      {
+        intent: "secondary",
+        variant: "block",
+        className: "bg-white",
       },
       {
         intent: "primary",
@@ -71,7 +79,37 @@ const buttonVariants = cva(
       {
         intent: "destructive",
         variant: "block",
-        className: "bg-red-400",
+        className: "text-red-800 bg-red-100",
+      },
+      {
+        size: "sm",
+        content: "text",
+        className: "py-1 px-2",
+      },
+      {
+        size: "md",
+        content: "text",
+        className: "py-2 px-3",
+      },
+      {
+        size: "lg",
+        content: "text",
+        className: "py-3 px-4",
+      },
+      {
+        size: "sm",
+        content: "icon",
+        className: "p-1",
+      },
+      {
+        size: "md",
+        content: "icon",
+        className: "p-2",
+      },
+      {
+        size: "lg",
+        content: "icon",
+        className: "p-3",
       },
     ],
     defaultVariants: {
@@ -99,7 +137,13 @@ export const Button = ({
     <button
       type={type}
       className={cn(
-        buttonVariants({ variant, intent, size, className }),
+        buttonVariants({
+          variant,
+          intent,
+          size,
+          className,
+          content: iconName ? "icon" : "text",
+        }),
         className
       )}
       disabled={disabled}

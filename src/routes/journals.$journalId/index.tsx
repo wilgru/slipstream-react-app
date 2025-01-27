@@ -6,6 +6,7 @@ import { useGetJournal } from "src/lib/journal/hooks/useGetJournal";
 import isAuthenticated from "src/lib/user/utils/isAuthenticated";
 import { cn } from "src/lib/utils/cn";
 import { EditJournalModal } from "./-components/EditJournalModal";
+import SlipSection from "./-components/SlipSection";
 import type { Slip } from "src/lib/slip/types/Slip.type";
 
 export const Route = createFileRoute("/journals/$journalId/")({
@@ -51,77 +52,66 @@ export default function JournalComponent() {
     }
   });
 
+  // how to make a scroll to TOC
+  // https://www.youtube.com/watch?v=xgz5jIi4R7c
   return (
-    <div className="h-full w-full overflow-y-scroll z-10">
-      <div className="py-4 mx-4">
-        <div className="flex justify-between items-center">
-          <h1
-            className={cn(
-              customisationColour?.textClass,
-              "font-title text-5xl"
-            )}
-          >
-            {journal.name}
-          </h1>
+    <div className="h-full w-full flex justify-center">
+      <div className="max-w-[700px] overflow-y-scroll">
+        <div className="py-4 mx-4">
+          <div className="flex justify-between items-center">
+            <h1
+              className={cn(
+                customisationColour?.textClass,
+                "font-title text-5xl"
+              )}
+            >
+              {journal.name}
+            </h1>
 
-          <div className="flex gap-2">
-            <Dialog.Root>
-              <Dialog.Trigger asChild>
-                <Button variant="ghost" iconName="pencil" />
-              </Dialog.Trigger>
+            <div className="flex gap-2">
+              <Dialog.Root>
+                <Dialog.Trigger asChild>
+                  <Button variant="ghost" iconName="pencil" />
+                </Dialog.Trigger>
 
-              <EditJournalModal journal={journal} />
-            </Dialog.Root>
-            <Button variant="ghost" iconName="arrowsDownUp" />
+                <EditJournalModal journal={journal} />
+              </Dialog.Root>
+              <Button variant="ghost" iconName="arrowsDownUp" />
+            </div>
           </div>
+
+          <h3 className="text-stone-500">1 section, {slips.length} notes</h3>
         </div>
 
-        <h3 className="text-stone-500">1 section, {slips.length} notes</h3>
+        <div className="p-3 mb-4 mx-4 border min-h-full border-stone-300 rounded-lg flex flex-col gap-3 bg-white shadow-light">
+          {sectionedSlips.noTitles.map((slip) => (
+            <SlipSection slip={slip} />
+          ))}
+
+          {sectionedSlips.noTitles.length > 0 &&
+            sectionedSlips.withTitles.length > 0 && (
+              <div className="flex flex-row gap-2 justify-center">
+                <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
+                <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
+                <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
+              </div>
+            )}
+
+          {sectionedSlips.withTitles.map((slip) => (
+            <SlipSection slip={slip} />
+          ))}
+        </div>
       </div>
 
-      <div className="p-4 mb-4 mx-4 border min-h-full border-stone-300 rounded-lg flex flex-col gap-5 bg-white shadow-light">
+      <div className="flex flex-col justify-center">
         {sectionedSlips.noTitles.map((slip) => (
-          <div key={slip.id}>
-            <h1
-              className={`select-none font-title text-2xl font-normal tracking-tight text-stone-700`}
-            >
-              {slip.title}
-            </h1>
-
-            <p className="text-sm">
-              {slip.content.reduce((acc, op) => acc + op.insert, "")}
-            </p>
-
-            <p className={"text-xs text-stone-500"}>
-              {slip.created.format("ddd D MMMM YYYY")}
-            </p>
+          <div key={slip.id} className="overflow-x-clip">
+            <h3 className="text-sm italic">No title</h3>
           </div>
         ))}
-
-        {sectionedSlips.noTitles.length > 0 &&
-          sectionedSlips.withTitles.length > 0 && (
-            <div className="flex flex-row gap-2 justify-center">
-              <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
-              <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
-              <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
-            </div>
-          )}
-
         {sectionedSlips.withTitles.map((slip) => (
-          <div key={slip.id}>
-            <h1
-              className={`select-none font-title text-2xl font-normal tracking-tight text-stone-700`}
-            >
-              {slip.title}
-            </h1>
-
-            <p className="text-sm">
-              {slip.content.reduce((acc, op) => acc + op.insert, "")}
-            </p>
-
-            <p className={"text-xs text-stone-500"}>
-              {slip.created.format("ddd D MMMM YYYY")}
-            </p>
+          <div key={slip.id} className="overflow-x-clip">
+            <h3 className="text-sm">{slip.title}</h3>
           </div>
         ))}
       </div>

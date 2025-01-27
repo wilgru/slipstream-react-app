@@ -47,7 +47,9 @@ export const Sidebar = () => {
         </section>
 
         <section className="p-2 flex flex-col gap-1 text-black">
-          {expanded && <h1 className="font-title text-lg">Journals</h1>}
+          {expanded && (
+            <h1 className="font-title text-lg text-stone-700">Journals</h1>
+          )}
           {journals.map((journal) => (
             <NavItem
               iconName="Book"

@@ -9,7 +9,7 @@ export const Route = createRootRoute({
         <Sidebar />
 
         {/* all the other elements */}
-        <div id="detail" className="w-full">
+        <div id="detail" className="w-full flex justify-center">
           <Outlet />
         </div>
       </div>
