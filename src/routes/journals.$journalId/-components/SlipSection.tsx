@@ -5,7 +5,13 @@ import EditSlipModal from "src/lib/components/EditSlipModal/EditSlipModal";
 import { Icon } from "src/lib/components/Icon/Icon";
 import type { Slip } from "src/lib/slip/types/Slip.type";
 
-export default function SlipSection({ slip }: { slip: Slip }) {
+export default function SlipSection({
+  slip,
+  journalId,
+}: {
+  slip: Slip;
+  journalId: string;
+}) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -42,7 +48,7 @@ export default function SlipSection({ slip }: { slip: Slip }) {
               <Button iconName="pencil" variant="ghost" size="sm" />
             </Dialog.Trigger>
 
-            <EditSlipModal slip={slip} />
+            <EditSlipModal slip={slip} journalToUpdateId={journalId} />
           </Dialog.Root>
         </div>
       )}

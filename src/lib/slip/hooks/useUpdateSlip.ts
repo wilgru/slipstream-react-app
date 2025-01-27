@@ -6,6 +6,7 @@ import { mapSlip } from "../utils/mapSlip";
 import { useGetSlips } from "./useGetSlips";
 import type { Slip } from "../types/Slip.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
+import type { Journal } from "src/lib/journal/types/Journal.type";
 
 type UpdateSlipProps = {
   slipId: string;
@@ -21,7 +22,9 @@ type UseUpdateSlipResponse = {
   >;
 };
 
-export const useUpdateSlip = (): UseUpdateSlipResponse => {
+export const useUpdateSlip = (
+  journalToUpdateId?: string
+): UseUpdateSlipResponse => {
   const queryClient = useQueryClient();
   const { user } = useUser();
   const { slips } = useGetSlips();
@@ -95,6 +98,29 @@ export const useUpdateSlip = (): UseUpdateSlipResponse => {
         return b.created.isBefore(a.created) ? 1 : -1;
       });
     });
+
+    journalToUpdateId &&
+      queryClient.setQueryData(
+        ["journals.get", journalToUpdateId],
+        ({ journal, slips }: { journal: Journal; slips: Slip[] }) => {
+          if (!data) {
+            return;
+          }
+
+          const updatedSlips = slips.map((currentSlip) => {
+            if (currentSlip.id === data.id) {
+              return data;
+            }
+
+            return currentSlip;
+          });
+
+          return {
+            journal,
+            slips: updatedSlips,
+          };
+        }
+      );
   };
 
   // TODO: consider time caching for better performance

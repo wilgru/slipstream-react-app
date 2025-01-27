@@ -85,7 +85,7 @@ export default function JournalComponent() {
 
         <div className="p-3 mb-4 mx-4 border min-h-full border-stone-300 rounded-lg flex flex-col gap-3 bg-white shadow-light">
           {sectionedSlips.noTitles.map((slip) => (
-            <SlipSection slip={slip} />
+            <SlipSection slip={slip} journalId={journal.id} />
           ))}
 
           {sectionedSlips.noTitles.length > 0 &&
@@ -98,7 +98,7 @@ export default function JournalComponent() {
             )}
 
           {sectionedSlips.withTitles.map((slip) => (
-            <SlipSection slip={slip} />
+            <SlipSection slip={slip} journalId={journal.id} />
           ))}
         </div>
       </div>

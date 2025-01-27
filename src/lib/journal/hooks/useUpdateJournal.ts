@@ -1,6 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
-import { selectedJournalIdsAtom } from "src/lib/journal/atoms/selectedJournalIdsAtom";
 import { useGetJournals } from "src/lib/journal/hooks/useGetJournals";
 import { pb } from "src/lib/pocketbase/pocketbase";
 import { mapJournal } from "../utils/mapJournal";
@@ -25,8 +23,6 @@ type UseUpdateJournalResponse = {
 export const useUpdateJournal = (): UseUpdateJournalResponse => {
   const queryClient = useQueryClient();
   const { journals } = useGetJournals();
-
-  const selectedJournalIds = useAtomValue(selectedJournalIdsAtom);
 
   const mutationFn = async ({
     journalId,
@@ -59,27 +55,24 @@ export const useUpdateJournal = (): UseUpdateJournalResponse => {
     });
 
     // update journal in any slips that have it
-    queryClient.setQueryData(
-      ["slips.list", selectedJournalIds],
-      (currentSlips: Slip[]) => {
-        return currentSlips.map((currentSlip) => {
-          const slipHasJournal = currentSlip.journals.find(
-            (journal) => journal.id === data?.id
-          );
+    queryClient.setQueryData(["slips.list"], (currentSlips: Slip[]) => {
+      return currentSlips.map((currentSlip) => {
+        const slipHasJournal = currentSlip.journals.find(
+          (journal) => journal.id === data?.id
+        );
 
-          if (!slipHasJournal) {
-            return currentSlip;
-          }
+        if (!slipHasJournal) {
+          return currentSlip;
+        }
 
-          return {
-            ...currentSlip,
-            journals: currentSlip.journals.map((journal) =>
-              journal.id === data.id ? data : journal
-            ),
-          };
-        });
-      }
-    );
+        return {
+          ...currentSlip,
+          journals: currentSlip.journals.map((journal) =>
+            journal.id === data.id ? data : journal
+          ),
+        };
+      });
+    });
   };
 
   // TODO: consider time caching for better performance

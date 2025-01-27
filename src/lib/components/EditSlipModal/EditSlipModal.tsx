@@ -20,6 +20,7 @@ import type { Slip } from "src/lib/slip/types/Slip.type";
 
 type EditSlipModalProps = {
   slip?: Slip;
+  journalToUpdateId?: string;
   onSave?: () => void;
 };
 
@@ -37,6 +38,7 @@ const getInitialSlip = (slip: Slip | undefined): Slip => {
     title: slip?.title || "",
     content: slip?.content || new Delta(),
     journals: slip?.journals || [],
+    tags: slip?.tags || [],
     isFlagged: slip?.isFlagged || false,
     isPinned: slip?.isPinned || false,
     created: slip?.created || dayjs(),
@@ -46,8 +48,12 @@ const getInitialSlip = (slip: Slip | undefined): Slip => {
   };
 };
 
-const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
-  const { updateSlip } = useUpdateSlip();
+const EditSlipModal = ({
+  slip,
+  journalToUpdateId,
+  onSave,
+}: EditSlipModalProps) => {
+  const { updateSlip } = useUpdateSlip(journalToUpdateId);
   const { deleteSlip } = useDeleteSlip();
 
   const initialSlip = getInitialSlip(slip);

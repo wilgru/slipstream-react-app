@@ -28,7 +28,7 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
     slips: Slip[];
   }> => {
     const rawJournal = await pb.collection("journals").getOne(journalId, {
-      expand: "slips_via_journals",
+      expand: "slips_via_journals, slips_via_journals.journals",
     });
     const rawSlips = rawJournal.expand?.slips_via_journals;
 
