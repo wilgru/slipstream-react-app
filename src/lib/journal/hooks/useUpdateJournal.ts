@@ -28,6 +28,7 @@ export const useUpdateJournal = (): UseUpdateJournalResponse => {
     journalId,
     updateJournalData,
   }: UpdateJournalProps): Promise<Journal | undefined> => {
+    // TODO: redundant?
     const journalToUpdate = journals.find(
       (journal) => journal.id === journalId
     );
@@ -48,11 +49,24 @@ export const useUpdateJournal = (): UseUpdateJournalResponse => {
       return;
     }
 
-    queryClient.setQueryData(["journals.list"], (currentJournal: Journal[]) => {
-      return currentJournal.map((currentJournal) =>
-        currentJournal.id === data.id ? data : currentJournal
-      );
-    });
+    queryClient.setQueryData(
+      ["journals.list"],
+      (currentJournals: Journal[]) => {
+        return currentJournals.map((currentJournal) =>
+          currentJournal.id === data.id ? data : currentJournal
+        );
+      }
+    );
+
+    queryClient.setQueryData(
+      ["journals.get", data.id],
+      (currentJournal: { journal: Journal; slips: Slip[] }) => {
+        return {
+          journal: data,
+          slips: currentJournal.slips,
+        };
+      }
+    );
 
     // update journal in any slips that have it
     queryClient.setQueryData(["slips.list"], (currentSlips: Slip[]) => {

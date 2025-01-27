@@ -102,7 +102,7 @@ export const useUpdateSlip = (
     journalToUpdateId &&
       queryClient.setQueryData(
         ["journals.get", journalToUpdateId],
-        ({ journal, slips }: { journal: Journal; slips: Slip[] }) => {
+        (currentJournal: { journal: Journal; slips: Slip[] }) => {
           if (!data) {
             return;
           }
@@ -116,7 +116,7 @@ export const useUpdateSlip = (
           });
 
           return {
-            journal,
+            journal: currentJournal.journal,
             slips: updatedSlips,
           };
         }
