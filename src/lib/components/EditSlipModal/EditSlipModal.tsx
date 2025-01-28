@@ -68,7 +68,7 @@ const EditSlipModal = ({
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
-      <Dialog.Content className="fixed left-1/4 top-1/4 max-h-[85vh] w-1/2 max-w-[50%] bg-white flex flex-col gap-4 p-2 border border-black rounded-lg shadow-light">
+      <Dialog.Content className="fixed left-1/4 top-1/4 max-h-[85vh] w-1/2 max-w-[50%] bg-white flex flex-col gap-4 p-2 border border-stone-600 rounded-lg shadow-light">
         <div className="flex flex-col gap-2">
           <div className="flex flex-row items-start">
             <div className="flex-grow flex flex-col">

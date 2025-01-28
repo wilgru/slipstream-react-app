@@ -1,3 +1,4 @@
+import { cn } from "src/lib/utils/cn";
 import type { HTMLInputTypeAttribute } from "react";
 
 type InputType = {
@@ -31,7 +32,10 @@ export const Input = ({
       autoComplete={type}
       onChange={onChange}
       value={value}
-      className={`block w-full ${InputSize[size]} bg-white text-black border border-black placeholder:text-stone-500 focus:border-orange-500`}
+      className={cn(
+        "block w-full bg-white text-stone-800 rounded-md border border-stone-300 placeholder:text-stone-500",
+        InputSize[size]
+      )}
     />
   );
 };
