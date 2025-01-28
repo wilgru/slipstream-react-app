@@ -36,6 +36,7 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
       id: rawJournal.id,
       name: rawJournal.name,
       colour: rawJournal.colour,
+      icon: rawJournal.icon,
       slipCount: rawSlips.length,
       created: rawJournal.createdAt,
       updated: rawJournal.updatedAt,
