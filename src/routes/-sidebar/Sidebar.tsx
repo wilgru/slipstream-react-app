@@ -52,7 +52,7 @@ export const Sidebar = () => {
           )}
           {journals.map((journal) => (
             <NavItem
-              iconName="Book"
+              iconName={journal.icon}
               iconColour={journal.colour}
               title={journal.name}
               preview={journal.slipCount}

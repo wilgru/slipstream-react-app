@@ -32,10 +32,17 @@ export const NavItem = ({
       to={to}
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      activeProps={{ className: "text-orange-500 bg-orange-100" }}
+      activeProps={{
+        className: cn(
+          journalCustomisationColour?.textClass,
+          journalCustomisationColour?.backgroundClass
+        ),
+      }}
       className={cn(
-        "flex justify-between px-2 py-1 items-center gap-2 rounded-full text-sm data-[state=on]:text-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500",
-        isHovered && "text-orange-500 bg-orange-100"
+        "flex px-2 py-1 items-center gap-2 rounded-full text-sm",
+        expanded ? "justify-between" : "justify-center",
+        isHovered && journalCustomisationColour?.textClass,
+        isHovered && journalCustomisationColour?.backgroundClass
       )}
     >
       {({ isActive }: { isActive: boolean }) => (
@@ -45,7 +52,8 @@ export const NavItem = ({
               <Icon
                 iconName={iconName}
                 className={
-                  ((isHovered || isActive) && "text-orange-500") ||
+                  ((isHovered || isActive) &&
+                    journalCustomisationColour?.textClass) ||
                   journalCustomisationColour?.textClass ||
                   "text-stone-500"
                 }
