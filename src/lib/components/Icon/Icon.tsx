@@ -9,9 +9,9 @@ import {
   Trash,
   DotsThree,
   ChatCircle,
-  Book,
   ArrowsDownUp,
 } from "@phosphor-icons/react";
+import { icons } from "src/lib/icon/icons.constant";
 
 type IconProps = {
   iconName: string;
@@ -36,6 +36,12 @@ const Icon = ({
 
   const iconProps = { size: iconSize, weight, className };
 
+  const icon = icons.find((icon) => icon.name === iconName);
+
+  if (icon) {
+    return <icon.icon {...iconProps} />;
+  }
+
   switch (iconName) {
     case "pushPin":
       return <PushPin {...iconProps} />;
@@ -55,8 +61,6 @@ const Icon = ({
       return <SidebarSimple {...iconProps} />;
     case "dotsThree":
       return <DotsThree {...iconProps} weight="bold" />;
-    case "Book":
-      return <Book {...iconProps} />;
     case "chatCircle":
       return <ChatCircle {...iconProps} />;
     case "arrowsDownUp":
