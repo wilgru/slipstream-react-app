@@ -17,10 +17,11 @@ export const ColourPickerColourButton = ({
       onClick={() => onClick(colour)}
       style={{ backgroundColor: colour.backgroundClass }}
       className={cn(
-        "h-8 w-8",
-        colour.backgroundClass,
-        selected && "border-2 border-orange-500"
+        "flex justify-center items-center h-6 w-6 rounded-full",
+        colour.backgroundClass
       )}
-    ></button>
+    >
+      {selected && <div className="h-2 w-2 rounded-full bg-white" />}
+    </button>
   );
 };
