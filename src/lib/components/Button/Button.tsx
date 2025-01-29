@@ -147,8 +147,8 @@ export const Button = ({
           className,
           content: iconName ? "icon" : "text",
         }),
-        `hover:${colour.text}`,
-        `hover:${colour.backgroundLight}`,
+        `hover:${colour.textPill}`,
+        `hover:${colour.backgroundPill}`,
         className
       )}
       disabled={disabled}
@@ -160,7 +160,7 @@ export const Button = ({
         <Icon
           iconName={iconName}
           size={size}
-          className={isButtonHovered ? colour.text : "text-stone-500"}
+          className={isButtonHovered ? colour.textPill : "text-stone-500"}
           weight={isButtonHovered ? "fill" : "regular"}
         />
       )}

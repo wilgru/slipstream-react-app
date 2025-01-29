@@ -17,7 +17,7 @@ export const ColourPickerColourButton = ({
       onClick={() => onClick(colour)}
       className={cn(
         "flex justify-center items-center h-6 w-6 rounded-full",
-        colour.backgroundDark
+        colour.background
       )}
     >
       {selected && <div className="h-2 w-2 rounded-full bg-white" />}

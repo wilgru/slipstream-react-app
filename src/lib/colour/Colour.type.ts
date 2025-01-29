@@ -1,7 +1,8 @@
 export type Colour = {
   name: string;
   text: string;
-  backgroundLighter: string;
-  backgroundLight: string;
-  backgroundDark: string;
+  textPill: string;
+  background: string;
+  backgroundPill: string;
+  backgroundGlow: string;
 };

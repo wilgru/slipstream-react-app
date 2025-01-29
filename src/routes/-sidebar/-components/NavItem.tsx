@@ -32,13 +32,13 @@ export const NavItem = ({
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       activeProps={{
-        className: cn(colour.text, colour.backgroundLight),
+        className: cn(colour.textPill, colour.backgroundPill),
       }}
       className={cn(
         "flex px-2 py-1 items-center gap-2 rounded-full text-sm",
         expanded ? "justify-between" : "justify-center",
-        isHovered && colour.text,
-        isHovered && colour.backgroundLight
+        isHovered && colour.textPill,
+        isHovered && colour.backgroundPill
       )}
     >
       {({ isActive }: { isActive: boolean }) => (
@@ -48,8 +48,8 @@ export const NavItem = ({
               <Icon
                 iconName={iconName}
                 className={
-                  isHovered || isActive || (colour.text && !ghost)
-                    ? colour.text
+                  isHovered || isActive || (colour && !ghost)
+                    ? colour.textPill
                     : "text-stone-500"
                 }
                 weight={isHovered || isActive ? "fill" : "regular"}

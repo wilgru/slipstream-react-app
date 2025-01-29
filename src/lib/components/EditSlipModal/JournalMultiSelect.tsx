@@ -119,7 +119,7 @@ export const JournalMultiSelect = ({
             return cn("text-xs", "text-stone-500", "cursor-pointer");
           },
           multiValue: (props) => {
-            const { backgroundLight, text } = getColourFromJournal(
+            const { backgroundPill, text } = getColourFromJournal(
               journals,
               props.data.value
             );
@@ -127,7 +127,7 @@ export const JournalMultiSelect = ({
               "rounded-full",
               "text-xs",
               "text-stone-700",
-              backgroundLight,
+              backgroundPill,
               text // TODO: This only styles the 'X' for some reason
             );
           },

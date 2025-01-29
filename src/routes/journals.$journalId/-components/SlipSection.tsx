@@ -25,7 +25,7 @@ export default function SlipSection({
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
         "relative p-2 rounded-md",
-        `hover:${colour.backgroundLighter}`
+        `hover:${colour.backgroundGlow}`
       )}
     >
       <div className="flex gap-2">
