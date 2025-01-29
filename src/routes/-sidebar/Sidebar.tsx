@@ -5,9 +5,9 @@ import { useState } from "react";
 import { Button } from "src/components/Button/Button";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import { Toggle } from "src/components/Toggle/Toggle";
-import { colours } from "src/lib/colour/colours.constant";
-import { useGetJournals } from "src/lib/journal/hooks/useGetJournals";
-import { useLogin } from "src/lib/user/hooks/useLogin";
+import { colours } from "src/lib/colours/colours.constant";
+import { useGetJournals } from "src/lib/journals/hooks/useGetJournals";
+import { useLogin } from "src/lib/users/hooks/useLogin";
 import { cn } from "src/utils/cn";
 import { NavItem } from "./-components/NavItem";
 

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
-import { selectedJournalIdsAtom } from "src/lib/journal/atoms/selectedJournalIdsAtom";
 import { pb } from "src/connection/pocketbase";
-import { mapSlip } from "src/lib/slip/utils/mapSlip";
-import type { Slip } from "src/lib/slip/types/Slip.type";
+import { selectedJournalIdsAtom } from "src/lib/journals/atoms/selectedJournalIdsAtom";
+import { mapSlip } from "src/lib/slips/utils/mapSlip";
+import type { Slip } from "src/lib/slips/types/Slip.type";
 
 type UseGetSlipsResponse = { slips: Slip[] };
 

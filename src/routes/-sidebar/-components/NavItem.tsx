@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Icon } from "src/components/Icon/Icon";
-import { colours } from "src/lib/colour/colours.constant";
+import { colours } from "src/lib/colours/colours.constant";
 import { cn } from "src/utils/cn";
-import type { Colour } from "src/lib/colour/Colour.type";
+import type { Colour } from "src/lib/colours/Colour.type";
 
 type NavItemProps = {
   iconName?: string;

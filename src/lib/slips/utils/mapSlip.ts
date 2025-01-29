@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import Delta from "quill-delta";
 import type { RecordModel } from "pocketbase";
-import type { Slip } from "src/lib/slip/types/Slip.type";
+import type { Slip } from "src/lib/slips/types/Slip.type";
 
 export const mapSlip = (slip: RecordModel): Slip => {
   return {
@@ -12,6 +12,7 @@ export const mapSlip = (slip: RecordModel): Slip => {
     isPinned: slip.isPinned,
     isFlagged: slip.isFlagged,
     journals: slip?.expand?.journals ?? [],
+    tags: slip?.expand?.tags ?? [],
     deleted: null,
     created: dayjs(slip.created),
     updated: dayjs(slip.updated),

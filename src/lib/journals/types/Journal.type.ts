@@ -1,5 +1,5 @@
 import type { Dayjs } from "dayjs";
-import type { Colour } from "src/lib/colour/Colour.type";
+import type { Colour } from "src/lib/colours/Colour.type";
 
 export type Journal = {
   id: string;

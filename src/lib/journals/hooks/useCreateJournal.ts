@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connection/pocketbase";
-import { useUser } from "src/lib/user/hooks/useUser";
+import { useUser } from "src/lib/users/hooks/useUser";
 import { generateId } from "src/utils/generateId";
 import { mapJournal } from "../utils/mapJournal";
 import type { Journal } from "../types/Journal.type";

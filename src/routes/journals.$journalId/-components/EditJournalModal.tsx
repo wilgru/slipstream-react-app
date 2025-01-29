@@ -4,8 +4,8 @@ import { Button } from "src/components/Button/Button";
 import { ColourPicker } from "src/components/ColourPicker/ColourPicker";
 import IconPicker from "src/components/IconPicker/IconPicker";
 import { Input } from "src/components/Input/Input";
-import { useUpdateJournal } from "src/lib/journal/hooks/useUpdateJournal";
-import type { Journal } from "src/lib/journal/types/Journal.type";
+import { useUpdateJournal } from "src/lib/journals/hooks/useUpdateJournal";
+import type { Journal } from "src/lib/journals/types/Journal.type";
 
 type EditJournalModalProps = {
   journal: Journal;

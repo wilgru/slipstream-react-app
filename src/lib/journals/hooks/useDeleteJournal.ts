@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
-import { selectedJournalIdsAtom } from "src/lib/journal/atoms/selectedJournalIdsAtom";
 import { pb } from "src/connection/pocketbase";
+import { selectedJournalIdsAtom } from "src/lib/journals/atoms/selectedJournalIdsAtom";
 import type { Journal } from "../types/Journal.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { Slip } from "src/lib/slip/types/Slip.type";
+import type { Slip } from "src/lib/slips/types/Slip.type";
 
 type UseDeleteJournalResponse = {
   deleteJournal: UseMutateAsyncFunction<

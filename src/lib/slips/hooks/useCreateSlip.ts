@@ -4,7 +4,7 @@ import Delta from "quill-delta";
 import { generateId } from "src/utils/generateId";
 import { useGetSlips } from "./useGetSlips";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { Slip } from "src/lib/slip/types/Slip.type";
+import type { Slip } from "src/lib/slips/types/Slip.type";
 
 type UseCreateSlipResponse = {
   createSlip: UseMutateAsyncFunction<Slip | undefined, Error, void, unknown>;
@@ -30,6 +30,7 @@ export const useCreateSlip = (): UseCreateSlipResponse => {
       isPinned: false,
       isFlagged: false,
       journals: [],
+      tags: [],
       deleted: null,
       created: dayjs(),
       updated: dayjs(),
