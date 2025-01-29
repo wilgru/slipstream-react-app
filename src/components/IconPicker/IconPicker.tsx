@@ -1,5 +1,5 @@
 import { icons } from "src/lib/icon/icons.constant";
-import { cn } from "src/lib/utils/cn";
+import { cn } from "src/utils/cn";
 import { Icon } from "../Icon/Icon";
 import type { Colour } from "src/lib/colour/Colour.type";
 

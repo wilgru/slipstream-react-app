@@ -1,9 +1,9 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { Button } from "src/lib/components/Button/Button";
+import { Button } from "src/components/Button/Button";
 import { useGetJournal } from "src/lib/journal/hooks/useGetJournal";
 import isAuthenticated from "src/lib/user/utils/isAuthenticated";
-import { cn } from "src/lib/utils/cn";
+import { cn } from "src/utils/cn";
 import { EditJournalModal } from "./-components/EditJournalModal";
 import SlipSection from "./-components/SlipSection";
 import type { Slip } from "src/lib/slip/types/Slip.type";

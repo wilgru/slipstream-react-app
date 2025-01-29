@@ -1,7 +1,7 @@
 import * as TogglePrimitive from "@radix-ui/react-toggle";
 import { cva } from "class-variance-authority";
 import { useState } from "react";
-import { cn } from "src/lib/utils/cn";
+import { cn } from "src/utils/cn";
 import { Icon } from "../Icon/Icon";
 
 type ToggleProps = {

@@ -1,4 +1,4 @@
-import { cn } from "src/lib/utils/cn";
+import { cn } from "src/utils/cn";
 import type { Colour } from "src/lib/colour/Colour.type";
 
 type ColourButtonProps = {

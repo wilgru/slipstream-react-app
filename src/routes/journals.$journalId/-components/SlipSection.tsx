@@ -1,9 +1,9 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
-import { Button } from "src/lib/components/Button/Button";
-import EditSlipModal from "src/lib/components/EditSlipModal/EditSlipModal";
-import { Icon } from "src/lib/components/Icon/Icon";
-import { cn } from "src/lib/utils/cn";
+import { Button } from "src/components/Button/Button";
+import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
+import { Icon } from "src/components/Icon/Icon";
+import { cn } from "src/utils/cn";
 import type { Colour } from "src/lib/colour/Colour.type";
 import type { Slip } from "src/lib/slip/types/Slip.type";
 

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { pb } from "src/lib/pocketbase/pocketbase";
+import { pb } from "src/pocketbase/pocketbase";
 import { mapJournal } from "../utils/mapJournal";
 import type { Journal } from "../types/Journal.type";
 import type {

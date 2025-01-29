@@ -1,7 +1,7 @@
 import * as Toggle from "@radix-ui/react-toggle";
 import { useState } from "react";
-import { Button } from "src/lib/components/Button/Button";
-import { Icon } from "src/lib/components/Icon/Icon";
+import { Button } from "src/components/Button/Button";
+import { Icon } from "src/components/Icon/Icon";
 import type { Journal } from "src/lib/journal/types/Journal.type";
 
 type TagPillProps = {

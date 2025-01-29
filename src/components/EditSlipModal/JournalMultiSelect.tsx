@@ -5,7 +5,7 @@ import CreatableSelect from "react-select/creatable";
 import { colours } from "src/lib/colour/colours.constant";
 import { useCreateJournal } from "src/lib/journal/hooks/useCreateJournal";
 import { useGetJournals } from "src/lib/journal/hooks/useGetJournals";
-import { cn } from "src/lib/utils/cn";
+import { cn } from "src/utils/cn";
 import type { Colour } from "src/lib/colour/Colour.type";
 import type { Journal } from "src/lib/journal/types/Journal.type";
 import type { Slip } from "src/lib/slip/types/Slip.type";

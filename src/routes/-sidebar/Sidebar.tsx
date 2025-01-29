@@ -2,13 +2,13 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { Button } from "src/components/Button/Button";
+import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
+import { Toggle } from "src/components/Toggle/Toggle";
 import { colours } from "src/lib/colour/colours.constant";
-import { Button } from "src/lib/components/Button/Button";
-import EditSlipModal from "src/lib/components/EditSlipModal/EditSlipModal";
-import { Toggle } from "src/lib/components/Toggle/Toggle";
 import { useGetJournals } from "src/lib/journal/hooks/useGetJournals";
 import { useLogin } from "src/lib/user/hooks/useLogin";
-import { cn } from "src/lib/utils/cn";
+import { cn } from "src/utils/cn";
 import { NavItem } from "./-components/NavItem";
 
 export const Sidebar = () => {

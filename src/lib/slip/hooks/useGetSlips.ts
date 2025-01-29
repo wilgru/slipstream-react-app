@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { selectedJournalIdsAtom } from "src/lib/journal/atoms/selectedJournalIdsAtom";
-import { pb } from "src/lib/pocketbase/pocketbase";
+import { pb } from "src/pocketbase/pocketbase";
 import { mapSlip } from "src/lib/slip/utils/mapSlip";
 import type { Slip } from "src/lib/slip/types/Slip.type";
 

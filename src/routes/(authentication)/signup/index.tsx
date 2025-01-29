@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent, useEffect } from "react";
-import { Button } from "src/lib/components/Button/Button";
+import { Button } from "src/components/Button/Button";
 import { useSignUp } from "src/lib/user/hooks/useSignUp";
 import { useUser } from "src/lib/user/hooks/useUser";
 

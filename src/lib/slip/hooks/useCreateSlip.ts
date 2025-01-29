@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Delta from "quill-delta";
-import { generateId } from "src/lib/utils/generateId";
+import { generateId } from "src/utils/generateId";
 import { useGetSlips } from "./useGetSlips";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 import type { Slip } from "src/lib/slip/types/Slip.type";

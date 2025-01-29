@@ -1,5 +1,5 @@
 import { type Colour } from "src/lib/colour/Colour.type";
-import { getAllColours } from "src/lib/colour/colours.constant";
+import { getAllColours } from "src/lib/colour/getColour";
 import { ColourPickerColourButton } from "./ColourPickerColourButton";
 
 type ColourPickerProps = {

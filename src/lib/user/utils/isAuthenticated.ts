@@ -1,4 +1,4 @@
-import { pb } from "src/lib/pocketbase/pocketbase";
+import { pb } from "src/pocketbase/pocketbase";
 
 export default function isAuthenticated() {
   return !!pb.authStore?.record;

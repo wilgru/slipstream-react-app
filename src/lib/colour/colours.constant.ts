@@ -1,6 +1,6 @@
 import type { Colour } from "./Colour.type";
 
-export const colours = {
+export const colours: { [key: string]: Colour } = {
   red: {
     name: "red",
     text: "text-red-400",
@@ -89,26 +89,4 @@ export const colours = {
     backgroundPill: "bg-gray-200",
     backgroundGlow: "bg-gray-100",
   },
-};
-
-enum ColourName {
-  red = "red",
-  orange = "orange",
-  yellow = "yellow",
-  lime = "lime",
-  green = "green",
-  blue = "blue",
-  cyan = "cyan",
-  pink = "pink",
-  purple = "purple",
-  brown = "brown",
-  grey = "grey",
-}
-
-export const getColour = (name: ColourName): Colour => {
-  return colours[name];
-};
-
-export const getAllColours = (): Colour[] => {
-  return Object.values(colours);
 };
