@@ -1,13 +1,15 @@
 import { cva } from "class-variance-authority";
 import { useState } from "react";
+import { customisationColours } from "src/lib/colour/Colours";
 import { cn } from "src/lib/utils/cn";
 import { Icon } from "../Icon/Icon";
+import type { Colour } from "src/lib/colour/types/Colour";
 
 type ButtonProps = {
   children?: string | JSX.Element;
   variant?: "block" | "link" | "ghost";
   intent?: "primary" | "secondary" | "destructive";
-  colour?: string;
+  colour?: Colour;
   size?: "sm" | "md" | "lg";
   type?: "button" | "submit";
   className?: string;
@@ -36,7 +38,7 @@ const buttonVariants = cva(
         destructive: null,
       },
       variant: {
-        block: "hover:bg-orange-100 hover:text-orange-500",
+        block: null,
         ghost: "text-stone-500",
         link: "underline-offset-4 hover:underline",
       },
@@ -126,12 +128,15 @@ export const Button = ({
   variant = "block",
   intent = "primary",
   size = "md",
+  colour,
   className,
   disabled = false,
   onClick,
   iconName,
 }: ButtonProps) => {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
+
+  const foundColour = colour ?? customisationColours[1];
 
   return (
     <button
@@ -144,6 +149,8 @@ export const Button = ({
           className,
           content: iconName ? "icon" : "text",
         }),
+        `hover:${foundColour.textClass}`,
+        `hover:${foundColour.backgroundClass}`,
         className
       )}
       disabled={disabled}
@@ -155,7 +162,7 @@ export const Button = ({
         <Icon
           iconName={iconName}
           size={size}
-          className={isButtonHovered ? "text-orange-500" : "text-stone-500"}
+          className={isButtonHovered ? foundColour.textClass : "text-stone-500"}
           weight={isButtonHovered ? "fill" : "regular"}
         />
       )}

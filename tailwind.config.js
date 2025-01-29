@@ -91,5 +91,18 @@ export default {
     "bg-orange-500",
     "text-orange-500",
     "hover:text-orange-500",
+
+    //! actually need
+    "hover:bg-orange-100",
+    "hover:bg-red-100",
+    "hover:bg-yellow-100",
+    "hover:bg-lime-100",
+    "hover:bg-green-100",
+    "hover:bg-blue-100",
+    "hover:bg-cyan-100",
+    "hover:bg-purple-100",
+    "hover:bg-pink-100",
+    "hover:bg-amber-200",
+    "hover:bg-gray-200",
   ],
 };

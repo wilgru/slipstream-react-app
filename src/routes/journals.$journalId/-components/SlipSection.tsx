@@ -3,13 +3,17 @@ import { useState } from "react";
 import { Button } from "src/lib/components/Button/Button";
 import EditSlipModal from "src/lib/components/EditSlipModal/EditSlipModal";
 import { Icon } from "src/lib/components/Icon/Icon";
+import { cn } from "src/lib/utils/cn";
+import type { Colour } from "src/lib/colour/types/Colour";
 import type { Slip } from "src/lib/slip/types/Slip.type";
 
 export default function SlipSection({
   slip,
+  colour,
   journalId,
 }: {
   slip: Slip;
+  colour: Colour;
   journalId: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -19,7 +23,10 @@ export default function SlipSection({
       key={slip.id}
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative hover:bg-orange-50 p-2 rounded-md"
+      className={cn(
+        "relative p-2 rounded-md",
+        `hover:${colour.backgroundClass}`
+      )}
     >
       <div className="flex gap-2">
         <h1
@@ -45,7 +52,12 @@ export default function SlipSection({
         <div className="absolute flex flex-col gap-2 -left-7 top-2 bg-white border border-stone-300 rounded-full shadow-light">
           <Dialog.Root>
             <Dialog.Trigger asChild>
-              <Button iconName="pencil" variant="ghost" size="sm" />
+              <Button
+                colour={colour}
+                iconName="pencil"
+                variant="ghost"
+                size="sm"
+              />
             </Dialog.Trigger>
 
             <EditSlipModal slip={slip} journalToUpdateId={journalId} />
