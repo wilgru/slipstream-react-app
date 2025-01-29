@@ -1,6 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { customisationColours } from "src/lib/colour/Colours";
 import { Button } from "src/lib/components/Button/Button";
 import { useGetJournal } from "src/lib/journal/hooks/useGetJournal";
 import isAuthenticated from "src/lib/user/utils/isAuthenticated";
@@ -32,10 +31,6 @@ export default function JournalComponent() {
     return null;
   }
 
-  const customisationColour =
-    customisationColours.find((colour) => colour.name === journal.colour) ??
-    customisationColours[0];
-
   const sectionedSlips: {
     noTitles: Slip[];
     withTitles: Slip[];
@@ -59,12 +54,7 @@ export default function JournalComponent() {
       <div className="max-w-[700px] overflow-y-scroll">
         <div className="py-4 mx-4">
           <div className="flex justify-between items-center">
-            <h1
-              className={cn(
-                customisationColour?.textClass,
-                "font-title text-5xl"
-              )}
-            >
+            <h1 className={cn(journal.colour.text, "font-title text-5xl")}>
               {journal.name}
             </h1>
 
@@ -73,7 +63,7 @@ export default function JournalComponent() {
                 <Dialog.Trigger asChild>
                   <Button
                     variant="ghost"
-                    colour={customisationColour}
+                    colour={journal.colour}
                     iconName="pencil"
                   />
                 </Dialog.Trigger>
@@ -82,7 +72,7 @@ export default function JournalComponent() {
               </Dialog.Root>
               <Button
                 variant="ghost"
-                colour={customisationColour}
+                colour={journal.colour}
                 iconName="arrowsDownUp"
               />
             </div>
@@ -95,7 +85,7 @@ export default function JournalComponent() {
           {sectionedSlips.noTitles.map((slip) => (
             <SlipSection
               slip={slip}
-              colour={customisationColour}
+              colour={journal.colour}
               journalId={journal.id}
             />
           ))}
@@ -112,7 +102,7 @@ export default function JournalComponent() {
           {sectionedSlips.withTitles.map((slip) => (
             <SlipSection
               slip={slip}
-              colour={customisationColour}
+              colour={journal.colour}
               journalId={journal.id}
             />
           ))}

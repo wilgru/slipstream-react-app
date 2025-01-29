@@ -1,9 +1,9 @@
 import { cva } from "class-variance-authority";
 import { useState } from "react";
-import { customisationColours } from "src/lib/colour/Colours";
+import { colours } from "src/lib/colour/colours.constant";
 import { cn } from "src/lib/utils/cn";
 import { Icon } from "../Icon/Icon";
-import type { Colour } from "src/lib/colour/types/Colour";
+import type { Colour } from "src/lib/colour/Colour.type";
 
 type ButtonProps = {
   children?: string | JSX.Element;
@@ -128,15 +128,13 @@ export const Button = ({
   variant = "block",
   intent = "primary",
   size = "md",
-  colour,
+  colour = colours.orange,
   className,
   disabled = false,
   onClick,
   iconName,
 }: ButtonProps) => {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
-
-  const foundColour = colour ?? customisationColours[1];
 
   return (
     <button
@@ -149,8 +147,8 @@ export const Button = ({
           className,
           content: iconName ? "icon" : "text",
         }),
-        `hover:${foundColour.textClass}`,
-        `hover:${foundColour.backgroundClass}`,
+        `hover:${colour.text}`,
+        `hover:${colour.backgroundLight}`,
         className
       )}
       disabled={disabled}
@@ -162,7 +160,7 @@ export const Button = ({
         <Icon
           iconName={iconName}
           size={size}
-          className={isButtonHovered ? foundColour.textClass : "text-stone-500"}
+          className={isButtonHovered ? colour.text : "text-stone-500"}
           weight={isButtonHovered ? "fill" : "regular"}
         />
       )}

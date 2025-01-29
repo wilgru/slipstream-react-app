@@ -4,7 +4,7 @@ import { Button } from "src/lib/components/Button/Button";
 import EditSlipModal from "src/lib/components/EditSlipModal/EditSlipModal";
 import { Icon } from "src/lib/components/Icon/Icon";
 import { cn } from "src/lib/utils/cn";
-import type { Colour } from "src/lib/colour/types/Colour";
+import type { Colour } from "src/lib/colour/Colour.type";
 import type { Slip } from "src/lib/slip/types/Slip.type";
 
 export default function SlipSection({
@@ -25,7 +25,7 @@ export default function SlipSection({
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
         "relative p-2 rounded-md",
-        `hover:${colour.backgroundClass}`
+        `hover:${colour.backgroundLighter}`
       )}
     >
       <div className="flex gap-2">

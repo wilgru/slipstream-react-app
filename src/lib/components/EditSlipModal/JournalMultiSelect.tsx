@@ -2,11 +2,11 @@ import { Plus, X } from "@phosphor-icons/react";
 import { useCallback, useState } from "react";
 import { components } from "react-select";
 import CreatableSelect from "react-select/creatable";
-import { customisationColours } from "src/lib/colour/constants/customisationColours";
+import { colours } from "src/lib/colour/colours.constant";
 import { useCreateJournal } from "src/lib/journal/hooks/useCreateJournal";
 import { useGetJournals } from "src/lib/journal/hooks/useGetJournals";
 import { cn } from "src/lib/utils/cn";
-import type { Colour } from "src/lib/colour/types/Colour";
+import type { Colour } from "src/lib/colour/Colour.type";
 import type { Journal } from "src/lib/journal/types/Journal.type";
 import type { Slip } from "src/lib/slip/types/Slip.type";
 
@@ -20,23 +20,13 @@ type Option = {
   value: string;
 };
 
-const getCustomisationColourFromJournalId = (
+const getColourFromJournal = (
   journals: Journal[],
   journalId: string
 ): Colour => {
   const journal = journals.find((journal) => journal.id === journalId);
 
-  const customisationColour = customisationColours.find(
-    (colour) => colour.name === journal?.colour
-  );
-
-  return (
-    customisationColour ?? {
-      name: "grey",
-      textClass: "text-gray-400",
-      backgroundClass: "bg-gray-400",
-    }
-  );
+  return journal ? journal.colour : colours.orange;
 };
 
 export const JournalMultiSelect = ({
@@ -129,11 +119,16 @@ export const JournalMultiSelect = ({
             return cn("text-xs", "text-stone-500", "cursor-pointer");
           },
           multiValue: (props) => {
+            const { backgroundLight, text } = getColourFromJournal(
+              journals,
+              props.data.value
+            );
             return cn(
               "rounded-full",
               "text-xs",
-              getCustomisationColourFromJournalId(journals, props.data.value)
-                .backgroundClass
+              "text-stone-700",
+              backgroundLight,
+              text // TODO: This only styles the 'X' for some reason
             );
           },
           multiValueRemove: () => {
@@ -197,6 +192,7 @@ export const JournalMultiSelect = ({
           multiValue: (base) => ({
             ...base,
             backgroundColor: undefined,
+            color: undefined,
             borderRadius: undefined,
           }),
           multiValueRemove: (base) => ({

@@ -1,6 +1,5 @@
 import * as Toggle from "@radix-ui/react-toggle";
 import { useState } from "react";
-import { customisationColours } from "src/lib/colour/constants/customisationColours";
 import { Button } from "src/lib/components/Button/Button";
 import { Icon } from "src/lib/components/Icon/Icon";
 import type { Journal } from "src/lib/journal/types/Journal.type";
@@ -22,14 +21,6 @@ export const TagPill = ({
 }: TagPillProps): JSX.Element => {
   const [closeButtonVisible, setCloseButtonVisible] = useState<boolean>(false);
 
-  const journalCustomisationColour = customisationColours.find(
-    (colour) => colour.name === journal.colour
-  );
-
-  const journalButtonColour = journalCustomisationColour
-    ? journalCustomisationColour?.textClass
-    : "text-stone-300";
-
   // TODO: make always closable?
   return (
     <div
@@ -40,7 +31,7 @@ export const TagPill = ({
       {closable ? (
         <Button
           variant="block"
-          colour={journalButtonColour}
+          colour={journal.colour}
           size={size}
           onClick={() => onClick && onClick(journal.id)}
           iconName={closable && closeButtonVisible ? "x" : "ChatCircle"}
@@ -53,7 +44,7 @@ export const TagPill = ({
           onClick={() => onClick && onClick(journal.id)}
           pressed={isSelected}
         >
-          <Icon iconName="ChatCircle" className={journalButtonColour} />
+          <Icon iconName="ChatCircle" className={journal.colour.text} />
           {journal.name}
         </Toggle.Root>
       )}

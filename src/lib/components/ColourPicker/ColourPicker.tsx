@@ -1,5 +1,5 @@
-import { customisationColours } from "src/lib/colour/constants/customisationColours";
-import { type Colour } from "src/lib/colour/types/Colour";
+import { type Colour } from "src/lib/colour/Colour.type";
+import { getAllColours } from "src/lib/colour/colours.constant";
 import { ColourPickerColourButton } from "./ColourPickerColourButton";
 
 type ColourPickerProps = {
@@ -11,12 +11,14 @@ export const ColourPicker = ({
   selectedColourName,
   onSelectColour,
 }: ColourPickerProps) => {
+  const colours = getAllColours();
+
   return (
     <div className="flex flex-wrap gap-2">
-      {customisationColours.map((customisationColour) => (
+      {colours.map((colour) => (
         <ColourPickerColourButton
-          colour={customisationColour}
-          selected={selectedColourName === customisationColour.name}
+          colour={colour}
+          selected={selectedColourName === colour.name}
           onClick={onSelectColour}
         />
       ))}

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { pb } from "src/lib/pocketbase/pocketbase";
 import { mapSlip } from "src/lib/slip/utils/mapSlip";
+import { mapJournal } from "../utils/mapJournal";
 import type { Journal } from "../types/Journal.type";
 import type {
   QueryObserverResult,
@@ -32,15 +33,7 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
     });
     const rawSlips = rawJournal.expand?.slips_via_journals;
 
-    const journal: Journal = {
-      id: rawJournal.id,
-      name: rawJournal.name,
-      colour: rawJournal.colour,
-      icon: rawJournal.icon,
-      slipCount: rawSlips.length,
-      created: rawJournal.createdAt,
-      updated: rawJournal.updatedAt,
-    };
+    const journal: Journal = mapJournal(rawJournal);
     const slips: Slip[] = rawSlips.map(mapSlip);
 
     return {

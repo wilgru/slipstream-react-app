@@ -1,5 +1,5 @@
 import { cn } from "src/lib/utils/cn";
-import type { Colour } from "src/lib/colour/types/Colour";
+import type { Colour } from "src/lib/colour/Colour.type";
 
 type ColourButtonProps = {
   colour: Colour;
@@ -15,10 +15,9 @@ export const ColourPickerColourButton = ({
   return (
     <button
       onClick={() => onClick(colour)}
-      style={{ backgroundColor: colour.backgroundClass }}
       className={cn(
         "flex justify-center items-center h-6 w-6 rounded-full",
-        colour.backgroundClass
+        colour.backgroundDark
       )}
     >
       {selected && <div className="h-2 w-2 rounded-full bg-white" />}

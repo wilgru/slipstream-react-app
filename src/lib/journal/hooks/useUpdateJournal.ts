@@ -39,7 +39,10 @@ export const useUpdateJournal = (): UseUpdateJournalResponse => {
 
     const rawUpdatedJournal = await pb
       .collection("journals")
-      .update(journalId, { ...updateJournalData });
+      .update(journalId, {
+        ...updateJournalData,
+        colour: updateJournalData.colour.name,
+      });
 
     return mapJournal(rawUpdatedJournal);
   };

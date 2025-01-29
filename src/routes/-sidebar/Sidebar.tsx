@@ -2,6 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { colours } from "src/lib/colour/colours.constant";
 import { Button } from "src/lib/components/Button/Button";
 import EditSlipModal from "src/lib/components/EditSlipModal/EditSlipModal";
 import { Toggle } from "src/lib/components/Toggle/Toggle";
@@ -32,6 +33,7 @@ export const Sidebar = () => {
       <div>
         <section className="p-2 flex flex-col gap-1 text-black">
           <NavItem
+            ghost
             iconName="chatCircle"
             title={"Stream"}
             to={`/stream/`}
@@ -39,6 +41,7 @@ export const Sidebar = () => {
           ></NavItem>
 
           <NavItem
+            ghost
             iconName="flag"
             title={"Flagged"}
             to={`/flagged/`}
@@ -53,7 +56,7 @@ export const Sidebar = () => {
           {journals.map((journal) => (
             <NavItem
               iconName={journal.icon}
-              iconColour={journal.colour}
+              colour={journal.colour}
               title={journal.name}
               preview={journal.slipCount}
               to={`/journals/${journal.id}`}
@@ -105,7 +108,7 @@ export const Sidebar = () => {
             <Button
               variant="ghost"
               iconName="plus"
-              colour={"orange-500"}
+              colour={colours.orange}
               onClick={() => {
                 setShowEditSlipModal(true);
               }}

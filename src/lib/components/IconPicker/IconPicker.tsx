@@ -1,7 +1,7 @@
 import { icons } from "src/lib/icon/icons.constant";
 import { cn } from "src/lib/utils/cn";
 import { Icon } from "../Icon/Icon";
-import type { Colour } from "src/lib/colour/types/Colour";
+import type { Colour } from "src/lib/colour/Colour.type";
 
 type IconPickerProps = {
   selectedIconName: string;
@@ -22,13 +22,13 @@ export default function IconPicker({
           onClick={() => onSelectIcon(icon.name)}
           className={cn(
             "flex justify-center items-center h-8 w-8 p-1 rounded-full",
-            selectedIconName === icon.name && colour.backgroundClass
+            selectedIconName === icon.name && colour.backgroundLight
           )}
         >
           <Icon
             iconName={icon.name}
             weight={selectedIconName === icon.name ? "fill" : "regular"}
-            className={cn(colour.textClass)}
+            className={cn(colour.text)}
           />
         </button>
       ))}

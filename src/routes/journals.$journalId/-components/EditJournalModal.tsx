@@ -55,10 +55,10 @@ export const EditJournalModal = ({ journal }: EditJournalModalProps) => {
           <div>
             <h3 className="text-sm">Colour</h3>
             <ColourPicker
-              selectedColourName={editedJournal.colour}
+              selectedColourName={editedJournal.colour.name}
               onSelectColour={(colour) => {
                 setEditedJournal((currentJournalToEdit) => {
-                  return { ...currentJournalToEdit, colour: colour.name };
+                  return { ...currentJournalToEdit, colour: colour };
                 });
               }}
             />
@@ -68,11 +68,7 @@ export const EditJournalModal = ({ journal }: EditJournalModalProps) => {
             <h3 className="text-sm">Icon</h3>
             <IconPicker
               selectedIconName={editedJournal.icon}
-              colour={{
-                name: "black",
-                textClass: "text-stone-500",
-                backgroundClass: "bg-orange-100",
-              }}
+              colour={editedJournal.colour}
               onSelectIcon={(iconName) => {
                 setEditedJournal((currentJournalToEdit) => {
                   return { ...currentJournalToEdit, icon: iconName };
