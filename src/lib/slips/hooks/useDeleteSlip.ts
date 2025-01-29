@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { pb } from "src/connection/pocketbase";
 import { useGetJournals } from "src/lib/journals/hooks/useGetJournals";
 import { useGetSlips } from "./useGetSlips";
-import type { Slip } from "../types/Slip.type";
+import type { Slip } from "../Slip.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 
 type deleteSlipProps = {

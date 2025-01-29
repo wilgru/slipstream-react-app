@@ -5,7 +5,7 @@ import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import { Icon } from "src/components/Icon/Icon";
 import { cn } from "src/utils/cn";
 import type { Colour } from "src/lib/colours/Colour.type";
-import type { Slip } from "src/lib/slips/types/Slip.type";
+import type { Slip } from "src/lib/slips/Slip.type";
 
 export default function SlipSection({
   slip,

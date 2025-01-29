@@ -1,7 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "src/components/Button/Button";
 import { useDeleteJournal } from "src/lib/journals/hooks/useDeleteJournal";
-import type { Journal } from "src/lib/journals/types/Journal.type";
+import type { Journal } from "src/lib/journals/Journal.type";
 
 type DeleteJournalModalProps = {
   journal: Journal;

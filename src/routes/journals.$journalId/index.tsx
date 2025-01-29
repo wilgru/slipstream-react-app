@@ -6,7 +6,7 @@ import isAuthenticated from "src/lib/users/utils/isAuthenticated";
 import { cn } from "src/utils/cn";
 import { EditJournalModal } from "./-components/EditJournalModal";
 import SlipSection from "./-components/SlipSection";
-import type { Slip } from "src/lib/slips/types/Slip.type";
+import type { Slip } from "src/lib/slips/Slip.type";
 
 export const Route = createFileRoute("/journals/$journalId/")({
   component: JournalComponent,

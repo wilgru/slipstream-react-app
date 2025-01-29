@@ -5,7 +5,7 @@ import { ColourPicker } from "src/components/ColourPicker/ColourPicker";
 import IconPicker from "src/components/IconPicker/IconPicker";
 import { Input } from "src/components/Input/Input";
 import { useUpdateJournal } from "src/lib/journals/hooks/useUpdateJournal";
-import type { Journal } from "src/lib/journals/types/Journal.type";
+import type { Journal } from "src/lib/journals/Journal.type";
 
 type EditJournalModalProps = {
   journal: Journal;

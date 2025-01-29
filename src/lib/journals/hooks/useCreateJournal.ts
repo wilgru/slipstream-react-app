@@ -3,7 +3,7 @@ import { pb } from "src/connection/pocketbase";
 import { useUser } from "src/lib/users/hooks/useUser";
 import { generateId } from "src/utils/generateId";
 import { mapJournal } from "../utils/mapJournal";
-import type { Journal } from "../types/Journal.type";
+import type { Journal } from "../Journal.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 
 type UseCreateJournalResponse = {

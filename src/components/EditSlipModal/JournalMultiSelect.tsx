@@ -7,8 +7,8 @@ import { useCreateJournal } from "src/lib/journals/hooks/useCreateJournal";
 import { useGetJournals } from "src/lib/journals/hooks/useGetJournals";
 import { cn } from "src/utils/cn";
 import type { Colour } from "src/lib/colours/Colour.type";
-import type { Journal } from "src/lib/journals/types/Journal.type";
-import type { Slip } from "src/lib/slips/types/Slip.type";
+import type { Journal } from "src/lib/journals/Journal.type";
+import type { Slip } from "src/lib/slips/Slip.type";
 
 type JournalMultiSelectProps = {
   initialSlip: Slip;

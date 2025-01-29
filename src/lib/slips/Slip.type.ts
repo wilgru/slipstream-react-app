@@ -1,7 +1,7 @@
 import type { Dayjs } from "dayjs";
 import type Delta from "quill-delta";
-import type { Journal } from "src/lib/journals/types/Journal.type";
-import type { Tag } from "src/lib/tags/types/Tag";
+import type { Journal } from "src/lib/journals/Journal.type";
+import type { Tag } from "src/lib/tags/Tag.type";
 
 export type Slip = {
   id: string;
