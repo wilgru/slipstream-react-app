@@ -1,4 +1,4 @@
-import { getColour } from "src/models/colours/getColour";
+import { getColour } from "src/models/colours/utils/getColour";
 import type { RecordModel } from "pocketbase";
 import type { Journal } from "src/models/journals/Journal.type";
 
