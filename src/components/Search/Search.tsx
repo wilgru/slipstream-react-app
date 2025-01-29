@@ -1,4 +1,4 @@
-import MagnifyingGlass from "src/lib/icons/magnifyingGlass.svg?react";
+import MagnifyingGlass from "src/models/icons/magnifyingGlass.svg?react";
 
 export const Search = () => {
   return (

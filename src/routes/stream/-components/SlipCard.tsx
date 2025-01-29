@@ -4,7 +4,7 @@ import Delta from "quill-delta";
 import { useEffect, useRef, useState } from "react";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import { cn } from "src/utils/cn";
-import type { Slip } from "src/lib/slips/Slip.type";
+import type { Slip } from "src/models/slips/Slip.type";
 
 type SlipCardProps = {
   slip: Slip;

@@ -1,5 +1,5 @@
 import { cn } from "src/utils/cn";
-import type { Colour } from "src/lib/colours/Colour.type";
+import type { Colour } from "src/models/colours/Colour.type";
 
 type ColourButtonProps = {
   colour: Colour;

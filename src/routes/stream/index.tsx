@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useGetSlips } from "src/lib/slips/hooks/useGetSlips";
-import isAuthenticated from "src/lib/users/utils/isAuthenticated";
+import { useGetSlips } from "src/models/slips/hooks/useGetSlips";
+import isAuthenticated from "src/models/users/utils/isAuthenticated";
 import SlipCard from "src/routes/stream/-components/SlipCard";
 
 export const Route = createFileRoute("/stream/")({

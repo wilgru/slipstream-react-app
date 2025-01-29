@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { pb } from "src/connection/pocketbase";
+import { pb } from "src/connections/pocketbase";
 
 const useLogin = () => {
   const mutationFn = async ({

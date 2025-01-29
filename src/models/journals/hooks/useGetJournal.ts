@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { pb } from "src/connection/pocketbase";
-import { mapSlip } from "src/lib/slips/utils/mapSlip";
+import { pb } from "src/connections/pocketbase";
+import { mapSlip } from "src/models/slips/utils/mapSlip";
 import { mapJournal } from "../utils/mapJournal";
 import type { Journal } from "../Journal.type";
 import type {
   QueryObserverResult,
   RefetchOptions,
 } from "@tanstack/react-query";
-import type { Slip } from "src/lib/slips/Slip.type";
+import type { Slip } from "src/models/slips/Slip.type";
 
 type UseJournalResponse = {
   journal: Journal | undefined;

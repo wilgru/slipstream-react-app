@@ -1,7 +1,7 @@
-import { icons } from "src/lib/icons/icons.constant";
+import { icons } from "src/models/icons/icons.constant";
 import { cn } from "src/utils/cn";
 import { Icon } from "../Icon/Icon";
-import type { Colour } from "src/lib/colours/Colour.type";
+import type { Colour } from "src/models/colours/Colour.type";
 
 type IconPickerProps = {
   selectedIconName: string;

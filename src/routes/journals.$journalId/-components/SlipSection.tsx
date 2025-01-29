@@ -4,8 +4,8 @@ import { Button } from "src/components/Button/Button";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import { Icon } from "src/components/Icon/Icon";
 import { cn } from "src/utils/cn";
-import type { Colour } from "src/lib/colours/Colour.type";
-import type { Slip } from "src/lib/slips/Slip.type";
+import type { Colour } from "src/models/colours/Colour.type";
+import type { Slip } from "src/models/slips/Slip.type";
 
 export default function SlipSection({
   slip,

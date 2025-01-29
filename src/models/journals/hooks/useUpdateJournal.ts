@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { pb } from "src/connection/pocketbase";
-import { useGetJournals } from "src/lib/journals/hooks/useGetJournals";
+import { pb } from "src/connections/pocketbase";
+import { useGetJournals } from "src/models/journals/hooks/useGetJournals";
 import { mapJournal } from "../utils/mapJournal";
 import type { Journal } from "../Journal.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { Slip } from "src/lib/slips/Slip.type";
+import type { Slip } from "src/models/slips/Slip.type";
 
 type UpdateJournalProps = {
   journalId: string;

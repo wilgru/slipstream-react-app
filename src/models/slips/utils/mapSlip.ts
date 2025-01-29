@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import Delta from "quill-delta";
 import type { RecordModel } from "pocketbase";
-import type { Slip } from "src/lib/slips/Slip.type";
+import type { Slip } from "src/models/slips/Slip.type";
 
 export const mapSlip = (slip: RecordModel): Slip => {
   return {
