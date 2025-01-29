@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { pb } from "src/pocketbase/pocketbase";
+import { pb } from "src/connection/pocketbase";
 import { useUser } from "src/lib/user/hooks/useUser";
 import { generateId } from "src/utils/generateId";
 import { mapJournal } from "../utils/mapJournal";

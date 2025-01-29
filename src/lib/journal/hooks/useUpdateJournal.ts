@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useGetJournals } from "src/lib/journal/hooks/useGetJournals";
-import { pb } from "src/pocketbase/pocketbase";
+import { pb } from "src/connection/pocketbase";
 import { mapJournal } from "../utils/mapJournal";
 import type { Journal } from "../types/Journal.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
