@@ -16,3 +16,9 @@ export type Slip = {
   created: Dayjs;
   updated: Dayjs;
 };
+
+export type SlipsGroup = {
+  title: string;
+  value: Dayjs;
+  slips: Slip[];
+};

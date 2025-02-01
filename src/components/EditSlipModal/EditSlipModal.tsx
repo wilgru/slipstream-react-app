@@ -8,10 +8,11 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import dayjs from "dayjs";
 import Delta from "quill-delta";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "src/components/Button/Button";
 import { QuillEditor } from "src/components/QuillEditor/QuillEditor";
 import { Toggle } from "src/components/Toggle/Toggle";
+import { useCreateSlip } from "src/models/slips/hooks/useCreateSlip";
 import { useDeleteSlip } from "src/models/slips/hooks/useDeleteSlip";
 import { useUpdateSlip } from "src/models/slips/hooks/useUpdateSlip";
 import { JournalMultiSelect } from "./JournalMultiSelect";
@@ -53,13 +54,28 @@ const EditSlipModal = ({
   journalToUpdateId,
   onSave,
 }: EditSlipModalProps) => {
+  const { createSlip } = useCreateSlip();
   const { updateSlip } = useUpdateSlip(journalToUpdateId);
   const { deleteSlip } = useDeleteSlip();
 
-  const initialSlip = getInitialSlip(slip);
-  const [editedSlip, setEditedSlip] = useState<Slip>(initialSlip);
+  const [editedSlip, setEditedSlip] = useState<Slip>(getInitialSlip(slip));
   const [toolbarFormatting, setToolbarFormatting] = useState<StringMap>();
   const [updatedDateVisible, setUpdatedDateVisible] = useState<boolean>();
+
+  const initialSlip = useMemo(() => getInitialSlip(slip), [slip]);
+
+  const onSaveSlip = async () => {
+    if (editedSlip.id) {
+      await updateSlip({
+        slipId: initialSlip.id,
+        updateSlipData: editedSlip,
+      });
+    } else {
+      createSlip({ createSlipData: editedSlip });
+    }
+
+    onSave?.();
+  };
 
   const onDeleteSlip = async () => {
     deleteSlip({ slipId: initialSlip.id });
@@ -239,17 +255,7 @@ const EditSlipModal = ({
               </Button>
             </Dialog.Close>
             <Dialog.Close asChild>
-              <Button
-                variant="block"
-                size="sm"
-                onClick={() => {
-                  updateSlip({
-                    slipId: editedSlip.id,
-                    updateSlipData: editedSlip,
-                  });
-                  onSave && onSave();
-                }}
-              >
+              <Button variant="block" size="sm" onClick={onSaveSlip}>
                 Save
               </Button>
             </Dialog.Close>
