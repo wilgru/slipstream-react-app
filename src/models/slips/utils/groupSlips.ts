@@ -8,10 +8,16 @@ export const groupSlips = (slips: Slip[], groupBy: "created"): SlipsGroup[] => {
     if (existingGroup) {
       existingGroup.slips.push(slip);
     } else {
-      const newGroup = { title: dateString, slips: [slip] };
-      const insertIndex = acc.findIndex(
-        (group) => new Date(group.title) < new Date(dateString) // TODO: consider using dayjs or just make better somehow
+      const newGroup = {
+        title: dateString,
+        value: slip.created,
+        slips: [slip],
+      };
+
+      const insertIndex = acc.findIndex((group) =>
+        group.value.isAfter(slip.created)
       );
+
       if (insertIndex === -1) {
         acc.push(newGroup);
       } else {
