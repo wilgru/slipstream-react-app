@@ -22,13 +22,15 @@ function StreamIndexComponent() {
   const { slips } = useGetSlips();
 
   return (
-    <div className="flex flex-col h-full gap-2 p-6 w-full overflow-y-auto overflow-x-hidden">
+    <div className="flex flex-col-reverse h-full gap-3 p-6 max-w-[700px] overflow-y-auto overflow-x-hidden">
       <div className="flex justify-center">
-        <h1 className="font-title text-lg">{slips.length} Slips</h1>
+        <h1 className="font-title text-2xl text-stone-300">
+          {slips.length} total slips
+        </h1>
       </div>
 
       {slips.map((slip) => (
-        <SlipCard key={slip.id} slip={slip} isFocused={false} />
+        <SlipCard key={slip.id} slip={slip} />
       ))}
     </div>
   );

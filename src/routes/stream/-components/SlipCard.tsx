@@ -1,18 +1,15 @@
 import { Flag, PushPin } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import Delta from "quill-delta";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
-import { cn } from "src/utils/cn";
 import type { Slip } from "src/models/slips/Slip.type";
 
 type SlipCardProps = {
   slip: Slip;
-  isFocused: boolean;
 };
 
-const SlipCard = ({ slip, isFocused }: SlipCardProps) => {
-  const ref = useRef<HTMLDivElement>(null);
+const SlipCard = ({ slip }: SlipCardProps) => {
   const [contentString, setContentString] = useState<string | null>();
 
   useEffect(() => {
@@ -26,51 +23,26 @@ const SlipCard = ({ slip, isFocused }: SlipCardProps) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <div
-          ref={ref}
-          className={cn(
-            "relative",
-            "w-full",
-            "mb-2",
-            "cursor-pointer",
-            "select-none",
-            "rounded-lg",
-            "bg-white",
-            "shadow-light",
-            "hover:bg-orange-100",
-            isFocused ? "border-2 border-orange-500" : "border border-stone-300"
-          )}
-        >
-          <div className="absolute flex h-full w-full flex-row items-end justify-end p-2 gap-2">
-            {slip.isPinned && (
-              <PushPin size={24} weight="fill" className="text-red-500" />
-            )}
-            {slip.isFlagged && (
-              <Flag size={24} weight="fill" className="text-orange-500" />
-            )}
-          </div>
+        <div className="relative w-full p-3 rounded-lg bg-white shadow-light border border-stone-300">
+          <div className="flex h-full rounded-md p-2 flex-col hover:bg-orange-50">
+            <div className="flex gap-2">
+              <h1 className="font-title text-stone-700 text-xl font-normal tracking-tight">
+                {slip.title}
+              </h1>
 
-          <div className="flex h-full flex-col p-2">
-            <h1
-              className={`select-none font-title text-xl font-normal tracking-tight ${
-                isFocused ? "text-orange-500" : "text-stone-700"
-              }`}
-            >
-              {slip.title}
-            </h1>
+              {slip.isPinned && (
+                <PushPin weight="fill" className="w-5 h-5 text-red-400" />
+              )}
+              {slip.isFlagged && (
+                <Flag weight="fill" className="w-5 h-5 text-orange-400" />
+              )}
+            </div>
 
-            <p
-              style={{ overflowWrap: "break-word" }}
-              className="select-none overflow-y-hidden text-sm font-normal text-black"
-            >
+            <p className="pb-3 text-sm font-normal text-black">
               {contentString}
             </p>
 
-            <p
-              className={`text-xs ${
-                isFocused ? "text-orange-500" : "text-stone-500"
-              }`}
-            >
+            <p className="text-xs text-stone-500">
               {slip.created.format("ddd D MMMM YYYY")}
             </p>
           </div>
