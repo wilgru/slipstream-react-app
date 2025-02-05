@@ -5,21 +5,27 @@ import type { Journal } from "src/models/journals/Journal.type";
 
 type DeleteJournalModalProps = {
   journal: Journal;
+  onDelete: () => void;
 };
 
-export const DeleteJournalModal = ({ journal }: DeleteJournalModalProps) => {
+export const DeleteJournalModal = ({
+  journal,
+  onDelete,
+}: DeleteJournalModalProps) => {
   const { deleteJournal } = useDeleteJournal();
 
   const onConfirmDelete = async () => {
     if (journal) {
-      deleteJournal(journal.id);
+      await deleteJournal(journal.id);
+
+      onDelete();
     }
   };
 
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black opacity-50 fixed inset-0" />
-      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-stone-100 border border-stone-700 rounded-md">
+      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-stone-100 border border-stone-700 rounded-lg">
         <Dialog.Title className="mb-5">Confirm delete journal</Dialog.Title>
         <Dialog.Description className="mb-5">
           <p className="text-sm">
@@ -29,11 +35,11 @@ export const DeleteJournalModal = ({ journal }: DeleteJournalModalProps) => {
 
         <div className="flex gap-2 justify-end">
           <Dialog.Close asChild>
-            <Button aria-label="Close">Cancel</Button>
+            <Button>Cancel</Button>
           </Dialog.Close>
 
           <Dialog.Close asChild>
-            <Button aria-label="Confirm" onClick={onConfirmDelete}>
+            <Button intent="destructive" onClick={onConfirmDelete}>
               Confirm
             </Button>
           </Dialog.Close>

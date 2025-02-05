@@ -1,5 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { useState } from "react";
 import { Button } from "src/components/Button/Button";
 import { useGetJournal } from "src/models/journals/hooks/useGetJournal";
 import isAuthenticated from "src/models/users/utils/isAuthenticated";
@@ -26,6 +27,7 @@ export const Route = createFileRoute("/journals/$journalId/")({
 export default function JournalComponent() {
   const { journalId } = Route.useParams();
   const { journal, slips } = useGetJournal(journalId ?? "");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   if (!journal) {
     return null;
@@ -47,8 +49,6 @@ export default function JournalComponent() {
     }
   });
 
-  // how to make a scroll to TOC
-  // https://www.youtube.com/watch?v=xgz5jIi4R7c
   return (
     <div className="h-full w-full flex justify-center">
       <div className="max-w-[700px] overflow-y-scroll">
@@ -59,17 +59,22 @@ export default function JournalComponent() {
             </h1>
 
             <div className="flex gap-2">
-              <Dialog.Root>
+              <Dialog.Root open={isEditModalOpen}>
                 <Dialog.Trigger asChild>
                   <Button
                     variant="ghost"
                     colour={journal.colour}
                     iconName="pencil"
+                    onClick={() => setIsEditModalOpen(true)}
                   />
                 </Dialog.Trigger>
 
-                <EditJournalModal journal={journal} />
+                <EditJournalModal
+                  journal={journal}
+                  onClose={() => setIsEditModalOpen(false)}
+                />
               </Dialog.Root>
+
               <Button
                 variant="ghost"
                 colour={journal.colour}

@@ -4,7 +4,7 @@ import { useGetJournals } from "src/models/journals/hooks/useGetJournals";
 import { mapJournal } from "../utils/mapJournal";
 import type { Journal } from "../Journal.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { Slip } from "src/models/slips/Slip.type";
+import type { Slip, SlipsGroup } from "src/models/slips/Slip.type";
 
 type UpdateJournalProps = {
   journalId: string;
@@ -72,24 +72,22 @@ export const useUpdateJournal = (): UseUpdateJournalResponse => {
     );
 
     // update journal in any slips that have it
-    queryClient.setQueryData(["slips.list"], (currentSlips: Slip[]) => {
-      return currentSlips.map((currentSlip) => {
-        const slipHasJournal = currentSlip.journals.find(
-          (journal) => journal.id === data?.id
-        );
+    queryClient.setQueryData(
+      ["slips.list"],
+      (currentSlipGroups: SlipsGroup[]) => {
+        return currentSlipGroups.map((currentSlipGroup) => {
+          return currentSlipGroup.slips.map((slip) => {
+            return slip.journals.map((journal) => {
+              if (journal.id === data.id) {
+                return data;
+              }
 
-        if (!slipHasJournal) {
-          return currentSlip;
-        }
-
-        return {
-          ...currentSlip,
-          journals: currentSlip.journals.map((journal) =>
-            journal.id === data.id ? data : journal
-          ),
-        };
-      });
-    });
+              return journal;
+            });
+          });
+        });
+      }
+    );
   };
 
   // TODO: consider time caching for better performance
