@@ -43,24 +43,35 @@ export const useCreateSlip = (): UseCreateSlipResponse => {
       return;
     }
 
-    queryClient.setQueryData(["slips.list"], (currentSlips: SlipsGroup[]) => {
-      const dateString = data.created.format("ddd D MMMM YYYY");
+    queryClient.setQueryData(
+      ["slips.list"],
+      (currentSlipGroups: SlipsGroup[]) => {
+        const dateString = data.created.format("ddd D MMMM YYYY");
+        let foundExistingGroup = false;
 
-      const existingGroup = currentSlips.find(
-        (group) => group.title === dateString
-      );
-      if (existingGroup) {
-        existingGroup.slips.push(data);
-      } else {
-        currentSlips.push({
-          title: dateString,
-          value: data.created,
-          slips: [data],
+        const newSlipGroups = currentSlipGroups.map((group) => {
+          if (group.title === dateString) {
+            foundExistingGroup = true;
+
+            return { ...group, slips: [...group.slips, data] };
+          }
+
+          return group;
         });
-      }
 
-      return currentSlips;
-    });
+        if (!foundExistingGroup) {
+          newSlipGroups.push({
+            title: dateString,
+            value: data.created,
+            slips: [data],
+          });
+        }
+
+        console.log(currentSlipGroups);
+
+        return newSlipGroups;
+      }
+    );
   };
 
   // TODO: consider time caching for better performance

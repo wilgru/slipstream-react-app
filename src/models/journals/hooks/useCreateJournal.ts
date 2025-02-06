@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
 import { useUser } from "src/models/users/hooks/useUser";
-import { generateId } from "src/utils/generateId";
 import { mapJournal } from "../utils/mapJournal";
 import type { Journal } from "../Journal.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
@@ -15,13 +14,14 @@ export const useCreateJournal = (): UseCreateJournalResponse => {
   const { user } = useUser();
 
   const mutationFn = async (journalName: string): Promise<Journal> => {
-    const journalId = generateId();
+    const newJournal = await pb.collection("journals").create({
+      name: journalName,
+      colour: "orange",
+      icon: "book",
+      user: user?.id,
+    });
 
-    const newJournal = await pb
-      .collection("journals")
-      .create({ id: journalId, name: journalName, user: user?.id });
-
-    const mappedNewJournal = mapJournal(newJournal);
+    const mappedNewJournal = mapJournal({ ...newJournal, totalSlips: 0 });
 
     return mappedNewJournal;
   };
@@ -29,7 +29,9 @@ export const useCreateJournal = (): UseCreateJournalResponse => {
   const onSuccess = (data: Journal) => {
     queryClient.setQueryData(
       ["journals.list"],
-      (currentJournals: Journal[]) => [...currentJournals, data]
+      (currentJournals: Journal[]) => {
+        return [...currentJournals, data];
+      }
     );
   };
 

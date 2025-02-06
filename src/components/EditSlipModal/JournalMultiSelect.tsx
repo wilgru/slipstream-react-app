@@ -127,6 +127,7 @@ export const JournalMultiSelect = ({
               "rounded-full",
               "text-xs",
               "text-stone-700",
+              "cursor-text",
               backgroundPill,
               text // TODO: This only styles the 'X' for some reason
             );

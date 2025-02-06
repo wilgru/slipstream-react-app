@@ -17,8 +17,6 @@ export const EditJournalModal = ({
   journal,
   onClose,
 }: EditJournalModalProps) => {
-  console.log("journal", journal);
-
   const [editedJournal, setEditedJournal] = useState<Journal>(journal);
   const { updateJournal } = useUpdateJournal();
 
