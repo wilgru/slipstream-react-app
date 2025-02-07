@@ -31,7 +31,6 @@ const QuillEditor = forwardRef(
   }: QuillEditorProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const onChangeRef = useRef(onChange);
-
     const [quillEditor, setQuillEditor] = useState<Quill | null>();
 
     const onChangeInternal = (delta: Delta) => {

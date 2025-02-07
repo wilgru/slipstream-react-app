@@ -45,8 +45,14 @@ export default function TableOfContents({
   useEffect(() => {
     const handleObserver = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
-        if (entry?.isIntersecting && entry.target.id) {
-          setActiveId(entry.target.id);
+        if (
+          entry?.isIntersecting &&
+          entry.target.id &&
+          entry.target.id.includes("TOC-")
+        ) {
+          const strippedId = entry.target.id.replace("TOC-", "");
+
+          setActiveId(strippedId);
         }
       });
     };

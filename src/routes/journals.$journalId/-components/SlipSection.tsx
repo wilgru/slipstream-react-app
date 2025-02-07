@@ -2,7 +2,9 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 import { Button } from "src/components/Button/Button";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
-import { Icon } from "src/components/Icon/Icon";
+import QuillContentView from "src/components/QuillContentView/QuillContentView";
+import { SlipHeading } from "src/components/SlipHeading/SlipHeading";
+import { isSlipContentEmpty } from "src/models/slips/utils/isSlipContentEmpty";
 import { cn } from "src/utils/cn";
 import type { Colour } from "src/models/colours/Colour.type";
 import type { Slip } from "src/models/slips/Slip.type";
@@ -24,25 +26,19 @@ export default function SlipSection({
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        "relative p-2 rounded-md",
+        "flex flex-col gap-1 relative p-2 rounded-md",
         `hover:${colour.backgroundGlow}`
       )}
     >
-      <div className="flex gap-2">
-        <h1
-          className={`select-none font-title text-2xl font-normal tracking-tight text-stone-700`}
-        >
-          {slip.title}
-        </h1>
+      <SlipHeading
+        title={slip.title}
+        isPinned={slip.isPinned}
+        isFlagged={slip.isFlagged}
+      />
 
-        {slip.isFlagged && (
-          <Icon iconName="flag" className="text-orange-500" size="sm" />
-        )}
-      </div>
-
-      <p className="text-sm">
-        {slip.content.reduce((acc, op) => acc + op.insert, "")}
-      </p>
+      {!isSlipContentEmpty(slip.content) && (
+        <QuillContentView content={slip.content} />
+      )}
 
       <p className={"text-xs text-stone-500"}>
         {slip.created.format("ddd D MMMM YYYY")}

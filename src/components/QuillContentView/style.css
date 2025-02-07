@@ -1,0 +1,8 @@
+#quill-editor p {
+  font-family: "Helvetica Neue";
+}
+
+#quill-editor .ql-editor {
+  font-size: 14px;
+  color: #44403c; /* stone-700 */
+}

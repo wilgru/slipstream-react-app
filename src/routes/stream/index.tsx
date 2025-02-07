@@ -35,7 +35,7 @@ function StreamIndexComponent() {
       <div className="flex flex-col h-full gap-3 p-6 max-w-[700px] overflow-y-auto overflow-x-hidden">
         {slips.map((group) => (
           <div
-            id={group.title}
+            id={`TOC-${group.title}`}
             key={group.title}
             className="flex flex-col gap-3"
           >
