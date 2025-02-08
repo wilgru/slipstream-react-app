@@ -22,3 +22,7 @@ export type SlipsGroup = {
   value: Dayjs;
   slips: Slip[];
 };
+
+export type SlipGroupDividedByTitle = SlipsGroup & {
+  slipsWithNoTitle: Slip[];
+};

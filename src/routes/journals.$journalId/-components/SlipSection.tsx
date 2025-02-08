@@ -25,6 +25,7 @@ export default function SlipSection({
       key={slip.id}
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      id={`TOC-${slip.id}`}
       className={cn(
         "flex flex-col gap-1 relative p-2 rounded-md",
         `hover:${colour.backgroundGlow}`

@@ -2,12 +2,13 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "src/components/Button/Button";
+import TableOfContents from "src/components/TableOfContents/TableOfContents";
 import { useGetJournal } from "src/models/journals/hooks/useGetJournal";
 import isAuthenticated from "src/models/users/utils/isAuthenticated";
 import { cn } from "src/utils/cn";
 import { EditJournalModal } from "./-components/EditJournalModal";
 import SlipSection from "./-components/SlipSection";
-import type { Slip } from "src/models/slips/Slip.type";
+import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
 
 export const Route = createFileRoute("/journals/$journalId/")({
   component: JournalComponent,
@@ -33,20 +34,29 @@ export default function JournalComponent() {
     return null;
   }
 
-  const sectionedSlips: {
-    noTitles: Slip[];
-    withTitles: Slip[];
-  } = {
-    noTitles: [],
-    withTitles: [],
-  };
+  const tableOfContentItems: TableOfContentsItem[] = slips.map((slipGroup) => {
+    const mappedSlipsWithNoTitle = slipGroup.slipsWithNoTitle.map(
+      (slipWithNoTitle) => {
+        const title = slipWithNoTitle.content.ops[0].insert;
 
-  slips.forEach((slip) => {
-    if (slip.title) {
-      sectionedSlips.withTitles.push(slip);
-    } else {
-      sectionedSlips.noTitles.push(slip);
-    }
+        return {
+          title: typeof title === "string" ? title : "No title",
+          navigationId: `TOC-${slipWithNoTitle.id}`,
+          subItems: [],
+        };
+      }
+    );
+    const mappedSlipsWithTitle = slipGroup.slips.map((slip) => ({
+      title: slip.title ?? "", // this should never fallback to empty string as empty titles are filtered beforehand
+      navigationId: `TOC-${slip.id}`,
+      subItems: [],
+    }));
+
+    return {
+      title: slipGroup.title,
+      navigationId: null,
+      subItems: [...mappedSlipsWithNoTitle, ...mappedSlipsWithTitle],
+    };
   });
 
   return (
@@ -83,48 +93,52 @@ export default function JournalComponent() {
             </div>
           </div>
 
-          <h3 className="text-stone-500">1 section, {slips.length} notes</h3>
+          <h3 className="text-stone-500">{slips.length} section, ? notes</h3>
         </div>
 
-        <div className="p-3 mb-4 mx-4 border min-h-full border-stone-300 rounded-lg flex flex-col gap-3 bg-white shadow-light">
-          {sectionedSlips.noTitles.map((slip) => (
-            <SlipSection
-              slip={slip}
-              colour={journal.colour}
-              journalId={journal.id}
-            />
-          ))}
+        <div className="p-3 mb-4 mx-4 border min-h-full border-stone-300 rounded-lg flex flex-col gap-10 bg-white shadow-light">
+          {slips.map((slipGroup) => (
+            <div className="flex flex-col gap-3">
+              <h2
+                className={cn(
+                  "pl-2 font-title  text-3xl border-b border-stone-300",
+                  journal.colour.text
+                )}
+              >
+                {slipGroup.title}
+              </h2>
 
-          {sectionedSlips.noTitles.length > 0 &&
-            sectionedSlips.withTitles.length > 0 && (
-              <div className="flex flex-row gap-2 justify-center">
-                <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
-                <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
-                <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
-              </div>
-            )}
+              {slipGroup.slipsWithNoTitle.map((slip) => (
+                <SlipSection
+                  slip={slip}
+                  colour={journal.colour}
+                  journalId={journal.id}
+                />
+              ))}
 
-          {sectionedSlips.withTitles.map((slip) => (
-            <SlipSection
-              slip={slip}
-              colour={journal.colour}
-              journalId={journal.id}
-            />
+              {slipGroup.slipsWithNoTitle.length > 0 &&
+                slipGroup.slips.length > 0 && (
+                  <div className="flex flex-row gap-2 justify-center">
+                    <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
+                    <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
+                    <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
+                  </div>
+                )}
+
+              {slipGroup.slips.map((slip) => (
+                <SlipSection
+                  slip={slip}
+                  colour={journal.colour}
+                  journalId={journal.id}
+                />
+              ))}
+            </div>
           ))}
         </div>
       </div>
 
       <div className="flex flex-col justify-center">
-        {sectionedSlips.noTitles.map((slip) => (
-          <div key={slip.id} className="overflow-x-clip">
-            <h3 className="text-sm italic">No title</h3>
-          </div>
-        ))}
-        {sectionedSlips.withTitles.map((slip) => (
-          <div key={slip.id} className="overflow-x-clip">
-            <h3 className="text-sm">{slip.title}</h3>
-          </div>
-        ))}
+        <TableOfContents items={tableOfContentItems} colour={journal.colour} />
       </div>
     </div>
   );

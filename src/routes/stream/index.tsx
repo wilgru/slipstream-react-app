@@ -29,14 +29,14 @@ function StreamIndexComponent() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [slips]);
 
-  const TableOfContentsItems = slips.reduce(
+  const tableOfContentItems = slips.reduce(
     (acc: TableOfContentsItem[], group) => {
       const title = group.value.format("MMMM YYYY");
       const item = acc.find((item) => item.title === title);
 
       const day = {
         title: group.value.format("dddd D"),
-        navigationId: `TOC-${group.title.split(" ").join("-")}`,
+        navigationId: `TOC-${group.title.split(" ").join("-")}`, // TODO: do we need to split and join for id based scroll navigation to work?
         subItems: [],
       };
 
@@ -84,7 +84,7 @@ function StreamIndexComponent() {
       </div>
 
       <div className="flex flex-col justify-center">
-        <TableOfContents items={TableOfContentsItems} />
+        <TableOfContents items={tableOfContentItems} />
       </div>
     </div>
   );

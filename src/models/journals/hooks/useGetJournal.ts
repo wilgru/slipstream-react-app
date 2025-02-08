@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
+import { groupSlips } from "src/models/slips/utils/groupSlips";
 import { mapSlip } from "src/models/slips/utils/mapSlip";
 import { mapJournal } from "../utils/mapJournal";
 import type { Journal } from "../Journal.type";
@@ -7,16 +8,16 @@ import type {
   QueryObserverResult,
   RefetchOptions,
 } from "@tanstack/react-query";
-import type { Slip } from "src/models/slips/Slip.type";
+import type { Slip, SlipGroupDividedByTitle } from "src/models/slips/Slip.type";
 
 type UseJournalResponse = {
   journal: Journal | undefined;
-  slips: Slip[];
+  slips: SlipGroupDividedByTitle[];
   refetchJournal: (options?: RefetchOptions | undefined) => Promise<
     QueryObserverResult<
       {
         journal: Journal;
-        slips: Slip[];
+        slips: SlipGroupDividedByTitle[];
       },
       Error
     >
@@ -26,19 +27,39 @@ type UseJournalResponse = {
 export const useGetJournal = (journalId: string): UseJournalResponse => {
   const queryFn = async (): Promise<{
     journal: Journal;
-    slips: Slip[];
+    slips: SlipGroupDividedByTitle[];
   }> => {
     const rawJournal = await pb.collection("journals").getOne(journalId, {
       expand: "slips_via_journals, slips_via_journals.journals",
     });
-    const rawSlips = rawJournal.expand?.slips_via_journals;
-
     const journal: Journal = mapJournal(rawJournal);
+
+    const rawSlips = rawJournal.expand?.slips_via_journals;
     const slips: Slip[] = rawSlips.map(mapSlip);
+    const groupedSlips = groupSlips(slips, "created");
+    const groupedSlipsDividedByTitle = groupedSlips.map((groupedSlip) => {
+      const slipsWithTitles: Slip[] = [];
+      const slipsWithNoTitle: Slip[] = [];
+
+      groupedSlip.slips.forEach((slip) => {
+        if (slip.title) {
+          slipsWithTitles.push(slip);
+        } else {
+          slipsWithNoTitle.push(slip);
+        }
+      });
+
+      return {
+        title: groupedSlip.title,
+        value: groupedSlip.value,
+        slips: slipsWithTitles,
+        slipsWithNoTitle,
+      };
+    });
 
     return {
       journal,
-      slips,
+      slips: groupedSlipsDividedByTitle,
     };
   };
 

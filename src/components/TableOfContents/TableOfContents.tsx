@@ -1,6 +1,8 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { colours } from "src/models/colours/colours.constant";
 import { cn } from "src/utils/cn";
+import type { Colour } from "src/models/colours/Colour.type";
 
 export type TableOfContentsItem = {
   title: string;
@@ -10,6 +12,7 @@ export type TableOfContentsItem = {
 
 type TableOfContentsProps = {
   items: TableOfContentsItem[];
+  colour?: Colour;
 };
 
 const findItemWithNavigationId = (
@@ -30,7 +33,10 @@ const findItemWithNavigationId = (
   return undefined;
 };
 
-export default function TableOfContents({ items }: TableOfContentsProps) {
+export default function TableOfContents({
+  items,
+  colour = colours.orange,
+}: TableOfContentsProps) {
   const observer = useRef<IntersectionObserver>();
   const [activeId, setActiveId] = useState("");
   const navigate = useNavigate();
@@ -73,10 +79,10 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
       >
         <h2
           className={cn(
-            "p-1 text-sm font-normal cursor-pointer rounded-md hover:text-orange-500 hover:bg-orange-100",
-            activeId === item.navigationId
-              ? "text-orange-500 bg-orange-100"
-              : "text-stone-700"
+            "p-1 text-sm font-normal overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-md",
+            `hover:${colour.backgroundPill} hover:${colour.textPill}`,
+            activeId === item.navigationId && colour.backgroundPill,
+            activeId === item.navigationId ? colour.textPill : "text-stone-700"
           )}
         >
           {item.title}
@@ -100,7 +106,9 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
   const StaticLi = ({ item }: { item: TableOfContentsItem }) => {
     return (
       <>
-        <h2 className="p-1 text-stone-400 text-sm">{item.title}</h2>
+        <h2 className="p-1 text-stone-400 text-sm overflow-x-hidden whitespace-nowrap overflow-ellipsis">
+          {item.title}
+        </h2>
 
         <ul className="ml-2">
           {item.subItems.map((subItem) => {
@@ -118,18 +126,16 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
   };
 
   return (
-    <div className="flex">
-      <ul>
-        {items.map((item) => {
-          const isNavigatable = !!item.navigationId;
+    <ul className="max-w-56">
+      {items.map((item) => {
+        const isNavigatable = !!item.navigationId;
 
-          return isNavigatable ? (
-            <NavigatableLi item={item} />
-          ) : (
-            <StaticLi item={item} />
-          );
-        })}
-      </ul>
-    </div>
+        return isNavigatable ? (
+          <NavigatableLi item={item} />
+        ) : (
+          <StaticLi item={item} />
+        );
+      })}
+    </ul>
   );
 }
