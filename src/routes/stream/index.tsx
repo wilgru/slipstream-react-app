@@ -1,5 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
 import { useGetSlips } from "src/models/slips/hooks/useGetSlips";
 import isAuthenticated from "src/models/users/utils/isAuthenticated";
 import SlipCard from "src/routes/stream/-components/SlipCard";
@@ -24,9 +25,26 @@ export const Route = createFileRoute("/stream/")({
 function StreamIndexComponent() {
   const { slips } = useGetSlips();
   const bottomRef = useRef<null | HTMLDivElement>(null);
+  const [navigationId, setNavigationId] = useState("");
+  const slipRefs = useRef<HTMLDivElement[]>([]);
+
+  useIntersectionObserver(
+    slipRefs,
+    (entry) => {
+      setNavigationId(entry.target.id);
+    },
+    { rootMargin: "-10% 0% -80% 0%" },
+    { disabled: false }
+  );
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    bottomRef.current?.scrollIntoView({
+      behavior: "instant",
+    });
+
+    const lastSlipGroup = slips.at(slips.length - 1);
+
+    lastSlipGroup && setNavigationId(lastSlipGroup?.title);
   }, [slips]);
 
   const tableOfContentItems = slips.reduce(
@@ -36,7 +54,7 @@ function StreamIndexComponent() {
 
       const day = {
         title: group.value.format("dddd D"),
-        navigationId: `TOC-${group.title.split(" ").join("-")}`, // TODO: do we need to split and join for id based scroll navigation to work?
+        navigationId: group.title,
         subItems: [],
       };
 
@@ -62,7 +80,12 @@ function StreamIndexComponent() {
       <div className="flex flex-col h-full gap-10 p-6 max-w-[700px] overflow-y-auto overflow-x-hidden">
         {slips.map((group) => (
           <div
-            id={`TOC-${group.title.split(" ").join("-")}`}
+            ref={(el: HTMLDivElement | null) => {
+              if (el && !slipRefs.current.includes(el)) {
+                slipRefs.current.push(el);
+              }
+            }}
+            id={group.title}
             key={group.title}
             className="flex flex-col gap-3"
           >
@@ -84,7 +107,11 @@ function StreamIndexComponent() {
       </div>
 
       <div className="flex flex-col justify-center">
-        <TableOfContents items={tableOfContentItems} />
+        <TableOfContents
+          items={tableOfContentItems}
+          activeItemNavigationId={navigationId}
+          onJumpTo={(id) => setNavigationId(id)}
+        />
       </div>
     </div>
   );

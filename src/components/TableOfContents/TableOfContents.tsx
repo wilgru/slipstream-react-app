@@ -1,5 +1,4 @@
 import { useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
 import { colours } from "src/models/colours/colours.constant";
 import { cn } from "src/utils/cn";
 import type { Colour } from "src/models/colours/Colour.type";
@@ -12,77 +11,36 @@ export type TableOfContentsItem = {
 
 type TableOfContentsProps = {
   items: TableOfContentsItem[];
+  activeItemNavigationId: string;
+  onJumpTo: (id: string) => void;
   colour?: Colour;
-};
-
-const findItemWithNavigationId = (
-  items: TableOfContentsItem[],
-  id: string
-): TableOfContentsItem | undefined => {
-  for (const item of items) {
-    if (item.navigationId === id) {
-      return item;
-    }
-
-    const foundItem = findItemWithNavigationId(item.subItems, id);
-    if (foundItem) {
-      return foundItem;
-    }
-  }
-
-  return undefined;
 };
 
 export default function TableOfContents({
   items,
+  activeItemNavigationId,
+  onJumpTo,
   colour = colours.orange,
 }: TableOfContentsProps) {
-  const observer = useRef<IntersectionObserver>();
-  const [activeId, setActiveId] = useState("");
   const navigate = useNavigate();
 
-  // TODO move to a hook?
-  useEffect(() => {
-    const handleObserver = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (
-          entry.isIntersecting &&
-          entry.target.id &&
-          entry.target.id.includes("TOC-")
-        ) {
-          const foundItem = findItemWithNavigationId(items, entry.target.id);
-
-          if (!foundItem || !foundItem.navigationId) {
-            return;
-          }
-
-          setActiveId(foundItem.navigationId);
-        }
-      });
-    };
-
-    observer.current = new IntersectionObserver(handleObserver, {
-      rootMargin: "0% 0% -90% 0px",
-    });
-
-    const elements = document.querySelectorAll("div");
-    elements.forEach((element) => observer.current?.observe(element));
-
-    return () => observer.current?.disconnect();
-  }, [items]);
-
   const NavigatableLi = ({ item }: { item: TableOfContentsItem }) => {
+    const isActive = item.navigationId === activeItemNavigationId;
+
     return (
       <li
         key={item.title}
-        onClick={() => navigate({ to: `#${item.navigationId}` })}
+        onClick={() => {
+          item.navigationId && onJumpTo(item.navigationId);
+          navigate({ to: `#${item.navigationId}` });
+        }}
       >
         <h2
           className={cn(
             "p-1 text-sm font-normal overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-md",
             `hover:${colour.backgroundPill} hover:${colour.textPill}`,
-            activeId === item.navigationId && colour.backgroundPill,
-            activeId === item.navigationId ? colour.textPill : "text-stone-700"
+            isActive && colour.backgroundPill,
+            isActive ? colour.textPill : "text-stone-700"
           )}
         >
           {item.title}
@@ -105,7 +63,7 @@ export default function TableOfContents({
 
   const StaticLi = ({ item }: { item: TableOfContentsItem }) => {
     return (
-      <>
+      <li key={item.title}>
         <h2 className="p-1 text-stone-400 text-sm overflow-x-hidden whitespace-nowrap overflow-ellipsis">
           {item.title}
         </h2>
@@ -121,7 +79,7 @@ export default function TableOfContents({
             );
           })}
         </ul>
-      </>
+      </li>
     );
   };
 

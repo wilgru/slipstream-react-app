@@ -1,13 +1,14 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "src/components/Button/Button";
 import TableOfContents from "src/components/TableOfContents/TableOfContents";
+import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
 import { useGetJournal } from "src/models/journals/hooks/useGetJournal";
 import isAuthenticated from "src/models/users/utils/isAuthenticated";
 import { cn } from "src/utils/cn";
 import { EditJournalModal } from "./-components/EditJournalModal";
-import SlipSection from "./-components/SlipSection";
+import { SlipSection } from "./-components/SlipSection";
 import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
 
 export const Route = createFileRoute("/journals/$journalId/")({
@@ -29,6 +30,17 @@ export default function JournalComponent() {
   const { journalId } = Route.useParams();
   const { journal, slips } = useGetJournal(journalId ?? "");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [navigationId, setNavigationId] = useState("");
+  const slipRefs = useRef<HTMLDivElement[]>([]);
+
+  useIntersectionObserver(
+    slipRefs,
+    (entry) => {
+      setNavigationId(entry.target.id);
+    },
+    { rootMargin: "-10% 0% -70% 0%" },
+    { disabled: false }
+  );
 
   if (!journal) {
     return null;
@@ -41,14 +53,14 @@ export default function JournalComponent() {
 
         return {
           title: typeof title === "string" ? title : "No title",
-          navigationId: `TOC-${slipWithNoTitle.id}`,
+          navigationId: slipWithNoTitle.id,
           subItems: [],
         };
       }
     );
     const mappedSlipsWithTitle = slipGroup.slips.map((slip) => ({
       title: slip.title ?? "", // this should never fallback to empty string as empty titles are filtered beforehand
-      navigationId: `TOC-${slip.id}`,
+      navigationId: slip.id,
       subItems: [],
     }));
 
@@ -110,6 +122,11 @@ export default function JournalComponent() {
 
               {slipGroup.slipsWithNoTitle.map((slip) => (
                 <SlipSection
+                  ref={(el: HTMLDivElement | null) => {
+                    if (el && !slipRefs.current.includes(el)) {
+                      slipRefs.current.push(el);
+                    }
+                  }}
                   slip={slip}
                   colour={journal.colour}
                   journalId={journal.id}
@@ -127,6 +144,11 @@ export default function JournalComponent() {
 
               {slipGroup.slips.map((slip) => (
                 <SlipSection
+                  ref={(el: HTMLDivElement | null) => {
+                    if (el && !slipRefs.current.includes(el)) {
+                      slipRefs.current.push(el);
+                    }
+                  }}
                   slip={slip}
                   colour={journal.colour}
                   journalId={journal.id}
@@ -138,7 +160,12 @@ export default function JournalComponent() {
       </div>
 
       <div className="flex flex-col justify-center">
-        <TableOfContents items={tableOfContentItems} colour={journal.colour} />
+        <TableOfContents
+          items={tableOfContentItems}
+          activeItemNavigationId={navigationId}
+          onJumpTo={(id) => setNavigationId(id)}
+          colour={journal.colour}
+        />
       </div>
     </div>
   );

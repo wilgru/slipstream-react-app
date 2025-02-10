@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import { Button } from "src/components/Button/Button";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import QuillContentView from "src/components/QuillContentView/QuillContentView";
@@ -9,23 +9,19 @@ import { cn } from "src/utils/cn";
 import type { Colour } from "src/models/colours/Colour.type";
 import type { Slip } from "src/models/slips/Slip.type";
 
-export default function SlipSection({
-  slip,
-  colour,
-  journalId,
-}: {
-  slip: Slip;
-  colour: Colour;
-  journalId: string;
-}) {
+export const SlipSection = forwardRef<
+  HTMLDivElement,
+  { slip: Slip; colour: Colour; journalId: string }
+>(function ({ slip, colour, journalId }, ref) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
+      ref={ref}
+      id={slip.id}
       key={slip.id}
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      id={`TOC-${slip.id}`}
       className={cn(
         "flex flex-col gap-1 relative p-2 rounded-md",
         `hover:${colour.backgroundGlow}`
@@ -63,4 +59,4 @@ export default function SlipSection({
       )}
     </div>
   );
-}
+});
