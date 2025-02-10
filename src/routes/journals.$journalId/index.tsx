@@ -38,7 +38,7 @@ export default function JournalComponent() {
     (entry) => {
       setNavigationId(entry.target.id);
     },
-    { rootMargin: "-10% 0% -70% 0%" },
+    { rootMargin: "-10% 0% -90% 0%" },
     { disabled: false }
   );
 

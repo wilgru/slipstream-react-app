@@ -33,7 +33,7 @@ function StreamIndexComponent() {
     (entry) => {
       setNavigationId(entry.target.id);
     },
-    { rootMargin: "-10% 0% -80% 0%" },
+    { rootMargin: "-10% 0% -90% 0%" },
     { disabled: false }
   );
 
