@@ -46,6 +46,10 @@ export const useCreateSlip = (): UseCreateSlipResponse => {
     queryClient.refetchQueries({
       queryKey: ["slips.list"],
     });
+
+    queryClient.refetchQueries({
+      queryKey: ["journals.get"],
+    });
   };
 
   // TODO: consider time caching for better performance
