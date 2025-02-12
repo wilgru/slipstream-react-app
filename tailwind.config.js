@@ -8,10 +8,6 @@ export default {
       sans: ["Helvetica Neue"],
       // body: [""],
     },
-    boxShadow: {
-      light: "0 0 20px -10px rgba(0, 0, 0, 0.3)", // 1 spacing
-      lighter: "black 2px 2px", // 0.5 spacing
-    },
     extend: {},
   },
   plugins: [],

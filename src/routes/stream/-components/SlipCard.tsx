@@ -13,7 +13,7 @@ const SlipCard = ({ slip }: SlipCardProps) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <div className="relative w-full p-3 rounded-lg bg-white shadow-light border border-stone-300">
+        <div className="relative w-full p-3 rounded-lg bg-white drop-shadow-md border border-stone-300">
           <div className="flex flex-col gap-1 h-full rounded-md p-2 hover:bg-orange-50">
             <SlipHeading
               title={slip.title}

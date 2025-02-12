@@ -6,13 +6,13 @@
   padding: 0;
 }
 
-#quill-editor .ql-editor.ql-blank {
+#quill-editor .ql-editora8a29e.ql-blank {
   font-size: 16px;
 }
 
 #quill-editor .ql-editor.ql-blank::before {
   left: unset;
   right: unset;
-  color: #78716c; /* stone 500 */
+  color: #a8a29e; /* stone 400 */
   font-style: unset;
 }

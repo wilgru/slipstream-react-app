@@ -19,7 +19,7 @@ export type Slip = {
 
 export type SlipsGroup = {
   title: string;
-  value: Dayjs;
+  value: Dayjs | Journal;
   slips: Slip[];
 };
 

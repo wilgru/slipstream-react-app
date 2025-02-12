@@ -101,11 +101,11 @@ const EditSlipModal = ({
                     return newSlipData;
                   })
                 }
-                className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-white text-black placeholder-stone-500 border-black select-none resize-none outline-none"
+                className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-white text-stone-700 placeholder-stone-400 select-none resize-none outline-none"
               />
               <div className="flex flex-row gap-2">
                 <p
-                  className="text-stone-500 text-xs"
+                  className="text-stone-400 text-xs"
                   onClick={() =>
                     setUpdatedDateVisible(
                       (currentUpdatedDateVisible) => !currentUpdatedDateVisible
@@ -160,7 +160,7 @@ const EditSlipModal = ({
             </div>
           </div>
 
-          <div className="flex flex-row justify-between w-full border-t border-stone-300 pt-2">
+          <div className="flex flex-row justify-between w-full border-t border-stone-200 pt-2">
             <JournalMultiSelect
               initialSlip={initialSlip}
               onChange={(journals) =>

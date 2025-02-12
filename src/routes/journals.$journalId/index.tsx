@@ -1,4 +1,6 @@
+import { Check } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState, useRef } from "react";
 import { Button } from "src/components/Button/Button";
@@ -28,7 +30,7 @@ export const Route = createFileRoute("/journals/$journalId/")({
 
 export default function JournalComponent() {
   const { journalId } = Route.useParams();
-  const { journal, slips } = useGetJournal(journalId ?? "");
+  const { journal, slips } = useGetJournal(journalId ?? "", "created");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [navigationId, setNavigationId] = useState("");
   const slipRefs = useRef<HTMLDivElement[]>([]);
@@ -97,23 +99,97 @@ export default function JournalComponent() {
                 />
               </Dialog.Root>
 
-              <Button
-                variant="ghost"
-                colour={journal.colour}
-                iconName="arrowsDownUp"
-              />
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger asChild>
+                  <div>
+                    <Button
+                      variant="ghost"
+                      colour={journal.colour}
+                      iconName="arrowsDownUp"
+                    />
+                  </div>
+                </DropdownMenu.Trigger>
+
+                <DropdownMenu.Portal>
+                  <DropdownMenu.Content
+                    className="bg-white border border-stone-300 rounded-md p-1 w-40 drop-shadow-lg"
+                    sideOffset={2}
+                    align="start"
+                  >
+                    <DropdownMenu.RadioGroup
+                      value={"created"}
+                      onValueChange={() => {}}
+                    >
+                      <DropdownMenu.Label className="p-1 text-xs text-stone-500">
+                        Group by
+                      </DropdownMenu.Label>
+
+                      <DropdownMenu.Separator className="h-[1px] mb-1 rounded-full bg-stone-300" />
+
+                      <DropdownMenu.RadioItem
+                        className="leading-none text-sm p-1 data-[highlighted]:bg-orange-100 flex justify-between data-[highlighted]:text-orange-500 outline-none rounded-sm cursor-pointer"
+                        value="created"
+                      >
+                        Created
+                        <DropdownMenu.ItemIndicator>
+                          <Check />
+                        </DropdownMenu.ItemIndicator>
+                      </DropdownMenu.RadioItem>
+                      <DropdownMenu.RadioItem
+                        className="leading-none text-sm p-1 data-[highlighted]:bg-orange-100 flex justify-between data-[highlighted]:text-orange-500 outline-none rounded-sm cursor-pointer"
+                        value="journal"
+                      >
+                        Journal
+                        <DropdownMenu.ItemIndicator>
+                          <Check />
+                        </DropdownMenu.ItemIndicator>
+                      </DropdownMenu.RadioItem>
+                    </DropdownMenu.RadioGroup>
+
+                    <DropdownMenu.RadioGroup
+                      value={"created"}
+                      onValueChange={() => {}}
+                    >
+                      <DropdownMenu.Label className="p-1 text-xs text-stone-500">
+                        Sort by
+                      </DropdownMenu.Label>
+
+                      <DropdownMenu.Separator className="h-[1px] mb-1 rounded-full bg-stone-300" />
+
+                      <DropdownMenu.RadioItem
+                        className="leading-none text-sm p-1 data-[highlighted]:bg-orange-100 flex justify-between data-[highlighted]:text-orange-500 outline-none rounded-sm cursor-pointer"
+                        value="created"
+                      >
+                        Created
+                        <DropdownMenu.ItemIndicator>
+                          <Check />
+                        </DropdownMenu.ItemIndicator>
+                      </DropdownMenu.RadioItem>
+                      <DropdownMenu.RadioItem
+                        className="leading-none text-sm p-1 data-[highlighted]:bg-orange-100 flex justify-between data-[highlighted]:text-orange-500 outline-none rounded-sm cursor-pointer"
+                        value="title"
+                      >
+                        Title
+                        <DropdownMenu.ItemIndicator>
+                          <Check />
+                        </DropdownMenu.ItemIndicator>
+                      </DropdownMenu.RadioItem>
+                    </DropdownMenu.RadioGroup>
+                  </DropdownMenu.Content>
+                </DropdownMenu.Portal>
+              </DropdownMenu.Root>
             </div>
           </div>
 
           <h3 className="text-stone-500">{slips.length} section, ? notes</h3>
         </div>
 
-        <div className="p-3 mb-4 mx-4 border min-h-full border-stone-300 rounded-lg flex flex-col gap-10 bg-white shadow-light">
+        <div className="p-3 mb-4 mx-4 border min-h-full border-stone-300 rounded-lg flex flex-col gap-10 bg-white drop-shadow-md">
           {slips.map((slipGroup) => (
             <div className="flex flex-col gap-3">
               <h2
                 className={cn(
-                  "pl-2 font-title  text-3xl border-b border-stone-300",
+                  "pl-2 font-title text-3xl border-b border-stone-200",
                   journal.colour.text
                 )}
               >
