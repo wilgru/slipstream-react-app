@@ -1,9 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
 import { mapSlip } from "../utils/mapSlip";
-import type { Slip, SlipsGroup } from "../Slip.type";
+import type { Slip } from "../Slip.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { Journal } from "src/models/journals/Journal.type";
 
 type UpdateSlipProps = {
   slipId: string;
@@ -19,9 +18,7 @@ type UseUpdateSlipResponse = {
   >;
 };
 
-export const useUpdateSlip = (
-  journalToUpdateId?: string
-): UseUpdateSlipResponse => {
+export const useUpdateSlip = (): UseUpdateSlipResponse => {
   const queryClient = useQueryClient();
 
   const mutationFn = async ({
@@ -46,77 +43,13 @@ export const useUpdateSlip = (
       return;
     }
 
-    queryClient.setQueryData(
-      ["slips.list"],
-      (currentSlipGroups: SlipsGroup[]) => {
-        let hasNewSlipPinnedChanged = false;
+    queryClient.refetchQueries({
+      queryKey: ["slips.list"],
+    });
 
-        const mappedSlipGroups = currentSlipGroups.map((currentSlipGroup) => {
-          const updatedSlips = currentSlipGroup.slips.map((currentSlip) => {
-            if (currentSlip.id === data.id) {
-              hasNewSlipPinnedChanged =
-                currentSlip.isPinned !== data.isPinned ||
-                hasNewSlipPinnedChanged;
-
-              return data;
-            }
-
-            return currentSlip;
-          });
-
-          if (!hasNewSlipPinnedChanged) {
-            return {
-              ...currentSlipGroup,
-              slips: updatedSlips,
-            };
-          }
-
-          const sortedSlips = updatedSlips.sort((a, b) => {
-            if (a.isPinned !== b.isPinned) {
-              return a.isPinned ? -1 : 1;
-            }
-
-            return b.created.isBefore(a.created) ? 1 : -1;
-          });
-
-          return {
-            ...currentSlipGroup,
-            slips: sortedSlips,
-          };
-        });
-
-        return mappedSlipGroups;
-      }
-    );
-
-    if (journalToUpdateId) {
-      queryClient.setQueryData(
-        ["journals.get", journalToUpdateId],
-        (currentJournal: { journal: Journal; slips: SlipsGroup[] }) => {
-          const updatedSlipsGroups = currentJournal.slips.map(
-            (currentSlipGroup) => {
-              const updatedSlips = currentSlipGroup.slips.map((currentSlip) => {
-                if (currentSlip.id === data.id) {
-                  return data;
-                }
-
-                return currentSlip;
-              });
-
-              return {
-                ...currentSlipGroup,
-                slips: updatedSlips,
-              };
-            }
-          );
-
-          return {
-            journal: currentJournal.journal,
-            slips: updatedSlipsGroups,
-          };
-        }
-      );
-    }
+    queryClient.refetchQueries({
+      queryKey: ["journals.get"],
+    });
   };
 
   // TODO: consider time caching for better performance

@@ -1,9 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import dayjs from "dayjs";
 import { pb } from "src/connections/pocketbase";
 import { useGetJournals } from "src/models/journals/hooks/useGetJournals";
 import { useGetSlips } from "./useGetSlips";
-import type { Slip } from "../Slip.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 
 type deleteSlipProps = {
@@ -27,26 +25,16 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
 
   const mutationFn = async ({
     slipId,
-    hardDelete = false,
   }: deleteSlipProps): Promise<string | undefined> => {
-    const slipToDelete = slips.find((slip) => slip.id === slipId);
+    const slipToDelete = slips
+      .flatMap((slipGroup) => slipGroup.slips)
+      .find((slip) => slip.id === slipId);
 
     if (!slipToDelete) {
       return;
     }
 
-    // instead of delete from db, again because its not in the db just remove it from the slips array state
-    if (slipToDelete.isDraft) {
-      return slipId;
-    }
-
-    if (hardDelete) {
-      await pb.collection("slips").delete(slipId);
-    } else {
-      await pb
-        .collection("slips")
-        .update(slipId, { ...slipToDelete, deleted: dayjs() });
-    }
+    await pb.collection("slips").delete(slipId);
 
     if (slipToDelete.journals.length) {
       await refetchJournals();
@@ -55,12 +43,14 @@ export const useDeleteSlip = (): UseDeleteSlipResponse => {
     return slipId;
   };
 
-  const onSuccess = (data: string | undefined) => {
-    queryClient.setQueryData(["slips.list"], (currentSlips: Slip[]) =>
-      data
-        ? currentSlips.filter((currentSlip) => currentSlip.id !== data)
-        : currentSlips
-    );
+  const onSuccess = () => {
+    queryClient.refetchQueries({
+      queryKey: ["slips.list"],
+    });
+
+    queryClient.refetchQueries({
+      queryKey: ["journals.get"],
+    });
   };
 
   // TODO: consider time caching for better performance

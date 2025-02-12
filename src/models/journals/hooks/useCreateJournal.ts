@@ -26,13 +26,10 @@ export const useCreateJournal = (): UseCreateJournalResponse => {
     return mappedNewJournal;
   };
 
-  const onSuccess = (data: Journal) => {
-    queryClient.setQueryData(
-      ["journals.list"],
-      (currentJournals: Journal[]) => {
-        return [...currentJournals, data];
-      }
-    );
+  const onSuccess = () => {
+    queryClient.refetchQueries({
+      queryKey: ["journals.list"],
+    });
   };
 
   // TODO: consider time caching for better performance

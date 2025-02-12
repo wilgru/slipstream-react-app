@@ -3,7 +3,7 @@ import { pb } from "src/connections/pocketbase";
 import { useUser } from "src/models/users/hooks/useUser";
 import { mapSlip } from "../utils/mapSlip";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { Slip, SlipsGroup } from "src/models/slips/Slip.type";
+import type { Slip } from "src/models/slips/Slip.type";
 
 type CreateSlipProps = {
   createSlipData: Omit<Slip, "id" | "created" | "updated">;
@@ -43,35 +43,9 @@ export const useCreateSlip = (): UseCreateSlipResponse => {
       return;
     }
 
-    queryClient.setQueryData(
-      ["slips.list"],
-      (currentSlipGroups: SlipsGroup[]) => {
-        const dateString = data.created.format("ddd D MMMM YYYY");
-        let foundExistingGroup = false;
-
-        const newSlipGroups = currentSlipGroups.map((group) => {
-          if (group.title === dateString) {
-            foundExistingGroup = true;
-
-            return { ...group, slips: [...group.slips, data] };
-          }
-
-          return group;
-        });
-
-        if (!foundExistingGroup) {
-          newSlipGroups.push({
-            title: dateString,
-            value: data.created,
-            slips: [data],
-          });
-        }
-
-        console.log(currentSlipGroups);
-
-        return newSlipGroups;
-      }
-    );
+    queryClient.refetchQueries({
+      queryKey: ["slips.list"],
+    });
   };
 
   // TODO: consider time caching for better performance

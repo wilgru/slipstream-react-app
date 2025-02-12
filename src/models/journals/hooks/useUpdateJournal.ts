@@ -52,24 +52,13 @@ export const useUpdateJournal = (): UseUpdateJournalResponse => {
       return;
     }
 
-    queryClient.setQueryData(
-      ["journals.list"],
-      (currentJournals: Journal[]) => {
-        return currentJournals.map((currentJournal) =>
-          currentJournal.id === data.id ? data : currentJournal
-        );
-      }
-    );
+    queryClient.refetchQueries({
+      queryKey: ["journals.list"],
+    });
 
-    queryClient.setQueryData(
-      ["journals.get", data.id],
-      (currentJournal: { journal: Journal; slips: SlipsGroup[] }) => {
-        return {
-          journal: data,
-          slips: currentJournal.slips,
-        };
-      }
-    );
+    queryClient.refetchQueries({
+      queryKey: ["journals.get"],
+    });
 
     // update journal in any slips that have it
     queryClient.setQueryData(

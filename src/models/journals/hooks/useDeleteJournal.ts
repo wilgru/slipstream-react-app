@@ -1,10 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
 import { pb } from "src/connections/pocketbase";
-import { selectedJournalIdsAtom } from "src/models/journals/atoms/selectedJournalIdsAtom";
-import type { Journal } from "../Journal.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { Slip } from "src/models/slips/Slip.type";
 
 type UseDeleteJournalResponse = {
   deleteJournal: UseMutateAsyncFunction<
@@ -17,8 +13,6 @@ type UseDeleteJournalResponse = {
 
 export const useDeleteJournal = (): UseDeleteJournalResponse => {
   const queryClient = useQueryClient();
-
-  const selectedJournalIds = useAtomValue(selectedJournalIdsAtom);
 
   const mutationFn = async (journalId: string): Promise<string | undefined> => {
     const isJournalDeleted = await pb.collection("journals").delete(journalId);
@@ -35,35 +29,14 @@ export const useDeleteJournal = (): UseDeleteJournalResponse => {
       return;
     }
 
-    queryClient.setQueryData(
-      ["journals.list"],
-      (currentJournals: Journal[]) => {
-        return currentJournals.filter((journal) => journal.id !== data);
-      }
-    );
+    queryClient.refetchQueries({
+      queryKey: ["journals.list"],
+    });
 
     // remove journal from any slips
-    queryClient.setQueryData(
-      ["slips.list", selectedJournalIds],
-      (currentSlips: Slip[]) => {
-        return currentSlips.map((currentSlip) => {
-          const slipHasJournal = currentSlip.journals.find(
-            (journal) => journal.id === data
-          );
-
-          if (!slipHasJournal) {
-            return currentSlip;
-          }
-
-          return {
-            ...currentSlip,
-            journals: currentSlip.journals.filter(
-              (journal) => journal.id !== data
-            ),
-          };
-        });
-      }
-    );
+    queryClient.refetchQueries({
+      queryKey: ["slips.list"],
+    });
   };
 
   // TODO: consider time caching for better performance

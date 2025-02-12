@@ -12,7 +12,7 @@ import type { Slip } from "src/models/slips/Slip.type";
 export const SlipSection = forwardRef<
   HTMLDivElement,
   { slip: Slip; colour: Colour; journalId: string }
->(function ({ slip, colour, journalId }, ref) {
+>(function ({ slip, colour }, ref) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -53,7 +53,7 @@ export const SlipSection = forwardRef<
               />
             </Dialog.Trigger>
 
-            <EditSlipModal slip={slip} journalToUpdateId={journalId} />
+            <EditSlipModal slip={slip} />
           </Dialog.Root>
         </div>
       )}

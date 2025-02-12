@@ -21,7 +21,6 @@ import type { Slip } from "src/models/slips/Slip.type";
 
 type EditSlipModalProps = {
   slip?: Slip;
-  journalToUpdateId?: string;
   onSave?: () => void;
 };
 
@@ -49,13 +48,9 @@ const getInitialSlip = (slip: Slip | undefined): Slip => {
   };
 };
 
-const EditSlipModal = ({
-  slip,
-  journalToUpdateId,
-  onSave,
-}: EditSlipModalProps) => {
+const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
   const { createSlip } = useCreateSlip();
-  const { updateSlip } = useUpdateSlip(journalToUpdateId);
+  const { updateSlip } = useUpdateSlip();
   const { deleteSlip } = useDeleteSlip();
 
   const [editedSlip, setEditedSlip] = useState<Slip>(getInitialSlip(slip));
