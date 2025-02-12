@@ -32,7 +32,10 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
     const rawJournal = await pb.collection("journals").getOne(journalId, {
       expand: "slips_via_journals, slips_via_journals.journals",
     });
-    const journal: Journal = mapJournal(rawJournal);
+    const journal: Journal = mapJournal({
+      ...rawJournal,
+      totalSlips: rawJournal.expand?.slips_via_journals.length ?? 0,
+    });
 
     const rawSlips = rawJournal.expand?.slips_via_journals;
     const slips: Slip[] = rawSlips.map(mapSlip);

@@ -226,7 +226,7 @@ export default function JournalComponent() {
                 journal.colour.textPill
               )}
             >
-              ? notes
+              {journal.slipCount} notes
             </h3>
           </div>
         </div>
