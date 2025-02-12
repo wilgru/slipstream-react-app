@@ -4,7 +4,7 @@ import { useGetJournals } from "src/models/journals/hooks/useGetJournals";
 import { mapJournal } from "../utils/mapJournal";
 import type { Journal } from "../Journal.type";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { Slip, SlipsGroup } from "src/models/slips/Slip.type";
+import type { SlipsGroup } from "src/models/slips/Slip.type";
 
 type UpdateJournalProps = {
   journalId: string;
@@ -63,7 +63,7 @@ export const useUpdateJournal = (): UseUpdateJournalResponse => {
 
     queryClient.setQueryData(
       ["journals.get", data.id],
-      (currentJournal: { journal: Journal; slips: Slip[] }) => {
+      (currentJournal: { journal: Journal; slips: SlipsGroup[] }) => {
         return {
           journal: data,
           slips: currentJournal.slips,

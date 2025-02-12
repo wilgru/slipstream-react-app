@@ -42,13 +42,13 @@ export const useUpdateSlip = (
   };
 
   const onSuccess = (data: Slip | undefined) => {
+    if (!data) {
+      return;
+    }
+
     queryClient.setQueryData(
       ["slips.list"],
       (currentSlipGroups: SlipsGroup[]) => {
-        if (!data) {
-          return;
-        }
-
         let hasNewSlipPinnedChanged = false;
 
         const mappedSlipGroups = currentSlipGroups.map((currentSlipGroup) => {
@@ -89,28 +89,34 @@ export const useUpdateSlip = (
       }
     );
 
-    journalToUpdateId &&
+    if (journalToUpdateId) {
       queryClient.setQueryData(
         ["journals.get", journalToUpdateId],
-        (currentJournal: { journal: Journal; slips: Slip[] }) => {
-          if (!data) {
-            return;
-          }
+        (currentJournal: { journal: Journal; slips: SlipsGroup[] }) => {
+          const updatedSlipsGroups = currentJournal.slips.map(
+            (currentSlipGroup) => {
+              const updatedSlips = currentSlipGroup.slips.map((currentSlip) => {
+                if (currentSlip.id === data.id) {
+                  return data;
+                }
 
-          const updatedSlips = currentJournal.slips.map((currentSlip) => {
-            if (currentSlip.id === data.id) {
-              return data;
+                return currentSlip;
+              });
+
+              return {
+                ...currentSlipGroup,
+                slips: updatedSlips,
+              };
             }
-
-            return currentSlip;
-          });
+          );
 
           return {
             journal: currentJournal.journal,
-            slips: updatedSlips,
+            slips: updatedSlipsGroups,
           };
         }
       );
+    }
   };
 
   // TODO: consider time caching for better performance
