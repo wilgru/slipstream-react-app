@@ -7,6 +7,7 @@ export type Journal = {
   colour: Colour;
   icon: string;
   slipCount: number;
+  groupBy: "created" | "journal";
   created: Dayjs;
   updated: Dayjs;
 };

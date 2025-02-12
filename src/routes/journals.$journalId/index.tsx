@@ -7,6 +7,7 @@ import { Button } from "src/components/Button/Button";
 import TableOfContents from "src/components/TableOfContents/TableOfContents";
 import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
 import { useGetJournal } from "src/models/journals/hooks/useGetJournal";
+import { useUpdateJournal } from "src/models/journals/hooks/useUpdateJournal";
 import isAuthenticated from "src/models/users/utils/isAuthenticated";
 import { cn } from "src/utils/cn";
 import { EditJournalModal } from "./-components/EditJournalModal";
@@ -30,7 +31,8 @@ export const Route = createFileRoute("/journals/$journalId/")({
 
 export default function JournalComponent() {
   const { journalId } = Route.useParams();
-  const { journal, slips } = useGetJournal(journalId ?? "", "created");
+  const { journal, slips } = useGetJournal(journalId ?? "");
+  const { updateJournal } = useUpdateJournal();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [navigationId, setNavigationId] = useState("");
   const slipRefs = useRef<HTMLDivElement[]>([]);
@@ -117,8 +119,18 @@ export default function JournalComponent() {
                     align="start"
                   >
                     <DropdownMenu.RadioGroup
-                      value={"created"}
-                      onValueChange={() => {}}
+                      value={journal.groupBy}
+                      onValueChange={(value) => {
+                        if (value === "created" || value === "journal") {
+                          updateJournal({
+                            journalId: journal.id,
+                            updateJournalData: {
+                              ...journal,
+                              groupBy: value,
+                            },
+                          });
+                        }
+                      }}
                     >
                       <DropdownMenu.Label className="p-1 text-xs text-stone-500">
                         Group by

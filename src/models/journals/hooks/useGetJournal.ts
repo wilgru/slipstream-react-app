@@ -36,7 +36,9 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
 
     const rawSlips = rawJournal.expand?.slips_via_journals;
     const slips: Slip[] = rawSlips.map(mapSlip);
-    const groupedSlips = groupSlips(slips, "created");
+
+    const groupedSlips = groupSlips(slips, journal.groupBy);
+
     const groupedSlipsDividedByTitle = groupedSlips.map((groupedSlip) => {
       const slipsWithTitles: Slip[] = [];
       const slipsWithNoTitle: Slip[] = [];

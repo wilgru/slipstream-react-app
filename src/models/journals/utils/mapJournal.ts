@@ -9,6 +9,7 @@ export const mapJournal = (journal: RecordModel): Journal => {
     colour: getColour(journal.colour),
     icon: journal.icon,
     slipCount: journal.totalSlips,
+    groupBy: journal.groupBy,
     created: journal.createdAt,
     updated: journal.updatedAt,
   };
