@@ -139,7 +139,11 @@ export default function JournalComponent() {
                       <DropdownMenu.Separator className="h-[1px] mb-1 rounded-full bg-stone-300" />
 
                       <DropdownMenu.RadioItem
-                        className="leading-none text-sm p-1 data-[highlighted]:bg-orange-100 flex justify-between data-[highlighted]:text-orange-500 outline-none rounded-sm cursor-pointer"
+                        className={cn(
+                          "leading-none text-sm p-1 flex justify-between items-center outline-none rounded-sm cursor-pointer",
+                          `data-[highlighted]:${journal.colour.backgroundPill}`,
+                          `data-[highlighted]:${journal.colour.textPill}`
+                        )}
                         value="created"
                       >
                         Created
@@ -148,7 +152,11 @@ export default function JournalComponent() {
                         </DropdownMenu.ItemIndicator>
                       </DropdownMenu.RadioItem>
                       <DropdownMenu.RadioItem
-                        className="leading-none text-sm p-1 data-[highlighted]:bg-orange-100 flex justify-between data-[highlighted]:text-orange-500 outline-none rounded-sm cursor-pointer"
+                        className={cn(
+                          "leading-none text-sm p-1 flex justify-between  items-center outline-none rounded-sm cursor-pointer",
+                          `data-[highlighted]:${journal.colour.backgroundPill}`,
+                          `data-[highlighted]:${journal.colour.textPill}`
+                        )}
                         value="journal"
                       >
                         Journal
@@ -169,7 +177,11 @@ export default function JournalComponent() {
                       <DropdownMenu.Separator className="h-[1px] mb-1 rounded-full bg-stone-300" />
 
                       <DropdownMenu.RadioItem
-                        className="leading-none text-sm p-1 data-[highlighted]:bg-orange-100 flex justify-between data-[highlighted]:text-orange-500 outline-none rounded-sm cursor-pointer"
+                        className={cn(
+                          "leading-none text-sm p-1 flex justify-between  items-center outline-none rounded-sm cursor-pointer",
+                          `data-[highlighted]:${journal.colour.backgroundPill}`,
+                          `data-[highlighted]:${journal.colour.textPill}`
+                        )}
                         value="created"
                       >
                         Created
@@ -178,7 +190,11 @@ export default function JournalComponent() {
                         </DropdownMenu.ItemIndicator>
                       </DropdownMenu.RadioItem>
                       <DropdownMenu.RadioItem
-                        className="leading-none text-sm p-1 data-[highlighted]:bg-orange-100 flex justify-between data-[highlighted]:text-orange-500 outline-none rounded-sm cursor-pointer"
+                        className={cn(
+                          "leading-none text-sm p-1 flex justify-between  items-center outline-none rounded-sm cursor-pointer",
+                          `data-[highlighted]:${journal.colour.backgroundPill}`,
+                          `data-[highlighted]:${journal.colour.textPill}`
+                        )}
                         value="title"
                       >
                         Title
@@ -193,7 +209,26 @@ export default function JournalComponent() {
             </div>
           </div>
 
-          <h3 className="text-stone-500">{slips.length} section, ? notes</h3>
+          <div className="flex gap-1">
+            <h3
+              className={cn(
+                "px-2 py-0.5 text-sm rounded-full",
+                journal.colour.backgroundPill,
+                journal.colour.textPill
+              )}
+            >
+              {slips.length} sections
+            </h3>
+            <h3
+              className={cn(
+                "px-2 py-0.5 text-sm rounded-full",
+                journal.colour.backgroundPill,
+                journal.colour.textPill
+              )}
+            >
+              ? notes
+            </h3>
+          </div>
         </div>
 
         <div className="p-3 mb-4 mx-4 border min-h-full border-stone-300 rounded-lg flex flex-col gap-10 bg-white drop-shadow-md">

@@ -34,5 +34,31 @@ export default {
     "hover:bg-amber-200",
     "hover:bg-gray-100",
     "hover:bg-gray-200",
+
+    // data highlighted backgrounds
+    "data-[highlighted]:bg-orange-100",
+    "data-[highlighted]:bg-red-100",
+    "data-[highlighted]:bg-yellow-100",
+    "data-[highlighted]:bg-lime-100",
+    "data-[highlighted]:bg-green-100",
+    "data-[highlighted]:bg-blue-100",
+    "data-[highlighted]:bg-cyan-100",
+    "data-[highlighted]:bg-purple-100",
+    "data-[highlighted]:bg-pink-100",
+    "data-[highlighted]:bg-amber-200",
+    "data-[highlighted]:bg-gray-200",
+
+    // data highlighted text
+    "data-[highlighted]:text-orange-500",
+    "data-[highlighted]:text-red-500",
+    "data-[highlighted]:text-yellow-500",
+    "data-[highlighted]:text-lime-500",
+    "data-[highlighted]:text-green-500",
+    "data-[highlighted]:text-blue-500",
+    "data-[highlighted]:text-cyan-500",
+    "data-[highlighted]:text-purple-500",
+    "data-[highlighted]:text-pink-500",
+    "data-[highlighted]:text-amber-700",
+    "data-[highlighted]:text-gray-500",
   ],
 };
