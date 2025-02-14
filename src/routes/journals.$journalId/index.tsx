@@ -73,7 +73,7 @@ export default function JournalComponent() {
       <div className="max-w-[700px] overflow-y-scroll">
         <JournalHeader journal={journal} slips={slips} />
 
-        <div className="p-3 mb-4 mx-4 border min-h-full border-stone-300 rounded-lg flex flex-col gap-10 bg-white drop-shadow-md">
+        <div className="p-3 mb-4 mx-9 border min-h-full border-stone-300 rounded-lg flex flex-col gap-10 bg-white drop-shadow-md">
           {slips.map((slipGroup) => (
             <div className="flex flex-col gap-3">
               <h2

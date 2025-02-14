@@ -6,7 +6,6 @@ import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 
 type deleteSlipProps = {
   slipId: string;
-  hardDelete?: boolean;
 };
 
 type UseDeleteSlipResponse = {

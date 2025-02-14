@@ -4,6 +4,10 @@ import { Button } from "src/components/Button/Button";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import QuillContentView from "src/components/QuillContentView/QuillContentView";
 import { SlipHeading } from "src/components/SlipHeading/SlipHeading";
+import { Toggle } from "src/components/Toggle/Toggle";
+import { colours } from "src/models/colours/colours.constant";
+import { useDeleteSlip } from "src/models/slips/hooks/useDeleteSlip";
+import { useUpdateSlip } from "src/models/slips/hooks/useUpdateSlip";
 import { isSlipContentEmpty } from "src/models/slips/utils/isSlipContentEmpty";
 import { cn } from "src/utils/cn";
 import type { Colour } from "src/models/colours/Colour.type";
@@ -13,6 +17,8 @@ export const SlipSection = forwardRef<
   HTMLDivElement,
   { slip: Slip; colour: Colour; journalId: string }
 >(function ({ slip, colour }, ref) {
+  const { updateSlip } = useUpdateSlip();
+  const { deleteSlip } = useDeleteSlip();
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -42,19 +48,46 @@ export const SlipSection = forwardRef<
       </p>
 
       {isHovered && (
-        <div className="absolute flex flex-col gap-2 -left-7 top-2 bg-white border border-stone-300 rounded-full shadow-light">
-          <Dialog.Root>
-            <Dialog.Trigger asChild>
+        <div className="absolute p-2 -left-6 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <div className="flex flex-col gap-2 p-1 bg-white border border-stone-300 rounded-full drop-shadow-md">
+            <Dialog.Root>
+              <Dialog.Trigger asChild>
+                <Button
+                  colour={colour}
+                  iconName="pencil"
+                  variant="ghost"
+                  size="sm"
+                />
+              </Dialog.Trigger>
+
+              <Toggle
+                onClick={() => {
+                  updateSlip({
+                    slipId: slip.id,
+                    updateSlipData: {
+                      ...slip,
+                      isFlagged: !slip.isFlagged,
+                    },
+                  });
+                }}
+                isToggled={slip.isFlagged}
+                iconName="flag"
+                size="sm"
+              />
+
               <Button
-                colour={colour}
-                iconName="pencil"
+                onClick={() => {
+                  deleteSlip({ slipId: slip.id });
+                }}
+                colour={colours.red}
+                iconName="trash"
                 variant="ghost"
                 size="sm"
               />
-            </Dialog.Trigger>
 
-            <EditSlipModal slip={slip} />
-          </Dialog.Root>
+              <EditSlipModal slip={slip} />
+            </Dialog.Root>
+          </div>
         </div>
       )}
     </div>

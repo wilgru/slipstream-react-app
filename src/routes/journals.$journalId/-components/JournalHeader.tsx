@@ -19,7 +19,7 @@ export const JournalHeader = ({ journal, slips }: JournalHeaderProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
-    <div className="py-4 mx-4">
+    <div className="py-4 mx-9">
       <div className="flex justify-between items-center">
         <h1 className={cn(journal.colour.text, "font-title text-5xl")}>
           {journal.name}
