@@ -1,14 +1,16 @@
 import * as TogglePrimitive from "@radix-ui/react-toggle";
 import { cva } from "class-variance-authority";
 import { useState } from "react";
+import { colours } from "src/models/colours/colours.constant";
 import { cn } from "src/utils/cn";
 import { Icon } from "../Icon/Icon";
+import type { Colour } from "src/models/colours/Colour.type";
 
 type ToggleProps = {
   className?: string;
   children?: string | JSX.Element;
   size?: "sm" | "md" | "lg";
-  colour?: "default" | "red";
+  colour?: Colour;
   isToggled: boolean;
   disabled?: boolean;
   onClick?: () => void;
@@ -35,15 +37,9 @@ const toggleVariants = cva(
         md: "p-2 text-sm font-medium",
         lg: "p-6 text-sm",
       },
-      colour: {
-        default:
-          "data-[state=on]:text-orange-500 data-[state=off]:hover:text-orange-500 hover:bg-orange-100",
-        red: "data-[state=on]:text-red-500 data-[state=off]:hover:text-red-500 hover:bg-red-100",
-      },
     },
     defaultVariants: {
       size: "md",
-      colour: "default",
     },
   }
 );
@@ -52,7 +48,7 @@ export const Toggle = ({
   children,
   className,
   size = "md",
-  colour = "default",
+  colour = colours.orange,
   disabled = false,
   onClick,
   isToggled,
@@ -62,7 +58,11 @@ export const Toggle = ({
 
   return (
     <TogglePrimitive.Root
-      className={cn(toggleVariants({ size, colour, className }))}
+      className={cn(
+        toggleVariants({ size }),
+        `data-[state=on]:${colour.text} hover:${colour.backgroundPill}`,
+        className
+      )}
       disabled={disabled}
       onClick={onClick}
       onMouseEnter={() => setIsToggleHovered(true)}
@@ -71,6 +71,7 @@ export const Toggle = ({
     >
       {iconName && (
         <Icon
+          className={cn(isToggleHovered && colour.textPill)}
           iconName={iconName}
           size={size}
           weight={isToggled || isToggleHovered ? "fill" : "regular"}

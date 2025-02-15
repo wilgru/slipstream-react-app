@@ -38,18 +38,18 @@ export default {
     "hover:bg-amber-200",
     "hover:bg-gray-200",
 
-    // data highlighted backgroundPill
-    "data-[highlighted]:bg-orange-100",
-    "data-[highlighted]:bg-red-100",
-    "data-[highlighted]:bg-yellow-100",
-    "data-[highlighted]:bg-lime-100",
-    "data-[highlighted]:bg-green-100",
-    "data-[highlighted]:bg-blue-100",
-    "data-[highlighted]:bg-cyan-100",
-    "data-[highlighted]:bg-purple-100",
-    "data-[highlighted]:bg-pink-100",
-    "data-[highlighted]:bg-amber-200",
-    "data-[highlighted]:bg-gray-200",
+    // data on textPill
+    "data-[state=on]:text-orange-400",
+    "data-[state=on]:text-red-400",
+    "data-[state=on]:text-yellow-400",
+    "data-[state=on]:text-lime-400",
+    "data-[state=on]:text-green-400",
+    "data-[state=on]:text-blue-400",
+    "data-[state=on]:text-cyan-400",
+    "data-[state=on]:text-purple-400",
+    "data-[state=on]:text-pink-400",
+    "data-[state=on]:text-amber-600",
+    "data-[state=on]:text-gray-400",
 
     // data highlighted textPill
     "data-[highlighted]:text-orange-500",
@@ -63,5 +63,18 @@ export default {
     "data-[highlighted]:text-pink-500",
     "data-[highlighted]:text-amber-700",
     "data-[highlighted]:text-gray-500",
+
+    // data highlighted backgroundPill
+    "data-[highlighted]:bg-orange-100",
+    "data-[highlighted]:bg-red-100",
+    "data-[highlighted]:bg-yellow-100",
+    "data-[highlighted]:bg-lime-100",
+    "data-[highlighted]:bg-green-100",
+    "data-[highlighted]:bg-blue-100",
+    "data-[highlighted]:bg-cyan-100",
+    "data-[highlighted]:bg-purple-100",
+    "data-[highlighted]:bg-pink-100",
+    "data-[highlighted]:bg-amber-200",
+    "data-[highlighted]:bg-gray-200",
   ],
 };

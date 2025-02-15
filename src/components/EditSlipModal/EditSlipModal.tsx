@@ -124,7 +124,7 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
 
             <div className=" flex flex-row gap-1">
               <Toggle
-                colour="red"
+                colour={colours.red}
                 isToggled={editedSlip.isPinned}
                 onClick={() =>
                   setEditedSlip((currentEditedSlip) => {
