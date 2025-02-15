@@ -84,11 +84,14 @@ function LoginIndexComponent(): JSX.Element {
             </div>
           </div>
 
-          <div className="flex justify-between items-center">
+          <div>
             <Button disabled={loginLoading} type="submit">
               {loginLoading ? "Loading..." : "Log in"}
             </Button>
+          </div>
 
+          <div className="flex items-baseline">
+            <p className="text-sm">New to SlipBox?&nbsp;</p>
             <Button
               intent="primary"
               variant="link"

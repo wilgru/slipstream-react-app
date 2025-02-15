@@ -134,11 +134,10 @@ function SignUpIndexComponent(): JSX.Element {
           </div>
         </form>
 
-        <div className="flex justify-center items-baseline">
+        <div className="flex items-baseline">
           <p className="text-sm">Already have an account?&nbsp;</p>
           <Button
             variant="link"
-            size="sm"
             onClick={() => {
               navigate({ to: "/login" });
             }}

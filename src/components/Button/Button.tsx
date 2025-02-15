@@ -7,7 +7,7 @@ import type { Colour } from "src/models/colours/Colour.type";
 
 type ButtonProps = {
   children?: string | JSX.Element;
-  variant?: "block" | "link" | "ghost";
+  variant?: "block" | "ghost" | "link";
   intent?: "primary" | "secondary" | "destructive";
   colour?: Colour;
   size?: "sm" | "md" | "lg";
@@ -83,33 +83,40 @@ const buttonVariants = cva(
         variant: "block",
         className: "text-red-800 bg-red-100",
       },
+
       {
         size: "sm",
+        variant: ["block", "ghost"],
         content: "text",
         className: "py-1 px-2",
       },
       {
         size: "md",
+        variant: ["block", "ghost"],
         content: "text",
         className: "py-2 px-3",
       },
       {
         size: "lg",
+        variant: ["block", "ghost"],
         content: "text",
         className: "py-3 px-4",
       },
       {
         size: "sm",
+        variant: ["block", "ghost"],
         content: "icon",
         className: "p-1",
       },
       {
         size: "md",
+        variant: ["block", "ghost"],
         content: "icon",
         className: "p-2",
       },
       {
         size: "lg",
+        variant: ["block", "ghost"],
         content: "icon",
         className: "p-3",
       },
@@ -148,7 +155,7 @@ export const Button = ({
           content: iconName ? "icon" : "text",
         }),
         `hover:${colour.textPill}`,
-        `hover:${colour.backgroundPill}`,
+        variant !== "link" && `hover:${colour.backgroundPill}`,
         className
       )}
       disabled={disabled}
