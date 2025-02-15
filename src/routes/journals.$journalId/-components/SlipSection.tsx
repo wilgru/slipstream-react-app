@@ -30,7 +30,7 @@ export const SlipSection = forwardRef<
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
         "flex flex-col gap-1 relative p-2 rounded-md",
-        `hover:${colour.backgroundGlow}`
+        colour.backgroundGlow
       )}
     >
       <SlipHeading

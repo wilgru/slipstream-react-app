@@ -4,6 +4,7 @@ import { Button } from "src/components/Button/Button";
 import { ColourPicker } from "src/components/ColourPicker/ColourPicker";
 import IconPicker from "src/components/IconPicker/IconPicker";
 import { Input } from "src/components/Input/Input";
+import { colours } from "src/models/colours/colours.constant";
 import { useUpdateJournal } from "src/models/journals/hooks/useUpdateJournal";
 import { DeleteJournalModal } from "./DeleteJournalModal";
 import type { Journal } from "src/models/journals/Journal.type";
@@ -46,7 +47,7 @@ export const EditJournalModal = ({
           <div>
             <h3 className="text-sm">Name</h3>
             <Input
-              size="medium"
+              size="md"
               id={journal.id}
               value={editedJournal.name}
               onChange={(e) =>
@@ -85,7 +86,7 @@ export const EditJournalModal = ({
           <div className="flex justify-between">
             <Dialog.Root>
               <Dialog.Trigger asChild>
-                <Button variant="block" intent="destructive" size="sm">
+                <Button colour={colours.red} variant="block" size="sm">
                   Delete
                 </Button>
               </Dialog.Trigger>
@@ -106,7 +107,12 @@ export const EditJournalModal = ({
               </Dialog.Close>
 
               <Dialog.Close asChild>
-                <Button aria-label="Confirm" size="sm" onClick={onSaveEdit}>
+                <Button
+                  aria-label="Confirm"
+                  colour={colours.green}
+                  size="sm"
+                  onClick={onSaveEdit}
+                >
                   Save
                 </Button>
               </Dialog.Close>

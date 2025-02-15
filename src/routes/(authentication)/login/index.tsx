@@ -93,7 +93,6 @@ function LoginIndexComponent(): JSX.Element {
           <div className="flex items-baseline">
             <p className="text-sm">New to SlipBox?&nbsp;</p>
             <Button
-              intent="primary"
               variant="link"
               onClick={() => {
                 navigate({ to: "/signup" });

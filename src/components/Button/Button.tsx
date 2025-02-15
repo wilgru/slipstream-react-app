@@ -8,7 +8,6 @@ import type { Colour } from "src/models/colours/Colour.type";
 type ButtonProps = {
   children?: string | JSX.Element;
   variant?: "block" | "ghost" | "link";
-  intent?: "primary" | "secondary" | "destructive";
   colour?: Colour;
   size?: "sm" | "md" | "lg";
   type?: "button" | "submit";
@@ -32,11 +31,6 @@ const buttonVariants = cva(
   ],
   {
     variants: {
-      intent: {
-        primary: null,
-        secondary: null,
-        destructive: null,
-      },
       variant: {
         block: null,
         ghost: "text-stone-500",
@@ -53,37 +47,6 @@ const buttonVariants = cva(
       },
     },
     compoundVariants: [
-      {
-        intent: "primary",
-        variant: "block",
-        className: "text-green-700 bg-green-100",
-      },
-      {
-        intent: "secondary",
-        variant: "block",
-        className: "bg-white",
-      },
-      {
-        intent: "primary",
-        variant: "ghost",
-        className: "hover:bg-orange-100 hover:text-orange-500",
-      },
-      {
-        intent: ["primary", "secondary"],
-        variant: "link",
-        className: "text-stone-500 hover:text-orange-500",
-      },
-      {
-        intent: "secondary",
-        variant: "ghost",
-        className: "hover:bg-orange-100 hover:text-orange-500",
-      },
-      {
-        intent: "destructive",
-        variant: "block",
-        className: "text-red-800 bg-red-100",
-      },
-
       {
         size: "sm",
         variant: ["block", "ghost"],
@@ -122,7 +85,6 @@ const buttonVariants = cva(
       },
     ],
     defaultVariants: {
-      intent: "primary",
       variant: "block",
       size: "md",
     },
@@ -133,7 +95,6 @@ export const Button = ({
   children,
   type = "button",
   variant = "block",
-  intent = "primary",
   size = "md",
   colour = colours.orange,
   className,
@@ -148,14 +109,15 @@ export const Button = ({
       type={type}
       className={cn(
         buttonVariants({
-          variant,
-          intent,
           size,
-          className,
           content: iconName ? "icon" : "text",
         }),
-        `hover:${colour.textPill}`,
-        variant !== "link" && `hover:${colour.backgroundPill}`,
+        variant === "block" && colour.textPill,
+        variant === "block" && colour.backgroundPill,
+        variant === "block" && `${colour.textPillInverted}`,
+        variant === "block" && `${colour.backgroundPillInverted}`,
+        variant === "ghost" && `hover:${colour.textPill}`,
+        variant === "ghost" && `hover:${colour.backgroundPill}`,
         className
       )}
       disabled={disabled}

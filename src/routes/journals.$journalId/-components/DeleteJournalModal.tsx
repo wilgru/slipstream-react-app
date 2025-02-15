@@ -1,5 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "src/components/Button/Button";
+import { colours } from "src/models/colours/colours.constant";
 import { useDeleteJournal } from "src/models/journals/hooks/useDeleteJournal";
 import type { Journal } from "src/models/journals/Journal.type";
 
@@ -25,7 +26,7 @@ export const DeleteJournalModal = ({
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black opacity-50 fixed inset-0" />
-      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-stone-100 border border-stone-700 rounded-lg">
+      <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] p-4 focus:outline-none bg-stone-100 border border-stone-700 rounded-lg">
         <Dialog.Title className="mb-5">Confirm delete journal</Dialog.Title>
         <Dialog.Description className="mb-5">
           <p className="text-sm">
@@ -35,11 +36,11 @@ export const DeleteJournalModal = ({
 
         <div className="flex gap-2 justify-end">
           <Dialog.Close asChild>
-            <Button>Cancel</Button>
+            <Button variant="ghost">Cancel</Button>
           </Dialog.Close>
 
           <Dialog.Close asChild>
-            <Button intent="destructive" onClick={onConfirmDelete}>
+            <Button colour={colours.red} onClick={onConfirmDelete}>
               Confirm
             </Button>
           </Dialog.Close>

@@ -12,6 +12,7 @@ import { useMemo, useState } from "react";
 import { Button } from "src/components/Button/Button";
 import { QuillEditor } from "src/components/QuillEditor/QuillEditor";
 import { Toggle } from "src/components/Toggle/Toggle";
+import { colours } from "src/models/colours/colours.constant";
 import { useCreateSlip } from "src/models/slips/hooks/useCreateSlip";
 import { useDeleteSlip } from "src/models/slips/hooks/useDeleteSlip";
 import { useUpdateSlip } from "src/models/slips/hooks/useUpdateSlip";
@@ -234,8 +235,8 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
         <div className="flex justify-between gap-2">
           <Dialog.Close asChild>
             <Button
+              colour={colours.red}
               variant="block"
-              intent="destructive"
               size="sm"
               onClick={onDeleteSlip}
             >
@@ -245,12 +246,17 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
 
           <div className="flex gap-2">
             <Dialog.Close asChild>
-              <Button variant="ghost" intent="secondary" size="sm">
+              <Button variant="ghost" size="sm">
                 Cancel
               </Button>
             </Dialog.Close>
             <Dialog.Close asChild>
-              <Button variant="block" size="sm" onClick={onSaveSlip}>
+              <Button
+                colour={colours.green}
+                variant="block"
+                size="sm"
+                onClick={onSaveSlip}
+              >
                 Save
               </Button>
             </Dialog.Close>
