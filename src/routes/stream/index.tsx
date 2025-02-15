@@ -4,8 +4,8 @@ import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
 import { colours } from "src/models/colours/colours.constant";
 import { useGetSlips } from "src/models/slips/hooks/useGetSlips";
 import isAuthenticated from "src/models/users/utils/isAuthenticated";
+import { SlipCard } from "../../components/SlipCard/SlipCard";
 import TableOfContents from "../../components/TableOfContents/TableOfContents";
-import { SlipSection } from "../journals.$journalId/-components/SlipSection";
 import type { TableOfContentsItem } from "../../components/TableOfContents/TableOfContents";
 
 export const Route = createFileRoute("/stream/")({
@@ -97,7 +97,7 @@ function StreamIndexComponent() {
                 key={slip.id}
                 className="relative p-3 mx-9 rounded-lg bg-white drop-shadow-md border border-stone-300"
               >
-                <SlipSection slip={slip} colour={colours.orange} />
+                <SlipCard slip={slip} colour={colours.orange} />
               </div>
             ))}
           </div>

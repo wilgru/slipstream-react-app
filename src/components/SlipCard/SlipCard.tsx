@@ -13,7 +13,7 @@ import { cn } from "src/utils/cn";
 import type { Colour } from "src/models/colours/Colour.type";
 import type { Slip } from "src/models/slips/Slip.type";
 
-export const SlipSection = forwardRef<
+export const SlipCard = forwardRef<
   HTMLDivElement,
   { slip: Slip; colour: Colour }
 >(function ({ slip, colour }, ref) {

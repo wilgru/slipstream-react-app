@@ -5,8 +5,8 @@ import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
 import { useGetJournal } from "src/models/journals/hooks/useGetJournal";
 import isAuthenticated from "src/models/users/utils/isAuthenticated";
 import { cn } from "src/utils/cn";
+import { SlipCard } from "../../components/SlipCard/SlipCard";
 import { JournalHeader } from "./-components/JournalHeader";
-import { SlipSection } from "./-components/SlipSection";
 import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
 
 export const Route = createFileRoute("/journals/$journalId/")({
@@ -86,7 +86,7 @@ export default function JournalComponent() {
               </h2>
 
               {slipGroup.slipsWithNoTitle.map((slip) => (
-                <SlipSection
+                <SlipCard
                   ref={(el: HTMLDivElement | null) => {
                     if (el && !slipRefs.current.includes(el)) {
                       slipRefs.current.push(el);
@@ -107,7 +107,7 @@ export default function JournalComponent() {
                 )}
 
               {slipGroup.slips.map((slip) => (
-                <SlipSection
+                <SlipCard
                   ref={(el: HTMLDivElement | null) => {
                     if (el && !slipRefs.current.includes(el)) {
                       slipRefs.current.push(el);
