@@ -1,10 +1,11 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
+import { colours } from "src/models/colours/colours.constant";
 import { useGetSlips } from "src/models/slips/hooks/useGetSlips";
 import isAuthenticated from "src/models/users/utils/isAuthenticated";
-import SlipCard from "src/routes/stream/-components/SlipCard";
 import TableOfContents from "../../components/TableOfContents/TableOfContents";
+import { SlipSection } from "../journals.$journalId/-components/SlipSection";
 import type { TableOfContentsItem } from "../../components/TableOfContents/TableOfContents";
 
 export const Route = createFileRoute("/stream/")({
@@ -25,8 +26,8 @@ export const Route = createFileRoute("/stream/")({
 function StreamIndexComponent() {
   const { slips } = useGetSlips();
   const bottomRef = useRef<null | HTMLDivElement>(null);
-  const [navigationId, setNavigationId] = useState("");
   const slipRefs = useRef<HTMLDivElement[]>([]);
+  const [navigationId, setNavigationId] = useState("");
 
   useIntersectionObserver(
     slipRefs,
@@ -77,7 +78,7 @@ function StreamIndexComponent() {
 
   return (
     <div className="flex h-full">
-      <div className="flex flex-col h-full gap-10 p-6 max-w-[700px] overflow-y-auto overflow-x-hidden">
+      <div className="flex flex-col h-full gap-10 max-w-[700px] overflow-y-auto overflow-x-hidden">
         {slips.map((group) => (
           <div
             ref={(el: HTMLDivElement | null) => {
@@ -89,10 +90,15 @@ function StreamIndexComponent() {
             key={group.title}
             className="flex flex-col gap-3"
           >
-            <h2 className="font-title text-3xl">{group.title}</h2>
+            <h2 className="mx-9 font-title text-3xl">{group.title}</h2>
 
             {group.slips.map((slip) => (
-              <SlipCard key={slip.id} slip={slip} />
+              <div
+                key={slip.id}
+                className="relative p-3 mx-9 rounded-lg bg-white drop-shadow-md border border-stone-300"
+              >
+                <SlipSection slip={slip} colour={colours.orange} />
+              </div>
             ))}
           </div>
         ))}

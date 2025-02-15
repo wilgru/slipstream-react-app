@@ -15,7 +15,7 @@ import type { Slip } from "src/models/slips/Slip.type";
 
 export const SlipSection = forwardRef<
   HTMLDivElement,
-  { slip: Slip; colour: Colour; journalId: string }
+  { slip: Slip; colour: Colour }
 >(function ({ slip, colour }, ref) {
   const { updateSlip } = useUpdateSlip();
   const { deleteSlip } = useDeleteSlip();
@@ -47,49 +47,50 @@ export const SlipSection = forwardRef<
         {slip.created.format("ddd D MMMM YYYY")}
       </p>
 
-      {isHovered && (
-        <div className="absolute p-2 -left-6 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="flex flex-col gap-2 p-1 bg-white border border-stone-300 rounded-full drop-shadow-md">
-            <Dialog.Root>
-              <Dialog.Trigger asChild>
-                <Button
-                  colour={colour}
-                  iconName="pencil"
-                  variant="ghost"
-                  size="sm"
-                />
-              </Dialog.Trigger>
-
-              <Toggle
-                onClick={() => {
-                  updateSlip({
-                    slipId: slip.id,
-                    updateSlipData: {
-                      ...slip,
-                      isFlagged: !slip.isFlagged,
-                    },
-                  });
-                }}
-                isToggled={slip.isFlagged}
-                iconName="flag"
-                size="sm"
-              />
-
+      <div
+        hidden={!isHovered}
+        className="absolute p-2 -left-6 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+      >
+        <div className="flex flex-col gap-2 p-1 bg-white border border-stone-300 rounded-full drop-shadow-md">
+          <Dialog.Root>
+            <Dialog.Trigger asChild>
               <Button
-                onClick={() => {
-                  deleteSlip({ slipId: slip.id });
-                }}
-                colour={colours.red}
-                iconName="trash"
+                colour={colour}
+                iconName="pencil"
                 variant="ghost"
                 size="sm"
               />
+            </Dialog.Trigger>
 
-              <EditSlipModal slip={slip} />
-            </Dialog.Root>
-          </div>
+            <Toggle
+              onClick={() => {
+                updateSlip({
+                  slipId: slip.id,
+                  updateSlipData: {
+                    ...slip,
+                    isFlagged: !slip.isFlagged,
+                  },
+                });
+              }}
+              isToggled={slip.isFlagged}
+              iconName="flag"
+              size="sm"
+            />
+
+            <Button
+              onClick={() => {
+                deleteSlip({ slipId: slip.id });
+              }}
+              colour={colours.red}
+              iconName="trash"
+              variant="ghost"
+              size="sm"
+            />
+
+            <EditSlipModal slip={slip} />
+          </Dialog.Root>
         </div>
-      )}
+      </div>
     </div>
   );
 });

@@ -94,7 +94,6 @@ export default function JournalComponent() {
                   }}
                   slip={slip}
                   colour={journal.colour}
-                  journalId={journal.id}
                 />
               ))}
 
@@ -116,7 +115,6 @@ export default function JournalComponent() {
                   }}
                   slip={slip}
                   colour={journal.colour}
-                  journalId={journal.id}
                 />
               ))}
             </div>
