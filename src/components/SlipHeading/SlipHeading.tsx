@@ -16,7 +16,7 @@ export const SlipHeading = ({
   }
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex gap-2 items-baseline">
       {title && (
         <h1 className="font-title text-2xl font-normal tracking-tight">
           {title}
