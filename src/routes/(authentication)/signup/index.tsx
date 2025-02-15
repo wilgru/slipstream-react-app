@@ -47,23 +47,21 @@ function SignUpIndexComponent(): JSX.Element {
   }, [navigate, user]);
 
   return (
-    <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen bg-stone-300">
+    <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen bg-stone-100">
       {!!signUpError && (
         // TODO: show actual error message
         <div className="p-6 border border-red-500 rounded-lg bg-red-100 text-red-500 max-w-sm w-full">
           Something went wrong. Please try again
         </div>
       )}
-      <div className="flex flex-col gap-6 p-6 border bg-stone-100 border-black rounded-lg max-w-sm w-full shadow-light">
-        <h1 className="text-4xl font-normal font-title tracking-tight text-black">
+      <div className="flex flex-col gap-6 p-6 border bg-white border-stone-300 rounded-lg max-w-sm w-full drop-shadow">
+        <h1 className="text-4xl font-normal font-title tracking-tight ">
           Sign Up
         </h1>
         <form className="space-y-6" onSubmit={onSubmit}>
           <div>
             <div className="flex items-baseline justify-between">
-              <label className="text-sm font-medium leading-6 text-black">
-                Name
-              </label>
+              <label className="text-sm font-medium leading-6 ">Name</label>
             </div>
             <div>
               <input
@@ -73,15 +71,13 @@ function SignUpIndexComponent(): JSX.Element {
                 autoComplete="given-name"
                 onChange={onChange}
                 required
-                className="block w-full p-2 bg-white text-black border border-black rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
+                className="block w-full p-2 bg-white border border-stone-300 rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-sm font-medium leading-6 text-black">
-              Email
-            </label>
+            <label className="text-sm font-medium leading-6 ">Email</label>
             <div>
               <input
                 id="email"
@@ -90,16 +86,14 @@ function SignUpIndexComponent(): JSX.Element {
                 autoComplete="email"
                 onChange={onChange}
                 required
-                className="block w-full p-2 bg-white text-black border border-black rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
+                className="block w-full p-2 bg-white border border-stone-300 rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
               />
             </div>
           </div>
 
           <div>
             <div className="flex items-baseline justify-between">
-              <label className="text-sm font-medium leading-6 text-black">
-                Password
-              </label>
+              <label className="text-sm font-medium leading-6 ">Password</label>
             </div>
             <div>
               <input
@@ -109,14 +103,14 @@ function SignUpIndexComponent(): JSX.Element {
                 autoComplete="new-password"
                 onChange={onChange}
                 required
-                className="block w-full p-2 bg-white text-black border border-black rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
+                className="block w-full p-2 bg-white border border-stone-300 rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
               />
             </div>
           </div>
 
           <div>
             <div className="flex items-baseline justify-between">
-              <label className="text-sm font-medium leading-6 text-black">
+              <label className="text-sm font-medium leading-6 ">
                 Confirm Password
               </label>
             </div>
@@ -128,7 +122,7 @@ function SignUpIndexComponent(): JSX.Element {
                 autoComplete="new-password"
                 onChange={onChange}
                 required
-                className="block w-full p-2 bg-white text-black border border-black rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
+                className="block w-full p-2 bg-white border border-stone-300 rounded-full placeholder:text-stone-500 focus:border-orange-500 text-sm"
               />
             </div>
           </div>
@@ -141,7 +135,7 @@ function SignUpIndexComponent(): JSX.Element {
         </form>
 
         <div className="flex justify-center items-baseline">
-          <p className="text-sm text-black">Already have an account?&nbsp;</p>
+          <p className="text-sm">Already have an account?&nbsp;</p>
           <Button
             variant="link"
             size="sm"

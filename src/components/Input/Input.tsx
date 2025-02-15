@@ -6,18 +6,18 @@ type InputType = {
   type?: HTMLInputTypeAttribute;
   required?: boolean;
   value: string;
-  size: "medium" | "large";
+  size?: "md" | "lg";
   onChange: (e: { target: { name: string; value: string } }) => void;
 };
 
 enum InputSize {
-  "medium" = "p-1 text-sm",
-  "large" = "p-2 text-md",
+  "md" = "p-1 text-sm",
+  "lg" = "p-2 text-md",
 }
 
 export const Input = ({
   id,
-  size,
+  size = "md",
   type = "text",
   required = false,
   value,
@@ -33,7 +33,7 @@ export const Input = ({
       onChange={onChange}
       value={value}
       className={cn(
-        "block w-full bg-white text-stone-800 rounded-md border border-stone-300 placeholder:text-stone-500",
+        "block w-full bg-white rounded-md border border-stone-300 placeholder:text-stone-500",
         InputSize[size]
       )}
     />

@@ -79,7 +79,7 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
-      <Dialog.Content className="fixed left-1/4 top-1/4 max-h-[85vh] w-1/2 max-w-[50%] bg-white flex flex-col gap-4 p-2 border border-stone-600 rounded-lg shadow-light">
+      <Dialog.Content className="fixed left-1/4 top-1/4 max-h-[85vh] w-1/2 max-w-[50%] bg-white flex flex-col gap-4 p-2 border border-stone-600 rounded-lg drop-shadow">
         <div className="flex flex-col gap-2">
           <div className="flex flex-row items-start">
             <div className="flex-grow flex flex-col">
@@ -96,7 +96,7 @@ const EditSlipModal = ({ slip, onSave }: EditSlipModalProps) => {
                     return newSlipData;
                   })
                 }
-                className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-white text-stone-700 placeholder-stone-400 select-none resize-none outline-none"
+                className="h-10 w-full text-4xl font-normal font-title tracking-tight overflow-y-hidden bg-white placeholder-stone-400 select-none resize-none outline-none"
               />
               <div className="flex flex-row gap-2">
                 <p

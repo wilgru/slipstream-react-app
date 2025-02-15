@@ -22,7 +22,7 @@ const SlipCard = ({ slip }: SlipCardProps) => {
             />
 
             {!isSlipContentEmpty(slip.content) && (
-              <p className="text-sm font-normal text-black">
+              <p className="text-sm font-normal">
                 <QuillContentView content={slip.content} />
               </p>
             )}

@@ -89,9 +89,7 @@ function StreamIndexComponent() {
             key={group.title}
             className="flex flex-col gap-3"
           >
-            <h2 className="font-title text-stone-700 text-3xl">
-              {group.title}
-            </h2>
+            <h2 className="font-title text-3xl">{group.title}</h2>
 
             {group.slips.map((slip) => (
               <SlipCard key={slip.id} slip={slip} />

@@ -40,7 +40,7 @@ export default function TableOfContents({
             "p-1 text-sm font-normal overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-md",
             `hover:${colour.backgroundPill} hover:${colour.textPill}`,
             isActive && colour.backgroundPill,
-            isActive ? colour.textPill : "text-stone-700"
+            isActive && colour.textPill
           )}
         >
           {item.title}

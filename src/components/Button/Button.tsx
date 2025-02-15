@@ -71,7 +71,7 @@ const buttonVariants = cva(
       {
         intent: ["primary", "secondary"],
         variant: "link",
-        className: "text-stone-500 hover:text-orange-500 hover:bg-orange-100",
+        className: "text-stone-500 hover:text-orange-500",
       },
       {
         intent: "secondary",

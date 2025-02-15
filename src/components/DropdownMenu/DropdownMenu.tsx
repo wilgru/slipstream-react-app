@@ -54,7 +54,7 @@ export const DropdownMenu = ({
           {options.map((option, index) => (
             <button
               key={index}
-              className="p-1 text-left text-black hover:bg-black hover:text-white"
+              className="p-1 text-left hover:bg-black hover:text-white"
               onClick={option.action}
             >
               {option.name}

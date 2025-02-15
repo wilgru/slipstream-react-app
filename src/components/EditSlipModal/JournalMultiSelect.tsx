@@ -126,7 +126,6 @@ export const JournalMultiSelect = ({
             return cn(
               "rounded-full",
               "text-xs",
-              "text-stone-700",
               "cursor-text",
               backgroundPill,
               text // TODO: This only styles the 'X' for some reason
@@ -136,7 +135,7 @@ export const JournalMultiSelect = ({
             return cn("rounded-full");
           },
           input: () => {
-            return cn("text-xs", "text-black");
+            return cn("text-xs");
           },
           dropdownIndicator: () => {
             return cn(
@@ -147,15 +146,7 @@ export const JournalMultiSelect = ({
               "cursor-pointer"
             );
           },
-          menuList: () =>
-            cn(
-              "bg-white",
-              "border",
-              "border-black",
-              "rounded-md",
-              "p-1",
-              "shadow-lighter"
-            ),
+          menuList: () => cn("bg-white", "rounded-md", "p-1"),
           option: () =>
             cn(
               "leading-none",

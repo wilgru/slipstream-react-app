@@ -31,7 +31,7 @@ export const Sidebar = () => {
       )}
     >
       <div>
-        <section className="p-2 flex flex-col gap-1 text-black">
+        <section className="p-2 flex flex-col gap-1">
           <NavItem
             ghost
             iconName="chatCircle"
@@ -49,10 +49,8 @@ export const Sidebar = () => {
           ></NavItem>
         </section>
 
-        <section className="p-2 flex flex-col gap-1 text-black">
-          {expanded && (
-            <h1 className="font-title text-lg text-stone-700">Journals</h1>
-          )}
+        <section className="p-2 flex flex-col gap-1">
+          {expanded && <h1 className="font-title text-lg">Journals</h1>}
           {journals.map((journal) => (
             <NavItem
               iconName={journal.icon}
@@ -86,12 +84,12 @@ export const Sidebar = () => {
 
           <DropdownMenu.Portal>
             <DropdownMenu.Content
-              className="bg-white border border-black rounded-md p-1 w-40 shadow-lighter"
+              className="bg-white border border-stone-300 text-sm rounded-md p-1 w-40 drop-shadow-lg"
               sideOffset={2}
               align="start"
             >
               <DropdownMenu.Item
-                className="leading-none text-sm p-1 data-[highlighted]:bg-orange-100 data-[highlighted]:text-orange-500 outline-none rounded-sm cursor-pointer"
+                className="leading-none text-sm p-1 outline-none rounded-sm cursor-pointer data-[highlighted]:bg-orange-100 data-[highlighted]:text-orange-500"
                 onClick={() => {
                   logout();
                   navigate({ to: "/login" });

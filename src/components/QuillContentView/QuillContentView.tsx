@@ -36,7 +36,7 @@ export default function QuillContentView({ content }: QuillContentVIewProps) {
     <div
       id="quill-editor"
       ref={containerRef}
-      className="h-fit text-black placeholder-stone-500"
+      className="h-fit placeholder-stone-500"
     ></div>
   );
 }
