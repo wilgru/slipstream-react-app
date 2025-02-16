@@ -16,7 +16,7 @@ ENV NODE_ENV="production"
 FROM base as build
 
 # Build arguments/env variables
-ARG VITE_POCKETBASE_URL="https://slipbox-pocketbase.fly.dev"
+ARG VITE_POCKETBASE_URL="https://slipstream-pocketbase.fly.dev"
 
 # Install packages needed to build node modules
 RUN apt-get update -qq && \

@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for slipbox-react-app on 2024-06-23T12:04:45+10:00
+# fly.toml app configuration file generated for slipstream-react-app on 2024-06-23T12:04:45+10:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'slipbox-react-app'
+app = 'slipstream-react-app'
 primary_region = 'syd'
 
 [build]

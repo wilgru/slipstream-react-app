@@ -1,6 +1,6 @@
-# SlipBox
+# SlipStream
 
-SlipBox is a web based note taking app inspired by the 'zettelkasten' note taking method.
+SlipStream is a web based note taking app inspired by the 'zettelkasten' note taking method.
 
 ## Getting Started
 
@@ -83,7 +83,7 @@ Ensure you are using the workspace settings instead of your personal settings (w
 
 Ideally the code itself should be used as the source of truth as much as possible, so if you decide to leave a comment somewhere make sure it says something the code doesn't. Something that can make your comments richer as well is to use the prefixes that come with the Better Comments extension, which can make your comments stand out more with highlighting. Consider using the following:
 
-<img width="389" alt="better_comments_demo" src="https://github.com/wilgru/slipbox-react-app/assets/40753609/2595ddfe-bd86-4a07-bbbf-ed9a837efc6a"><br>
+<img width="389" alt="better_comments_demo" src="https://github.com/wilgru/slipstream-react-app/assets/40753609/2595ddfe-bd86-4a07-bbbf-ed9a837efc6a"><br>
 
 TODOs and FIXMEs in particular can also be tracked using the TODO tree extension if you have that installed.
 
