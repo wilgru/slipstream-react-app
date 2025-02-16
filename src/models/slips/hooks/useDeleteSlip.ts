@@ -19,13 +19,13 @@ type UseDeleteSlipResponse = {
 
 export const useDeleteSlip = (): UseDeleteSlipResponse => {
   const queryClient = useQueryClient();
-  const { slips } = useGetSlips();
+  const { slipGroups } = useGetSlips({ isFlagged: false });
   const { refetchJournals } = useGetJournals();
 
   const mutationFn = async ({
     slipId,
   }: deleteSlipProps): Promise<string | undefined> => {
-    const slipToDelete = slips
+    const slipToDelete = slipGroups
       .flatMap((slipGroup) => slipGroup.slips)
       .find((slip) => slip.id === slipId);
 

@@ -23,7 +23,7 @@ export const Route = createFileRoute("/stream/")({
 });
 
 function StreamIndexComponent() {
-  const { slipGroups, tableOfContentItems } = useGetSlips();
+  const { slipGroups, tableOfContentItems } = useGetSlips({ isFlagged: false });
   const bottomRef = useRef<null | HTMLDivElement>(null);
   const slipRefs = useRef<HTMLDivElement[]>([]);
   const [navigationId, setNavigationId] = useState("");

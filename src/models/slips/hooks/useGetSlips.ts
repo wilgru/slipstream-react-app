@@ -10,19 +10,21 @@ type UseGetSlipsResponse = {
   tableOfContentItems: TableOfContentsItem[];
 };
 
-export const useGetSlips = (
-  isFlagged: boolean = false
-): UseGetSlipsResponse => {
+export const useGetSlips = ({
+  isFlagged,
+}: {
+  isFlagged: boolean;
+}): UseGetSlipsResponse => {
   const queryFn = async (): Promise<{
     slipGroups: SlipsGroup[];
     tableOfContentItems: TableOfContentsItem[];
   }> => {
-    const isFlaggedFilter = isFlagged ? "&& isFlagged = true" : "";
+    const filter = `deleted = null ${isFlagged ? "&& isFlagged = true" : ""}`;
 
     const rawSlips = await pb
       .collection("slips")
       .getList(undefined, undefined, {
-        filter: `deleted = null ${isFlaggedFilter}`,
+        filter,
         expand: "journals",
         sort: "-isPinned",
       });
@@ -74,7 +76,7 @@ export const useGetSlips = (
 
   // TODO: consider time caching for better performance
   const { data } = useQuery({
-    queryKey: ["slips.list"],
+    queryKey: ["slips.list", isFlagged],
     queryFn,
     // staleTime: 2 * 60 * 1000,
     // gcTime: 2 * 60 * 1000,
