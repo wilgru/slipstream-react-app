@@ -23,7 +23,7 @@ export const Route = createFileRoute("/stream/")({
 });
 
 function StreamIndexComponent() {
-  const { slips, tableOfContentItems } = useGetSlips();
+  const { slipGroups, tableOfContentItems } = useGetSlips();
   const bottomRef = useRef<null | HTMLDivElement>(null);
   const slipRefs = useRef<HTMLDivElement[]>([]);
   const [navigationId, setNavigationId] = useState("");
@@ -42,12 +42,12 @@ function StreamIndexComponent() {
       behavior: "instant",
     });
 
-    const lastSlipGroup = slips.at(slips.length - 1);
+    const lastSlipGroup = slipGroups.at(slipGroups.length - 1);
 
     lastSlipGroup && setNavigationId(lastSlipGroup?.title);
-  }, [slips]);
+  }, [slipGroups]);
 
-  const length = slips.reduce(
+  const length = slipGroups.reduce(
     (acc, slipGroup) => (acc = acc + slipGroup.slips.length),
     0
   );
@@ -55,7 +55,7 @@ function StreamIndexComponent() {
   return (
     <div className="flex h-full">
       <div className="flex flex-col h-full gap-10 max-w-[700px] overflow-y-auto overflow-x-hidden">
-        {slips.map((group) => (
+        {slipGroups.map((group) => (
           <div
             ref={(el: HTMLDivElement | null) => {
               if (el && !slipRefs.current.includes(el)) {

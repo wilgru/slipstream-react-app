@@ -6,7 +6,7 @@ import type { TableOfContentsItem } from "src/components/TableOfContents/TableOf
 import type { SlipsGroup } from "src/models/slips/Slip.type";
 
 type UseGetSlipsResponse = {
-  slips: SlipsGroup[];
+  slipGroups: SlipsGroup[];
   tableOfContentItems: TableOfContentsItem[];
 };
 
@@ -14,7 +14,7 @@ export const useGetSlips = (
   isFlagged: boolean = false
 ): UseGetSlipsResponse => {
   const queryFn = async (): Promise<{
-    slips: SlipsGroup[];
+    slipGroups: SlipsGroup[];
     tableOfContentItems: TableOfContentsItem[];
   }> => {
     const isFlaggedFilter = isFlagged ? "&& isFlagged = true" : "";
@@ -69,7 +69,7 @@ export const useGetSlips = (
       []
     );
 
-    return { slips: groupedSlips, tableOfContentItems };
+    return { slipGroups: groupedSlips, tableOfContentItems };
   };
 
   // TODO: consider time caching for better performance
@@ -81,7 +81,7 @@ export const useGetSlips = (
   });
 
   return {
-    slips: data?.slips ?? [],
+    slipGroups: data?.slipGroups ?? [],
     tableOfContentItems: data?.tableOfContentItems ?? [],
   };
 };

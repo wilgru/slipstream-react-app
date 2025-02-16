@@ -11,10 +11,10 @@ import type { SlipsGroupDividedByTitle } from "src/models/slips/Slip.type";
 
 type JournalHeaderProps = {
   journal: Journal;
-  slips: SlipsGroupDividedByTitle[];
+  slipGroups: SlipsGroupDividedByTitle[];
 };
 
-export const JournalHeader = ({ journal, slips }: JournalHeaderProps) => {
+export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
   const { updateJournal } = useUpdateJournal();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -158,7 +158,7 @@ export const JournalHeader = ({ journal, slips }: JournalHeaderProps) => {
             journal.colour.textPill
           )}
         >
-          {slips.length} sections
+          {slipGroups.length} sections
         </h3>
 
         <h3

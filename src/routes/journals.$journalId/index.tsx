@@ -25,7 +25,7 @@ export const Route = createFileRoute("/journals/$journalId/")({
 
 export default function JournalComponent() {
   const { journalId } = Route.useParams();
-  const { journal, slips, tableOfContentItems } = useGetJournal(
+  const { journal, slipGroups, tableOfContentItems } = useGetJournal(
     journalId ?? ""
   );
   const [navigationId, setNavigationId] = useState("");
@@ -47,10 +47,10 @@ export default function JournalComponent() {
   return (
     <div className="h-full w-full flex justify-center">
       <div className="max-w-[700px] overflow-y-scroll">
-        <JournalHeader journal={journal} slips={slips} />
+        <JournalHeader journal={journal} slipGroups={slipGroups} />
 
         <div className="p-3 mb-4 mx-9 border min-h-full border-stone-300 rounded-lg flex flex-col gap-10 bg-white drop-shadow-md">
-          {slips.map((slipGroup) => (
+          {slipGroups.map((slipGroup) => (
             <div className="flex flex-col gap-3">
               <h2
                 className={cn(

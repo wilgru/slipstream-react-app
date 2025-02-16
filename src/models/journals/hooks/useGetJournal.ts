@@ -16,13 +16,13 @@ import type {
 
 type UseJournalResponse = {
   journal: Journal | undefined;
-  slips: SlipsGroupDividedByTitle[];
+  slipGroups: SlipsGroupDividedByTitle[];
   tableOfContentItems: TableOfContentsItem[];
   refetchJournal: (options?: RefetchOptions | undefined) => Promise<
     QueryObserverResult<
       {
         journal: Journal;
-        slips: SlipsGroupDividedByTitle[];
+        slipGroups: SlipsGroupDividedByTitle[];
       },
       Error
     >
@@ -32,7 +32,7 @@ type UseJournalResponse = {
 export const useGetJournal = (journalId: string): UseJournalResponse => {
   const queryFn = async (): Promise<{
     journal: Journal;
-    slips: SlipsGroupDividedByTitle[];
+    slipGroups: SlipsGroupDividedByTitle[];
     tableOfContentItems: TableOfContentsItem[];
   }> => {
     const rawJournal = await pb.collection("journals").getOne(journalId, {
@@ -84,7 +84,7 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
 
     return {
       journal,
-      slips: groupedSlips,
+      slipGroups: groupedSlips,
       tableOfContentItems,
     };
   };
@@ -99,7 +99,7 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
 
   return {
     journal: data?.journal,
-    slips: data?.slips ?? [],
+    slipGroups: data?.slipGroups ?? [],
     tableOfContentItems: data?.tableOfContentItems ?? [],
     refetchJournal: refetch,
   };
