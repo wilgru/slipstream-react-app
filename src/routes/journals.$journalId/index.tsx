@@ -7,7 +7,6 @@ import isAuthenticated from "src/models/users/utils/isAuthenticated";
 import { cn } from "src/utils/cn";
 import { SlipCard } from "../../components/SlipCard/SlipCard";
 import { JournalHeader } from "./-components/JournalHeader";
-import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
 
 export const Route = createFileRoute("/journals/$journalId/")({
   component: JournalComponent,
@@ -26,7 +25,9 @@ export const Route = createFileRoute("/journals/$journalId/")({
 
 export default function JournalComponent() {
   const { journalId } = Route.useParams();
-  const { journal, slips } = useGetJournal(journalId ?? "");
+  const { journal, slips, tableOfContentItems } = useGetJournal(
+    journalId ?? ""
+  );
   const [navigationId, setNavigationId] = useState("");
   const slipRefs = useRef<HTMLDivElement[]>([]);
 
@@ -42,31 +43,6 @@ export default function JournalComponent() {
   if (!journal) {
     return null;
   }
-
-  const tableOfContentItems: TableOfContentsItem[] = slips.map((slipGroup) => {
-    const mappedSlipsWithNoTitle = slipGroup.slipsWithNoTitle.map(
-      (slipWithNoTitle) => {
-        const title = slipWithNoTitle.content.ops[0].insert;
-
-        return {
-          title: typeof title === "string" ? title : "No title",
-          navigationId: slipWithNoTitle.id,
-          subItems: [],
-        };
-      }
-    );
-    const mappedSlipsWithTitle = slipGroup.slips.map((slip) => ({
-      title: slip.title ?? "", // this should never fallback to empty string as empty titles are filtered beforehand
-      navigationId: slip.id,
-      subItems: [],
-    }));
-
-    return {
-      title: slipGroup.title,
-      navigationId: null,
-      subItems: [...mappedSlipsWithNoTitle, ...mappedSlipsWithTitle],
-    };
-  });
 
   return (
     <div className="h-full w-full flex justify-center">
@@ -98,7 +74,7 @@ export default function JournalComponent() {
               ))}
 
               {slipGroup.slipsWithNoTitle.length > 0 &&
-                slipGroup.slips.length > 0 && (
+                slipGroup.slipsWithTitle.length > 0 && (
                   <div className="flex flex-row gap-2 justify-center">
                     <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
                     <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
@@ -106,7 +82,7 @@ export default function JournalComponent() {
                   </div>
                 )}
 
-              {slipGroup.slips.map((slip) => (
+              {slipGroup.slipsWithTitle.map((slip) => (
                 <SlipCard
                   ref={(el: HTMLDivElement | null) => {
                     if (el && !slipRefs.current.includes(el)) {

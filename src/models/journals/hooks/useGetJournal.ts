@@ -8,16 +8,21 @@ import type {
   QueryObserverResult,
   RefetchOptions,
 } from "@tanstack/react-query";
-import type { Slip, SlipGroupDividedByTitle } from "src/models/slips/Slip.type";
+import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
+import type {
+  Slip,
+  SlipsGroupDividedByTitle,
+} from "src/models/slips/Slip.type";
 
 type UseJournalResponse = {
   journal: Journal | undefined;
-  slips: SlipGroupDividedByTitle[];
+  slips: SlipsGroupDividedByTitle[];
+  tableOfContentItems: TableOfContentsItem[];
   refetchJournal: (options?: RefetchOptions | undefined) => Promise<
     QueryObserverResult<
       {
         journal: Journal;
-        slips: SlipGroupDividedByTitle[];
+        slips: SlipsGroupDividedByTitle[];
       },
       Error
     >
@@ -27,7 +32,8 @@ type UseJournalResponse = {
 export const useGetJournal = (journalId: string): UseJournalResponse => {
   const queryFn = async (): Promise<{
     journal: Journal;
-    slips: SlipGroupDividedByTitle[];
+    slips: SlipsGroupDividedByTitle[];
+    tableOfContentItems: TableOfContentsItem[];
   }> => {
     const rawJournal = await pb.collection("journals").getOne(journalId, {
       expand: "slips_via_journals, slips_via_journals.journals",
@@ -40,31 +46,46 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
     const rawSlips = rawJournal.expand?.slips_via_journals;
     const slips: Slip[] = rawSlips.map(mapSlip);
 
-    const groupedSlips = groupSlips(slips, journal.groupBy);
+    const groupedSlips: SlipsGroupDividedByTitle[] = groupSlips(
+      slips,
+      journal.groupBy,
+      true
+    );
 
-    const groupedSlipsDividedByTitle = groupedSlips.map((groupedSlip) => {
-      const slipsWithTitles: Slip[] = [];
-      const slipsWithNoTitle: Slip[] = [];
+    const tableOfContentItems: TableOfContentsItem[] = groupedSlips.map(
+      (slipGroup) => {
+        const mappedSlipsWithNoTitle = slipGroup.slipsWithNoTitle.map(
+          (slipWithNoTitle) => {
+            const title = slipWithNoTitle.content.ops[0].insert;
 
-      groupedSlip.slips.forEach((slip) => {
-        if (slip.title) {
-          slipsWithTitles.push(slip);
-        } else {
-          slipsWithNoTitle.push(slip);
-        }
-      });
+            return {
+              title: typeof title === "string" ? title : "No title",
+              navigationId: slipWithNoTitle.id,
+              subItems: [],
+            };
+          }
+        );
 
-      return {
-        title: groupedSlip.title,
-        value: groupedSlip.value,
-        slips: slipsWithTitles,
-        slipsWithNoTitle,
-      };
-    });
+        const mappedSlipsWithTitle = slipGroup.slipsWithTitle.map(
+          (slipWithTitle) => ({
+            title: slipWithTitle.title ?? "", // this should never fallback to empty string as empty titles are filtered beforehand
+            navigationId: slipWithTitle.id,
+            subItems: [],
+          })
+        );
+
+        return {
+          title: slipGroup.title,
+          navigationId: null,
+          subItems: [...mappedSlipsWithNoTitle, ...mappedSlipsWithTitle],
+        };
+      }
+    );
 
     return {
       journal,
-      slips: groupedSlipsDividedByTitle,
+      slips: groupedSlips,
+      tableOfContentItems,
     };
   };
 
@@ -79,6 +100,7 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
   return {
     journal: data?.journal,
     slips: data?.slips ?? [],
+    tableOfContentItems: data?.tableOfContentItems ?? [],
     refetchJournal: refetch,
   };
 };

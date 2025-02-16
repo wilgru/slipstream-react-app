@@ -6,7 +6,6 @@ import { useGetSlips } from "src/models/slips/hooks/useGetSlips";
 import isAuthenticated from "src/models/users/utils/isAuthenticated";
 import { SlipCard } from "../../components/SlipCard/SlipCard";
 import TableOfContents from "../../components/TableOfContents/TableOfContents";
-import type { TableOfContentsItem } from "../../components/TableOfContents/TableOfContents";
 
 export const Route = createFileRoute("/stream/")({
   component: StreamIndexComponent,
@@ -24,7 +23,7 @@ export const Route = createFileRoute("/stream/")({
 });
 
 function StreamIndexComponent() {
-  const { slips } = useGetSlips();
+  const { slips, tableOfContentItems } = useGetSlips();
   const bottomRef = useRef<null | HTMLDivElement>(null);
   const slipRefs = useRef<HTMLDivElement[]>([]);
   const [navigationId, setNavigationId] = useState("");
@@ -48,33 +47,10 @@ function StreamIndexComponent() {
     lastSlipGroup && setNavigationId(lastSlipGroup?.title);
   }, [slips]);
 
-  const tableOfContentItems = slips.reduce(
-    (acc: TableOfContentsItem[], group) => {
-      const title = group.value.format("MMMM YYYY");
-      const item = acc.find((item) => item.title === title);
-
-      const day = {
-        title: group.value.format("dddd D"),
-        navigationId: group.title,
-        subItems: [],
-      };
-
-      if (!item) {
-        acc.push({
-          title,
-          navigationId: null,
-          subItems: [day],
-        });
-      } else {
-        item.subItems.push(day);
-      }
-
-      return acc;
-    },
-    []
+  const length = slips.reduce(
+    (acc, slipGroup) => (acc = acc + slipGroup.slips.length),
+    0
   );
-
-  const length = 9000;
 
   return (
     <div className="flex h-full">

@@ -7,11 +7,11 @@ import { useUpdateJournal } from "src/models/journals/hooks/useUpdateJournal";
 import { cn } from "src/utils/cn";
 import { EditJournalModal } from "./EditJournalModal";
 import type { Journal } from "src/models/journals/Journal.type";
-import type { SlipsGroup } from "src/models/slips/Slip.type";
+import type { SlipsGroupDividedByTitle } from "src/models/slips/Slip.type";
 
 type JournalHeaderProps = {
   journal: Journal;
-  slips: SlipsGroup[];
+  slips: SlipsGroupDividedByTitle[];
 };
 
 export const JournalHeader = ({ journal, slips }: JournalHeaderProps) => {

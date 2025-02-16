@@ -19,10 +19,11 @@ export type Slip = {
 
 export type SlipsGroup = {
   title: string;
-  value: Dayjs | Journal;
   slips: Slip[];
 };
 
-export type SlipGroupDividedByTitle = SlipsGroup & {
+export type SlipsGroupDividedByTitle = {
+  title: string;
   slipsWithNoTitle: Slip[];
+  slipsWithTitle: Slip[];
 };
