@@ -1,14 +1,16 @@
 # SlipStream
 
-SlipStream is a web based note taking app inspired by the 'zettelkasten' note taking method.
+SlipStream is a stream of consciousness note taking web app where you can view your notes in different ways.
 
 ## Getting Started
 
 ### 1. Install recommended extensions (VS Code)
 
-Install all the recommended extensions for this repo to make sure you have as close as the same development environment as everyone else (strongly recommend the Sort Imports and Tailwind extensions at least).
+Install all the recommended extensions for this repo to make sure you have as close as the same development environment as everyone else (strongly recommend the Sort Imports, Tailwind, ESlint and Prettier extensions at least).
 
 The recommended extensions can be found under `.vscode/extensions.json` but VS Code should prompt you to install them when first opening the repo as well.
+
+Ensure the ESlint and Prettier extensions are enabled, and that you are using the workspace settings instead of your personal settings (which should be overridden by workspace settings by default).
 
 ### 2. Create .env file
 
@@ -17,8 +19,6 @@ Run the following command at the root of the repo's directory to create your `.e
 ```
 cp .env.example .env
 ```
-
-_Make sure you don't commit this file with git_
 
 ### 3. Install npm Packages
 
@@ -66,34 +66,25 @@ npm run start:dev
 
 ## Development
 
-### Using VS Code
+### Comments
 
-**VS Code is the preferred IDE to use when working on this repo because of its recommended extensions and pre-configured workspace settings.**
-
-Ensure the ESlint and Prettier extensions are installed and enabled in your vscode.
-
-Ensure you are using the workspace settings instead of your personal settings (workspace setting should override personal settings by default) to allow our pre-configured settings to be in use, including ESlint's auto-fixing on save and auto format using Prettier on save and paste.
-
-### General Rules
-
-- If a particular file is getting too big, split out its logic using whatever organisation structure seems the simplest or most appropriate. Look for examples of existing structures in the code
-- If a piece of code or logic is truly generic, feel free to move it somewhere in the `common` folder
-- Try to keep each file exporting only one thing, so you know exactly whats coming out of that file just based on the name
-- Should use tailwind for all normal styling needs, but in the case where you must use vanilla css, use `.module.css` files
-
-Ideally the code itself should be used as the source of truth as much as possible, so if you decide to leave a comment somewhere make sure it says something the code doesn't. Something that can make your comments richer as well is to use the prefixes that come with the Better Comments extension, which can make your comments stand out more with highlighting. Consider using the following:
+Ideally the code itself should be used as the source of truth, so comments should something that the code doesn't. The following prefixes can be used with comments which can make them stand out with highlighting using the Better Comments extension:
 
 <img width="389" alt="better_comments_demo" src="https://github.com/wilgru/slipstream-react-app/assets/40753609/2595ddfe-bd86-4a07-bbbf-ed9a837efc6a"><br>
 
-TODOs and FIXMEs in particular can also be tracked using the TODO tree extension if you have that installed.
+TODOs and FIXMEs in particular can also be tracked using the TODO tree extension if installed.
 
 ### File Structure
 
-#### common
+#### components
 
-#### root
+#### connections
 
-#### models
+#### hooks
+
+#### routes
+
+#### utils
 
 ## Vite
 
