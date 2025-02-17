@@ -38,7 +38,7 @@ export const Sidebar = () => {
             title={"Stream"}
             to={`/stream/`}
             expanded={expanded}
-          ></NavItem>
+          />
 
           <NavItem
             ghost
@@ -46,7 +46,7 @@ export const Sidebar = () => {
             title={"Flagged"}
             to={`/flagged/`}
             expanded={expanded}
-          ></NavItem>
+          />
         </section>
 
         <section className="p-2 flex flex-col gap-1">
@@ -59,7 +59,7 @@ export const Sidebar = () => {
               preview={journal.slipCount}
               to={`/journals/${journal.id}`}
               expanded={expanded}
-            ></NavItem>
+            />
           ))}
         </section>
       </div>
