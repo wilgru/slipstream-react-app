@@ -11,37 +11,30 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as StreamIndexImport } from './routes/stream/index'
-import { Route as FlaggedIndexImport } from './routes/flagged/index'
-import { Route as TagsTagIdIndexImport } from './routes/tags.$tagId/index'
-import { Route as JournalsJournalIdIndexImport } from './routes/journals.$journalId/index'
+import { Route as LayoutImport } from './routes/_layout'
+import { Route as LayoutStreamImport } from './routes/_layout.stream'
+import { Route as LayoutFlaggedImport } from './routes/_layout.flagged'
 import { Route as authenticationSignupIndexImport } from './routes/(authentication)/signup/index'
 import { Route as authenticationLoginIndexImport } from './routes/(authentication)/login/index'
+import { Route as LayoutJournalsJournalIdImport } from './routes/_layout.journals.$journalId'
 
 // Create/Update Routes
 
-const StreamIndexRoute = StreamIndexImport.update({
-  id: '/stream/',
-  path: '/stream/',
+const LayoutRoute = LayoutImport.update({
+  id: '/_layout',
   getParentRoute: () => rootRoute,
 } as any)
 
-const FlaggedIndexRoute = FlaggedIndexImport.update({
-  id: '/flagged/',
-  path: '/flagged/',
-  getParentRoute: () => rootRoute,
+const LayoutStreamRoute = LayoutStreamImport.update({
+  id: '/stream',
+  path: '/stream',
+  getParentRoute: () => LayoutRoute,
 } as any)
 
-const TagsTagIdIndexRoute = TagsTagIdIndexImport.update({
-  id: '/tags/$tagId/',
-  path: '/tags/$tagId/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const JournalsJournalIdIndexRoute = JournalsJournalIdIndexImport.update({
-  id: '/journals/$journalId/',
-  path: '/journals/$journalId/',
-  getParentRoute: () => rootRoute,
+const LayoutFlaggedRoute = LayoutFlaggedImport.update({
+  id: '/flagged',
+  path: '/flagged',
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 const authenticationSignupIndexRoute = authenticationSignupIndexImport.update({
@@ -56,23 +49,43 @@ const authenticationLoginIndexRoute = authenticationLoginIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const LayoutJournalsJournalIdRoute = LayoutJournalsJournalIdImport.update({
+  id: '/journals/$journalId',
+  path: '/journals/$journalId',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/flagged/': {
-      id: '/flagged/'
-      path: '/flagged'
-      fullPath: '/flagged'
-      preLoaderRoute: typeof FlaggedIndexImport
+    '/_layout': {
+      id: '/_layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
-    '/stream/': {
-      id: '/stream/'
+    '/_layout/flagged': {
+      id: '/_layout/flagged'
+      path: '/flagged'
+      fullPath: '/flagged'
+      preLoaderRoute: typeof LayoutFlaggedImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/stream': {
+      id: '/_layout/stream'
       path: '/stream'
       fullPath: '/stream'
-      preLoaderRoute: typeof StreamIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof LayoutStreamImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/journals/$journalId': {
+      id: '/_layout/journals/$journalId'
+      path: '/journals/$journalId'
+      fullPath: '/journals/$journalId'
+      preLoaderRoute: typeof LayoutJournalsJournalIdImport
+      parentRoute: typeof LayoutImport
     }
     '/(authentication)/login/': {
       id: '/(authentication)/login/'
@@ -88,97 +101,92 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authenticationSignupIndexImport
       parentRoute: typeof rootRoute
     }
-    '/journals/$journalId/': {
-      id: '/journals/$journalId/'
-      path: '/journals/$journalId'
-      fullPath: '/journals/$journalId'
-      preLoaderRoute: typeof JournalsJournalIdIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/tags/$tagId/': {
-      id: '/tags/$tagId/'
-      path: '/tags/$tagId'
-      fullPath: '/tags/$tagId'
-      preLoaderRoute: typeof TagsTagIdIndexImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
 // Create and export the route tree
 
+interface LayoutRouteChildren {
+  LayoutFlaggedRoute: typeof LayoutFlaggedRoute
+  LayoutStreamRoute: typeof LayoutStreamRoute
+  LayoutJournalsJournalIdRoute: typeof LayoutJournalsJournalIdRoute
+}
+
+const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutFlaggedRoute: LayoutFlaggedRoute,
+  LayoutStreamRoute: LayoutStreamRoute,
+  LayoutJournalsJournalIdRoute: LayoutJournalsJournalIdRoute,
+}
+
+const LayoutRouteWithChildren =
+  LayoutRoute._addFileChildren(LayoutRouteChildren)
+
 export interface FileRoutesByFullPath {
-  '/flagged': typeof FlaggedIndexRoute
-  '/stream': typeof StreamIndexRoute
+  '': typeof LayoutRouteWithChildren
+  '/flagged': typeof LayoutFlaggedRoute
+  '/stream': typeof LayoutStreamRoute
+  '/journals/$journalId': typeof LayoutJournalsJournalIdRoute
   '/login': typeof authenticationLoginIndexRoute
   '/signup': typeof authenticationSignupIndexRoute
-  '/journals/$journalId': typeof JournalsJournalIdIndexRoute
-  '/tags/$tagId': typeof TagsTagIdIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/flagged': typeof FlaggedIndexRoute
-  '/stream': typeof StreamIndexRoute
+  '': typeof LayoutRouteWithChildren
+  '/flagged': typeof LayoutFlaggedRoute
+  '/stream': typeof LayoutStreamRoute
+  '/journals/$journalId': typeof LayoutJournalsJournalIdRoute
   '/login': typeof authenticationLoginIndexRoute
   '/signup': typeof authenticationSignupIndexRoute
-  '/journals/$journalId': typeof JournalsJournalIdIndexRoute
-  '/tags/$tagId': typeof TagsTagIdIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/flagged/': typeof FlaggedIndexRoute
-  '/stream/': typeof StreamIndexRoute
+  '/_layout': typeof LayoutRouteWithChildren
+  '/_layout/flagged': typeof LayoutFlaggedRoute
+  '/_layout/stream': typeof LayoutStreamRoute
+  '/_layout/journals/$journalId': typeof LayoutJournalsJournalIdRoute
   '/(authentication)/login/': typeof authenticationLoginIndexRoute
   '/(authentication)/signup/': typeof authenticationSignupIndexRoute
-  '/journals/$journalId/': typeof JournalsJournalIdIndexRoute
-  '/tags/$tagId/': typeof TagsTagIdIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | ''
     | '/flagged'
     | '/stream'
+    | '/journals/$journalId'
     | '/login'
     | '/signup'
-    | '/journals/$journalId'
-    | '/tags/$tagId'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | ''
     | '/flagged'
     | '/stream'
+    | '/journals/$journalId'
     | '/login'
     | '/signup'
-    | '/journals/$journalId'
-    | '/tags/$tagId'
   id:
     | '__root__'
-    | '/flagged/'
-    | '/stream/'
+    | '/_layout'
+    | '/_layout/flagged'
+    | '/_layout/stream'
+    | '/_layout/journals/$journalId'
     | '/(authentication)/login/'
     | '/(authentication)/signup/'
-    | '/journals/$journalId/'
-    | '/tags/$tagId/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  FlaggedIndexRoute: typeof FlaggedIndexRoute
-  StreamIndexRoute: typeof StreamIndexRoute
+  LayoutRoute: typeof LayoutRouteWithChildren
   authenticationLoginIndexRoute: typeof authenticationLoginIndexRoute
   authenticationSignupIndexRoute: typeof authenticationSignupIndexRoute
-  JournalsJournalIdIndexRoute: typeof JournalsJournalIdIndexRoute
-  TagsTagIdIndexRoute: typeof TagsTagIdIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  FlaggedIndexRoute: FlaggedIndexRoute,
-  StreamIndexRoute: StreamIndexRoute,
+  LayoutRoute: LayoutRouteWithChildren,
   authenticationLoginIndexRoute: authenticationLoginIndexRoute,
   authenticationSignupIndexRoute: authenticationSignupIndexRoute,
-  JournalsJournalIdIndexRoute: JournalsJournalIdIndexRoute,
-  TagsTagIdIndexRoute: TagsTagIdIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -191,31 +199,36 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/flagged/",
-        "/stream/",
+        "/_layout",
         "/(authentication)/login/",
-        "/(authentication)/signup/",
-        "/journals/$journalId/",
-        "/tags/$tagId/"
+        "/(authentication)/signup/"
       ]
     },
-    "/flagged/": {
-      "filePath": "flagged/index.tsx"
+    "/_layout": {
+      "filePath": "_layout.tsx",
+      "children": [
+        "/_layout/flagged",
+        "/_layout/stream",
+        "/_layout/journals/$journalId"
+      ]
     },
-    "/stream/": {
-      "filePath": "stream/index.tsx"
+    "/_layout/flagged": {
+      "filePath": "_layout.flagged.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/stream": {
+      "filePath": "_layout.stream.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/journals/$journalId": {
+      "filePath": "_layout.journals.$journalId.tsx",
+      "parent": "/_layout"
     },
     "/(authentication)/login/": {
       "filePath": "(authentication)/login/index.tsx"
     },
     "/(authentication)/signup/": {
       "filePath": "(authentication)/signup/index.tsx"
-    },
-    "/journals/$journalId/": {
-      "filePath": "journals.$journalId/index.tsx"
-    },
-    "/tags/$tagId/": {
-      "filePath": "tags.$tagId/index.tsx"
     }
   }
 }

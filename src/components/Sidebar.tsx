@@ -9,7 +9,7 @@ import { colours } from "src/constants/colours.constant";
 import { useGetJournals } from "src/hooks/journals/useGetJournals";
 import { useLogin } from "src/hooks/users/useLogin";
 import { cn } from "src/utils/cn";
-import { NavItem } from "./-components/NavItem";
+import { NavItem } from "./NavItem";
 
 export const Sidebar = () => {
   const { logout } = useLogin();

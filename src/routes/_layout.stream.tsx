@@ -1,19 +1,20 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useRef, useState, useEffect } from "react";
-import { SlipCard } from "src/components/SlipCard/SlipCard";
-import TableOfContents from "src/components/TableOfContents/TableOfContents";
+import { useEffect, useRef, useState } from "react";
 import { colours } from "src/constants/colours.constant";
 import { useGetSlips } from "src/hooks/slips/useGetSlips";
 import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
 import isAuthenticated from "src/utils/users/isAuthenticated";
+import { SlipCard } from "../components/SlipCard/SlipCard";
+import TableOfContents from "../components/TableOfContents/TableOfContents";
 
-export const Route = createFileRoute("/flagged/")({
-  component: RouteComponent,
+export const Route = createFileRoute("/_layout/stream")({
+  component: StreamIndexComponent,
   beforeLoad: async ({ location }) => {
     if (!isAuthenticated()) {
       throw redirect({
         to: "/login",
         search: {
+          // (Do not use `router.state.resolvedLocation` as it can potentially lag behind the actual current location)
           redirect: location.href,
         },
       });
@@ -21,10 +22,9 @@ export const Route = createFileRoute("/flagged/")({
   },
 });
 
-// TODO: code is almost identical to stream page, consider consolidating in generic page
-function RouteComponent() {
-  const { slipGroups, tableOfContentItems } = useGetSlips({ isFlagged: true });
-  const bottomRef = useRef<null | HTMLDivElement>(null);
+function StreamIndexComponent() {
+  const { slipGroups, tableOfContentItems } = useGetSlips({ isFlagged: false });
+  const [bottomSlip, setBottomSlip] = useState<HTMLDivElement | null>();
   const slipRefs = useRef<HTMLDivElement[]>([]);
   const [navigationId, setNavigationId] = useState("");
 
@@ -38,14 +38,19 @@ function RouteComponent() {
   );
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({
-      behavior: "instant",
-    });
-
     const lastSlipGroup = slipGroups.at(slipGroups.length - 1);
 
     lastSlipGroup && setNavigationId(lastSlipGroup?.title);
   }, [slipGroups]);
+
+  const lastSlipRef = slipRefs.current.at(slipRefs.current.length - 1);
+  if (lastSlipRef !== bottomSlip) {
+    lastSlipRef?.scrollIntoView({
+      behavior: "instant",
+    });
+
+    setBottomSlip(lastSlipRef);
+  }
 
   const length = slipGroups.reduce(
     (acc, slipGroup) => (acc = acc + slipGroup.slips.length),
@@ -79,7 +84,7 @@ function RouteComponent() {
           </div>
         ))}
 
-        <div ref={bottomRef} className="flex justify-center">
+        <div className="flex justify-center">
           <h1 className="font-title text-2xl text-stone-300">
             {length} total slips
           </h1>
