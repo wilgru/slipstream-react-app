@@ -24,7 +24,7 @@ export const Route = createFileRoute("/stream/")({
 
 function StreamIndexComponent() {
   const { slipGroups, tableOfContentItems } = useGetSlips({ isFlagged: false });
-  const bottomRef = useRef<null | HTMLDivElement>(null);
+  const [bottomSlip, setBottomSlip] = useState<HTMLDivElement | null>();
   const slipRefs = useRef<HTMLDivElement[]>([]);
   const [navigationId, setNavigationId] = useState("");
 
@@ -38,14 +38,19 @@ function StreamIndexComponent() {
   );
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({
-      behavior: "instant",
-    });
-
     const lastSlipGroup = slipGroups.at(slipGroups.length - 1);
 
     lastSlipGroup && setNavigationId(lastSlipGroup?.title);
   }, [slipGroups]);
+
+  const lastSlipRef = slipRefs.current.at(slipRefs.current.length - 1);
+  if (lastSlipRef !== bottomSlip) {
+    lastSlipRef?.scrollIntoView({
+      behavior: "instant",
+    });
+
+    setBottomSlip(lastSlipRef);
+  }
 
   const length = slipGroups.reduce(
     (acc, slipGroup) => (acc = acc + slipGroup.slips.length),
@@ -79,7 +84,7 @@ function StreamIndexComponent() {
           </div>
         ))}
 
-        <div ref={bottomRef} className="flex justify-center">
+        <div className="flex justify-center">
           <h1 className="font-title text-2xl text-stone-300">
             {length} total slips
           </h1>
