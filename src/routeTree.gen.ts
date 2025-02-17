@@ -11,14 +11,26 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SignupImport } from './routes/signup'
+import { Route as LoginImport } from './routes/login'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as LayoutStreamImport } from './routes/_layout.stream'
 import { Route as LayoutFlaggedImport } from './routes/_layout.flagged'
-import { Route as authenticationSignupIndexImport } from './routes/(authentication)/signup/index'
-import { Route as authenticationLoginIndexImport } from './routes/(authentication)/login/index'
 import { Route as LayoutJournalsJournalIdImport } from './routes/_layout.journals.$journalId'
 
 // Create/Update Routes
+
+const SignupRoute = SignupImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const LayoutRoute = LayoutImport.update({
   id: '/_layout',
@@ -37,18 +49,6 @@ const LayoutFlaggedRoute = LayoutFlaggedImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const authenticationSignupIndexRoute = authenticationSignupIndexImport.update({
-  id: '/(authentication)/signup/',
-  path: '/signup/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const authenticationLoginIndexRoute = authenticationLoginIndexImport.update({
-  id: '/(authentication)/login/',
-  path: '/login/',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const LayoutJournalsJournalIdRoute = LayoutJournalsJournalIdImport.update({
   id: '/journals/$journalId',
   path: '/journals/$journalId',
@@ -64,6 +64,20 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof LayoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
     '/_layout/flagged': {
@@ -87,20 +101,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutJournalsJournalIdImport
       parentRoute: typeof LayoutImport
     }
-    '/(authentication)/login/': {
-      id: '/(authentication)/login/'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof authenticationLoginIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/(authentication)/signup/': {
-      id: '/(authentication)/signup/'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof authenticationSignupIndexImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -123,70 +123,70 @@ const LayoutRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '': typeof LayoutRouteWithChildren
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/flagged': typeof LayoutFlaggedRoute
   '/stream': typeof LayoutStreamRoute
   '/journals/$journalId': typeof LayoutJournalsJournalIdRoute
-  '/login': typeof authenticationLoginIndexRoute
-  '/signup': typeof authenticationSignupIndexRoute
 }
 
 export interface FileRoutesByTo {
   '': typeof LayoutRouteWithChildren
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/flagged': typeof LayoutFlaggedRoute
   '/stream': typeof LayoutStreamRoute
   '/journals/$journalId': typeof LayoutJournalsJournalIdRoute
-  '/login': typeof authenticationLoginIndexRoute
-  '/signup': typeof authenticationSignupIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_layout': typeof LayoutRouteWithChildren
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/_layout/flagged': typeof LayoutFlaggedRoute
   '/_layout/stream': typeof LayoutStreamRoute
   '/_layout/journals/$journalId': typeof LayoutJournalsJournalIdRoute
-  '/(authentication)/login/': typeof authenticationLoginIndexRoute
-  '/(authentication)/signup/': typeof authenticationSignupIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
+    | '/login'
+    | '/signup'
     | '/flagged'
     | '/stream'
     | '/journals/$journalId'
-    | '/login'
-    | '/signup'
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
+    | '/login'
+    | '/signup'
     | '/flagged'
     | '/stream'
     | '/journals/$journalId'
-    | '/login'
-    | '/signup'
   id:
     | '__root__'
     | '/_layout'
+    | '/login'
+    | '/signup'
     | '/_layout/flagged'
     | '/_layout/stream'
     | '/_layout/journals/$journalId'
-    | '/(authentication)/login/'
-    | '/(authentication)/signup/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   LayoutRoute: typeof LayoutRouteWithChildren
-  authenticationLoginIndexRoute: typeof authenticationLoginIndexRoute
-  authenticationSignupIndexRoute: typeof authenticationSignupIndexRoute
+  LoginRoute: typeof LoginRoute
+  SignupRoute: typeof SignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   LayoutRoute: LayoutRouteWithChildren,
-  authenticationLoginIndexRoute: authenticationLoginIndexRoute,
-  authenticationSignupIndexRoute: authenticationSignupIndexRoute,
+  LoginRoute: LoginRoute,
+  SignupRoute: SignupRoute,
 }
 
 export const routeTree = rootRoute
@@ -200,8 +200,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_layout",
-        "/(authentication)/login/",
-        "/(authentication)/signup/"
+        "/login",
+        "/signup"
       ]
     },
     "/_layout": {
@@ -211,6 +211,12 @@ export const routeTree = rootRoute
         "/_layout/stream",
         "/_layout/journals/$journalId"
       ]
+    },
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/signup": {
+      "filePath": "signup.tsx"
     },
     "/_layout/flagged": {
       "filePath": "_layout.flagged.tsx",
@@ -223,12 +229,6 @@ export const routeTree = rootRoute
     "/_layout/journals/$journalId": {
       "filePath": "_layout.journals.$journalId.tsx",
       "parent": "/_layout"
-    },
-    "/(authentication)/login/": {
-      "filePath": "(authentication)/login/index.tsx"
-    },
-    "/(authentication)/signup/": {
-      "filePath": "(authentication)/signup/index.tsx"
     }
   }
 }

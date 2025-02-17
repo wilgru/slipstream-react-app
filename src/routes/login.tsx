@@ -10,7 +10,7 @@ type FormData = {
   password: string;
 };
 
-export const Route = createFileRoute("/(authentication)/login/")({
+export const Route = createFileRoute("/login")({
   component: LoginIndexComponent,
 });
 
