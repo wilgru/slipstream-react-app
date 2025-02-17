@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import TableOfContents from "src/components/TableOfContents/TableOfContents";
 import { useGetJournal } from "src/hooks/journals/useGetJournal";
 import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
@@ -29,6 +29,7 @@ export default function JournalComponent() {
     journalId ?? ""
   );
   const [navigationId, setNavigationId] = useState("");
+
   const slipRefs = useRef<HTMLDivElement[]>([]);
 
   useIntersectionObserver(
@@ -39,6 +40,14 @@ export default function JournalComponent() {
     { rootMargin: "-10% 0% -90% 0%" },
     { disabled: false }
   );
+
+  useEffect(() => {
+    const firstNavigationId =
+      slipGroups.at(0)?.slipsWithNoTitle.at(0)?.id ??
+      slipGroups.at(0)?.slipsWithTitle.at(0)?.id;
+
+    firstNavigationId && setNavigationId(firstNavigationId);
+  }, [slipGroups]);
 
   if (!journal) {
     return null;
