@@ -1,9 +1,9 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { colours } from "src/constants/colours.constant";
+import { useGetSlips } from "src/hooks/slips/useGetSlips";
 import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
-import { colours } from "src/models/colours/colours.constant";
-import { useGetSlips } from "src/models/slips/hooks/useGetSlips";
-import isAuthenticated from "src/models/users/utils/isAuthenticated";
+import isAuthenticated from "src/utils/users/isAuthenticated";
 import { SlipCard } from "../../components/SlipCard/SlipCard";
 import TableOfContents from "../../components/TableOfContents/TableOfContents";
 

@@ -1,4 +1,4 @@
-import type { Colour } from "./Colour.type";
+import type { Colour } from "../types/Colour.type";
 
 export const colours: { [key: string]: Colour } = {
   red: {

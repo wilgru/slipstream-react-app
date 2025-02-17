@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
-import { mapSlip } from "src/models/slips/utils/mapSlip";
-import { groupSlips } from "../utils/groupSlips";
+import { groupSlips } from "src/utils/slips/groupSlips";
+import { mapSlip } from "src/utils/slips/mapSlip";
 import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
-import type { SlipsGroup } from "src/models/slips/Slip.type";
+import type { SlipsGroup } from "src/types/Slip.type";
 
 type UseGetSlipsResponse = {
   slipGroups: SlipsGroup[];

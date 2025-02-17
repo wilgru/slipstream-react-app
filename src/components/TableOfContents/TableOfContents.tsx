@@ -1,7 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
-import { colours } from "src/models/colours/colours.constant";
+import { colours } from "src/constants/colours.constant";
 import { cn } from "src/utils/cn";
-import type { Colour } from "src/models/colours/Colour.type";
+import type { Colour } from "src/types/Colour.type";
 
 export type TableOfContentsItem = {
   title: string;

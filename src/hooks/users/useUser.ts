@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
-import { mapUser } from "../utils/mapUser";
-import type { User } from "../User.type";
+import { mapUser } from "src/utils/users/mapUser";
+import type { User } from "src/types/User.type";
 
 export const useUser = () => {
   const queryFn = async (): Promise<User | null> => {

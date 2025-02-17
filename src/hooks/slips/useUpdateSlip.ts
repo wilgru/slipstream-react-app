@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
-import { mapSlip } from "../utils/mapSlip";
-import type { Slip } from "../Slip.type";
+import { mapSlip } from "src/utils/slips/mapSlip";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
+import type { Slip } from "src/types/Slip.type";
 
 type UpdateSlipProps = {
   slipId: string;

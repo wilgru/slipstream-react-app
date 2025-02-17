@@ -1,4 +1,8 @@
-import type { Slip, SlipsGroup, SlipsGroupDividedByTitle } from "../Slip.type";
+import type {
+  Slip,
+  SlipsGroup,
+  SlipsGroupDividedByTitle,
+} from "src/types/Slip.type";
 
 const getGroupTitle = (slip: Slip, groupBy: "created" | "journal") => {
   switch (groupBy) {

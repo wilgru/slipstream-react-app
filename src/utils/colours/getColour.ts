@@ -1,5 +1,5 @@
-import { colours } from "src/models/colours/colours.constant";
-import type { Colour } from "src/models/colours/Colour.type";
+import { colours } from "src/constants/colours.constant";
+import type { Colour } from "src/types/Colour.type";
 
 enum ColourName {
   red = "red",

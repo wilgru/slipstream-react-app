@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import isAuthenticated from "src/models/users/utils/isAuthenticated";
+import isAuthenticated from "src/utils/users/isAuthenticated";
 
 export const Route = createFileRoute("/tags/$tagId/")({
   component: RouteComponent,

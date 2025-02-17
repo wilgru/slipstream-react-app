@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
-import { mapJournal } from "../utils/mapJournal";
-import type { Journal } from "../Journal.type";
+import { mapJournal } from "src/utils/journals/mapJournal";
 import type {
   QueryObserverResult,
   RefetchOptions,
 } from "@tanstack/react-query";
+import type { Journal } from "src/types/Journal.type";
 
 type UseGetJournalsResponse = {
   journals: Journal[];

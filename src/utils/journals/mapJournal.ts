@@ -1,6 +1,6 @@
-import { getColour } from "src/models/colours/utils/getColour";
+import { getColour } from "src/utils/colours/getColour";
 import type { RecordModel } from "pocketbase";
-import type { Journal } from "src/models/journals/Journal.type";
+import type { Journal } from "src/types/Journal.type";
 
 export const mapJournal = (journal: RecordModel): Journal => {
   return {

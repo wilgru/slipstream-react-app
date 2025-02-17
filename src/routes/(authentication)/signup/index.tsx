@@ -1,8 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent, useEffect } from "react";
 import { Button } from "src/components/Button/Button";
-import { useSignUp } from "src/models/users/hooks/useSignUp";
-import { useUser } from "src/models/users/hooks/useUser";
+import { useSignUp } from "src/hooks/users/useSignUp";
+import { useUser } from "src/hooks/users/useUser";
 
 type FormData = {
   name: string;

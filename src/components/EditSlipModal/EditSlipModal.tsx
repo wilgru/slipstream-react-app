@@ -12,13 +12,13 @@ import { useMemo, useState } from "react";
 import { Button } from "src/components/Button/Button";
 import { QuillEditor } from "src/components/QuillEditor/QuillEditor";
 import { Toggle } from "src/components/Toggle/Toggle";
-import { colours } from "src/models/colours/colours.constant";
-import { useCreateSlip } from "src/models/slips/hooks/useCreateSlip";
-import { useDeleteSlip } from "src/models/slips/hooks/useDeleteSlip";
-import { useUpdateSlip } from "src/models/slips/hooks/useUpdateSlip";
+import { colours } from "src/constants/colours.constant";
+import { useCreateSlip } from "src/hooks/slips/useCreateSlip";
+import { useDeleteSlip } from "src/hooks/slips/useDeleteSlip";
+import { useUpdateSlip } from "src/hooks/slips/useUpdateSlip";
 import { JournalMultiSelect } from "./JournalMultiSelect";
 import type { StringMap } from "quill";
-import type { Slip } from "src/models/slips/Slip.type";
+import type { Slip } from "src/types/Slip.type";
 
 type EditSlipModalProps = {
   slip?: Slip;

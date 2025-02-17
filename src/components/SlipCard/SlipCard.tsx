@@ -5,13 +5,13 @@ import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import QuillContentView from "src/components/QuillContentView/QuillContentView";
 import { SlipHeading } from "src/components/SlipHeading/SlipHeading";
 import { Toggle } from "src/components/Toggle/Toggle";
-import { colours } from "src/models/colours/colours.constant";
-import { useDeleteSlip } from "src/models/slips/hooks/useDeleteSlip";
-import { useUpdateSlip } from "src/models/slips/hooks/useUpdateSlip";
-import { isSlipContentEmpty } from "src/models/slips/utils/isSlipContentEmpty";
+import { colours } from "src/constants/colours.constant";
+import { useDeleteSlip } from "src/hooks/slips/useDeleteSlip";
+import { useUpdateSlip } from "src/hooks/slips/useUpdateSlip";
 import { cn } from "src/utils/cn";
-import type { Colour } from "src/models/colours/Colour.type";
-import type { Slip } from "src/models/slips/Slip.type";
+import { isSlipContentEmpty } from "src/utils/slips/isSlipContentEmpty";
+import type { Colour } from "src/types/Colour.type";
+import type { Slip } from "src/types/Slip.type";
 
 export const SlipCard = forwardRef<
   HTMLDivElement,

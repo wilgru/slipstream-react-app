@@ -2,13 +2,13 @@ import { Plus, X } from "@phosphor-icons/react";
 import { useCallback, useState } from "react";
 import { components } from "react-select";
 import CreatableSelect from "react-select/creatable";
-import { colours } from "src/models/colours/colours.constant";
-import { useCreateJournal } from "src/models/journals/hooks/useCreateJournal";
-import { useGetJournals } from "src/models/journals/hooks/useGetJournals";
+import { colours } from "src/constants/colours.constant";
+import { useCreateJournal } from "src/hooks/journals/useCreateJournal";
+import { useGetJournals } from "src/hooks/journals/useGetJournals";
 import { cn } from "src/utils/cn";
-import type { Colour } from "src/models/colours/Colour.type";
-import type { Journal } from "src/models/journals/Journal.type";
-import type { Slip } from "src/models/slips/Slip.type";
+import type { Colour } from "src/types/Colour.type";
+import type { Journal } from "src/types/Journal.type";
+import type { Slip } from "src/types/Slip.type";
 
 type JournalMultiSelectProps = {
   initialSlip: Slip;

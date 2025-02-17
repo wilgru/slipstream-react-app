@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
-import { useUser } from "src/models/users/hooks/useUser";
-import { mapSlip } from "../utils/mapSlip";
+import { useUser } from "src/hooks/users/useUser";
+import { mapSlip } from "src/utils/slips/mapSlip";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
-import type { Slip } from "src/models/slips/Slip.type";
+import type { Slip } from "src/types/Slip.type";
 
 type CreateSlipProps = {
   createSlipData: Omit<Slip, "id" | "created" | "updated">;

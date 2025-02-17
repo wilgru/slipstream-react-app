@@ -4,10 +4,10 @@ import { Button } from "src/components/Button/Button";
 import { ColourPicker } from "src/components/ColourPicker/ColourPicker";
 import IconPicker from "src/components/IconPicker/IconPicker";
 import { Input } from "src/components/Input/Input";
-import { colours } from "src/models/colours/colours.constant";
-import { useUpdateJournal } from "src/models/journals/hooks/useUpdateJournal";
+import { colours } from "src/constants/colours.constant";
+import { useUpdateJournal } from "src/hooks/journals/useUpdateJournal";
 import { DeleteJournalModal } from "./DeleteJournalModal";
-import type { Journal } from "src/models/journals/Journal.type";
+import type { Journal } from "src/types/Journal.type";
 
 type EditJournalModalProps = {
   journal: Journal;

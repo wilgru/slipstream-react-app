@@ -1,10 +1,10 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState, useRef } from "react";
 import TableOfContents from "src/components/TableOfContents/TableOfContents";
+import { useGetJournal } from "src/hooks/journals/useGetJournal";
 import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
-import { useGetJournal } from "src/models/journals/hooks/useGetJournal";
-import isAuthenticated from "src/models/users/utils/isAuthenticated";
 import { cn } from "src/utils/cn";
+import isAuthenticated from "src/utils/users/isAuthenticated";
 import { SlipCard } from "../../components/SlipCard/SlipCard";
 import { JournalHeader } from "./-components/JournalHeader";
 

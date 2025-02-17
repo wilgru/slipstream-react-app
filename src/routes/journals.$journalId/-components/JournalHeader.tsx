@@ -3,11 +3,11 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useState } from "react";
 import { Button } from "src/components/Button/Button";
-import { useUpdateJournal } from "src/models/journals/hooks/useUpdateJournal";
+import { useUpdateJournal } from "src/hooks/journals/useUpdateJournal";
 import { cn } from "src/utils/cn";
 import { EditJournalModal } from "./EditJournalModal";
-import type { Journal } from "src/models/journals/Journal.type";
-import type { SlipsGroupDividedByTitle } from "src/models/slips/Slip.type";
+import type { Journal } from "src/types/Journal.type";
+import type { SlipsGroupDividedByTitle } from "src/types/Slip.type";
 
 type JournalHeaderProps = {
   journal: Journal;

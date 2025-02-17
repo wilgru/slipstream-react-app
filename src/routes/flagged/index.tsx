@@ -2,10 +2,10 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useRef, useState, useEffect } from "react";
 import { SlipCard } from "src/components/SlipCard/SlipCard";
 import TableOfContents from "src/components/TableOfContents/TableOfContents";
+import { colours } from "src/constants/colours.constant";
+import { useGetSlips } from "src/hooks/slips/useGetSlips";
 import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
-import { colours } from "src/models/colours/colours.constant";
-import { useGetSlips } from "src/models/slips/hooks/useGetSlips";
-import isAuthenticated from "src/models/users/utils/isAuthenticated";
+import isAuthenticated from "src/utils/users/isAuthenticated";
 
 export const Route = createFileRoute("/flagged/")({
   component: RouteComponent,

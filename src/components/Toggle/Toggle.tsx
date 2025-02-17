@@ -1,10 +1,10 @@
 import * as TogglePrimitive from "@radix-ui/react-toggle";
 import { cva } from "class-variance-authority";
 import { useState } from "react";
-import { colours } from "src/models/colours/colours.constant";
+import { colours } from "src/constants/colours.constant";
 import { cn } from "src/utils/cn";
 import { Icon } from "../Icon/Icon";
-import type { Colour } from "src/models/colours/Colour.type";
+import type { Colour } from "src/types/Colour.type";
 
 type ToggleProps = {
   className?: string;

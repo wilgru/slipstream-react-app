@@ -11,7 +11,7 @@ import {
   ChatCircle,
   ArrowsDownUp,
 } from "@phosphor-icons/react";
-import { icons } from "src/models/icons/icons.constant";
+import { icons } from "src/constants/icons.constant";
 
 type IconProps = {
   iconName: string;

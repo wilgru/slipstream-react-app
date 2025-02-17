@@ -1,5 +1,5 @@
-import { type Colour } from "src/models/colours/Colour.type";
-import { getAllColours } from "src/models/colours/utils/getColour";
+import { type Colour } from "src/types/Colour.type";
+import { getAllColours } from "src/utils/colours/getColour";
 import { ColourPickerColourButton } from "./ColourPickerColourButton";
 
 type ColourPickerProps = {
