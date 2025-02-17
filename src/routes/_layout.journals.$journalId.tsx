@@ -1,56 +1,56 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { useState, useRef, useEffect } from 'react'
-import { JournalHeader } from 'src/components/JournalHeader'
-import { SlipCard } from 'src/components/SlipCard/SlipCard'
-import TableOfContents from 'src/components/TableOfContents/TableOfContents'
-import { useGetJournal } from 'src/hooks/journals/useGetJournal'
-import { useIntersectionObserver } from 'src/hooks/useIntersectionObserver'
-import { cn } from 'src/utils/cn'
-import isAuthenticated from 'src/utils/users/isAuthenticated'
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { useState, useRef, useEffect } from "react";
+import { JournalHeader } from "src/components/JournalHeader";
+import { SlipCard } from "src/components/SlipCard/SlipCard";
+import TableOfContents from "src/components/TableOfContents/TableOfContents";
+import { useGetJournal } from "src/hooks/journals/useGetJournal";
+import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
+import { cn } from "src/utils/cn";
+import isAuthenticated from "src/utils/users/isAuthenticated";
 
-export const Route = createFileRoute('/_layout/journals/$journalId')({
+export const Route = createFileRoute("/_layout/journals/$journalId")({
   component: JournalComponent,
   // loader: ({ params }) => fetchJournal(params.journalId),
   beforeLoad: async ({ location }) => {
     if (!isAuthenticated()) {
       throw redirect({
-        to: '/login',
+        to: "/login",
         search: {
           redirect: location.href,
         },
-      })
+      });
     }
   },
-})
+});
 
 export default function JournalComponent() {
-  const { journalId } = Route.useParams()
+  const { journalId } = Route.useParams();
   const { journal, slipGroups, tableOfContentItems } = useGetJournal(
-    journalId ?? '',
-  )
-  const [navigationId, setNavigationId] = useState('')
+    journalId ?? ""
+  );
+  const [navigationId, setNavigationId] = useState("");
 
-  const slipRefs = useRef<HTMLDivElement[]>([])
+  const slipRefs = useRef<HTMLDivElement[]>([]);
 
   useIntersectionObserver(
     slipRefs,
     (entry) => {
-      setNavigationId(entry.target.id)
+      setNavigationId(entry.target.id);
     },
-    { rootMargin: '-10% 0% -90% 0%' },
-    { disabled: false },
-  )
+    { rootMargin: "-10% 0% -90% 0%" },
+    { disabled: false }
+  );
 
   useEffect(() => {
     const firstNavigationId =
       slipGroups.at(0)?.slipsWithNoTitle.at(0)?.id ??
-      slipGroups.at(0)?.slipsWithTitle.at(0)?.id
+      slipGroups.at(0)?.slipsWithTitle.at(0)?.id;
 
-    firstNavigationId && setNavigationId(firstNavigationId)
-  }, [slipGroups])
+    firstNavigationId && setNavigationId(firstNavigationId);
+  }, [slipGroups]);
 
   if (!journal) {
-    return null
+    return null;
   }
 
   return (
@@ -63,8 +63,8 @@ export default function JournalComponent() {
             <div className="flex flex-col gap-3">
               <h2
                 className={cn(
-                  'pl-2 font-title text-3xl border-b border-stone-200',
-                  journal.colour.text,
+                  "pl-2 font-title text-3xl border-b border-stone-200",
+                  journal.colour.text
                 )}
               >
                 {slipGroup.title}
@@ -74,7 +74,7 @@ export default function JournalComponent() {
                 <SlipCard
                   ref={(el: HTMLDivElement | null) => {
                     if (el && !slipRefs.current.includes(el)) {
-                      slipRefs.current.push(el)
+                      slipRefs.current.push(el);
                     }
                   }}
                   slip={slip}
@@ -95,7 +95,7 @@ export default function JournalComponent() {
                 <SlipCard
                   ref={(el: HTMLDivElement | null) => {
                     if (el && !slipRefs.current.includes(el)) {
-                      slipRefs.current.push(el)
+                      slipRefs.current.push(el);
                     }
                   }}
                   slip={slip}
@@ -116,5 +116,5 @@ export default function JournalComponent() {
         />
       </div>
     </div>
-  )
+  );
 }
