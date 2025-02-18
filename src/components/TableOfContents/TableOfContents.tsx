@@ -6,6 +6,7 @@ import type { Colour } from "src/types/Colour.type";
 export type TableOfContentsItem = {
   title: string;
   navigationId: string | null;
+  italic?: boolean;
   subItems: TableOfContentsItem[];
 };
 
@@ -39,6 +40,7 @@ export default function TableOfContents({
           className={cn(
             "p-1 text-xs font-normal overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-md",
             `hover:${colour.backgroundPill} hover:${colour.textPill}`,
+            item.italic && "italic",
             isActive && colour.backgroundPill,
             isActive && colour.textPill
           )}
@@ -64,7 +66,12 @@ export default function TableOfContents({
   const StaticLi = ({ item }: { item: TableOfContentsItem }) => {
     return (
       <li key={item.title}>
-        <h2 className="p-1 text-stone-400 text-xs overflow-x-hidden whitespace-nowrap overflow-ellipsis">
+        <h2
+          className={cn(
+            "p-1 text-stone-400 text-xs overflow-x-hidden whitespace-nowrap overflow-ellipsis",
+            item.italic && "italic"
+          )}
+        >
           {item.title}
         </h2>
 

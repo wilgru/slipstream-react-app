@@ -59,6 +59,7 @@ export const useGetJournal = (journalId: string): UseJournalResponse => {
             return {
               title: typeof title === "string" ? title : "No title",
               navigationId: slipWithNoTitle.id,
+              italic: true,
               subItems: [],
             };
           }
