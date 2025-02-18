@@ -59,7 +59,7 @@ function StreamIndexComponent() {
 
   return (
     <div className="flex h-full">
-      <div className="flex flex-col h-full gap-10 max-w-[700px] overflow-y-auto overflow-x-hidden">
+      <div className="flex flex-col h-full gap-10 py-10 max-w-[700px] overflow-y-auto overflow-x-hidden">
         {slipGroups.map((group) => (
           <div
             ref={(el: HTMLDivElement | null) => {

@@ -6,20 +6,14 @@ import type { Journal } from "src/types/Journal.type";
 
 type DeleteJournalModalProps = {
   journal: Journal;
-  onDelete: () => void;
 };
 
-export const DeleteJournalModal = ({
-  journal,
-  onDelete,
-}: DeleteJournalModalProps) => {
+export const DeleteJournalModal = ({ journal }: DeleteJournalModalProps) => {
   const { deleteJournal } = useDeleteJournal();
 
   const onConfirmDelete = async () => {
     if (journal) {
       await deleteJournal(journal.id);
-
-      onDelete();
     }
   };
 

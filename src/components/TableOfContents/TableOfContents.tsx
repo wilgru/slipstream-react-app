@@ -37,7 +37,7 @@ export default function TableOfContents({
       >
         <h2
           className={cn(
-            "p-1 text-sm font-normal overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-md",
+            "p-1 text-xs font-normal overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-md",
             `hover:${colour.backgroundPill} hover:${colour.textPill}`,
             isActive && colour.backgroundPill,
             isActive && colour.textPill
@@ -64,7 +64,7 @@ export default function TableOfContents({
   const StaticLi = ({ item }: { item: TableOfContentsItem }) => {
     return (
       <li key={item.title}>
-        <h2 className="p-1 text-stone-400 text-sm overflow-x-hidden whitespace-nowrap overflow-ellipsis">
+        <h2 className="p-1 text-stone-400 text-xs overflow-x-hidden whitespace-nowrap overflow-ellipsis">
           {item.title}
         </h2>
 
@@ -84,7 +84,7 @@ export default function TableOfContents({
   };
 
   return (
-    <ul className="max-w-56">
+    <ul className="w-40 mr-12">
       {items.map((item) => {
         const isNavigatable = !!item.navigationId;
 

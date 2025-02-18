@@ -11,13 +11,9 @@ import type { Journal } from "src/types/Journal.type";
 
 type EditJournalModalProps = {
   journal: Journal;
-  onClose: () => void;
 };
 
-export const EditJournalModal = ({
-  journal,
-  onClose,
-}: EditJournalModalProps) => {
+export const EditJournalModal = ({ journal }: EditJournalModalProps) => {
   const [editedJournal, setEditedJournal] = useState<Journal>(journal);
   const { updateJournal } = useUpdateJournal();
 
@@ -32,8 +28,6 @@ export const EditJournalModal = ({
         journalId: editedJournal.id,
         updateJournalData: editedJournal,
       });
-
-      onClose();
     }
   };
 
@@ -91,17 +85,12 @@ export const EditJournalModal = ({
                 </Button>
               </Dialog.Trigger>
 
-              <DeleteJournalModal journal={journal} onDelete={onClose} />
+              <DeleteJournalModal journal={journal} />
             </Dialog.Root>
 
             <div className="flex gap-2 justify-end">
               <Dialog.Close asChild>
-                <Button
-                  aria-label="Close"
-                  size="sm"
-                  variant="ghost"
-                  onClick={onClose}
-                >
+                <Button aria-label="Close" size="sm" variant="ghost">
                   Discard
                 </Button>
               </Dialog.Close>

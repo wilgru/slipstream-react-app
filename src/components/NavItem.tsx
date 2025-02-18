@@ -35,7 +35,9 @@ export const NavItem = ({
         className: cn(colour.textPill, colour.backgroundPill),
       }}
       className={cn(
-        "flex px-2 py-1 items-center gap-2 rounded-full text-sm",
+        "flex items-center gap-2 rounded-full text-sm",
+        expanded ? "rounded-md" : "rounded-full",
+        expanded ? "px-2 py-1" : "p-2",
         expanded ? "justify-between" : "justify-center",
         isHovered && colour.textPill,
         isHovered && colour.backgroundPill
@@ -60,7 +62,9 @@ export const NavItem = ({
           </div>
 
           {expanded && (
-            <p className="text-xs text-stone-500 w-2 text-center">{preview}</p>
+            <p className="text-xs font-medium text-stone-400 w-2 mr-1 text-center">
+              {preview}
+            </p>
           )}
         </>
       )}

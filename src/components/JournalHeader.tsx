@@ -1,7 +1,6 @@
 import { Check } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { useState } from "react";
 import { Button } from "src/components/Button/Button";
 import { useUpdateJournal } from "src/hooks/journals/useUpdateJournal";
 import { cn } from "src/utils/cn";
@@ -16,30 +15,25 @@ type JournalHeaderProps = {
 
 export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
   const { updateJournal } = useUpdateJournal();
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
-    <div className="py-4 mx-9">
+    <div className="py-4 ml-9 mr-3">
       <div className="flex justify-between items-center">
         <h1 className={cn(journal.colour.text, "font-title text-5xl")}>
           {journal.name}
         </h1>
 
         <div className="flex gap-2">
-          <Dialog.Root open={isEditModalOpen}>
+          <Dialog.Root>
             <Dialog.Trigger asChild>
               <Button
                 variant="ghost"
                 colour={journal.colour}
                 iconName="pencil"
-                onClick={() => setIsEditModalOpen(true)}
               />
             </Dialog.Trigger>
 
-            <EditJournalModal
-              journal={journal}
-              onClose={() => setIsEditModalOpen(false)}
-            />
+            <EditJournalModal journal={journal} />
           </Dialog.Root>
 
           <DropdownMenu.Root>
