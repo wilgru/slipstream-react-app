@@ -86,6 +86,52 @@ TODOs and FIXMEs in particular can also be tracked using the TODO tree extension
 
 #### utils
 
+## Deployment
+
+SlipStream is configured to deploy to Fly.io.
+
+### Deploy Frontend
+
+1. Test Dockerfile works locally first
+   ```sh
+   docker build . -t "slipstream-react-app"
+   docker run -p 3000:80 slipstream-react-app
+   ```
+2. Run flyctl launch on first deployment. when it asks, use the existing configuration, and dont edit it any further on the web
+   ```sh
+   flyctl launch
+   ```
+3. Run flyctl deploy on all subsequent deploys
+   ```sh
+   flyctl deploy
+   ```
+
+### Deploy Backend
+
+More details on deploying Pocketbase to Fly.io [here](https://github.com/pocketbase/pocketbase/discussions/537).
+
+1. navigate to `/pocketbase`
+   ```sh
+   cd pocketbase
+   ```
+2. run flyctl launch on first deployment. when it asks, use the existing configuration, and dont edit it any further on the web. for now only build it, will deploy it later
+   ```sh
+   flyctl launch --build-only
+   ```
+3. Create a volume and make sure to name it `pb_data`. Say yes when you get the warning message
+   ```sh
+   flyctl volumes create pb_data --size=1
+   ```
+4. run flyctl deploy to push deployment to Fly.io
+   ```sh
+   flyctl deploy
+   ```
+5. Create the first Pocketbase super user. You can find the URL in the logs after first deployment that will lead to the create super user screen
+6. run flyctl deploy on all subsequent deploys
+   ```sh
+   flyctl deploy
+   ```
+
 ## Vite
 
 Currently, two official plugins are available:
