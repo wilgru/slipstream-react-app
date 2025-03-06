@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as SignupImport } from './routes/signup'
 import { Route as LoginImport } from './routes/login'
 import { Route as LayoutImport } from './routes/_layout'
+import { Route as IndexImport } from './routes/index'
 import { Route as LayoutStreamImport } from './routes/_layout.stream'
 import { Route as LayoutFlaggedImport } from './routes/_layout.flagged'
 import { Route as LayoutJournalsJournalIdImport } from './routes/_layout.journals.$journalId'
@@ -34,6 +35,12 @@ const LoginRoute = LoginImport.update({
 
 const LayoutRoute = LayoutImport.update({
   id: '/_layout',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const IndexRoute = IndexImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -59,6 +66,13 @@ const LayoutJournalsJournalIdRoute = LayoutJournalsJournalIdImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/_layout': {
       id: '/_layout'
       path: ''
@@ -122,6 +136,7 @@ const LayoutRouteWithChildren =
   LayoutRoute._addFileChildren(LayoutRouteChildren)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
@@ -131,6 +146,7 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
@@ -141,6 +157,7 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
@@ -152,6 +169,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | ''
     | '/login'
     | '/signup'
@@ -160,6 +178,7 @@ export interface FileRouteTypes {
     | '/journals/$journalId'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | ''
     | '/login'
     | '/signup'
@@ -168,6 +187,7 @@ export interface FileRouteTypes {
     | '/journals/$journalId'
   id:
     | '__root__'
+    | '/'
     | '/_layout'
     | '/login'
     | '/signup'
@@ -178,12 +198,14 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
@@ -199,10 +221,14 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/",
         "/_layout",
         "/login",
         "/signup"
       ]
+    },
+    "/": {
+      "filePath": "index.tsx"
     },
     "/_layout": {
       "filePath": "_layout.tsx",
