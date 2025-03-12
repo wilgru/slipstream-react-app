@@ -19,6 +19,7 @@ export const useCreateJournal = (): UseCreateJournalResponse => {
       colour: "orange",
       icon: "book",
       user: user?.id,
+      groupBy: "created",
     });
 
     const mappedNewJournal = mapJournal({ ...newJournal, totalSlips: 0 });
