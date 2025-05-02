@@ -10,6 +10,7 @@ import {
   DotsThree,
   ChatCircle,
   ArrowsDownUp,
+  Tag,
 } from "@phosphor-icons/react";
 import { icons } from "src/constants/icons.constant";
 
@@ -51,6 +52,8 @@ const Icon = ({
       return <Trash {...iconProps} />;
     case "pencil":
       return <Pencil {...iconProps} />;
+    case "tag":
+      return <Tag {...iconProps} />;
     case "x":
       return <X {...iconProps} weight="bold" />;
     case "gear":
