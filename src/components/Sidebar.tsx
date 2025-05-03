@@ -29,9 +29,12 @@ const renderForeignObjectNode = ({
       <button
         style={{ margin: "0 auto" }}
         className={cn(
-          "flex items-center gap-2 text-sm font-normal rounded-full py-1 px-2 border border-stone-300 shadow-md",
+          "flex items-center gap-2 text-sm font-normal rounded-full py-1 px-2 border shadow-md",
           journal.colour.textPillInverted,
           journal.colour.backgroundPillInverted,
+          nodeDatum.__rd3t.collapsed
+            ? "border-stone-300"
+            : journal.colour.border,
           nodeDatum.__rd3t.collapsed
             ? "text-stone-600"
             : journal.colour.textPill,
@@ -73,7 +76,7 @@ export const Sidebar = () => {
         renderCustomNodeElement={(rd3tProps) =>
           renderForeignObjectNode({
             ...rd3tProps,
-            foreignObjectProps: { width: 100, height: 100, x: -50 },
+            foreignObjectProps: { width: 150, height: 150, x: -75 },
           })
         }
       />

@@ -10,6 +10,7 @@ export const colours: { [key: string]: Colour } = {
     backgroundPill: "bg-red-100",
     backgroundPillInverted: "hover:bg-red-300",
     backgroundGlow: "hover:bg-red-50",
+    border: "border-red-300",
   },
   orange: {
     name: "orange",
@@ -20,6 +21,7 @@ export const colours: { [key: string]: Colour } = {
     backgroundPill: "bg-orange-100",
     backgroundPillInverted: "hover:bg-orange-300",
     backgroundGlow: "hover:bg-orange-50",
+    border: "border-orange-300",
   },
   yellow: {
     name: "yellow",
@@ -30,6 +32,7 @@ export const colours: { [key: string]: Colour } = {
     backgroundPill: "bg-yellow-100",
     backgroundPillInverted: "hover:bg-yellow-300",
     backgroundGlow: "hover:bg-yellow-50",
+    border: "border-yellow-300",
   },
   lime: {
     name: "lime",
@@ -40,6 +43,7 @@ export const colours: { [key: string]: Colour } = {
     backgroundPill: "bg-lime-100",
     backgroundPillInverted: "hover:bg-lime-300",
     backgroundGlow: "hover:bg-lime-50",
+    border: "border-lime-300",
   },
   green: {
     name: "green",
@@ -50,6 +54,7 @@ export const colours: { [key: string]: Colour } = {
     backgroundPill: "bg-green-100",
     backgroundPillInverted: "hover:bg-green-300",
     backgroundGlow: "hover:bg-green-50",
+    border: "border-green-300",
   },
   blue: {
     name: "blue",
@@ -60,6 +65,7 @@ export const colours: { [key: string]: Colour } = {
     backgroundPill: "bg-blue-100",
     backgroundPillInverted: "hover:bg-blue-300",
     backgroundGlow: "hover:bg-blue-50",
+    border: "border-blue-300",
   },
   cyan: {
     name: "cyan",
@@ -70,6 +76,7 @@ export const colours: { [key: string]: Colour } = {
     backgroundPill: "bg-cyan-100",
     backgroundPillInverted: "hover:bg-cyan-300",
     backgroundGlow: "hover:bg-cyan-50",
+    border: "border-cyan-300",
   },
   pink: {
     name: "pink",
@@ -80,6 +87,7 @@ export const colours: { [key: string]: Colour } = {
     backgroundPill: "bg-pink-100",
     backgroundPillInverted: "hover:bg-pink-300",
     backgroundGlow: "hover:bg-pink-50",
+    border: "border-pink-300",
   },
   purple: {
     name: "purple",
@@ -90,6 +98,7 @@ export const colours: { [key: string]: Colour } = {
     backgroundPill: "bg-purple-100",
     backgroundPillInverted: "hover:bg-purple-300",
     backgroundGlow: "hover:bg-purple-50",
+    border: "border-purple-300",
   },
   brown: {
     name: "brown",
@@ -100,6 +109,7 @@ export const colours: { [key: string]: Colour } = {
     backgroundPill: "bg-amber-200",
     backgroundPillInverted: "hover:bg-amber-300",
     backgroundGlow: "hover:bg-amber-50",
+    border: "border-amber-500",
   },
   grey: {
     name: "grey",
@@ -110,5 +120,6 @@ export const colours: { [key: string]: Colour } = {
     backgroundPill: "bg-gray-200",
     backgroundPillInverted: "hover:bg-gray-300",
     backgroundGlow: "hover:bg-gray-100",
+    border: "border-gray-300",
   },
 };
