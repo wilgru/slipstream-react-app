@@ -1,10 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { pb } from "src/connections/pocketbase";
+import { groupSlips } from "src/utils/slips/groupSlips";
 import { mapSlip } from "src/utils/slips/mapSlip";
-import type { Slip } from "src/types/Slip.type";
+import type { TableOfContentsItem } from "src/components/TableOfContents/TableOfContents";
+import type { SlipsGroup } from "src/types/Slip.type";
 
 type UseGetSlipsResponse = {
-  slips: Slip[];
+  slipGroups: SlipsGroup[];
+  tableOfContentItems: TableOfContentsItem[];
 };
 
 export const useGetSlips = ({
@@ -13,7 +16,8 @@ export const useGetSlips = ({
   isFlagged: boolean;
 }): UseGetSlipsResponse => {
   const queryFn = async (): Promise<{
-    slips: Slip[];
+    slipGroups: SlipsGroup[];
+    tableOfContentItems: TableOfContentsItem[];
   }> => {
     const filter = `deleted = null ${isFlagged ? "&& isFlagged = true" : ""}`;
 
@@ -26,8 +30,48 @@ export const useGetSlips = ({
       });
 
     const mappedSlips = rawSlips.items.map(mapSlip);
+    const groupedSlips = groupSlips(mappedSlips, "created");
 
-    return { slips: mappedSlips };
+    const tableOfContentItems = mappedSlips.reduce(
+      (acc: TableOfContentsItem[], slip) => {
+        const monthTitle = slip.created.format("MMMM YYYY");
+        const existingMonth = acc.find((item) => item.title === monthTitle);
+
+        if (!existingMonth) {
+          acc.push({
+            title: monthTitle,
+            navigationId: null,
+            subItems: [
+              {
+                title: slip.created.format("dddd D"),
+                navigationId: slip.created.format("ddd D MMMM YYYY"),
+                subItems: [],
+              },
+            ],
+          });
+
+          return acc;
+        }
+
+        const dayTitle = slip.created.format("dddd D");
+        const existingDay = existingMonth.subItems.find(
+          (item) => item.title === dayTitle
+        );
+
+        if (!existingDay) {
+          existingMonth.subItems.push({
+            title: slip.created.format("dddd D"),
+            navigationId: slip.created.format("ddd D MMMM YYYY"),
+            subItems: [],
+          });
+        }
+
+        return acc;
+      },
+      []
+    );
+
+    return { slipGroups: groupedSlips, tableOfContentItems };
   };
 
   // TODO: consider time caching for better performance
@@ -39,6 +83,7 @@ export const useGetSlips = ({
   });
 
   return {
-    slips: data?.slips ?? [],
+    slipGroups: data?.slipGroups ?? [],
+    tableOfContentItems: data?.tableOfContentItems ?? [],
   };
 };
