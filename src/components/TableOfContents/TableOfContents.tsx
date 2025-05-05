@@ -91,7 +91,7 @@ export default function TableOfContents({
   };
 
   return (
-    <ul className="w-40 mr-12">
+    <ul className="w-40 mr-12 p-3 bg-stone-100 border border-stone-200 rounded-lg shadow-inner">
       {items.map((item) => {
         const isNavigatable = !!item.navigationId;
 

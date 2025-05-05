@@ -24,10 +24,12 @@ export const Sidebar = () => {
   };
 
   return (
-    <aside className={cn(expanded && "min-w-60", "m-3")}>
+    <aside
+      className={cn("border-r border-stone-300 p-2", expanded && "min-w-60")}
+    >
       <div
         className={cn(
-          "flex flex-col flex-shrink-0 justify-between gap-3 h-full p-2 bg-stone-50 border border-stone-300 drop-shadow",
+          "flex flex-col flex-shrink-0 justify-between gap-3 h-full p-2",
           expanded ? "rounded-lg" : "rounded-[32px]"
         )}
       >
@@ -50,8 +52,6 @@ export const Sidebar = () => {
             />
           </section>
 
-          <div className="h-[1px] mx-1 bg-stone-300 rounded-full" />
-
           <section className="flex flex-col gap-1">
             {expanded && <h1 className="font-title text-lg ml-2">Journals</h1>}
 
@@ -69,8 +69,6 @@ export const Sidebar = () => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <div className="h-[1px] mx-1 bg-stone-300 rounded-full" />
-
           <div
             className={cn(
               expanded ? "flex-row" : "flex-col-reverse",

@@ -58,12 +58,12 @@ export default function JournalComponent() {
       <div className="w-[700px] overflow-y-scroll">
         <JournalHeader journal={journal} slipGroups={slipGroups} />
 
-        <div className="p-3 mb-[50vh] ml-9 mr-3 border min-h-full border-stone-300 rounded-lg flex flex-col gap-10 bg-white drop-shadow-md">
+        <div className="p-5 mb-[50vh] ml-9 mr-3 border min-h-full border-stone-300 rounded-2xl flex flex-col gap-10 bg-white drop-shadow-md">
           {slipGroups.map((slipGroup) => (
             <div className="flex flex-col gap-3">
               <h2
                 className={cn(
-                  "pl-2 font-title text-3xl border-b border-stone-200",
+                  "pl-2 font-title font-thin text-2xl",
                   journal.colour.text
                 )}
               >

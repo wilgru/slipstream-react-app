@@ -33,19 +33,11 @@ export const SlipCard = forwardRef<
         colour.backgroundGlow
       )}
     >
-      <SlipHeading
-        title={slip.title}
-        isPinned={slip.isPinned}
-        isFlagged={slip.isFlagged}
-      />
+      <SlipHeading slip={slip} isHovered={isHovered} />
 
       {!isSlipContentEmpty(slip.content) && (
         <QuillContentView content={slip.content} />
       )}
-
-      <p className={"text-xs text-stone-500"}>
-        {slip.created.format("ddd D MMMM YYYY")}
-      </p>
 
       <div
         hidden={!isHovered}
