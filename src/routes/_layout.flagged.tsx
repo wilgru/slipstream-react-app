@@ -71,7 +71,7 @@ function RouteComponent() {
             {group.slips.map((slip) => (
               <div
                 key={slip.id}
-                className="relative p-3 mx-9 rounded-lg bg-white drop-shadow-md border border-stone-300"
+                className="relative p-3 mx-9 rounded-2xl bg-white drop-shadow-md border border-stone-300"
               >
                 <SlipCard slip={slip} colour={colours.orange} />
               </div>
