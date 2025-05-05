@@ -6,75 +6,135 @@ import { Tree } from "react-d3-tree";
 import { Button } from "src/components/Button/Button";
 import EditSlipModal from "src/components/EditSlipModal/EditSlipModal";
 import { colours } from "src/constants/colours.constant";
-import { useTagTree } from "src/hooks/useTagTree";
 import { useLogin } from "src/hooks/users/useLogin";
 import { cn } from "src/utils/cn";
-import { Icon } from "./Icon/Icon";
-import type { TreeNodeDatum } from "react-d3-tree";
-import type { Journal } from "src/types/Journal.type";
+
+// This is a simplified example of an org chart with a depth of 2.
+// Note how deeper levels are defined recursively via the `children` property.
+const orgChart = {
+  name: "Home",
+  children: [
+    {
+      name: "Art",
+      attributes: {
+        Slips: "4",
+      },
+      children: [
+        {
+          name: "Printing",
+          attributes: {
+            Slips: "4",
+          },
+          children: [
+            {
+              name: "Silkscreen",
+            },
+          ],
+        },
+        {
+          name: "Ceramics",
+          attributes: {
+            Slips: "4",
+          },
+          children: [
+            {
+              name: "Glazing",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Food",
+      attributes: {
+        Slips: "4",
+      },
+      children: [
+        {
+          name: "Cooking",
+          attributes: {
+            Slips: "4",
+          },
+        },
+        {
+          name: "Baking",
+          attributes: {
+            Slips: "4",
+          },
+        },
+      ],
+    },
+    {
+      name: "Nationalities",
+      attributes: {
+        Slips: "4",
+      },
+      children: [
+        {
+          name: "French",
+          attributes: {
+            Slips: "4",
+          },
+        },
+        {
+          name: "Italian",
+          attributes: {
+            Slips: "4",
+          },
+        },
+      ],
+    },
+  ],
+};
 
 const renderForeignObjectNode = ({
   nodeDatum,
   toggleNode,
   foreignObjectProps,
-}: {
-  nodeDatum: TreeNodeDatum;
-  toggleNode: () => void;
-  foreignObjectProps: { width: number; height: number; x: number };
-}) => {
-  const journal = nodeDatum.attributes as unknown as Journal;
-
-  return (
-    <foreignObject className="flex" {...foreignObjectProps}>
-      <button
-        style={{ margin: "0 auto" }}
+}) => (
+  <foreignObject {...foreignObjectProps}>
+    <button
+      className={cn(
+        "w-full flex flex-col items-center justify-center rounded-full p-1",
+        nodeDatum.__rd3t.collapsed ? "bg-white" : "bg-stone-800"
+      )}
+      onClick={toggleNode}
+    >
+      <h3
         className={cn(
-          "flex items-center gap-2 text-sm font-normal rounded-full py-1 px-2 border border-stone-300 shadow-md",
-          journal.colour.textPillInverted,
-          journal.colour.backgroundPillInverted,
-          nodeDatum.__rd3t.collapsed
-            ? "text-stone-600"
-            : journal.colour.textPill,
-          nodeDatum.__rd3t.collapsed
-            ? "bg-white"
-            : journal.colour.backgroundPill
+          "text-center",
+          nodeDatum.__rd3t.collapsed ? "text-stone-800" : "text-white"
         )}
-        onClick={toggleNode}
+        style={{ textAlign: "center" }}
       >
-        <Icon
-          size="sm"
-          iconName={journal.icon}
-          className={cn(
-            nodeDatum.__rd3t.collapsed && journal.colour.text,
-            journal.colour.textPillInverted
-          )}
-        />
-
-        {journal.name}
-      </button>
-    </foreignObject>
-  );
-};
+        {nodeDatum.name}
+      </h3>
+      {/* {nodeDatum.children && (
+        <button style={{ width: "100%" }} onClick={toggleNode}>
+          {nodeDatum.__rd3t.collapsed ? "Expand" : "Collapse"}
+        </button>
+      )} */}
+    </button>
+  </foreignObject>
+);
 
 export const Sidebar = () => {
   const { logout } = useLogin();
   const navigate = useNavigate();
-  const tagTreeData = useTagTree();
 
   const [showEditSlipModal, setShowEditSlipModal] = useState(false);
+
+  const nodeSize = { x: 100, y: 100 };
+  const foreignObjectProps = { width: nodeSize.x, height: nodeSize.y, x: -50 };
 
   return (
     <aside className={"flex flex-col flex-grow justify-between"}>
       <Tree
-        data={tagTreeData}
+        data={orgChart}
         orientation="vertical"
         translate={{ x: 0, y: 0 }}
-        nodeSize={{ x: 120, y: 120 }}
         renderCustomNodeElement={(rd3tProps) =>
-          renderForeignObjectNode({
-            ...rd3tProps,
-            foreignObjectProps: { width: 100, height: 100, x: -50 },
-          })
+          renderForeignObjectNode({ ...rd3tProps, foreignObjectProps })
         }
       />
 
