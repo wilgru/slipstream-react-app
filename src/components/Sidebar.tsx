@@ -27,7 +27,8 @@ export const Sidebar = () => {
     <aside className={cn(expanded && "min-w-60", "m-3")}>
       <div
         className={cn(
-          "flex flex-col flex-shrink-0 justify-between gap-3 h-full p-2"
+          "flex flex-col flex-shrink-0 justify-between gap-3 h-full p-2 bg-stone-50 border border-stone-300 drop-shadow",
+          expanded ? "rounded-lg" : "rounded-[32px]"
         )}
       >
         <div className="flex flex-col gap-2 overflow-y-auto">
