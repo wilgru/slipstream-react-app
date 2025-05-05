@@ -7,5 +7,4 @@ export type Colour = {
   backgroundPill: string;
   backgroundPillInverted: string;
   backgroundGlow: string;
-  border: string;
 };
