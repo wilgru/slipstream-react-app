@@ -36,11 +36,11 @@ function LoginIndexComponent(): JSX.Element {
     await login({ email: formData.email, password: formData.password });
 
     // redirect on successful login
-    navigate({ to: "/home" });
+    navigate({ to: "/stream" });
   };
 
   useEffect(() => {
-    user && navigate({ to: "/home" });
+    user && navigate({ to: "/stream" });
   }, [user, navigate]);
 
   return (

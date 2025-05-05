@@ -1,50 +1,50 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, type FormEvent, useEffect } from "react";
-import { Button } from "src/components/Button/Button";
-import { useSignUp } from "src/hooks/users/useSignUp";
-import { useUser } from "src/hooks/users/useUser";
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useState, type FormEvent, useEffect } from 'react'
+import { Button } from 'src/components/Button/Button'
+import { useSignUp } from 'src/hooks/users/useSignUp'
+import { useUser } from 'src/hooks/users/useUser'
 
 type FormData = {
-  name: string;
-  email: string;
-  password: string;
-  passwordConfirm: string;
-};
+  name: string
+  email: string
+  password: string
+  passwordConfirm: string
+}
 
-export const Route = createFileRoute("/signup")({
+export const Route = createFileRoute('/signup')({
   component: SignUpIndexComponent,
-});
+})
 
 function SignUpIndexComponent(): JSX.Element {
-  const { signUp, signUpLoading, signUpError } = useSignUp();
-  const { user } = useUser();
-  const navigate = useNavigate();
+  const { signUp, signUpLoading, signUpError } = useSignUp()
+  const { user } = useUser()
+  const navigate = useNavigate()
   const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    password: "",
-    passwordConfirm: "",
-  });
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
+  })
 
   const onChange = (e: { target: { name: string; value: string } }) => {
-    const name = e.target.name;
-    const value = e.target.value;
+    const name = e.target.name
+    const value = e.target.value
 
-    setFormData((currentFormData) => ({ ...currentFormData, [name]: value }));
-  };
+    setFormData((currentFormData) => ({ ...currentFormData, [name]: value }))
+  }
 
   const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    await signUp(formData);
+    await signUp(formData)
 
     // redirect on successful sign up
-    navigate({ to: "/home" });
-  };
+    navigate({ to: '/stream' })
+  }
 
   useEffect(() => {
-    user && navigate({ to: "/home" });
-  }, [navigate, user]);
+    user && navigate({ to: '/stream' })
+  }, [navigate, user])
 
   return (
     <div className="flex flex-col gap-6 justify-center items-center h-screen w-screen bg-stone-100">
@@ -129,7 +129,7 @@ function SignUpIndexComponent(): JSX.Element {
 
           <div>
             <Button disabled={signUpLoading} type="submit">
-              {signUpLoading ? "Loading..." : "Sign up"}
+              {signUpLoading ? 'Loading...' : 'Sign up'}
             </Button>
           </div>
         </form>
@@ -139,7 +139,7 @@ function SignUpIndexComponent(): JSX.Element {
           <Button
             variant="link"
             onClick={() => {
-              navigate({ to: "/login" });
+              navigate({ to: '/login' })
             }}
           >
             Log in
@@ -147,5 +147,5 @@ function SignUpIndexComponent(): JSX.Element {
         </div>
       </div>
     </div>
-  );
+  )
 }

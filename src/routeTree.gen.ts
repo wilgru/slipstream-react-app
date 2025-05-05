@@ -15,7 +15,9 @@ import { Route as SignupImport } from './routes/signup'
 import { Route as LoginImport } from './routes/login'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
-import { Route as LayoutHomeImport } from './routes/_layout.home'
+import { Route as LayoutStreamImport } from './routes/_layout.stream'
+import { Route as LayoutFlaggedImport } from './routes/_layout.flagged'
+import { Route as LayoutJournalsJournalIdImport } from './routes/_layout.journals.$journalId'
 
 // Create/Update Routes
 
@@ -42,9 +44,21 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const LayoutHomeRoute = LayoutHomeImport.update({
-  id: '/home',
-  path: '/home',
+const LayoutStreamRoute = LayoutStreamImport.update({
+  id: '/stream',
+  path: '/stream',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutFlaggedRoute = LayoutFlaggedImport.update({
+  id: '/flagged',
+  path: '/flagged',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutJournalsJournalIdRoute = LayoutJournalsJournalIdImport.update({
+  id: '/journals/$journalId',
+  path: '/journals/$journalId',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -80,11 +94,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
-    '/_layout/home': {
-      id: '/_layout/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof LayoutHomeImport
+    '/_layout/flagged': {
+      id: '/_layout/flagged'
+      path: '/flagged'
+      fullPath: '/flagged'
+      preLoaderRoute: typeof LayoutFlaggedImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/stream': {
+      id: '/_layout/stream'
+      path: '/stream'
+      fullPath: '/stream'
+      preLoaderRoute: typeof LayoutStreamImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/journals/$journalId': {
+      id: '/_layout/journals/$journalId'
+      path: '/journals/$journalId'
+      fullPath: '/journals/$journalId'
+      preLoaderRoute: typeof LayoutJournalsJournalIdImport
       parentRoute: typeof LayoutImport
     }
   }
@@ -93,11 +121,15 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface LayoutRouteChildren {
-  LayoutHomeRoute: typeof LayoutHomeRoute
+  LayoutFlaggedRoute: typeof LayoutFlaggedRoute
+  LayoutStreamRoute: typeof LayoutStreamRoute
+  LayoutJournalsJournalIdRoute: typeof LayoutJournalsJournalIdRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
-  LayoutHomeRoute: LayoutHomeRoute,
+  LayoutFlaggedRoute: LayoutFlaggedRoute,
+  LayoutStreamRoute: LayoutStreamRoute,
+  LayoutJournalsJournalIdRoute: LayoutJournalsJournalIdRoute,
 }
 
 const LayoutRouteWithChildren =
@@ -108,7 +140,9 @@ export interface FileRoutesByFullPath {
   '': typeof LayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/home': typeof LayoutHomeRoute
+  '/flagged': typeof LayoutFlaggedRoute
+  '/stream': typeof LayoutStreamRoute
+  '/journals/$journalId': typeof LayoutJournalsJournalIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -116,7 +150,9 @@ export interface FileRoutesByTo {
   '': typeof LayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/home': typeof LayoutHomeRoute
+  '/flagged': typeof LayoutFlaggedRoute
+  '/stream': typeof LayoutStreamRoute
+  '/journals/$journalId': typeof LayoutJournalsJournalIdRoute
 }
 
 export interface FileRoutesById {
@@ -125,15 +161,39 @@ export interface FileRoutesById {
   '/_layout': typeof LayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/_layout/home': typeof LayoutHomeRoute
+  '/_layout/flagged': typeof LayoutFlaggedRoute
+  '/_layout/stream': typeof LayoutStreamRoute
+  '/_layout/journals/$journalId': typeof LayoutJournalsJournalIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/login' | '/signup' | '/home'
+  fullPaths:
+    | '/'
+    | ''
+    | '/login'
+    | '/signup'
+    | '/flagged'
+    | '/stream'
+    | '/journals/$journalId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/signup' | '/home'
-  id: '__root__' | '/' | '/_layout' | '/login' | '/signup' | '/_layout/home'
+  to:
+    | '/'
+    | ''
+    | '/login'
+    | '/signup'
+    | '/flagged'
+    | '/stream'
+    | '/journals/$journalId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_layout'
+    | '/login'
+    | '/signup'
+    | '/_layout/flagged'
+    | '/_layout/stream'
+    | '/_layout/journals/$journalId'
   fileRoutesById: FileRoutesById
 }
 
@@ -173,7 +233,9 @@ export const routeTree = rootRoute
     "/_layout": {
       "filePath": "_layout.tsx",
       "children": [
-        "/_layout/home"
+        "/_layout/flagged",
+        "/_layout/stream",
+        "/_layout/journals/$journalId"
       ]
     },
     "/login": {
@@ -182,8 +244,16 @@ export const routeTree = rootRoute
     "/signup": {
       "filePath": "signup.tsx"
     },
-    "/_layout/home": {
-      "filePath": "_layout.home.tsx",
+    "/_layout/flagged": {
+      "filePath": "_layout.flagged.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/stream": {
+      "filePath": "_layout.stream.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/journals/$journalId": {
+      "filePath": "_layout.journals.$journalId.tsx",
       "parent": "/_layout"
     }
   }

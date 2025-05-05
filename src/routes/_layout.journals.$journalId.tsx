@@ -1,26 +1,26 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { SlipCard } from 'src/components/SlipCard/SlipCard'
-import { colours } from 'src/constants/colours.constant'
-import { useGetSlips } from 'src/hooks/slips/useGetSlips'
-import isAuthenticated from 'src/utils/users/isAuthenticated'
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { SlipCard } from "src/components/SlipCard/SlipCard";
+import { colours } from "src/constants/colours.constant";
+import { useGetSlips } from "src/hooks/slips/useGetSlips";
+import isAuthenticated from "src/utils/users/isAuthenticated";
 
-export const Route = createFileRoute('/_layout/home')({
+export const Route = createFileRoute("/_layout/journals/$journalId")({
   component: JournalComponent,
   // loader: ({ params }) => fetchJournal(params.journalId),
   beforeLoad: async ({ location }) => {
     if (!isAuthenticated()) {
       throw redirect({
-        to: '/login',
+        to: "/login",
         search: {
           redirect: location.href,
         },
-      })
+      });
     }
   },
-})
+});
 
 export default function JournalComponent() {
-  const { slips } = useGetSlips({ isFlagged: false })
+  const { slips } = useGetSlips({ isFlagged: false });
 
   return (
     <div className="w-[700px] h-full">
@@ -30,5 +30,5 @@ export default function JournalComponent() {
         ))}
       </div>
     </div>
-  )
+  );
 }
