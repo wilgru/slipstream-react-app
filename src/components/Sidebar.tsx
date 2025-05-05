@@ -24,104 +24,110 @@ export const Sidebar = () => {
   };
 
   return (
-    <aside className={cn("flex flex-col justify-between")}>
-      <div className="flex flex-col gap-2 overflow-y-auto">
-        <section className="flex flex-col gap-1">
-          <NavItem
-            ghost
-            iconName="pencil"
-            title={"Stream"}
-            to={`/stream/`}
-            expanded={expanded}
-          />
-
-          <NavItem
-            ghost
-            iconName="flag"
-            title={"Flagged"}
-            to={`/flagged/`}
-            expanded={expanded}
-          />
-        </section>
-
-        <div className="h-[1px] mx-1 bg-stone-300 rounded-full" />
-
-        <section className="flex flex-col gap-1">
-          {expanded && <h1 className="font-title text-lg ml-2">Journals</h1>}
-
-          {journals.map((journal) => (
+    <aside className={cn(expanded && "min-w-60", "m-3")}>
+      <div
+        className={cn(
+          "flex flex-col flex-shrink-0 justify-between gap-3 h-full p-2"
+        )}
+      >
+        <div className="flex flex-col gap-2 overflow-y-auto">
+          <section className="flex flex-col gap-1">
             <NavItem
-              iconName={journal.icon}
-              colour={journal.colour}
-              title={journal.name}
-              preview={journal.slipCount}
-              to={`/journals/${journal.id}`}
+              ghost
+              iconName="pencil"
+              title={"Stream"}
+              to={`/stream/`}
               expanded={expanded}
             />
-          ))}
-        </section>
-      </div>
 
-      <div className="flex flex-col gap-2">
-        <div className="h-[1px] mx-1 bg-stone-300 rounded-full" />
+            <NavItem
+              ghost
+              iconName="flag"
+              title={"Flagged"}
+              to={`/flagged/`}
+              expanded={expanded}
+            />
+          </section>
 
-        <div
-          className={cn(
-            expanded ? "flex-row" : "flex-col-reverse",
-            "flex justify-between items-center"
-          )}
-        >
-          <Toggle
-            onClick={onClickShowSidebarToggle}
-            isToggled={expanded}
-            iconName="sidebarSimple"
-          />
+          <div className="h-[1px] mx-1 bg-stone-300 rounded-full" />
 
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger asChild>
-              <div>
-                <Button variant="ghost" iconName="gear" />
-              </div>
-            </DropdownMenu.Trigger>
+          <section className="flex flex-col gap-1">
+            {expanded && <h1 className="font-title text-lg ml-2">Journals</h1>}
 
-            <DropdownMenu.Portal>
-              <DropdownMenu.Content
-                className="bg-white border border-stone-300 text-sm rounded-md p-1 w-40 drop-shadow-lg"
-                sideOffset={2}
-                align="start"
-              >
-                <DropdownMenu.Item
-                  className="leading-none text-sm p-1 outline-none rounded-sm cursor-pointer data-[highlighted]:bg-orange-100 data-[highlighted]:text-orange-500"
-                  onClick={() => {
-                    logout();
-                    navigate({ to: "/login" });
-                  }}
-                >
-                  Log out
-                </DropdownMenu.Item>
-              </DropdownMenu.Content>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Root>
-
-          <Dialog.Root>
-            <Dialog.Trigger asChild>
-              <Button
-                variant="ghost"
-                iconName="plus"
-                colour={colours.orange}
-                onClick={() => {
-                  setShowEditSlipModal(true);
-                }}
+            {journals.map((journal) => (
+              <NavItem
+                iconName={journal.icon}
+                colour={journal.colour}
+                title={journal.name}
+                preview={journal.slipCount}
+                to={`/journals/${journal.id}`}
+                expanded={expanded}
               />
-            </Dialog.Trigger>
-            {showEditSlipModal && (
-              <EditSlipModal
-                onSave={() => {
-                  setShowEditSlipModal(false);
-                }}
-              />
+            ))}
+          </section>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <div className="h-[1px] mx-1 bg-stone-300 rounded-full" />
+
+          <div
+            className={cn(
+              expanded ? "flex-row" : "flex-col-reverse",
+              "flex justify-between items-center"
             )}
-          </Dialog.Root>
+          >
+            <Toggle
+              onClick={onClickShowSidebarToggle}
+              isToggled={expanded}
+              iconName="sidebarSimple"
+            />
+
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger asChild>
+                <div>
+                  <Button variant="ghost" iconName="gear" />
+                </div>
+              </DropdownMenu.Trigger>
+
+              <DropdownMenu.Portal>
+                <DropdownMenu.Content
+                  className="bg-white border border-stone-300 text-sm rounded-md p-1 w-40 drop-shadow-lg"
+                  sideOffset={2}
+                  align="start"
+                >
+                  <DropdownMenu.Item
+                    className="leading-none text-sm p-1 outline-none rounded-sm cursor-pointer data-[highlighted]:bg-orange-100 data-[highlighted]:text-orange-500"
+                    onClick={() => {
+                      logout();
+                      navigate({ to: "/login" });
+                    }}
+                  >
+                    Log out
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Portal>
+            </DropdownMenu.Root>
+
+            <Dialog.Root>
+              <Dialog.Trigger asChild>
+                <Button
+                  variant="ghost"
+                  iconName="plus"
+                  colour={colours.orange}
+                  onClick={() => {
+                    setShowEditSlipModal(true);
+                  }}
+                />
+              </Dialog.Trigger>
+              {showEditSlipModal && (
+                <EditSlipModal
+                  onSave={() => {
+                    setShowEditSlipModal(false);
+                  }}
+                />
+              )}
+            </Dialog.Root>
+          </div>
         </div>
       </div>
     </aside>

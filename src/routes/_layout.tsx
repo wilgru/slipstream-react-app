@@ -7,9 +7,12 @@ export const Route = createFileRoute("/_layout")({
 
 function RouteComponent() {
   return (
-    <div className="fixed flex justify-between h-screen w-screen p-4">
+    <div className="fixed flex h-screen w-screen">
       <Sidebar />
-      <Outlet />
+      {/* all the other elements */}
+      <div id="detail" className="w-full flex justify-center">
+        <Outlet />
+      </div>
     </div>
   );
 }
