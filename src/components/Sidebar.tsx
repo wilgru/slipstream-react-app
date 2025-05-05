@@ -10,6 +10,7 @@ import { useTagTree } from "src/hooks/useTagTree";
 import { useLogin } from "src/hooks/users/useLogin";
 import { cn } from "src/utils/cn";
 import { Icon } from "./Icon/Icon";
+import { Toggle } from "./Toggle/Toggle";
 import type { TreeNodeDatum } from "react-d3-tree";
 import type { Journal } from "src/types/Journal.type";
 
@@ -60,6 +61,7 @@ const renderForeignObjectNode = ({
 };
 
 export const Sidebar = () => {
+  const [filterFlagged, setFilterFlagged] = useState(false);
   const { logout } = useLogin();
   const navigate = useNavigate();
   const tagTreeData = useTagTree();
@@ -84,7 +86,7 @@ export const Sidebar = () => {
       <div className="flex flex-col gap-2">
         <div className="h-[1px] mx-1 bg-stone-300 rounded-full" />
 
-        <div className={cn("flex items-center")}>
+        <div className="flex items-center justify-between">
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
               <div>
@@ -111,34 +113,42 @@ export const Sidebar = () => {
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
 
-          <Button
-            variant="ghost"
-            iconName="tag"
-            colour={colours.orange}
-            onClick={() => {
-              setShowEditSlipModal(true);
-            }}
-          />
+          <div className="flex items-center gap-2 ml-auto">
+            <Toggle
+              isToggled={filterFlagged}
+              onClick={() => setFilterFlagged(!filterFlagged)}
+              iconName="flag"
+            />
 
-          <Dialog.Root>
-            <Dialog.Trigger asChild>
-              <Button
-                variant="ghost"
-                iconName="pencil"
-                colour={colours.orange}
-                onClick={() => {
-                  setShowEditSlipModal(true);
-                }}
-              />
-            </Dialog.Trigger>
-            {showEditSlipModal && (
-              <EditSlipModal
-                onSave={() => {
-                  setShowEditSlipModal(false);
-                }}
-              />
-            )}
-          </Dialog.Root>
+            <Button
+              variant="ghost"
+              iconName="tag"
+              colour={colours.orange}
+              onClick={() => {
+                setShowEditSlipModal(true);
+              }}
+            />
+
+            <Dialog.Root>
+              <Dialog.Trigger asChild>
+                <Button
+                  variant="ghost"
+                  iconName="pencil"
+                  colour={colours.orange}
+                  onClick={() => {
+                    setShowEditSlipModal(true);
+                  }}
+                />
+              </Dialog.Trigger>
+              {showEditSlipModal && (
+                <EditSlipModal
+                  onSave={() => {
+                    setShowEditSlipModal(false);
+                  }}
+                />
+              )}
+            </Dialog.Root>
+          </div>
         </div>
       </div>
     </aside>
