@@ -130,7 +130,13 @@ export const Button = ({
         <Icon
           iconName={iconName}
           size={size}
-          className={isButtonHovered ? colour.textPill : "text-stone-500"}
+          className={
+            isButtonHovered
+              ? colour.textPill
+              : variant === "ghost"
+                ? "text-stone-500"
+                : colour.text
+          }
           weight={isButtonHovered ? "fill" : "regular"}
         />
       )}
