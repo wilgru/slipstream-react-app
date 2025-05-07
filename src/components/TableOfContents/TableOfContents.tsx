@@ -38,9 +38,9 @@ export default function TableOfContents({
       >
         <h2
           className={cn(
-            "p-1 text-xs font-normal overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-md",
+            "px-3 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip",
             `hover:${colour.backgroundPill} hover:${colour.textPill}`,
-            item.italic && "italic",
+            item.italic ? "italic text-sm py-1" : "font-title text-md pt-1",
             isActive && colour.backgroundPill,
             isActive && colour.textPill
           )}
@@ -48,7 +48,7 @@ export default function TableOfContents({
           {item.title}
         </h2>
 
-        <ul className="ml-2">
+        <ul>
           {item.subItems.map((subItem) => {
             const isNavigatable = !!subItem.navigationId;
 
@@ -68,14 +68,14 @@ export default function TableOfContents({
       <li key={item.title}>
         <h2
           className={cn(
-            "p-1 text-stone-500 text-xs overflow-x-hidden whitespace-nowrap overflow-ellipsis",
+            "px-3 pt-3 text-stone-400 text-xs overflow-x-hidden whitespace-nowrap overflow-ellipsis",
             item.italic && "italic"
           )}
         >
           {item.title}
         </h2>
 
-        <ul className="ml-2">
+        <ul>
           {item.subItems.map((subItem) => {
             const isNavigatable = !!subItem.navigationId;
 
@@ -91,7 +91,7 @@ export default function TableOfContents({
   };
 
   return (
-    <ul className="w-40 mr-12 p-3">
+    <ul className="max-w-80 m-4 pl-2 pb-2 border-l-2 border-stone-200 h-fit">
       {items.map((item) => {
         const isNavigatable = !!item.navigationId;
 

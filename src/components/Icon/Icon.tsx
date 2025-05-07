@@ -11,6 +11,7 @@ import {
   ArrowsDownUp,
   UserCircle,
   House,
+  Palette,
   CaretLeft,
   CaretRight,
 } from "@phosphor-icons/react";
@@ -18,7 +19,7 @@ import { icons } from "src/constants/icons.constant";
 
 type IconProps = {
   iconName: string;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
   className?: string;
   weight?: "fill" | "regular";
 };
@@ -27,6 +28,7 @@ enum IconSize {
   "sm" = 18,
   "md" = 24,
   "lg" = 32,
+  "xl" = 40,
 }
 
 const Icon = ({
@@ -70,6 +72,8 @@ const Icon = ({
       return <House {...iconProps} />;
     case "user":
       return <UserCircle {...iconProps} />;
+    case "palette":
+      return <Palette {...iconProps} />;
     case "caretLeft":
       return <CaretLeft {...iconProps} />;
     case "caretRight":

@@ -5,6 +5,7 @@ import { Button } from "src/components/Button/Button";
 import { useUpdateJournal } from "src/hooks/journals/useUpdateJournal";
 import { cn } from "src/utils/cn";
 import { EditJournalModal } from "./EditJournalModal";
+import { Icon } from "./Icon/Icon";
 import type { Journal } from "src/types/Journal.type";
 import type { SlipsGroupDividedByTitle } from "src/types/Slip.type";
 
@@ -17,19 +18,23 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
   const { updateJournal } = useUpdateJournal();
 
   return (
-    <div className="py-4 ml-9 mr-3">
+    <div className="border-b border-stone-200 pb-4">
       <div className="flex justify-between items-center">
-        <h1 className={cn(journal.colour.text, "font-title text-5xl")}>
-          {journal.name}
-        </h1>
+        <div className="flex gap-3">
+          <Icon iconName={journal.icon} size="xl" />
 
-        <div className="flex gap-2">
+          <h1 className={cn(journal.colour.text, "font-title text-5xl")}>
+            {journal.name}
+          </h1>
+        </div>
+
+        <div className="flex gap-1 p-1 border border-stone-200 rounded-full">
           <Dialog.Root>
             <Dialog.Trigger asChild>
               <Button
                 variant="ghost"
                 colour={journal.colour}
-                iconName="pencil"
+                iconName="palette"
               />
             </Dialog.Trigger>
 
@@ -49,7 +54,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
 
             <DropdownMenu.Portal>
               <DropdownMenu.Content
-                className="bg-white border border-stone-300 rounded-md p-1 w-40 drop-shadow-lg"
+                className="flex flex-col gap-2 bg-white border border-stone-200 rounded-2xl p-2 w-40 drop-shadow"
                 sideOffset={2}
                 align="start"
               >
@@ -67,15 +72,13 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
                     }
                   }}
                 >
-                  <DropdownMenu.Label className="p-1 text-xs text-stone-500">
+                  <DropdownMenu.Label className="pl-2 text-xs text-stone-400">
                     Group by
                   </DropdownMenu.Label>
 
-                  <DropdownMenu.Separator className="h-[1px] mb-1 rounded-full bg-stone-300" />
-
                   <DropdownMenu.RadioItem
                     className={cn(
-                      "leading-none text-sm p-1 flex justify-between items-center outline-none rounded-sm cursor-pointer",
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer",
                       `data-[highlighted]:${journal.colour.backgroundPill}`,
                       `data-[highlighted]:${journal.colour.textPill}`
                     )}
@@ -88,7 +91,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
                   </DropdownMenu.RadioItem>
                   <DropdownMenu.RadioItem
                     className={cn(
-                      "leading-none text-sm p-1 flex justify-between  items-center outline-none rounded-sm cursor-pointer",
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer",
                       `data-[highlighted]:${journal.colour.backgroundPill}`,
                       `data-[highlighted]:${journal.colour.textPill}`
                     )}
@@ -105,15 +108,13 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
                   value={"created"}
                   onValueChange={() => {}}
                 >
-                  <DropdownMenu.Label className="p-1 text-xs text-stone-500">
+                  <DropdownMenu.Label className="pl-2 text-xs text-stone-400">
                     Sort by
                   </DropdownMenu.Label>
 
-                  <DropdownMenu.Separator className="h-[1px] mb-1 rounded-full bg-stone-300" />
-
                   <DropdownMenu.RadioItem
                     className={cn(
-                      "leading-none text-sm p-1 flex justify-between  items-center outline-none rounded-sm cursor-pointer",
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer",
                       `data-[highlighted]:${journal.colour.backgroundPill}`,
                       `data-[highlighted]:${journal.colour.textPill}`
                     )}
@@ -126,7 +127,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
                   </DropdownMenu.RadioItem>
                   <DropdownMenu.RadioItem
                     className={cn(
-                      "leading-none text-sm p-1 flex justify-between  items-center outline-none rounded-sm cursor-pointer",
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer",
                       `data-[highlighted]:${journal.colour.backgroundPill}`,
                       `data-[highlighted]:${journal.colour.textPill}`
                     )}

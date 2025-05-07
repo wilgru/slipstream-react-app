@@ -5,7 +5,6 @@ import { SlipCard } from "src/components/SlipCard/SlipCard";
 import TableOfContents from "src/components/TableOfContents/TableOfContents";
 import { useGetJournal } from "src/hooks/journals/useGetJournal";
 import { useIntersectionObserver } from "src/hooks/useIntersectionObserver";
-import { cn } from "src/utils/cn";
 import isAuthenticated from "src/utils/users/isAuthenticated";
 
 export const Route = createFileRoute("/_layout/journals/$journalId")({
@@ -56,65 +55,60 @@ export default function JournalComponent() {
   return (
     <div className="h-full w-full flex justify-center">
       <div className="w-[700px] overflow-y-scroll">
-        <JournalHeader journal={journal} slipGroups={slipGroups} />
+        <div className="p-5 mb-[50vh] mx-9 mt-4 border min-h-full border-stone-200 rounded-3xl flex flex-col gap-8 bg-white drop-shadow">
+          <JournalHeader journal={journal} slipGroups={slipGroups} />
 
-        <div className="p-5 mb-[50vh] ml-9 mr-3 border min-h-full border-stone-200 rounded-2xl flex flex-col gap-10 bg-white drop-shadow">
           {slipGroups.map((slipGroup) => (
-            <div className="flex flex-col gap-3">
-              <h2
-                className={cn(
-                  "pl-2 font-title font-thin text-2xl",
-                  journal.colour.text
-                )}
-              >
+            <div className="flex flex-col">
+              <h2 className="pl-2 text-stone-400 font-title font-thin text-xl">
                 {slipGroup.title}
               </h2>
 
-              {slipGroup.slipsWithNoTitle.map((slip) => (
-                <SlipCard
-                  ref={(el: HTMLDivElement | null) => {
-                    if (el && !slipRefs.current.includes(el)) {
-                      slipRefs.current.push(el);
-                    }
-                  }}
-                  slip={slip}
-                  colour={journal.colour}
-                />
-              ))}
+              <div className="flex flex-col gap-3">
+                {slipGroup.slipsWithNoTitle.map((slip) => (
+                  <SlipCard
+                    ref={(el: HTMLDivElement | null) => {
+                      if (el && !slipRefs.current.includes(el)) {
+                        slipRefs.current.push(el);
+                      }
+                    }}
+                    slip={slip}
+                    colour={journal.colour}
+                  />
+                ))}
 
-              {slipGroup.slipsWithNoTitle.length > 0 &&
-                slipGroup.slipsWithTitle.length > 0 && (
-                  <div className="flex flex-row gap-2 justify-center">
-                    <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
-                    <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
-                    <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
-                  </div>
-                )}
+                {slipGroup.slipsWithNoTitle.length > 0 &&
+                  slipGroup.slipsWithTitle.length > 0 && (
+                    <div className="flex flex-row gap-2 justify-center">
+                      <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
+                      <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
+                      <div className=" rounded-full bg-stone-300 h-1 w-1"></div>
+                    </div>
+                  )}
 
-              {slipGroup.slipsWithTitle.map((slip) => (
-                <SlipCard
-                  ref={(el: HTMLDivElement | null) => {
-                    if (el && !slipRefs.current.includes(el)) {
-                      slipRefs.current.push(el);
-                    }
-                  }}
-                  slip={slip}
-                  colour={journal.colour}
-                />
-              ))}
+                {slipGroup.slipsWithTitle.map((slip) => (
+                  <SlipCard
+                    ref={(el: HTMLDivElement | null) => {
+                      if (el && !slipRefs.current.includes(el)) {
+                        slipRefs.current.push(el);
+                      }
+                    }}
+                    slip={slip}
+                    colour={journal.colour}
+                  />
+                ))}
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="flex flex-col justify-center">
-        <TableOfContents
-          items={tableOfContentItems}
-          activeItemNavigationId={navigationId}
-          onJumpTo={(id) => setNavigationId(id)}
-          colour={journal.colour}
-        />
-      </div>
+      <TableOfContents
+        items={tableOfContentItems}
+        activeItemNavigationId={navigationId}
+        onJumpTo={(id) => setNavigationId(id)}
+        colour={journal.colour}
+      />
     </div>
   );
 }
