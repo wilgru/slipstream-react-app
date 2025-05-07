@@ -58,7 +58,7 @@ export const Sidebar = () => {
                   align="start"
                 >
                   <DropdownMenu.Item
-                    className="leading-none text-sm p-2 outline-none rounded-xl cursor-pointer data-[highlighted]:bg-orange-100 data-[highlighted]:text-orange-500"
+                    className="leading-none text-sm p-2 outline-none rounded-xl cursor-pointer data-[highlighted]:bg-orange-100 data-[highlighted]:text-orange-500 transition-colors"
                     onClick={() => {
                       logout();
                       navigate({ to: "/login" });
@@ -70,7 +70,7 @@ export const Sidebar = () => {
                   <DropdownMenu.Separator className="h-[1px] rounded-full bg-stone-200" />
 
                   <DropdownMenu.Item
-                    className="leading-none text-red-400 text-sm p-2 outline-none rounded-xl cursor-pointer data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
+                    className="leading-none text-red-400 text-sm p-2 outline-none rounded-xl cursor-pointer data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500 transition-colors"
                     onClick={() => {
                       logout();
                       navigate({ to: "/login" });

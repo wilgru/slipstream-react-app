@@ -24,6 +24,7 @@ const toggleVariants = cva(
     "gap-2",
     "rounded-full",
     "text-sm",
+    "transition-colors",
     "data-[state=off]:text-stone-500",
     "focus-visible:outline",
     "focus-visible:outline-2",

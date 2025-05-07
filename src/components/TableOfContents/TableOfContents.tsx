@@ -38,11 +38,12 @@ export default function TableOfContents({
       >
         <h2
           className={cn(
-            "px-3 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip",
-            `hover:${colour.backgroundPill} hover:${colour.textPill}`,
+            "px-3 overflow-x-hidden whitespace-nowrap overflow-ellipsis cursor-pointer rounded-full overflow-clip transition-colors",
             item.italic ? "italic text-sm py-1" : "font-title text-md pt-1",
             isActive && colour.backgroundPill,
-            isActive && colour.textPill
+            isActive && colour.textPill,
+            colour.backgroundPillInverted,
+            colour.textPillInverted
           )}
         >
           {item.title}

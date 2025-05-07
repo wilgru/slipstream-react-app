@@ -35,7 +35,7 @@ export const NavItem = ({
         className: cn(colour.textPill, colour.backgroundPill),
       }}
       className={cn(
-        "flex items-center gap-2 rounded-full text-sm",
+        "flex items-center gap-2 rounded-full text-sm transition-colors",
         expanded ? "px-2 py-1" : "p-2",
         expanded ? "justify-between" : "justify-center",
         isHovered && colour.textPill,

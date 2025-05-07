@@ -11,7 +11,7 @@ export const SlipHeading = ({ slip, isHovered }: SlipHeadingProps) => {
   return (
     <div
       className={cn(
-        "flex flex-col gap-1 pb-1 border-b",
+        "flex flex-col gap-1 pb-1 border-b transition-colors",
         isHovered ? "border-stone-200" : "border-stone-100"
       )}
     >

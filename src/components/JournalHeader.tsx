@@ -78,7 +78,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
 
                   <DropdownMenu.RadioItem
                     className={cn(
-                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer",
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${journal.colour.backgroundPill}`,
                       `data-[highlighted]:${journal.colour.textPill}`
                     )}
@@ -91,7 +91,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
                   </DropdownMenu.RadioItem>
                   <DropdownMenu.RadioItem
                     className={cn(
-                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer",
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${journal.colour.backgroundPill}`,
                       `data-[highlighted]:${journal.colour.textPill}`
                     )}
@@ -114,7 +114,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
 
                   <DropdownMenu.RadioItem
                     className={cn(
-                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer",
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${journal.colour.backgroundPill}`,
                       `data-[highlighted]:${journal.colour.textPill}`
                     )}
@@ -127,7 +127,7 @@ export const JournalHeader = ({ journal, slipGroups }: JournalHeaderProps) => {
                   </DropdownMenu.RadioItem>
                   <DropdownMenu.RadioItem
                     className={cn(
-                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer",
+                      "leading-none text-sm p-2 flex justify-between items-center outline-none rounded-xl cursor-pointer transition-colors",
                       `data-[highlighted]:${journal.colour.backgroundPill}`,
                       `data-[highlighted]:${journal.colour.textPill}`
                     )}
