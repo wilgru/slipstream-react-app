@@ -2,7 +2,6 @@ import {
   Gear,
   Pencil,
   Plus,
-  SidebarSimple,
   X,
   Flag,
   PushPin,
@@ -10,6 +9,10 @@ import {
   DotsThree,
   ChatCircle,
   ArrowsDownUp,
+  UserCircle,
+  House,
+  CaretLeft,
+  CaretRight,
 } from "@phosphor-icons/react";
 import { icons } from "src/constants/icons.constant";
 
@@ -57,14 +60,20 @@ const Icon = ({
       return <Gear {...iconProps} />;
     case "plus":
       return <Plus {...iconProps} weight="bold" />;
-    case "sidebarSimple":
-      return <SidebarSimple {...iconProps} />;
     case "dotsThree":
       return <DotsThree {...iconProps} weight="bold" />;
     case "chatCircle":
       return <ChatCircle {...iconProps} />;
     case "arrowsDownUp":
       return <ArrowsDownUp {...iconProps} />;
+    case "house":
+      return <House {...iconProps} />;
+    case "user":
+      return <UserCircle {...iconProps} />;
+    case "caretLeft":
+      return <CaretLeft {...iconProps} />;
+    case "caretRight":
+      return <CaretRight {...iconProps} />;
     default:
       return <></>;
   }

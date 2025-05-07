@@ -61,7 +61,12 @@ export const NavItem = ({
           </div>
 
           {expanded && (
-            <p className="text-xs font-medium text-stone-400 w-2 mr-1 text-center">
+            <p
+              className={cn(
+                "text-xs font-medium w-2 mr-1 text-center",
+                isHovered || isActive ? colour.textPill : "text-stone-400"
+              )}
+            >
               {preview}
             </p>
           )}
