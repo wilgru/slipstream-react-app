@@ -9,7 +9,7 @@ import { useGetJournals } from "src/hooks/journals/useGetJournals";
 import { useLogin } from "src/hooks/users/useLogin";
 import { useUser } from "src/hooks/users/useUser";
 import { cn } from "src/utils/cn";
-import { NavItem } from "./NavItem";
+import { NavItem } from "../NavItem/NavItem";
 
 export const Sidebar = () => {
   const { logout } = useLogin();

@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { Sidebar } from "../components/Sidebar.tsx";
+import { Sidebar } from "../components/Sidebar/Sidebar.tsx";
 
 export const Route = createFileRoute("/_layout")({
   component: RouteComponent,

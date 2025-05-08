@@ -4,8 +4,8 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Button } from "src/components/Button/Button";
 import { useUpdateJournal } from "src/hooks/journals/useUpdateJournal";
 import { cn } from "src/utils/cn";
-import { EditJournalModal } from "./EditJournalModal";
-import { Icon } from "./Icon/Icon";
+import { EditJournalModal } from "../EditJournalModal/EditJournalModal";
+import { Icon } from "../Icon/Icon";
 import type { Journal } from "src/types/Journal.type";
 import type { SlipsGroupDividedByTitle } from "src/types/Slip.type";
 

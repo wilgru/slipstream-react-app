@@ -6,7 +6,7 @@ import IconPicker from "src/components/IconPicker/IconPicker";
 import { Input } from "src/components/Input/Input";
 import { colours } from "src/constants/colours.constant";
 import { useUpdateJournal } from "src/hooks/journals/useUpdateJournal";
-import { DeleteJournalModal } from "./DeleteJournalModal";
+import { DeleteJournalModal } from "../DeleteJournalModal/DeleteJournalModal";
 import type { Journal } from "src/types/Journal.type";
 
 type EditJournalModalProps = {

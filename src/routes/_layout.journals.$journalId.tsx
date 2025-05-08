@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
-import { JournalHeader } from "src/components/JournalHeader";
+import { JournalHeader } from "src/components/JournalHeader/JournalHeader";
 import { SlipCard } from "src/components/SlipCard/SlipCard";
 import TableOfContents from "src/components/TableOfContents/TableOfContents";
 import { useGetJournal } from "src/hooks/journals/useGetJournal";
