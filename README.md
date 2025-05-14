@@ -4,77 +4,67 @@ SlipStream is a stream of consciousness note taking web app where you can view y
 
 ## Getting Started
 
-### 1. Install recommended extensions (VS Code)
+1. Install recommended extensions (VS Code) to make sure you have as close as the same development environment as everyone else (strongly recommend the Sort Imports, Tailwind, ESlint and Prettier extensions at least). The recommended extensions can be found under `.vscode/extensions.json` but VS Code should prompt you to install them when first opening the repo as well. Ensure the ESlint and Prettier extensions are enabled, and that you are using the workspace settings instead of your personal settings (which should be overridden by workspace settings by default).
 
-Install all the recommended extensions for this repo to make sure you have as close as the same development environment as everyone else (strongly recommend the Sort Imports, Tailwind, ESlint and Prettier extensions at least).
+2. Run the following command at the root of the repo's directory to create an `.env` file
 
-The recommended extensions can be found under `.vscode/extensions.json` but VS Code should prompt you to install them when first opening the repo as well.
+   ```
+   cp .env.example .env
+   ```
 
-Ensure the ESlint and Prettier extensions are enabled, and that you are using the workspace settings instead of your personal settings (which should be overridden by workspace settings by default).
+3. Install npm Packages
 
-### 2. Create .env file
+   ```
+   npm install
+   ```
 
-Run the following command at the root of the repo's directory to create your `.env` file:
+4. Start the Pocketbase Docker Container
 
-```
-cp .env.example .env
-```
+   > [!tip] you can skip step 4 and 5 by running this one command
+   >
+   > ```
+   > npm run dev
+   > ```
 
-### 3. Install npm Packages
+   Run the following command at the root of the repo's directory to create your `Dockerfile`:
 
-Run this command to install this repos npm packages locally:
+   ```
+   cp Dockerfile.example Dockerfile
+   ```
 
-```
-npm install
-```
+   Once the docker file is created you can use `docker compose` start up the to create Pocketbase image and start the container. For the first time you run the Docker compose, run this command:
 
-### 4. Start the Pocketbase Docker Container
+   ```
+   docker compose up --build
+   ```
 
-> [!tip] you can skip step 4 and 5 by running this one command
->
-> ```
-> npm run dev
-> ```
+   Otherwise you can run the command without the --build flag:
 
-Run the following command at the root of the repo's directory to create your `Dockerfile`:
+   ```
+   docker compose up
+   ```
 
-```
-cp Dockerfile.example Dockerfile
-```
+   After stopping the container, use this command to make sure its properly spun down:
 
-Once the docker file is created you can use `docker compose` start up the to create Pocketbase image and start the container. For the first time you run the Docker compose, run this command:
+   ```
+   docker compose down
+   ```
 
-```
-docker compose up --build
-```
+   Alternatively, there is this command you can run from the root of the repo to start the Pocketbase Docker container:
 
-Otherwise you can run the command without the --build flag:
+   ```
+   npm run start:pocketbase
+   ```
 
-```
-docker compose up
-```
+5. Start the React App
 
-After stopping the container, use this command to make sure its properly spun down:
+   The React app isn't dockerised, so you can just run it locally on your machine.
 
-```
-docker compose down
-```
+   To start the Vite server, run this npm command:
 
-Alternatively, there is this command you can run from the root of the repo to start the Pocketbase Docker container:
-
-```
-npm run start:pocketbase
-```
-
-### 5. Start the React App
-
-The React app isn't dockerised, so you can just run it locally on your machine.
-
-To start the Vite server, run this npm command:
-
-```
-npm run start:vite
-```
+   ```
+   npm run start:vite
+   ```
 
 ## Development
 
