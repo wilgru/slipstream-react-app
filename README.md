@@ -20,7 +20,8 @@ SlipStream is a stream of consciousness note taking web app where you can view y
 
 4. Start the Pocketbase Docker Container
 
-   > [!tip] you can skip step 4 and 5 by running this one command
+   > [!TIP]   
+   > you can skip step 4 and 5 by running this one command
    >
    > ```
    > npm run dev
