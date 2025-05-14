@@ -1,3 +1,4 @@
+import React from "react";
 import type { Preview } from "@storybook/react";
 import "./index.css";
 
@@ -10,6 +11,20 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          // height: "100vh",
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
   tags: ["autodocs"],
 };
 
