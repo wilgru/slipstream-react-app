@@ -30,6 +30,12 @@ npm install
 
 ### 4. Start the Pocketbase Docker Container
 
+> [!tip] you can skip step 4 and 5 by running this one command
+>
+> ```
+> npm run dev
+> ```
+
 Run the following command at the root of the repo's directory to create your `Dockerfile`:
 
 ```
@@ -54,6 +60,12 @@ After stopping the container, use this command to make sure its properly spun do
 docker compose down
 ```
 
+Alternatively, there is this command you can run from the root of the repo to start the Pocketbase Docker container:
+
+```
+npm run start:pocketbase
+```
+
 ### 5. Start the React App
 
 The React app isn't dockerised, so you can just run it locally on your machine.
@@ -61,7 +73,7 @@ The React app isn't dockerised, so you can just run it locally on your machine.
 To start the Vite server, run this npm command:
 
 ```
-npm run start:dev
+npm run start:vite
 ```
 
 ## Development

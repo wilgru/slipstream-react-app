@@ -26,10 +26,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# Docker
-Dockerfile
-docker-compose.yml
-
 # Pocketbase
 pb_data
 *storybook.log
